@@ -45,9 +45,6 @@ services:
     restart: always
   nginx:
     container_name: nginx
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
     image: moonsungkim/nginx
     ports:
       - "80:80"
