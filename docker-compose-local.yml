@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  redis:
+    container_name: redis
+    build:
+      dockerfile: Dockerfile
+      context: ./redis
+    image: moonsungkim/pick-redis
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    platform: linux/amd64
+    ports:
+      - "6379:6379"
+  db:
+    container_name: database
+    build:
+      dockerfile: Dockerfile
+      context: ./database
+    image: moonsungkim/pick-database
+    platform: linux/arm64
+    environment:
+      - MYSQL_DATABASE=pickgether
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_USER_PASSWORD}
+      - TZ=Asia/Seoul
+    volumes:
+      - ./database/config:/etc/mysql/conf.d
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    restart: always
