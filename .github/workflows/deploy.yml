@@ -64,6 +64,5 @@ jobs:
           script: |
             sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/pick-app
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/nginx
             docker-compose up -d
             docker image prune -f
