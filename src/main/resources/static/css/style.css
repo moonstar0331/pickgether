@@ -1,0 +1,19 @@
+.bg-linear-gradient {background: linear-gradient(180deg, #7F8AE5 0%, #E3DCEA 41.15%, rgba(255, 243, 236, 0.23) 77.08%, #FFFFFF 100%);}
+.logo p {font-size: 100px; font-family: 'Oleo Script Swash Caps', cursive;}
+.text-blue {color: #322293;}
+.text-shadow-blue {text-shadow: -4px 6px 6px #322293;}
+.text-shadow-white {text-shadow: -4px 6px 6px white;}
+.hover-blue-bold:hover {color: #322293; font-weight: bold;}
+.bg-login-input {background: rgba(255,  255, 255, 0.5);}
+.radius-20 {border-radius: 20px;}
+.border-none {border: none;}
+.border-blue {border: 1px solid #322293;}
+.bg-none {background: none;}
+.login-input {background: rgba(255,  255, 255, 0.5); border-radius: 20px; border: none;}
+.login-input:focus {outline: none;}
+.login-submit {background: none; border-radius: 20px; border: 1px solid #322293; color: #322293;}
+.login-submit:hover {background: #322293; color: white;}
+.login-etc a {color: #5E718D;}
+.login-etc a:hover {text-decoration: none; font-weight: bold;}
+.hover-cursor-pointer:hover {cursor: pointer;}
+.hover-shadow-white:hover {box-shadow: 0px 0px 5px 5px white;}
