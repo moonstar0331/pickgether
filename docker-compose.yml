@@ -41,5 +41,5 @@ services:
       - DB_USER_PASSWORD=${DB_USER_PASSWORD}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
     ports:
-      - "8080:8080"
+      - "80:8080"
     restart: always
