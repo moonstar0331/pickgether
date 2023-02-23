@@ -1,12 +1,10 @@
 package com.capstone.pick.domain;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
 @Entity
 public class VoteOption {
 
@@ -24,4 +22,15 @@ public class VoteOption {
     @Column(length = 255)
     private String imageLink; // 이미지 링크
 
+    protected VoteOption() {}
+
+    private VoteOption(Vote vote, String content, String imageLink) {
+        this.vote = vote;
+        this.content = content;
+        this.imageLink = imageLink;
+    }
+
+    public static VoteOption of(Vote vote, String content, String imageLink) {
+        return new VoteOption(vote, content, imageLink);
+    }
 }

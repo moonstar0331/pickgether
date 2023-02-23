@@ -2,7 +2,6 @@ package com.capstone.pick.domain;
 
 import com.capstone.pick.domain.constant.Category;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,7 +11,6 @@ import java.time.LocalDateTime;
 
 
 @Getter
-@NoArgsConstructor
 @Entity
 public class Vote {
 
@@ -48,4 +46,18 @@ public class Vote {
 
     private boolean isMultiPick; // 다중선택가능여부
 
+    protected Vote() {}
+
+    private Vote(User user, String title, String content, Category category, LocalDateTime expiredAt, boolean isMultiPick) {
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.expiredAt = expiredAt;
+        this.isMultiPick = isMultiPick;
+    }
+
+    public static Vote of(User user, String title, String content, Category category, LocalDateTime expiredAt, boolean isMultiPick) {
+        return new Vote(user, title, content, category, expiredAt, isMultiPick);
+    }
 }

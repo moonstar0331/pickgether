@@ -1,12 +1,10 @@
 package com.capstone.pick.domain;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
 @Entity
 public class Pick {
 
@@ -21,4 +19,15 @@ public class Pick {
     @ManyToOne(optional = false)
     @JoinColumn(name = "vote_option_id")
     private VoteOption voteOption; // 선택지 id
+
+    protected Pick() {}
+
+    private Pick(User user, VoteOption voteOption) {
+        this.user = user;
+        this.voteOption = voteOption;
+    }
+
+    public static Pick of(User user, VoteOption voteOption) {
+        return new Pick(user, voteOption);
+    }
 }
