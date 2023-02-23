@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <title>Pickgether</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- 픽게더 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
+</head>
+<body class="bg-linear-gradient py-5" style="min-height: 100%;">
+<div class="container h-100">
+
+    <!-- 본문 -->
+    <div class="d-flex justify-content-center h-100">
+        <div>
+
+            <!-- 픽게더 타이틀 -->
+            <div class="d-flex justify-content-center logo my-5">
+                <p class="text-blue text-shadow-white mr-3">Pick</p>
+                <p class="text-white text-shadow-blue">gether</p>
+            </div>
+
+            <!-- 로그인 창-->
+            <div class="mb-4" style="width: 500px;">
+                <form action="#" method="post">
+                    <input class="w-100 login-input px-3 py-2 mb-2" type="text" id="id" name="id" placeholder="아이디">
+                    <input class="w-100 login-input px-3 py-2 mb-2" type="password" id="pw" name="pw"
+                           placeholder="비밀번호">
+                    <button class="w-100 login-submit p-2 mb-2" type="submit">로그인</button>
+                </form>
+                <div class="d-flex justify-content-center mt-2 login-etc">
+                    <a href="#" class="mr-4">아이디 찾기</a>
+                    <a href="#" class="mr-4">비밀번호 찾기</a>
+                    <a href="#">회원가입</a>
+                </div>
+            </div>
+
+            <!-- 소셜 로그인 -->
+            <div class="d-flex justify-content-center mb-5" style="width: 500px;">
+                <div class="rounded-circle p-3 hover-cursor-pointer hover-shadow-white mr-4"
+                     style="width: 60px; height: 60px; position: relative; background: #F8DE0A;">
+                    <img style="position: absolute; width: 36px; top: 14px; left: 12px;"
+                         src="https://user-images.githubusercontent.com/90389517/220653458-3695d61f-d795-4afe-be44-3bf21b08d3bf.png">
+                </div>
+                <div class="rounded-circle p-3 bg-kakaoyellow hover-cursor-pointer hover-shadow-white"
+                     style="width: 60px; height: 60px; background: #06BD34;">
+                    <img style="width: 30px;"
+                         src="https://user-images.githubusercontent.com/90389517/220658326-89dbbb9e-6041-44e4-b3bd-4c93515af6d5.png">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <div th:insert="~{/fragment/footer :: footerFragment}"></div>
+
+</div>
+</body>
+</html>
+
+<!-- TODO : 수직중앙정렬 추가, 푸터 하단 고정, 디바이스별로 배치 수정 -->
