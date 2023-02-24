@@ -1,6 +1,9 @@
 package com.capstone.pick.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,6 +13,9 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class User {
 
@@ -41,19 +47,5 @@ public class User {
     private String provider; // 가입방식
     private String membership; // 멤버십
     */
-
-    protected User() {}
-
-    private User(String userId, String userPassword, String email, String nickname, LocalDateTime birthday, String memo) {
-        this.userId = userId;
-        this.userPassword = userPassword;
-        this.email = email;
-        this.nickname = nickname;
-        this.birthday = birthday;
-        this.memo = memo;
-    }
-
-    public static User of(String userId, String userPassword, String email, String nickname, LocalDateTime birthday, String memo) {
-        return new User(userId, userPassword, email, nickname, birthday, memo);
-    }
+    
 }
