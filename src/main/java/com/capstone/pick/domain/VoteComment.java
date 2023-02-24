@@ -1,6 +1,9 @@
 package com.capstone.pick.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,6 +12,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class VoteComment {
 
@@ -37,15 +43,4 @@ public class VoteComment {
     @Column(nullable = false)
     private LocalDateTime modifiedAt;
 
-    protected VoteComment() {}
-
-    private VoteComment(Vote vote, User user, String content) {
-        this.vote = vote;
-        this.user = user;
-        this.content = content;
-    }
-
-    public static VoteComment of(Vote vote, User user, String content) {
-        return new VoteComment(vote, user, content);
-    }
 }

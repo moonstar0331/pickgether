@@ -1,10 +1,16 @@
 package com.capstone.pick.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class VoteHashtag {
 
@@ -19,14 +25,4 @@ public class VoteHashtag {
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag; // 해시태그 id
 
-    protected VoteHashtag() {}
-
-    private VoteHashtag(Vote vote, Hashtag hashtag) {
-        this.vote = vote;
-        this.hashtag = hashtag;
-    }
-
-    public static VoteHashtag of(Vote vote, Hashtag hashtag) {
-        return new VoteHashtag(vote, hashtag);
-    }
 }
