@@ -142,19 +142,10 @@
 }
 
 .floating-button {
-    display: flex;
     position: fixed;
     right: 30%;
     bottom: 90px;
-    z-index: 999;
-}
-
-.floating-button button {
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 70%;
-    overflow: hidden;
+    z-index: 998;
 }
 
 .text-blue {
