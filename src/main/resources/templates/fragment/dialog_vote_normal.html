@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="dialVoteNormalFragment">
+    <!-- 배경 -->
+    <div id="vote_dial_normal" class="position-fixed w-100"
+         style="display: none; background-color:rgba(0, 0, 0, 0.5); z-index: 999; height: 100vh;">
+
+        <!-- 다이얼로그   -->
+        <div class="radius-20 position-absolute bg-white center-center" style="width: 600px;">
+
+            <form name="vote" method="post" action="createVote">
+                <!-- 다이얼로그 끄기 버튼, 투표 업로드 버튼-->
+                <div class="border-bottom">
+                    <div class="mx-4 my-3 d-flex justify-content-between">
+                        <div id="vote_dial_normal_close"
+                             class="hover-decoration-none text-puple hover-text-black hover-cursor-pointer">←
+                        </div>
+                        <div>새 투표 만들기</div>
+                        <button type="submit"
+                                class="hover-decoration-none text-puple hover-text-black bg-none border-none">업로드
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 투표 본문 -->
+                <div class="m-4">
+                    <!-- 투표 제목 -->
+                    <div class="col-12 mb-3">
+                        <input class="w-100 h-100 border-none border-bottom focus-none p-1" type="text" name="title"
+                               placeholder="제목을 입력하세요" required>
+                    </div>
+
+                    <!-- 투표 카테고리, 해시태그 -->
+                    <div class="w-100 mb-4 d-flex justify-content-between">
+                        <div class="col-3 pr-3">
+                            <select class="w-100 h-100 border-none focus-none border-bottom p-1" name="category"
+                                    required>
+                                <option value="" selected disabled hidden>카테고리</option>
+                                <option value="1">자유</option>
+                                <option value="2">고민</option>
+                                <option value="3">설문</option>
+                                <option value="4">기업</option>
+                            </select>
+                        </div>
+                        <div class="col-9">
+                            <input class="w-100 h-100 border-none border-bottom focus-none p-1" type="text"
+                                   name="hashtag"
+                                   placeholder="#해시태그" required>
+                        </div>
+                    </div>
+
+                    <!-- 투표 설명 -->
+                    <div class="col-12 mb-4">
+                    <textarea id="vote_content" class="w-100 rounded focus-none p-2"
+                              style="resize: none; height: 100px; border: 1px solid #dee2e6;"
+                              name="content"
+                              placeholder="설명을 입력하세요" required></textarea>
+                        <div id="vote_content_cnt" class="col-12 text-right">0/120</div>
+                    </div>
+
+                    <!-- 투표 항목(선택지) -->
+                    <div id="voteOptionArea">
+                        <div class="col-12 mb-3">
+                            <input class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
+                                   type="text" name="voteOption1"
+                                   placeholder="항목을 입력하세요" required>
+                            <img class="position-absolute vote-option-img1">
+                            <img class="position-absolute vote-option-img2">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <input class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
+                                   type="text" name="voteOption2"
+                                   placeholder="항목을 입력하세요" required>
+                            <img class="position-absolute vote-option-img1">
+                            <img class="position-absolute vote-option-img2">
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-between">
+                        <div onclick="create_voteOption()"
+                             class="d-flex justify-content-start align-items-center hover-cursor-pointer">
+                            <img class="ml-2 mr-2" style="width: auto; height: 20px;"
+                                 src="https://user-images.githubusercontent.com/90389517/220822898-07246cf6-10e1-42b4-b75f-79aac84a7adf.png">
+                            <div style="color: #65758E;">항목 추가</div>
+                        </div>
+                        <div class="mr-2">
+                            <label><input type="checkbox" name="isMultiPick" class="mr-1"> 다중 선택</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 투표 기간 -->
+                <div class="border-top p-4">
+                    <div class="col-12 mb-3">투표 기간</div>
+                    <div class="col-12 my-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            <input id="createAt" name="createAt" class="vote-date p-1" type="datetime-local">
+                        </div>
+                        <div>~</div>
+                        <div>
+                            <input id="expiredAt" name="expiredAt" class="vote-date p-1" type="datetime-local">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 공개 범위 -->
+                <div class="border-top p-4">
+                    <div class="col-12 mb-3">공개 범위</div>
+                    <div class="col-12 mx-1 my-2">
+                        <label><input class="mr-2" type="radio" name="displayRange" value="public"> 전체 공개</label>
+                        <label><input class="mr-2 ml-4" type="radio" name="displayRange" value="friend"> 친구 공개</label>
+                        <label><input class="mr-2 ml-4" type="radio" name="displayRange" value="list"> 친한 친구 공개</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

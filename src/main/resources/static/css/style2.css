@@ -1,0 +1,31 @@
+.bg-linear-gradient {background: linear-gradient(180deg, #7F8AE5 0%, #E3DCEA 41.15%, rgba(255, 243, 236, 0.23) 77.08%, #FFFFFF 100%);}
+.logo p {font-size: 100px; font-family: 'Oleo Script Swash Caps', cursive; user-select: none;}
+.text-blue {color: #322293;}
+.text-shadow-blue {text-shadow: -4px 6px 6px #322293;}
+.text-shadow-white {text-shadow: -4px 6px 6px white;}
+.hover-text-blue-bold:hover {color: #322293; font-weight: bold;}
+.bg-login-input {background: rgba(255,  255, 255, 0.5);}
+.radius-20 {border-radius: 20px;}
+.border-none {border: none;}
+.border-blue {border: 1px solid #322293;}
+.bg-none {background: none;}
+.login-input {background: rgba(255,  255, 255, 0.5); border-radius: 20px; border: none;}
+.login-input:focus {outline: none;}
+.login-submit {background: none; border-radius: 20px; border: 1px solid #322293; color: #322293;}
+.login-submit:hover {background: #322293; color: white;}
+.login-etc a {color: #5E718D;}
+.login-etc a:hover {text-decoration: none; font-weight: bold;}
+.hover-cursor-pointer:hover {cursor: pointer;}
+.hover-shadow-white:hover {box-shadow: 0px 0px 5px 5px white;}
+.hover-decoration-none:hover {text-decoration: none;}
+.focus-none:focus {outline: none; border: none;}
+.vertical-center {left: 50%; transform: translate(-50%, 0);}
+.horizontal-center {top: 50%; transform: translate(0, -50%);}
+.center-center {left: 50%; top: 50%; transform: translate(-50%, -50%);}
+.text-puple {color: #7F8AE5;}
+.hover-text-black:hover {color: #0b2e13;}
+.vote-date {border: 1px solid #AFBACA; border-radius: 6px;}
+.vote-option {border: 1px solid #dee2e6; padding-right: 75px!important;}
+.vote-option:focus {border: 1px solid #dee2e6!important; padding-right: 75px!important;}
+.vote-option-img1 {width: 20px; right: 60px; top: 9px; content: url("https://user-images.githubusercontent.com/90389517/220822069-2962256f-4e12-4f48-869b-80fc123ee572.png")}
+.vote-option-img2 {width: 18px; right: 30px; top: 10px; content: url("https://user-images.githubusercontent.com/90389517/220822360-aa820f96-ab80-4e18-bede-fe445fdc375f.png")}

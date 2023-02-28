@@ -1,0 +1,225 @@
+.bg-linear-gradient {
+    background: linear-gradient(180deg, #7F8AE5 0%, #E3DCEA 41.15%, rgba(255, 243, 236, 0.23) 77.08%, #FFFFFF 100%);
+}
+
+.logo p {
+    font-size: 100px;
+    font-family: 'Oleo Script Swash Caps', cursive;
+}
+
+.logo a {
+    font-size: 35px;
+    font-family: 'Oleo Script Swash Caps', cursive;
+    color: #2D226E;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.timeline-background {
+    width: 600px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.profile {
+    font-family: 'Noto Sans KR', sans-serif;
+    height: 48px;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+.profile img {
+    height: 48px;
+    width: 48px;
+    border-radius: 70%;
+    overflow: hidden;
+}
+
+.hashtag p{
+    color: #7F61E9 !important;
+}
+
+.timeline-content-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-left: 10px;
+}
+
+.vote-background-1{
+    height: 250px;
+    width: 580px;
+    margin: auto;
+
+    background: linear-gradient(254.72deg, rgba(255, 222, 125, 0.5) -23.18%, rgba(122, 87, 246, 0.5) 84.66%);
+    backdrop-filter: blur(2px);
+    box-shadow: 5px 8px 20px rgb(197, 197, 197);
+
+    border-radius: 13px;
+}
+
+.vote-background-2 {
+    height: 250px;
+    width: 580px;
+    margin: auto;
+
+    background: linear-gradient(254.72deg, #F07F7F -23.18%, #F6B657 84.66%);
+    box-shadow: 5px 8px 20px rgb(197, 197, 197);
+
+    border-radius: 13px;
+}
+
+.vote-background-circle {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.vote-background-button {
+    height: 30px;
+    width: 78px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    color: #fff;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    margin-left: 10px;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    opacity:0.8;
+    border-radius: 13px;
+}
+
+.vote-background-p {
+    color: white;
+    font-weight: 400;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 35px;
+    word-break: break-all;
+    white-space: normal;
+    margin-bottom: 0px !important;
+    text-align : center;
+    margin-top: 10px;
+    padding: 35px;
+}
+
+#vote-background-image-vote{
+    color: white;
+    font-weight: 400;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 35px;
+    word-break: break-all;
+    white-space: normal;
+    margin-bottom: 0px !important;
+    text-align : center;
+    margin-top: 30px;
+    padding: 35px;
+}
+
+.vote-background-dday {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px !important;
+    color: white !important;
+}
+
+.vote-best-and-due {
+    position: relative;
+    bottom: 5px;
+}
+
+.icons button {
+    background-color:transparent;
+    fill: gray;
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.icons button:hover {
+    fill: #7F61E9;
+}
+
+.bottom-navbar {
+    background-color: white;
+}
+
+.floating-button {
+    position: fixed;
+    right: 30%;
+    bottom: 90px;
+    z-index: 998;
+}
+
+.text-blue {
+    color: #322293;
+}
+
+.text-shadow-blue {
+    text-shadow: -4px 6px 6px #322293;
+}
+
+.text-shadow-white {
+    text-shadow: -4px 6px 6px white;
+}
+
+.hover-blue-bold:hover {
+    color: #322293;
+    font-weight: bold;
+}
+
+.bg-login-input {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.radius-20 {
+    border-radius: 20px;
+}
+
+.border-none {
+    border: none;
+}
+
+.border-blue {
+    border: 1px solid #322293;
+}
+
+.bg-none {
+    background: none;
+}
+
+.login-input {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    border: none;
+}
+
+.login-input:focus {
+    outline: none;
+}
+
+.login-submit {
+    background: none;
+    border-radius: 20px;
+    border: 1px solid #322293;
+    color: #322293;
+}
+
+.login-submit:hover {
+    background: #322293;
+    color: white;
+}
+
+.login-etc a {
+    color: #5E718D;
+}
+
+.login-etc a:hover {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.hover-cursor-pointer:hover {
+    cursor: pointer;
+}
+
+.hover-shadow-white:hover {
+    box-shadow: 0px 0px 5px 5px white;
+}
