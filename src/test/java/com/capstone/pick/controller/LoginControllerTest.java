@@ -1,9 +1,11 @@
 package com.capstone.pick.controller;
 
+import com.capstone.pick.config.SecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -12,6 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("로그인 컨트롤러")
+@Import(SecurityConfig.class)
 @WebMvcTest(LoginController.class)
 @WithMockUser
 class LoginControllerTest {
@@ -27,7 +30,7 @@ class LoginControllerTest {
     public void 로그인_뷰_엔드포인트_테스트() throws Exception {
 
         // When & Then
-        mvc.perform(get("/"))
+        mvc.perform(get("/login"))
                 .andExpect(status().isOk()) // 상태코드가 200인가?
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML)) // html 파일을 리턴해주는가?
                 .andExpect(view().name("/page/login")); // 리턴하는 뷰 이름은 무엇인가?
