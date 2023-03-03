@@ -10,7 +10,7 @@
         <div class="radius-20 position-absolute bg-white center-center" style="width: 600px;">
             <form name="vote" method="post" action="createVote">
                 <!-- 다이얼로그 끄기 버튼, 투표 업로드 버튼-->
-                <div class="border-bottom" style="">
+                <div class="border-bottom">
                     <div class="mx-4 my-3 d-flex justify-content-between">
                         <div id="vote_dial_normal_close"
                              class="hover-decoration-none text-puple hover-text-black hover-cursor-pointer">←
@@ -46,10 +46,10 @@
 
                     <!-- 투표 설명 -->
                     <div class="col-12 mb-4">
-                    <textarea id="vote_content" class="w-100 rounded focus-none p-2"
-                              style="resize: none; height: 150px; border: 1px solid #dee2e6;"
-                              name="content"
-                              placeholder="설명을 입력하세요" required></textarea>
+                        <textarea id="vote_content" class="w-100 rounded focus-none p-2"
+                                  style="resize: none; height: 150px; border: 1px solid #dee2e6;"
+                                  name="content"
+                                  placeholder="설명을 입력하세요" required></textarea>
                         <div id="vote_content_cnt" class="col-12 text-right">0/500</div>
                     </div>
 
@@ -108,7 +108,7 @@
                             document.getElementById('createAt').value = date;
                         } else {
                             document.getElementById('expiredAt').setAttribute("min", document.getElementById('createAt').value);
-                        } // 2023-01-20T00-00
+                        }
                     }
 
                     function valueCheck2() {
