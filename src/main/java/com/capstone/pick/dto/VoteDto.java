@@ -3,6 +3,7 @@ package com.capstone.pick.dto;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.constant.Category;
+import com.capstone.pick.domain.constant.DisplayRange;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,8 @@ public class VoteDto {
     private LocalDateTime modifiedAt;
     private boolean isMultiPick;
 
+    private DisplayRange displayRange;
+
     public Vote toEntity(User user) {
         return Vote.builder()
                 .id(id)
@@ -32,6 +35,8 @@ public class VoteDto {
                 .category(category)
                 .expiredAt(expiredAt)
                 .modifiedAt(modifiedAt)
-                .isMultiPick(isMultiPick).build();
+                .isMultiPick(isMultiPick)
+                .displayRange(displayRange)
+                .build();
     }
 }
