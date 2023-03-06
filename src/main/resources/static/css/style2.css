@@ -22,6 +22,7 @@
 .vertical-center {left: 50%; transform: translate(-50%, 0);}
 .horizontal-center {top: 50%; transform: translate(0, -50%);}
 .center-center {left: 50%; top: 50%; transform: translate(-50%, -50%);}
+.center-bottom {left: 50%; bottom: 0%; transform: translate(-50%, 0%);}
 .text-puple {color: #7F8AE5;}
 .hover-text-black:hover {color: #0b2e13;}
 .vote-date {border: 1px solid #AFBACA; border-radius: 6px;}
