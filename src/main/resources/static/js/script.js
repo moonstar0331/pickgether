@@ -30,16 +30,6 @@ $(document).ready(function () {
         }
         $('#hashtag').val(hashtag);
     });
-
-    $("#slide").click(function () {
-        if ($("#drop-setting").is(":visible")) {
-            $("#drop-setting").slideUp();
-            $("#slide_btn").css("transform", "rotate(0deg)")
-        } else {
-            $("#drop-setting").slideDown();
-            $("#slide_btn").css("transform", "rotate(180deg)")
-        }
-    });
 });
 
 // 투표 선택지 추가

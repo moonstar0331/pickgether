@@ -21,55 +21,10 @@
                     <div id="vote_dial_normal_close" onclick="history.go(-1)"
                          class="hover-decoration-none text-puple hover-text-black hover-cursor-pointer">←
                     </div>
-                    <div id="slide" class="row align-items-center hover-cursor-pointer">
-                        <div class="mr-2">새 투표 만들기</div>
-                        <img id="slide_btn"width="18px" src="https://user-images.githubusercontent.com/90389517/223088352-9290cdcd-78f0-493a-a896-1ba7a83560b8.png">
-                    </div>
+                    <div class="mr-2">새 투표 만들기</div>
                     <button type="submit"
                             class="hover-decoration-none text-puple hover-text-black bg-none border-none">업로드
                     </button>
-                </div>
-
-                <div id="drop-setting" style="display: none;">
-                    <!-- 투표 기간, 공개 범위 -->
-                    <div class="p-4 row">
-                        <div class="col-6">
-                            <div class="col-12 mb-3">투표 종료</div>
-                            <div class="col-12 my-2 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <input th:field="*{expiredAt}" id="expiredAt" class="vote-date p-1"
-                                           type="datetime-local"
-                                           onchange="expiredCheck()" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="col-12 mb-3">공개 범위</div>
-                            <div class="col-12 mx-1 my-2">
-                                <th:block
-                                        th:each="displayRange : ${T(com.capstone.pick.domain.constant.DisplayRange).values()}">
-                                    <div><label class="mr-3">
-                                        <input th:field="*{displayRange}" type="radio"
-                                               th:value="${displayRange}" th:text="' ' + ${displayRange.displayValue}">
-                                    </label>
-                                    </div>
-                                </th:block>
-                            </div>
-                        </div>
-                    </div>
-                    <script>
-                        let date = new Date();
-                        date.setHours(date.getHours() + 9);
-                        date = date.toISOString().substring(0, 16);
-                        document.getElementById('expiredAt').setAttribute("min", date);
-
-                        function expiredCheck() {
-                            if (document.getElementById('expiredAt').value < date) {
-                                alert('현재 시간보다 이전 시간은 설정할 수 없습니다.');
-                                document.getElementById('expiredAt').value = "";
-                            }
-                        }
-                    </script>
                 </div>
             </div>
 
@@ -103,6 +58,7 @@
                 <input th:field="*{hashtag}" type="text" style="display: none;">
 
                 <!-- 투표 항목(선택지) -->
+                <!-- TODO : 이미지 업로드 기능 구현하기 -->
                 <div id="voteOptionArea">
                     <div class="col-12 mb-3">
                         <input th:field="*{voteOption}"
@@ -136,14 +92,51 @@
                         <div style="color: #65758E;">항목 추가</div>
                     </div>
                     <div class="mr-2">
-                        <input th:field="*{isMultiPick}" type="checkbox" class="mr-1">
-                        <label>다중 선택</label>
+                        <label><input th:field="*{isMultiPick}" type="checkbox" class="mr-1"> 다중 선택</label>
                     </div>
+                </div>
+            </div>
+
+            <!-- 투표 기간 -->
+            <div class="border-top p-4">
+                <div class="col-12 mb-3">투표 종료</div>
+                <div class="col-12 my-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <input th:field="*{expiredAt}" id="expiredAt" class="vote-date p-1"
+                               type="datetime-local"
+                               onchange="expiredCheck()" required>
+                    </div>
+                </div>
+            </div>
+            <script>
+                let date = new Date();
+                date.setHours(date.getHours() + 9);
+                date = date.toISOString().substring(0, 16);
+                document.getElementById('expiredAt').setAttribute("min", date);
+
+                function expiredCheck() {
+                    if (document.getElementById('expiredAt').value < date) {
+                        alert('현재 시간보다 이전 시간은 설정할 수 없습니다.');
+                        document.getElementById('expiredAt').value = "";
+                    }
+                }
+            </script>
+
+            <!-- 공개 범위 -->
+            <div class="border-top p-4">
+                <div class="col-12 mb-3">공개 범위</div>
+                <div class="col-12 mx-1 my-2">
+                    <th:block
+                            th:each="displayRange : ${T(com.capstone.pick.domain.constant.DisplayRange).values()}">
+                        <label class="mr-3">
+                            <input th:field="*{displayRange}" type="radio"
+                                   th:value="${displayRange}" th:text="' ' + ${displayRange.displayValue}">
+                        </label>
+                    </th:block>
                 </div>
             </div>
         </form>
     </div>
 </div>
-</form>
 </body>
 </html>
