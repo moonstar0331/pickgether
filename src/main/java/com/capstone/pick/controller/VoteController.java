@@ -26,7 +26,7 @@ public class VoteController {
     public String createVote(VoteForm voteForm) {
         //TODO : 개발 초기이므로 DTO가 아닌 Entity를 사용함. 추후 DTO로 리팩터링해야 함.
         System.out.println(voteForm.toString());
-        //voteService.saveVote(voteForm);
+        voteService.saveVote(voteForm);
         return "redirect:/";
     }
 }
