@@ -18,11 +18,20 @@
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/script.js"></script>
+    <script>
+        function go_back()
+        {
+            // 뒤로가기 url 을 "/timeline" 으로 설정하면 타임라인 첫 페이지 부터 시작되고
+            // "onclick="history.go(-1)" 을 쓰면 Post/Redirect/Get 패턴 때문에 뒤로가기를 해도 타임라인 페이지가 아니라 댓글 페이지가 등장 두둥 탁
+
+        }
+    </script>
+
 </head>
 <body>
 <div class="timeline-background h-100">
     <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16" onclick="go_back()" >
             <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
         </svg>
         <div class="my-0 mx-auto">
@@ -63,11 +72,16 @@
 <!--                <button class="btn" type="submit" value="게시" ></button>-->
 <!--            </span>-->
 <!--        </form>-->
-        <form class="custom-form vw-100">
+        <form class="custom-form vw-100"  action="댓글 api에 댓글 작성 엔드포인트가 생기면 그때 추가 해야할듯 합니다." method="post">
             <input type="text" class="custom-form-input" placeholder="댓글 달기..." required>
             <button class="custom-botton" type="submit">게시</button>
+            <!-- 댓글 작성은 유효성 검사가 필요 없는데 js를 넣어야 하는지??-->
+            <!-- 유저 정보는 세션에서 꺼내면 되니까 안넘겨도 되겠죠?? -->
+            <!-- 히든 타입으로 게시글 번호를 넘겨야 컨트롤러에서 처리할 수 있을듯 합니다.-->
+            <!-- <input type="hidden" name="vote_id" value="${ model 에 저장된 투표 게시글 id 꺼내오기 }">  -->
         </form>
     </footer>
 </div>
+
 </body>
 </html>
