@@ -5,7 +5,7 @@ public enum DisplayRange {
 
     private final String displayValue;
 
-    private DisplayRange(String displayValue) {
+    DisplayRange(String displayValue) {
         this.displayValue = displayValue;
     }
 
