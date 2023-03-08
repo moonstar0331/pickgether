@@ -1,17 +1,25 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.VoteForm;
-import com.capstone.pick.domain.Vote;
+import com.capstone.pick.dto.VoteDto;
+import com.capstone.pick.dto.VoteOptionDto;
+import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
 public class VoteController {
+
     private final VoteService voteService;
 
     @GetMapping("/form")
@@ -22,11 +30,18 @@ public class VoteController {
         model.addAttribute("voteForm", voteForm);
         return "/page/form";
     }
+
     @PostMapping("/form")
-    public String createVote(VoteForm voteForm) {
-        //TODO : 개발 초기이므로 DTO가 아닌 Entity를 사용함. 추후 DTO로 리팩터링해야 함.
-        System.out.println(voteForm.toString());
-        voteService.saveVote(voteForm);
+    public String saveVote(@AuthenticationPrincipal VotePrincipal votePrincipal,
+                           @ModelAttribute VoteForm voteForm) {
+
+        VoteDto voteDto = voteForm.toDto(votePrincipal.toDto());
+        List<VoteOptionDto> voteOptionDtos = voteForm.getVoteOptions()
+                .stream()
+                .map(o -> o.toDto(voteDto))
+                .collect(Collectors.toList());
+
+        voteService.saveVote(voteDto, voteOptionDtos);
         return "redirect:/";
     }
 }
