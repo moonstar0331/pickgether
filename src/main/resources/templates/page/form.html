@@ -12,7 +12,7 @@
 <body>
 <div class="timeline-background">
     <div>
-        <form action="createVote" name="vote-form" th:action th:object="${voteForm}" method="post">
+        <form name="vote-form" th:action th:object="${voteForm}" method="post">
 
             <!-- 투표 상단 -->
             <div class="border-bottom">
@@ -55,38 +55,40 @@
                 </div>
 
                 <!-- 투표 해시태그 -->
-                <input th:field="*{hashtag}" type="text" style="display: none;">
+<!--                <input th:field="*{hashtag}" type="text" style="display: none;">-->
 
                 <!-- 투표 항목(선택지) -->
                 <!-- TODO : 이미지 업로드 기능 구현하기 -->
                 <div id="voteOptionArea">
                     <div class="col-12 mb-3">
-                        <input th:field="*{voteOption}"
+<!--                        <input th:field="*{voteOptions[0]}"-->
+                        <input name="voteOptions[0].content" id="voteOptions[0].content"
                                class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
                                type="text" placeholder="항목을 입력하세요" required>
                         <img class="position-absolute vote-option-img1">
                         <img class="position-absolute vote-option-img2">
                     </div>
                     <div class="col-12 mb-3">
-                        <input th:field="*{voteOption}"
+                        <!--                        <input th:field="*{voteOptions[0]}"-->
+                        <input name="voteOptions[1].content" id="voteOptions[1].content"
                                class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
                                type="text" placeholder="항목을 입력하세요" required>
                         <img class="position-absolute vote-option-img1">
                         <img class="position-absolute vote-option-img2">
                     </div>
-                    <th:block th:each="num : ${#numbers.sequence(3,10)}">
-                        <div class="col-12 mb-3" th:id="${'voteOption' + num}" style="display: none;">
-                            <input th:field="*{voteOption}"
-                                   class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
-                                   type="text" placeholder="항목을 입력하세요">
-                            <img class="position-absolute vote-option-img1">
-                            <img class="position-absolute vote-option-img2">
-                        </div>
-                    </th:block>
+<!--                    <th:block th:each="num : ${#numbers.sequence(3,10)}">-->
+<!--                        <div class="col-12 mb-3" th:id="${'voteOption' + num}" style="display: none;">-->
+<!--                            <input th:field="*{voteOptions[2]}"-->
+<!--                                   class="w-100 h-100 border-none rounded focus-none p-2 vote-option"-->
+<!--                                   type="text" placeholder="항목을 입력하세요">-->
+<!--                            <img class="position-absolute vote-option-img1">-->
+<!--                            <img class="position-absolute vote-option-img2">-->
+<!--                        </div>-->
+<!--                    </th:block>-->
                 </div>
                 <div class="col-12 d-flex justify-content-between">
                     <div onclick="create_voteOption()"
-                         class="d-flex justify-content-start align-items-center hover-cursor-pointer">
+                         class="optionAdd d-flex justify-content-start align-items-center hover-cursor-pointer">
                         <img class="ml-2 mr-2" style="width: auto; height: 20px;"
                              src="https://user-images.githubusercontent.com/90389517/220822898-07246cf6-10e1-42b4-b75f-79aac84a7adf.png">
                         <div style="color: #65758E;">항목 추가</div>

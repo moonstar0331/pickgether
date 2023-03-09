@@ -4,10 +4,7 @@ import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -15,6 +12,7 @@ import java.util.List;
 
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +21,7 @@ public class VoteForm {
     private Category category;
     private String content;
     private List<VoteOptionFormDto> voteOptions;
-    private List<String> hashtag;
+//    private List<String> hashtag;
     private Boolean isMultiPick;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime expiredAt;
@@ -45,19 +43,19 @@ public class VoteForm {
                 .build();
     }
 
-//    @Override
-//    public String toString() {
-//        return "VoteForm{" +
-//                "title='" + title + '\'' +
-//                ", category=" + category +
-//                ", content='" + content + '\'' +
-//                ", voteOptions=" + voteOptions +
+    @Override
+    public String toString() {
+        return "VoteForm{" +
+                "title='" + title + '\'' +
+                ", category=" + category +
+                ", content='" + content + '\'' +
+                ", voteOptions=" + voteOptions +
 //                ", hashtag=" + hashtag +
-//                ", isMultiPick=" + isMultiPick +
-//                ", expiredAt=" + expiredAt +
-//                ", createAt=" + createAt +
-//                ", modifiedAt=" + modifiedAt +
-//                ", displayRange=" + displayRange +
-//                '}';
-//    }
+                ", isMultiPick=" + isMultiPick +
+                ", expiredAt=" + expiredAt +
+                ", createAt=" + createAt +
+                ", modifiedAt=" + modifiedAt +
+                ", displayRange=" + displayRange +
+                '}';
+    }
 }

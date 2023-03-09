@@ -18,9 +18,8 @@ public class VoteService {
     private final UserRepository userRepository;
     private final VoteRepository voteRepository;
     private final VoteOptionRepository voteOptionRepository;
-    private final VoteHashtagRepository voteHashtagRepository;
-
-    private final HashtagRepository hashtagRepository;
+//    private final VoteHashtagRepository voteHashtagRepository;
+//    private final HashtagRepository hashtagRepository;
 
     public void saveVote(VoteDto dto, List<VoteOptionDto> voteOptionDtos) {
         User user = userRepository.getReferenceById(dto.getUserDto().getUserId());
