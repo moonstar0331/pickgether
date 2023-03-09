@@ -21,7 +21,7 @@ public class TestSecurityConfig {
     public void securitySetUp() {
         given(userRepository.findById(anyString())).willReturn(
                 Optional.of(User.builder()
-                        .userId("user123")
+                        .userId("user")
                         .userPassword("password")
                         .email("test@email.com")
                         .nickname("user-test")
