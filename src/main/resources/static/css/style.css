@@ -137,6 +137,20 @@
     fill: #7F61E9;
 }
 
+.icons img {
+    fill: #BCB5D2;
+}
+
+.icons img:hover {
+    filter:
+            invert(47%)
+            sepia(38%)
+            saturate(6705%)
+            hue-rotate(233deg)
+            brightness(97%)
+            contrast(89%);
+}
+
 .bottom-navbar {
     background-color: white;
 }
