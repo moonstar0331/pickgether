@@ -42,6 +42,6 @@ public class VoteController {
                 .collect(Collectors.toList());
 
         voteService.saveVote(voteDto, voteOptionDtos);
-        return "redirect:/";
+        return "redirect:/timeLine";
     }
 }
