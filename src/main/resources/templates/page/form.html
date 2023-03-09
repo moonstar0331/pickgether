@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pickgether</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min2.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style2.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+</head>
+<body>
+<div class="timeline-background">
+    <div>
+        <form name="vote-form" th:action th:object="${voteForm}" method="post">
+
+            <!-- 투표 상단 -->
+            <div class="border-bottom">
+                <!-- 다이얼로그 끄기 버튼, 투표 업로드 버튼-->
+                <div class="mx-4 my-3 d-flex justify-content-between">
+                    <div id="vote_dial_normal_close" onclick="history.go(-1)"
+                         class="hover-decoration-none text-puple hover-text-black hover-cursor-pointer">←
+                    </div>
+                    <div class="mr-2">새 투표 만들기</div>
+                    <button type="submit"
+                            class="hover-decoration-none text-puple hover-text-black bg-none border-none">업로드
+                    </button>
+                </div>
+            </div>
+
+            <!-- 투표 본문 -->
+            <div class="m-4">
+                <!-- 투표 카테고리, 제목 -->
+                <div class="w-100 mb-4 d-flex justify-content-between">
+                    <div class="col-3 pr-3">
+                        <select class="w-100 h-100 border-none focus-none border-bottom p-1" name="category"
+                                required>
+                            <option value="" selected disabled hidden>카테고리</option>
+                            <option th:each="category : ${T(com.capstone.pick.domain.constant.Category).values()}"
+                                    th:value="${category}" th:text="${category.displayValue}"></option>
+                        </select>
+                    </div>
+                    <div class="col-9">
+                        <input th:field="*{title}" class="w-100 h-100 border-none border-bottom focus-none p-1"
+                               type="text" placeholder="제목을 입력하세요" required>
+                    </div>
+                </div>
+
+                <!-- 투표 설명 -->
+                <div class="col-12 mb-4">
+                    <textarea id="vote_content" th:field="*{content}" class="w-100 rounded focus-none p-2"
+                              style="resize: none; height: 300px; border: 1px solid #dee2e6;"
+                              placeholder="설명을 입력하세요" required></textarea>
+                    <div id="vote_content_cnt" class="col-12 text-right">0/500</div>
+                </div>
+
+                <!-- 투표 해시태그 -->
+<!--                <input th:field="*{hashtag}" type="text" style="display: none;">-->
+
+                <!-- 투표 항목(선택지) -->
+                <!-- TODO : 이미지 업로드 기능 구현하기 -->
+                <div id="voteOptionArea">
+                    <div class="col-12 mb-3">
+<!--                        <input th:field="*{voteOptions[0]}"-->
+                        <input name="voteOptions[0].content" id="voteOptions[0].content"
+                               class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
+                               type="text" placeholder="항목을 입력하세요" required>
+                        <img class="position-absolute vote-option-img1">
+                        <img class="position-absolute vote-option-img2">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <!--                        <input th:field="*{voteOptions[0]}"-->
+                        <input name="voteOptions[1].content" id="voteOptions[1].content"
+                               class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
+                               type="text" placeholder="항목을 입력하세요" required>
+                        <img class="position-absolute vote-option-img1">
+                        <img class="position-absolute vote-option-img2">
+                    </div>
+<!--                    <th:block th:each="num : ${#numbers.sequence(3,10)}">-->
+<!--                        <div class="col-12 mb-3" th:id="${'voteOption' + num}" style="display: none;">-->
+<!--                            <input th:field="*{voteOptions[2]}"-->
+<!--                                   class="w-100 h-100 border-none rounded focus-none p-2 vote-option"-->
+<!--                                   type="text" placeholder="항목을 입력하세요">-->
+<!--                            <img class="position-absolute vote-option-img1">-->
+<!--                            <img class="position-absolute vote-option-img2">-->
+<!--                        </div>-->
+<!--                    </th:block>-->
+                </div>
+                <div class="col-12 d-flex justify-content-between">
+                    <div onclick="create_voteOption()"
+                         class="optionAdd d-flex justify-content-start align-items-center hover-cursor-pointer">
+                        <img class="ml-2 mr-2" style="width: auto; height: 20px;"
+                             src="https://user-images.githubusercontent.com/90389517/220822898-07246cf6-10e1-42b4-b75f-79aac84a7adf.png">
+                        <div style="color: #65758E;">항목 추가</div>
+                    </div>
+                    <div class="mr-2">
+                        <label><input th:field="*{isMultiPick}" type="checkbox" class="mr-1"> 다중 선택</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 투표 기간 -->
+            <div class="border-top p-4">
+                <div class="col-12 mb-3">투표 종료</div>
+                <div class="col-12 my-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <input th:field="*{expiredAt}" id="expiredAt" class="vote-date p-1"
+                               type="datetime-local"
+                               onchange="expiredCheck()" required>
+                    </div>
+                </div>
+            </div>
+            <script>
+                let date = new Date();
+                date.setHours(date.getHours() + 9);
+                date = date.toISOString().substring(0, 16);
+                document.getElementById('expiredAt').setAttribute("min", date);
+
+                function expiredCheck() {
+                    if (document.getElementById('expiredAt').value < date) {
+                        alert('현재 시간보다 이전 시간은 설정할 수 없습니다.');
+                        document.getElementById('expiredAt').value = "";
+                    }
+                }
+            </script>
+
+            <!-- 공개 범위 -->
+            <div class="border-top p-4">
+                <div class="col-12 mb-3">공개 범위</div>
+                <div class="col-12 mx-1 my-2">
+                    <th:block
+                            th:each="displayRange : ${T(com.capstone.pick.domain.constant.DisplayRange).values()}">
+                        <label class="mr-3">
+                            <input th:field="*{displayRange}" type="radio"
+                                   th:value="${displayRange}" th:text="' ' + ${displayRange.displayValue}">
+                        </label>
+                    </th:block>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

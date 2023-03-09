@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class TimeLineController {
-    @GetMapping("/")
+    @GetMapping("/timeLine")
     public String timeLine() {
         return "/page/timeLine";
     }
