@@ -5,7 +5,7 @@ public enum Category {
 
     private final String displayValue;
 
-    private Category(String displayValue) {
+    Category(String displayValue) {
         this.displayValue = displayValue;
     }
 
