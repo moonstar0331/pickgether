@@ -7,14 +7,6 @@
     font-family: 'Oleo Script Swash Caps', cursive;
 }
 
-.logo a {
-    font-size: 35px;
-    font-family: 'Oleo Script Swash Caps', cursive;
-    color: #2D226E;
-    margin-left: 50%;
-    transform: translateX(-50%);
-}
-
 .timeline-background {
     width: 600px;
     position: absolute;
