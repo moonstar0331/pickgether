@@ -25,11 +25,33 @@
     <!-- Todo : 1. Pickgether 로고 오른쪽 카테고리(드롭다운) 추가 -->
     <!-- Todo : 2. Pickgether 로고 왼쪽 프로필 등록 -->
 
-    <nav class="nav justify-content-around bg-light sticky-top">
-        <div class="container-fluid logo">
-            <a class="navbar-brand" href="#">Pickgether</a>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"
+               style="font-size: 35px;
+                font-family: 'Oleo Script Swash Caps', cursive;
+                color: #2D226E;
+                margin-left: 50%;
+                transform: translateX(-50%);">Pickgether</a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            정렬조건
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
+
     <!-- 첫번째 -->
     <div>
         <header class="profile" style="margin-bottom: 10px;">
