@@ -23,7 +23,7 @@ public class VoteOption {
     private Vote vote; // 투표 게시글 id
 
     @Column(length = 255)
-    private String content; // 본문
+    private String content; // 선택지 내용
 
     @Column(length = 255)
     private String imageLink; // 이미지 링크

@@ -397,7 +397,7 @@
         <!-- 일반 투표 버튼 -->
         <div>
             <button id="vote_btn_normal" class="rounded-circle border-none mb-3 focus-none"
-                    style="width: 60px; height: 60px; background: #7F8AE5;">
+                    style="width: 60px; height: 60px; background: #7F8AE5;" th:onclick="|location.href='@{form}'|">
                 <img style="width: 35px;"
                      src="https://user-images.githubusercontent.com/90389517/220803459-fd7eab6b-3d22-4e44-88fa-74d729b4eb01.png">
             </button>
@@ -427,8 +427,6 @@
     </button>
 </div>
 
-<div th:insert="~{/fragment/dialog_vote_normal :: dialVoteNormalFragment}"></div>
-
 <!--bottom navbar-->
 
 <!-- Todo : 3. 아이콘 변경-->
@@ -451,6 +449,5 @@
         </button>
     </nav>
 </div>
-
 </body>
 </html>
