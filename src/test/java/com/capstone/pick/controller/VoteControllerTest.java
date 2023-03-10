@@ -4,6 +4,7 @@ import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormDto;
 import com.capstone.pick.domain.constant.Category;
+import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.dto.VoteOptionDto;
 import com.capstone.pick.service.VoteService;
@@ -49,7 +50,7 @@ class VoteControllerTest {
         // given
         VoteForm voteForm = VoteForm.builder()
                 .title("new title")
-                .content("new content")
+                .content("new content # #hash1 #hash33")
                 .category(Category.WORRY)
                 .isMultiPick(true)
                 .expiredAt(LocalDateTime.now())
@@ -67,6 +68,6 @@ class VoteControllerTest {
                 .andExpect(redirectedUrl("/timeLine"));
 
         // then
-        then(voteService).should().saveVote(any(VoteDto.class), Mockito.<VoteOptionDto>anyList());
+        then(voteService).should().saveVote(any(VoteDto.class), Mockito.<VoteOptionDto>anyList(), Mockito.<HashtagDto>anyList());
     }
 }
