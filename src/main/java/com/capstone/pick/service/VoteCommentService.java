@@ -2,13 +2,8 @@ package com.capstone.pick.service;
 
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
-<<<<<<< HEAD
 import com.capstone.pick.dto.CommentDto;
-=======
 import com.capstone.pick.domain.VoteComment;
-import com.capstone.pick.dto.CommentDto;
-import com.capstone.pick.dto.UserDto;
->>>>>>> #18-comment-update
 import com.capstone.pick.repository.UserRepository;
 import com.capstone.pick.repository.VoteCommentRepository;
 import com.capstone.pick.repository.VoteRepository;
@@ -30,8 +25,6 @@ public class VoteCommentService {
         Vote vote = voteRepository.getReferenceById(commentDto.getVoteId());
         voteCommentRepository.save(commentDto.toEntity(user, vote));
     }
-<<<<<<< HEAD
-=======
 
     public void updateComment(Long commentId, CommentDto commentDto) throws Exception {
         VoteComment comment = voteCommentRepository.getReferenceById(commentId);
@@ -45,5 +38,4 @@ public class VoteCommentService {
             throw new Exception("해당 댓글을 작성한 유저가 아닙니다.");
         }
     }
->>>>>>> #18-comment-update
 }
