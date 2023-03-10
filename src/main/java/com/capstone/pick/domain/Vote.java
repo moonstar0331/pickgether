@@ -1,22 +1,30 @@
 package com.capstone.pick.domain;
 
 import com.capstone.pick.domain.constant.Category;
+
+import lombok.*;
+
+import com.capstone.pick.domain.constant.DisplayRange;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Vote {
 
@@ -52,4 +60,19 @@ public class Vote {
 
     private boolean isMultiPick; // 다중선택가능여부
 
+    @Enumerated(EnumType.STRING)
+    private DisplayRange displayRange; // 공개범위
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vote vote = (Vote) o;
+        return getId().equals(vote.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }
