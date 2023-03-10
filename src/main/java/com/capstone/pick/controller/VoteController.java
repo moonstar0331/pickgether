@@ -1,6 +1,7 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.VoteForm;
+import com.capstone.pick.controller.form.VoteOptionFormListDto;
 import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.dto.VoteOptionDto;
 import com.capstone.pick.security.VotePrincipal;
@@ -33,7 +34,10 @@ public class VoteController {
 
     @PostMapping("/form")
     public String saveVote(@AuthenticationPrincipal VotePrincipal votePrincipal,
-                           @ModelAttribute VoteForm voteForm) {
+                           @ModelAttribute VoteForm voteForm,
+                           @ModelAttribute(value="VoteOptionFormListDto") VoteOptionFormListDto voteOptions) {
+
+        // voteOptions.printList(); // 내용 확인
 
         VoteDto voteDto = voteForm.toDto(votePrincipal.toDto());
         List<VoteOptionDto> voteOptionDtos = voteForm.getVoteOptions()
