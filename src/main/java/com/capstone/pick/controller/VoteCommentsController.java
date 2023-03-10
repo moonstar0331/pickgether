@@ -30,4 +30,14 @@ public class VoteCommentsController {
         voteCommentService.saveComment(commentForm.toDto(votePrincipal.toDto()));
         return "redirect:/" + voteId + "/comments";
     }
+
+    @PostMapping("/{voteId}/comments/{commentId}/edit")
+    public String updateComment(
+            @AuthenticationPrincipal VotePrincipal votePrincipal,
+            @PathVariable Long voteId, @PathVariable Long commentId,
+            CommentForm commentForm) throws Exception {
+
+        voteCommentService.updateComment(commentId, commentForm.toDto(votePrincipal.toDto()));
+        return "redirect:/" + voteId + "/comments";
+    }
 }
