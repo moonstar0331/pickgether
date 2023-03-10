@@ -6,6 +6,7 @@ import com.capstone.pick.service.VoteCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,22 +23,27 @@ public class VoteCommentsController {
     }
 
     @PostMapping("/{voteId}/comments")
-    public String saveComment(
-            @AuthenticationPrincipal VotePrincipal votePrincipal,
-            @PathVariable Long voteId,
-            CommentForm commentForm) {
+    public String saveComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
+                              @PathVariable Long voteId, CommentForm commentForm) {
 
         voteCommentService.saveComment(commentForm.toDto(votePrincipal.toDto()));
         return "redirect:/" + voteId + "/comments";
     }
 
-    @PostMapping("/{voteId}/comments/{commentId}/edit")
-    public String updateComment(
-            @AuthenticationPrincipal VotePrincipal votePrincipal,
-            @PathVariable Long voteId, @PathVariable Long commentId,
-            CommentForm commentForm) throws Exception {
+    @PostMapping("/{voteId}/comments/{commentId}")
+    public String updateComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
+                                @PathVariable Long voteId, @PathVariable Long commentId,
+                                CommentForm commentForm) throws Exception {
 
         voteCommentService.updateComment(commentId, commentForm.toDto(votePrincipal.toDto()));
+        return "redirect:/" + voteId + "/comments";
+    }
+
+    @DeleteMapping("/{voteId}/comments/{commentId}")
+    public String deleteComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
+                                @PathVariable Long voteId, @PathVariable Long commentId) throws Exception {
+
+        voteCommentService.deleteComment(commentId, votePrincipal.toDto().getUserId());
         return "redirect:/" + voteId + "/comments";
     }
 }

@@ -38,4 +38,15 @@ public class VoteCommentService {
             throw new Exception("해당 댓글을 작성한 유저가 아닙니다.");
         }
     }
+
+    public void deleteComment(Long commentId, String userId) throws Exception {
+        User user = userRepository.getReferenceById(userId);
+        VoteComment voteComment = voteCommentRepository.getReferenceById(commentId);
+
+        if(voteComment.getUser().equals(user)) {
+            voteCommentRepository.delete(voteComment);
+        } else {
+            throw new Exception("해당 댓글을 작성한 유저가 아닙니다.");
+        }
+    }
 }

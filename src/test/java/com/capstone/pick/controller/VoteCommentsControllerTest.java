@@ -22,8 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("View 컨트롤러 - 댓글")
@@ -59,12 +58,7 @@ class VoteCommentsControllerTest {
 
         // given
         long voteId = 1L;
-        CommentForm commentForm = CommentForm.builder()
-                .voteId(voteId)
-                .content("new comment")
-                .createdAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now())
-                .build();
+        CommentForm commentForm = createCommentForm(voteId);
 
         willDoNothing().given(voteCommentService).saveComment(any(CommentDto.class));
 
@@ -80,5 +74,63 @@ class VoteCommentsControllerTest {
 
         // then
         then(voteCommentService).should().saveComment(any(CommentDto.class));
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[comment][POST][/{voteId}/comments/{commentId}]")
+    @Test
+    void updateComment() throws Exception {
+
+        // given
+        long voteId = 1L;
+        long commentId = 1L;
+
+        CommentForm commentForm = CommentForm.builder()
+                .voteId(voteId)
+                .content("new content")
+                .createdAt(LocalDateTime.now())
+                .modifiedAt(LocalDateTime.now())
+                .build();
+
+        // when
+        mvc.perform(post("/" + voteId + "/comments/" + commentId)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("commentForm", commentForm)
+                        .with(csrf())
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/" + voteId + "/comments"))
+                .andExpect(redirectedUrl("/" + voteId + "/comments"));
+
+        // then
+        then(voteCommentService).should().updateComment(any(Long.class), any(CommentDto.class));
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[comment][DELETE][/{voteId}/comments/{commentId}]")
+    @Test
+    void deleteComment() throws Exception {
+        // given
+        long voteId = 1L;
+        long commentId = 1L;
+        CommentForm commentForm = createCommentForm(voteId);
+
+        // when
+        mvc.perform(delete("/" + voteId + "/comments/" + commentId)
+                        .with(csrf()))
+                .andExpect(view().name("redirect:/" + voteId + "/comments"))
+                .andExpect(redirectedUrl("/" + voteId + "/comments"));
+
+        // then
+        then(voteCommentService).should().deleteComment(any(Long.class), any(String.class));
+    }
+
+    private static CommentForm createCommentForm(long voteId) {
+        return CommentForm.builder()
+                .voteId(voteId)
+                .content("new comment")
+                .createdAt(LocalDateTime.now())
+                .modifiedAt(LocalDateTime.now())
+                .build();
     }
 }
