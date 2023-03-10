@@ -50,6 +50,7 @@ function create_voteOption() {
     new_div.className = 'col-12 mb-3';
     new_input.className = 'w-100 h-100 border-none rounded focus-none p-2 vote-option';
     new_input.type = 'text';
+    new_input.required = true;
     new_input.name = 'voteOptions[' + voteOptionCount + '].content';
     new_input.id = 'voteOptions[' + voteOptionCount + '].content';
     new_input.placeholder = '항목을 입력하세요';
@@ -66,12 +67,17 @@ function create_voteOption() {
 
 // voteOption 태그 삭제
 function delete_voteOption() {
+    if(voteOptionCount === 1) {
+        alert("투표 선택지 항목은 2개 이상이어야 합니다.")
+        return;
+    }
     let removeOption = document.getElementById('voteOptions[' + voteOptionCount + '].content');
     let parent = removeOption.parentElement;
 
     while(parent.hasChildNodes()) {
         parent.removeChild(parent.firstChild);
     }
+
     parent.remove();
 
     voteOptionCount--;
