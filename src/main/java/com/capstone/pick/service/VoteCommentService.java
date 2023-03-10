@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -19,6 +22,15 @@ public class VoteCommentService {
     private final UserRepository userRepository;
     private final VoteRepository voteRepository;
     private final VoteCommentRepository voteCommentRepository;
+
+    public List<CommentDto> searchComment(Long voteId) {
+        List<VoteComment> voteComments = voteCommentRepository.getVoteCommentsByVoteId(voteId);
+        List<CommentDto> comments = voteComments
+                .stream()
+                .map(voteComment -> CommentDto.from(voteComment))
+                .collect(Collectors.toList());
+        return comments;
+    }
 
     public void saveComment(CommentDto commentDto) {
         User user = userRepository.getReferenceById(commentDto.getUserDto().getUserId());
