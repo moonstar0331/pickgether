@@ -51,6 +51,7 @@ function create_voteOption() {
     new_input.className = 'w-100 h-100 border-none rounded focus-none p-2 vote-option';
     new_input.type = 'text';
     new_input.name = 'voteOptions[' + voteOptionCount + '].content';
+    new_input.id = 'voteOptions[' + voteOptionCount + '].content';
     new_input.placeholder = '항목을 입력하세요';
     new_input.required = true;
     new_img1.className = 'position-absolute vote-option-img1';
@@ -65,5 +66,13 @@ function create_voteOption() {
 
 // voteOption 태그 삭제
 function delete_voteOption() {
+    let removeOption = document.getElementById('voteOptions[' + voteOptionCount + '].content');
+    let parent = removeOption.parentElement;
 
+    while(parent.hasChildNodes()) {
+        parent.removeChild(parent.firstChild);
+    }
+    parent.remove();
+
+    voteOptionCount--;
 }
