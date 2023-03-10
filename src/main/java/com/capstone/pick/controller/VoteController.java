@@ -2,6 +2,7 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormListDto;
+import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.dto.VoteOptionDto;
 import com.capstone.pick.security.VotePrincipal;
@@ -36,16 +37,13 @@ public class VoteController {
     public String saveVote(@AuthenticationPrincipal VotePrincipal votePrincipal,
                            @ModelAttribute VoteForm voteForm,
                            @ModelAttribute(value="VoteOptionFormListDto") VoteOptionFormListDto voteOptions) {
-
-        // voteOptions.printList(); // 내용 확인
-
         VoteDto voteDto = voteForm.toDto(votePrincipal.toDto());
+        List<HashtagDto> hashtagDtos = voteForm.getHashtagDtos();
         List<VoteOptionDto> voteOptionDtos = voteForm.getVoteOptions()
                 .stream()
                 .map(o -> o.toDto(voteDto))
                 .collect(Collectors.toList());
-
-        voteService.saveVote(voteDto, voteOptionDtos);
+        voteService.saveVote(voteDto, voteOptionDtos, hashtagDtos);
         return "redirect:/timeLine";
     }
 }
