@@ -1,11 +1,11 @@
 package com.capstone.pick.domain.constant;
 
-public enum Category {
-    FREE("자유"), WORRY("고민"), SURVEY("설문"), ENTERPRISE("기업");
+public enum DisplayRange {
+    PUBLIC("전체 공개"), FRIEND("친구 공개"), LIST("친한 친구 공개");
 
     private final String displayValue;
 
-    Category(String displayValue) {
+    DisplayRange(String displayValue) {
         this.displayValue = displayValue;
     }
 

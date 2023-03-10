@@ -1,6 +1,6 @@
 package com.capstone.pick.controller;
 
-import com.capstone.pick.config.SecurityConfig;
+import com.capstone.pick.config.TestSecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("로그인 컨트롤러")
-@Import(SecurityConfig.class)
+@Import(TestSecurityConfig.class)
 @WebMvcTest(LoginController.class)
 @WithMockUser
 class LoginControllerTest {
