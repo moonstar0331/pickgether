@@ -42,4 +42,7 @@ public class VoteComment {
     @Column(nullable = false)
     private LocalDateTime modifiedAt;
 
+    public void changeContent(String updateContent) {
+        this.content = updateContent;
+    }
 }

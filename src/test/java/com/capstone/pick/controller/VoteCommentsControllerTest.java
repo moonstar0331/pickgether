@@ -41,10 +41,11 @@ class VoteCommentsControllerTest {
         this.mvc = mvc;
     }
 
-    @DisplayName("[Comment][GET][/comments] 댓글 상세보기 페이지")
+    @DisplayName("[Comment][GET][/{voteId}/comments] 댓글 상세보기 페이지")
     @Test
     void 댓글상세보기_뷰_엔드포인트_테스트() throws Exception {
-        mvc.perform(get("/comments"))
+        long voteId = 1L;
+        mvc.perform(get("/" + voteId +"/comments"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("page/comments"));
@@ -52,7 +53,11 @@ class VoteCommentsControllerTest {
 
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+<<<<<<< HEAD
     @DisplayName("[comment][POST][/comments/new")
+=======
+    @DisplayName("[comment][POST][/{voteId}/comments")
+>>>>>>> #18-comment-update
     @Test
     void saveVoteComment() throws Exception {
 
@@ -68,11 +73,16 @@ class VoteCommentsControllerTest {
         willDoNothing().given(voteCommentService).saveComment(any(CommentDto.class));
 
         // when
+<<<<<<< HEAD
         mvc.perform(post("/comments/new")
+=======
+        mvc.perform(post("/" + voteId + "/comments")
+>>>>>>> #18-comment-update
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .flashAttr("commentForm", commentForm)
                         .with(csrf())
                 )
+<<<<<<< HEAD
                 .andExpect(status().is3xxRedirection());
 //                .andExpect(view().name("page/voteDetail"))
 //                .andExpect(redirectedUrl("/timeLine/{voteId}"));
@@ -80,6 +90,11 @@ class VoteCommentsControllerTest {
          * TODO: 테스트 구현 시에 아직은 댓글 출력 화면에 대한 의논을 나누지 않았기 때문에
          *       view 와 관련된 테스트는 주석으로 남겨둔다.
           */
+=======
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/" + voteId + "/comments"))
+                .andExpect(redirectedUrl("/" + voteId + "/comments"));
+>>>>>>> #18-comment-update
 
         // then
         then(voteCommentService).should().saveComment(any(CommentDto.class));
