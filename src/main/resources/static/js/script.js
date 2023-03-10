@@ -20,7 +20,7 @@ $(document).ready(function () {
             $('#vote_content_cnt').html("500/500");
         }
 
-        // 투표 내용에서 해시태그 추출
+        // 투표 내용에서 해시태그 추출해서 색 변경
         let split_content = $('#vote_content').val().split(/(#[^\s#]+)/g);
         let hashtag = [];
         for (let i = 0; i < split_content.length; i++) {
@@ -28,14 +28,17 @@ $(document).ready(function () {
                 hashtag[hashtag.length] = split_content[i];
             }
         }
-        $('#hashtag').val(hashtag);
+        // TODO : hashtag 색 변경하기
     });
 });
 
-// 투표 선택지 추가
-let voteOptionCount = 2;
+// voteOption 태그 생성 및 삭제 count
+let voteOptionCount = 1;
 
+// voteOption 태그 생성
 function create_voteOption() {
+    voteOptionCount++;
+
     // 태그 생성
     let area = document.getElementById('voteOptionArea');
     let new_div = document.createElement('div');
@@ -58,6 +61,9 @@ function create_voteOption() {
     new_div.appendChild(new_img1);
     new_div.appendChild(new_img2);
     area.appendChild(new_div);
+}
 
-    voteOptionCount++;
+// voteOption 태그 삭제
+function delete_voteOption() {
+
 }
