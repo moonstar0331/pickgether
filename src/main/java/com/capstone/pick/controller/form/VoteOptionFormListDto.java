@@ -9,11 +9,4 @@ import java.util.List;
 @Setter
 public class VoteOptionFormListDto {
     private List<VoteOptionFormDto> voteOptions;
-
-    public void printList() {
-        for (VoteOptionFormDto option : voteOptions) {
-            System.out.println("[" + voteOptions.indexOf(option) + "] content : " +
-                    option.getContent() + " | type : " + option.getClass().getName());
-        }
-    }
 }
