@@ -1,6 +1,9 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.config.TestSecurityConfig;
+import com.capstone.pick.controller.form.VoteForm;
+import com.capstone.pick.controller.form.VoteOptionFormDto;
+import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.dto.VoteOptionDto;
 import com.capstone.pick.service.VoteService;
@@ -15,6 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
@@ -41,18 +47,20 @@ class VoteControllerTest {
     @Test
     void saveVote() throws Exception {
         // given
+        VoteForm voteForm = VoteForm.builder()
+                .title("new title")
+                .content("new content")
+                .category(Category.WORRY)
+                .isMultiPick(true)
+                .expiredAt(LocalDateTime.now())
+                .voteOptions(List.of(VoteOptionFormDto.builder().content("new option1").imageLink("/link/image1.png").build(),
+                        VoteOptionFormDto.builder().content("new option2").imageLink("/link/image2.png").build()))
+                .build();
 
         //when
         mvc.perform(post("/form")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("title", "new title")
-                        .param("content", "new content")
-                        .param("category", "WORRY")
-                        .param("isMultiPick", "true")
-                        .param("expiredAt", "2023-03-31T02:35")
-                        .param("displayRange", "PUBLIC")
-                        .param("voteOptions[0].content", "test option1")
-                        .param("voteOptions[1].content", "test option2")
+                        .flashAttr("voteForm", voteForm)
                         .with(csrf())
                 ).andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/timeLine"))
