@@ -1,0 +1,27 @@
+package com.capstone.pick.service;
+
+import com.capstone.pick.domain.User;
+import com.capstone.pick.domain.Vote;
+import com.capstone.pick.dto.CommentDto;
+import com.capstone.pick.repository.UserRepository;
+import com.capstone.pick.repository.VoteCommentRepository;
+import com.capstone.pick.repository.VoteRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class VoteCommentService {
+
+    private final UserRepository userRepository;
+    private final VoteRepository voteRepository;
+    private final VoteCommentRepository voteCommentRepository;
+
+    public void saveComment(CommentDto commentDto) {
+        User user = userRepository.getReferenceById(commentDto.getUserDto().getUserId());
+        Vote vote = voteRepository.getReferenceById(commentDto.getVoteId());
+        voteCommentRepository.save(commentDto.toEntity(user, vote));
+    }
+}
