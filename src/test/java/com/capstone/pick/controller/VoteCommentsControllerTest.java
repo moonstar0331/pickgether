@@ -47,6 +47,7 @@ class VoteCommentsControllerTest {
         mvc.perform(get("/" + voteId + "/comments"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(model().attributeExists("comments"))
                 .andExpect(view().name("page/comments"));
     }
 

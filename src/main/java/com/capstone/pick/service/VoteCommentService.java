@@ -4,12 +4,16 @@ import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.domain.VoteComment;
+import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.UserRepository;
 import com.capstone.pick.repository.VoteCommentRepository;
 import com.capstone.pick.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -20,13 +24,22 @@ public class VoteCommentService {
     private final VoteRepository voteRepository;
     private final VoteCommentRepository voteCommentRepository;
 
+    public List<CommentDto> readComment(Long voteId) {
+        List<VoteComment> voteComments = voteCommentRepository.getVoteCommentsByVoteId(voteId);
+        List<CommentDto> comments = voteComments
+                .stream()
+                .map(voteComment -> CommentDto.from(voteComment))
+                .collect(Collectors.toList());
+        return comments;
+    }
+
     public void saveComment(CommentDto commentDto) {
         User user = userRepository.getReferenceById(commentDto.getUserDto().getUserId());
         Vote vote = voteRepository.getReferenceById(commentDto.getVoteId());
         voteCommentRepository.save(commentDto.toEntity(user, vote));
     }
 
-    public void updateComment(Long commentId, CommentDto commentDto) throws Exception {
+    public void updateComment(Long commentId, CommentDto commentDto) throws UserMismatchException {
         VoteComment comment = voteCommentRepository.getReferenceById(commentId);
         User user = userRepository.getReferenceById(commentDto.getUserDto().getUserId());
 
@@ -35,18 +48,18 @@ public class VoteCommentService {
                 comment.changeContent(commentDto.getContent());
             }
         } else {
-            throw new Exception("해당 댓글을 작성한 유저가 아닙니다.");
+            throw new UserMismatchException();
         }
     }
 
-    public void deleteComment(Long commentId, String userId) throws Exception {
+    public void deleteComment(Long commentId, String userId) throws UserMismatchException {
         User user = userRepository.getReferenceById(userId);
         VoteComment voteComment = voteCommentRepository.getReferenceById(commentId);
 
         if(voteComment.getUser().equals(user)) {
             voteCommentRepository.delete(voteComment);
         } else {
-            throw new Exception("해당 댓글을 작성한 유저가 아닙니다.");
+            throw new UserMismatchException();
         }
     }
 }
