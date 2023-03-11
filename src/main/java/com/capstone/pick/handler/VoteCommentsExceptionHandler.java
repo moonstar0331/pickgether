@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class CommentExceptionHandler {
+public class VoteCommentsExceptionHandler {
 
 
     @ExceptionHandler(UserMismatchException.class)

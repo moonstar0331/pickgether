@@ -24,7 +24,7 @@ public class VoteCommentService {
     private final VoteRepository voteRepository;
     private final VoteCommentRepository voteCommentRepository;
 
-    public List<CommentDto> searchComment(Long voteId) {
+    public List<CommentDto> readComment(Long voteId) {
         List<VoteComment> voteComments = voteCommentRepository.getVoteCommentsByVoteId(voteId);
         List<CommentDto> comments = voteComments
                 .stream()

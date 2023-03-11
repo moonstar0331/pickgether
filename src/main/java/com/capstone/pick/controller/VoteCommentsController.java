@@ -30,7 +30,7 @@ public class VoteCommentsController {
      */
     @GetMapping("/{voteId}/comments")
     public String readComments(@PathVariable Long voteId, Model model) {
-        List<CommentDto> comments = voteCommentService.searchComment(voteId);
+        List<CommentDto> comments = voteCommentService.readComment(voteId);
         model.addAttribute("comments",comments);
         return "page/comments";
     }
