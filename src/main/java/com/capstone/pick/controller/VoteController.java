@@ -11,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +34,7 @@ public class VoteController {
     @PostMapping("/form")
     public String saveVote(@AuthenticationPrincipal VotePrincipal votePrincipal,
                            @ModelAttribute VoteForm voteForm,
-                           @ModelAttribute(value="VoteOptionFormListDto") VoteOptionFormListDto voteOptions) {
+                           @ModelAttribute(value = "VoteOptionFormListDto") VoteOptionFormListDto voteOptions) {
         VoteDto voteDto = voteForm.toDto(votePrincipal.toDto());
         List<HashtagDto> hashtagDtos = voteForm.getHashtagDtos();
         List<VoteOptionDto> voteOptionDtos = voteForm.getVoteOptions()
@@ -45,5 +43,30 @@ public class VoteController {
                 .collect(Collectors.toList());
         voteService.saveVote(voteDto, voteOptionDtos, hashtagDtos);
         return "redirect:/timeLine";
+    }
+
+    @GetMapping("/{voteId}/edit")
+    public String editVote(@PathVariable("voteId") Long voteId, Model model) {
+        VoteForm voteForm = VoteForm.builder().build();
+        VoteDto voteDto = voteService.getVote(voteId);
+        List<VoteOptionDto> optionDtos = voteService.getOptions(voteId);
+
+        model.addAttribute("voteForm", voteForm);
+        model.addAttribute("voteDto", voteDto);
+        model.addAttribute("optionDtos", optionDtos);
+        return "/page/editForm";
+    }
+
+    @PostMapping("/{voteId}/edit")
+    public String editVote(@AuthenticationPrincipal VotePrincipal votePrincipal,
+                           @PathVariable Long voteId, VoteForm voteForm) throws Exception {
+        VoteDto voteDto = voteForm.toDto(votePrincipal.toDto());
+        List<HashtagDto> hashtagDtos = voteForm.getHashtagDtos();
+        List<VoteOptionDto> voteOptionDtos = voteForm.getVoteOptions()
+                .stream()
+                .map(o -> o.toDto(voteDto))
+                .collect(Collectors.toList());
+        voteService.updateVote(voteId, voteDto, voteOptionDtos, hashtagDtos);
+        return "redirect:/timeLine"; // 투표 게시글 상세 페이지로 돌아간다던가
     }
 }

@@ -42,4 +42,57 @@ public class VoteService {
                             .build());
         });
     }
+
+    public void updateVote(Long voteId, VoteDto voteDto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) throws Exception {
+        Vote vote = voteRepository.getReferenceById(voteId);
+        User user = userRepository.getReferenceById(voteDto.getUserDto().getUserId());
+
+        if (vote.getUser().equals(user)) {
+            if (voteDto.getTitle() != vote.getTitle()) {
+                vote.changeTitle(voteDto.getTitle());
+            }
+            if (voteDto.getCategory() != vote.getCategory()) {
+                vote.changeCategory(voteDto.getCategory());
+            }
+            if (voteDto.getExpiredAt() != vote.getExpiredAt()) {
+                vote.changeExpiredAt(voteDto.getExpiredAt());
+            }
+            if (voteDto.isMultiPick() != vote.isMultiPick()) {
+                vote.changeIsMultiPick(voteDto.isMultiPick());
+            }
+            if (voteDto.getDisplayRange() != vote.getDisplayRange()) {
+                vote.changeDisplayRange(voteDto.getDisplayRange());
+            }
+            if (voteDto.getContent() != vote.getContent()) {
+                vote.changeContent(voteDto.getContent());
+
+                voteHashtagRepository.findAllByVoteId(voteId).forEach(vh -> hashtagRepository.delete(vh.getHashtag()));
+                voteHashtagRepository.deleteAllByVoteId(voteId);
+
+                List<Hashtag> savedHashtags = hashtagDtos.stream()
+                        .map(h -> hashtagRepository.save(h.toEntity()))
+                        .collect(Collectors.toList());
+                savedHashtags.forEach(hashtag -> {
+                    voteHashtagRepository.save(
+                            VoteHashtag.builder()
+                                    .vote(vote)
+                                    .hashtag(hashtag)
+                                    .build());
+                });
+            }
+            // TODO : 투표 선택지 수정 여부, 수정 가능한 범위 등 상의 후에 voteOption update 작성할 예정입니다
+        } else {
+            throw new Exception("해당 게시글을 작성한 유저가 아닙니다.");
+        }
+    }
+
+    public VoteDto getVote(Long voteId) {
+        return VoteDto.from(voteRepository.getReferenceById(voteId));
+    }
+
+    public List<VoteOptionDto> getOptions(Long voteId) {
+        return voteOptionRepository.findAllByVoteId(voteId).stream()
+                .map(o -> VoteOptionDto.from(o))
+                .collect(Collectors.toList());
+    }
 }
