@@ -390,43 +390,6 @@
 
 </div>
 
-<!-- 투표 생성 버튼 -->
-<!-- Todo : 위치 고정하기-->
-<div class="floating-button">
-    <div id="vote_btn_list" style="display: none;">
-        <!-- 일반 투표 버튼 -->
-        <div>
-            <button id="vote_btn_normal" class="rounded-circle border-none mb-3 focus-none"
-                    style="width: 60px; height: 60px; background: #7F8AE5;" th:onclick="|location.href='@{form}'|">
-                <img style="width: 35px;"
-                     src="https://user-images.githubusercontent.com/90389517/220803459-fd7eab6b-3d22-4e44-88fa-74d729b4eb01.png">
-            </button>
-        </div>
-        <!-- 월드컵 투표 버튼  -->
-        <div>
-            <button id="vote_btn_worldcup" class="rounded-circle border-none mb-3 focus-none"
-                    style="width: 60px; height: 60px; background: #7F8AE5;">
-                <img style="width: 35px;"
-                     src="https://user-images.githubusercontent.com/90389517/220832225-a766d80e-34ef-4872-b7a1-a435d36ddea8.png">
-            </button>
-        </div>
-        <!-- 투표 버튼 close -->
-        <div>
-            <button id="vote_btn_close" class="rounded-circle border-none focus-none"
-                    style="width: 60px; height: 60px; background: #BCB5D2;">
-                <img style="width: 25px;"
-                     src="https://user-images.githubusercontent.com/90389517/220832327-f01acb10-b7e5-4ea2-ac5a-150122005c98.png">
-            </button>
-        </div>
-    </div>
-    <!-- 투표 버튼 open -->
-    <button id="vote_btn_open" class="rounded-circle border-none focus-none"
-            style="width: 60px; height: 60px; background: #7F61E9;">
-        <img style="width: 25px;"
-             src="https://user-images.githubusercontent.com/90389517/220832544-e2632051-dec4-4e36-ad16-a4d40fa82e2a.png">
-    </button>
-</div>
-
 <!--bottom navbar-->
 
 <!-- Todo : 3. 아이콘 변경-->
@@ -436,16 +399,59 @@
     <nav class="nav justify-content-around bg-light fixed-bottom bottom-navbar" style="width: 600px; margin: auto; z-index: 998;">
         <!-- home icon -->
         <button type="button">
-            <img src="/images/icons/home.svg" width="40" height="40" style="fill: #BCB5D2;">
+            <img src="/images/icons/home.svg" width="30" height="30" style="fill: #BCB5D2;">
         </button>
         <button type="button">
-            <img src="/images/icons/search.svg" width="40" height="40" style="fill: #BCB5D2;">
+            <img src="/images/icons/search.svg" width="30" height="30" style="fill: #BCB5D2;">
+        </button>
+
+        <button class="rounded-circle border-none focus-none"
+                style="width: 30px; height: 30px; background: #FFFFFF;">
+        </button>
+
+
+        <div class="floating-button">
+            <div id="vote_btn_list" style="display: none;">
+                <!-- 일반 투표 버튼 -->
+                <div>
+                    <button id="vote_btn_normal" class="rounded-circle border-none mb-3 focus-none"
+                            style="width: 60px; height: 60px; background: #7F8AE5;" th:onclick="|location.href='@{form}'|">
+                        <img style="width: 35px;"
+                             src="https://user-images.githubusercontent.com/90389517/220803459-fd7eab6b-3d22-4e44-88fa-74d729b4eb01.png">
+                    </button>
+                </div>
+                <!-- 월드컵 투표 버튼  -->
+                <div>
+                    <button id="vote_btn_worldcup" class="rounded-circle border-none mb-3 focus-none"
+                            style="width: 60px; height: 60px; background: #7F8AE5;">
+                        <img style="width: 35px;"
+                             src="https://user-images.githubusercontent.com/90389517/220832225-a766d80e-34ef-4872-b7a1-a435d36ddea8.png">
+                    </button>
+                </div>
+                <!-- 투표 버튼 close -->
+                <div>
+                    <button id="vote_btn_close" class="rounded-circle border-none focus-none"
+                            style="width: 60px; height: 60px; background: #BCB5D2;">
+                        <img style="width: 25px;"
+                             src="https://user-images.githubusercontent.com/90389517/220832327-f01acb10-b7e5-4ea2-ac5a-150122005c98.png">
+                    </button>
+                </div>
+            </div>
+            <!-- 투표 버튼 open -->
+            <button id="vote_btn_open" class="rounded-circle border-none focus-none"
+                    style="width: 60px; height: 60px; background: #7F61E9;">
+                <img style="width: 25px;"
+                     src="https://user-images.githubusercontent.com/90389517/220832544-e2632051-dec4-4e36-ad16-a4d40fa82e2a.png">
+            </button>
+        </div>
+
+
+
+        <button type="button">
+            <img src="/images/icons/bell.svg" width="30" height="30" style="fill: #BCB5D2;">
         </button>
         <button type="button">
-            <img src="/images/icons/bell.svg" width="40" height="40" style="fill: #BCB5D2;">
-        </button>
-        <button type="button">
-            <img src="/images/icons/setting.svg" width="40" height="40" style="fill: #BCB5D2;">
+            <img src="/images/icons/setting.svg" width="30" height="30" style="fill: #BCB5D2;">
         </button>
     </nav>
 </div>

@@ -149,8 +149,8 @@
 
 .floating-button {
     position: fixed;
-    right: 30%;
-    bottom: 90px;
+    margin:auto;
+    bottom: 1px;
     z-index: 998;
 }
 
