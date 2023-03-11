@@ -26,6 +26,13 @@ public class VoteService {
     private final VoteHashtagRepository voteHashtagRepository;
     private final HashtagRepository hashtagRepository;
 
+    public List<VoteDto> findAllVotes() {
+        List<Vote> votes = voteRepository.findAll();
+        return votes.stream()
+                .map(VoteDto::from)
+                .collect(Collectors.toList());
+    }
+
     public void saveVote(VoteDto dto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) {
         User user = userRepository.getReferenceById(dto.getUserDto().getUserId());
         Vote savedVote = voteRepository.save(dto.toEntity(user));
@@ -92,7 +99,7 @@ public class VoteService {
 
     public List<VoteOptionDto> getOptions(Long voteId) {
         return voteOptionRepository.findAllByVoteId(voteId).stream()
-                .map(o -> VoteOptionDto.from(o))
+                .map(VoteOptionDto::from)
                 .collect(Collectors.toList());
     }
 }

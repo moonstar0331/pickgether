@@ -26,6 +26,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,6 +42,23 @@ class VoteControllerTest {
 
     public VoteControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
+    }
+
+    // TODO : 타임라인 조회의 경우 추후에 정렬과 페이징이 적용되면 테스트를 수정 해야한다.
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][GET] 투표 게시글 조회 - 정상 호출")
+    @Test
+    void timeLine() throws Exception {
+        // given
+
+        // when
+        mvc.perform(get("/timeline"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(view().name("/page/timeLine"))
+                .andExpect(model().attributeExists("votes"));
+
+        // then
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)

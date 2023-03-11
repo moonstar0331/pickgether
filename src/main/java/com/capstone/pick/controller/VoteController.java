@@ -22,6 +22,13 @@ public class VoteController {
 
     private final VoteService voteService;
 
+    @GetMapping("/timeline")
+    public String timeLine(Model model) {
+        List<VoteDto> votes = voteService.findAllVotes();
+        model.addAttribute("votes", votes);
+        return "/page/timeLine";
+    }
+
     @GetMapping("/form")
     public String createVote(Model model) {
         //TODO : 임시로 만든 폼 페이지는 의논 후 처리해야 함
