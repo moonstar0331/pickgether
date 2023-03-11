@@ -48,7 +48,7 @@ public class VoteService {
         User user = userRepository.getReferenceById(voteDto.getUserDto().getUserId());
 
         if (vote.getUser().equals(user)) {
-            if (voteDto.getTitle() != vote.getTitle()) {
+            if (voteDto.getTitle().equals(vote.getTitle())) {
                 vote.changeTitle(voteDto.getTitle());
             }
             if (voteDto.getCategory() != vote.getCategory()) {
@@ -63,7 +63,7 @@ public class VoteService {
             if (voteDto.getDisplayRange() != vote.getDisplayRange()) {
                 vote.changeDisplayRange(voteDto.getDisplayRange());
             }
-            if (voteDto.getContent() != vote.getContent()) {
+            if (voteDto.getContent().equals(vote.getContent())) {
                 vote.changeContent(voteDto.getContent());
 
                 voteHashtagRepository.findAllByVoteId(voteId).forEach(vh -> hashtagRepository.delete(vh.getHashtag()));
