@@ -70,4 +70,34 @@ class VoteControllerTest {
         // then
         then(voteService).should().saveVote(any(VoteDto.class), Mockito.<VoteOptionDto>anyList(), Mockito.<HashtagDto>anyList());
     }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 투표 게시글 수정 - 정상 호출")
+    @Test
+    void updateVote() throws Exception {
+        // given
+        long voteId = 1L;
+
+        VoteForm voteForm = VoteForm.builder()
+                .title("update title123")
+                .content("update content # #hash1")
+                .category(Category.FREE)
+                .isMultiPick(true)
+                .expiredAt(LocalDateTime.now())
+                .voteOptions(List.of(VoteOptionFormDto.builder().content("new option1").imageLink("/link/image1.png").build(),
+                        VoteOptionFormDto.builder().content("new option2").imageLink("/link/image2.png").build()))
+                .build();
+
+        //when
+        mvc.perform(post("/" + voteId + "/edit")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("voteForm", voteForm)
+                        .with(csrf())
+                ).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/timeLine"))
+                .andExpect(redirectedUrl("/timeLine"));
+
+        // then
+        then(voteService).should().updateVote(any(Long.class), any(VoteDto.class), Mockito.<VoteOptionDto>anyList(), Mockito.<HashtagDto>anyList());
+    }
 }
