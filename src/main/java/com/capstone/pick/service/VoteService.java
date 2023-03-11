@@ -43,59 +43,56 @@ public class VoteService {
         });
     }
 
-//    public void saveVote(VoteForm voteForm) {
-//        //TODO : 1) Spring Security 를 이용하여 로그인된 유저 객체 받아오기.
-//        User user = User.builder() //임시 객체 -> 추후 리펙토링
-//                .userId("testId")
-//                .userPassword("testPassword")
-//                .email("testEmail")
-//                .nickname("testNickname")
-//                .birthday(LocalDateTime.now())
-//                .createdAt(LocalDateTime.now())
-//                .memo("")
-//                .build();
-//        userRepository.save(user);
-//
-//        //주의 : Vote에 들어갈 User 객체가 DB에 존재해야 함. 그렇지 않으면 TransientPropertyValueException 발생
-//        Vote vote = Vote.builder()
-//                .user(user)
-//                .title(voteForm.getTitle())
-//                .content(voteForm.getContent())
-//                .category(voteForm.getCategory())
-//                .expiredAt(voteForm.getExpiredAt())
-//                .createAt(voteForm.getCreateAt())
-//                .modifiedAt(LocalDateTime.now())
-//                .isMultiPick(voteForm.getIsMultiPick())
-//                .displayRange(voteForm.getDisplayRange())
-//                .build();
-//
-//        voteRepository.save(vote);
-//
-//        //주의 : VoteOption에 들어갈 Vote 객체가 DB에 존재해야 함
-//        Long id = 1L;
-////        for (String content : voteForm.getVoteOptions()) {
-////            voteOptionRepository.save(
-////                    VoteOption.builder()
-////                            .vote(vote)
-////                            .content(content)
-////                            .imageLink("testImageLink")
-////                            .build()
-////            );
-////        }
-//        //주의 : VoteHashtag에 들어갈 Vote, Hashtag 객체가 DB에 존재해야 함
-//        //TODO : 현재 hashtag 폼 데이터는 입력된 문자열을 통째로 가져오기 때문에 #를 기준으로 토큰화 해야 함.
-//        // 그러나 #를 기준으로 자르게 된다면 공백 문자도 해시태그에 포함되므로 적절하지 않음.
-//        for (String content : voteForm.getHashtag()) {
-//            Hashtag hashtag = Hashtag.builder()
-//                    .content(content)
-//                    .build();
-//            hashtagRepository.save(hashtag);
-//            voteHashtagRepository.save(
-//                    VoteHashtag.builder()
-//                            .vote(vote)
-//                            .hashtag(hashtag)
-//                            .build()
-//            );
-//        }
-//    }
+    public void updateVote(Long voteId, VoteDto voteDto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) throws Exception {
+        Vote vote = voteRepository.getReferenceById(voteId);
+        User user = userRepository.getReferenceById(voteDto.getUserDto().getUserId());
+
+        if (vote.getUser().equals(user)) {
+            if (voteDto.getTitle() != vote.getTitle()) {
+                vote.changeTitle(voteDto.getTitle());
+            }
+            if (voteDto.getCategory() != vote.getCategory()) {
+                vote.changeCategory(voteDto.getCategory());
+            }
+            if (voteDto.getExpiredAt() != vote.getExpiredAt()) {
+                vote.changeExpiredAt(voteDto.getExpiredAt());
+            }
+            if (voteDto.isMultiPick() != vote.isMultiPick()) {
+                vote.changeIsMultiPick(voteDto.isMultiPick());
+            }
+            if (voteDto.getDisplayRange() != vote.getDisplayRange()) {
+                vote.changeDisplayRange(voteDto.getDisplayRange());
+            }
+            if (voteDto.getContent() != vote.getContent()) {
+                vote.changeContent(voteDto.getContent());
+
+                voteHashtagRepository.findAllByVoteId(voteId).forEach(vh -> hashtagRepository.delete(vh.getHashtag()));
+                voteHashtagRepository.deleteAllByVoteId(voteId);
+
+                List<Hashtag> savedHashtags = hashtagDtos.stream()
+                        .map(h -> hashtagRepository.save(h.toEntity()))
+                        .collect(Collectors.toList());
+                savedHashtags.forEach(hashtag -> {
+                    voteHashtagRepository.save(
+                            VoteHashtag.builder()
+                                    .vote(vote)
+                                    .hashtag(hashtag)
+                                    .build());
+                });
+            }
+            // TODO : 투표 선택지 수정 여부, 수정 가능한 범위 등 상의 후에 voteOption update 작성할 예정입니다
+        } else {
+            throw new Exception("해당 게시글을 작성한 유저가 아닙니다.");
+        }
+    }
+
+    public VoteDto getVote(Long voteId) {
+        return VoteDto.from(voteRepository.getReferenceById(voteId));
+    }
+
+    public List<VoteOptionDto> getOptions(Long voteId) {
+        return voteOptionRepository.findAllByVoteId(voteId).stream()
+                .map(o -> VoteOptionDto.from(o))
+                .collect(Collectors.toList());
+    }
 }
