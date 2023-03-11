@@ -28,6 +28,19 @@
     overflow: hidden;
 }
 
+.profile-circle {
+    position: absolute;
+    background-color:#CA5151;
+    width: 10px;
+    height: 10px;
+
+    left: 70px;
+    top: 20px;
+
+    border-radius:70%;
+    z-index: 999;
+}
+
 .hashtag p{
     color: #7F61E9 !important;
 }
@@ -256,4 +269,13 @@
     padding: 0 10px;
     border-radius: 100px;
     z-index: 2;
+}
+
+/* 전체,팔로우 버튼*/
+.all-follow-btn {
+    width: 300px;
+    background: white;
+    border: none;
+    color: black;
+    border-radius: 0px !important;
 }

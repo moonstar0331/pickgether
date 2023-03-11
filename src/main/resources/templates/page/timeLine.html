@@ -30,11 +30,16 @@
 
     <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light ">
         <div class="container-fluid">
+            <div>
+                <div class="profile-circle"></div>
+                <img src="/images/avatar.jpg" style="height: 48px; border-radius: 70%"/>
+            </div>
+
             <a class="navbar-brand" href="#"
                style="font-size: 35px;
                 font-family: 'Oleo Script Swash Caps', cursive;
                 color: #2D226E;
-                margin-left: 50%;
+                margin-left: 41%;
                 transform: translateX(-50%);">Pickgether</a>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -44,7 +49,7 @@
                             정렬조건
                         </a>
                         <!-- Todo: dropdown에 radio box 추가 -->
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="border-radius: 10px;">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="border-radius: 10px; z-index: 999;">
                             <li><h6 class="dropdown-header">카테고리</h6></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">자유</a></li>
@@ -82,9 +87,9 @@
         </div>
     </nav>
 
-    <div class="btn-group" role="group" aria-label="Basic example" style="width: 600px;">
-        <button type="button" class="btn btn-primary" style="width: 300px; background: white; border: none; color: black;">전체</button>
-        <button type="button" class="btn btn-primary" style="width: 300px; background: white; border: none; color: black;">팔로우</button>
+    <div class="btn-group" role="group" aria-label="Basic example" style="width: 600px; position: sticky; top: 78px; z-index: 999">
+        <button type="button" class="btn btn-primary all-follow-btn border-end border-bottom">전체</button>
+        <button type="button" class="btn btn-primary all-follow-btn border-start border-bottom">팔로우</button>
     </div>
 
     <!-- 첫번째 -->
@@ -454,9 +459,9 @@
                 <!-- 투표 버튼 close -->
                 <div>
                     <button id="vote_btn_close" class="rounded-circle border-none focus-none"
-                            style="width: 60px; height: 60px; background: #BCB5D2;">
+                            style="width: 60px; height: 60px; background: #7F61E9;">
                         <img style="width: 25px;"
-                             src="https://user-images.githubusercontent.com/90389517/220832327-f01acb10-b7e5-4ea2-ac5a-150122005c98.png">
+                             src="/images/icons/close.png">
                     </button>
                 </div>
             </div>
@@ -464,7 +469,7 @@
             <button id="vote_btn_open" class="rounded-circle border-none focus-none"
                     style="width: 60px; height: 60px; background: #7F61E9;">
                 <img style="width: 25px;"
-                     src="https://user-images.githubusercontent.com/90389517/220832544-e2632051-dec4-4e36-ad16-a4d40fa82e2a.png">
+                     src="/images/icons/plus.png">
             </button>
         </div>
 
