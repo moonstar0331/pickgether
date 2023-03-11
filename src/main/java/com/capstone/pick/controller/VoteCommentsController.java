@@ -2,6 +2,7 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.CommentForm;
 import com.capstone.pick.dto.CommentDto;
+import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.VoteCommentService;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +63,7 @@ public class VoteCommentsController {
     @PostMapping("/{voteId}/comments/{commentId}")
     public String updateComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
                                 @PathVariable Long voteId, @PathVariable Long commentId,
-                                CommentForm commentForm) throws Exception {
+                                CommentForm commentForm) throws UserMismatchException {
 
         voteCommentService.updateComment(commentId, commentForm.toDto(votePrincipal.toDto()));
         return "redirect:/" + voteId + "/comments";
@@ -78,7 +79,7 @@ public class VoteCommentsController {
      */
     @DeleteMapping("/{voteId}/comments/{commentId}")
     public String deleteComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
-                                @PathVariable Long voteId, @PathVariable Long commentId) throws Exception {
+                                @PathVariable Long voteId, @PathVariable Long commentId) throws UserMismatchException {
 
         voteCommentService.deleteComment(commentId, votePrincipal.toDto().getUserId());
         return "redirect:/" + voteId + "/comments";
