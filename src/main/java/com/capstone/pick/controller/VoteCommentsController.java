@@ -22,7 +22,6 @@ public class VoteCommentsController {
 
     private final VoteCommentService voteCommentService;
 
-
     /**
      * 댓글을 조회한다
      * @param voteId 게시글 id
@@ -34,7 +33,6 @@ public class VoteCommentsController {
         model.addAttribute("comments",comments);
         return "page/comments";
     }
-
 
     /**
      * 댓글을 작성한다
@@ -50,7 +48,6 @@ public class VoteCommentsController {
         voteCommentService.saveComment(commentForm.toDto(votePrincipal.toDto()));
         return "redirect:/" + voteId + "/comments";
     }
-
 
     /**
      * 댓글을 수정한다
@@ -69,7 +66,6 @@ public class VoteCommentsController {
         return "redirect:/" + voteId + "/comments";
     }
 
-
     /**
      * 댓글을 삭제한다
      * @param votePrincipal 사용자
@@ -84,6 +80,4 @@ public class VoteCommentsController {
         voteCommentService.deleteComment(commentId, votePrincipal.toDto().getUserId());
         return "redirect:/" + voteId + "/comments";
     }
-
-
 }

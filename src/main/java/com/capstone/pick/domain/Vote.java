@@ -19,7 +19,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
