@@ -1,5 +1,6 @@
 package com.capstone.pick.controller;
 
+import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormListDto;
 import com.capstone.pick.domain.constant.SearchType;
@@ -38,18 +39,16 @@ public class VoteController {
     }
 
     @PostMapping("/search")
-    public String search(@RequestParam(required = false) SearchType searchType,
-                         @RequestParam(required = false) String searchValue,
-                         ModelMap map) {
+    public String search(@ModelAttribute SearchForm searchForm, ModelMap map) {
 
-        if(searchType == SearchType.USER) {
-            List<UserDto> users = userService.findUsersById(searchValue);
+        if(searchForm.getSearchType() == SearchType.USER) {
+            List<UserDto> users = userService.findUsersById(searchForm.getSearchValue());
             map.addAttribute("users", users);
             return "/page/search";
         } else {
-            List<VoteDto> votes = voteService.searchVotes(searchType, searchValue);
+            List<VoteDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("votes", votes);
-            return "/page/timeline";
+            return "/page/timeLine";
         }
     }
 
@@ -82,7 +81,7 @@ public class VoteController {
                 .map(o -> o.toDto(voteDto))
                 .collect(Collectors.toList());
         voteService.saveVote(voteDto, voteOptionDtos, hashtagDtos);
-        return "redirect:/timeLine";
+        return "redirect:/timeline";
     }
 
     @GetMapping("/{voteId}/edit")
@@ -107,7 +106,7 @@ public class VoteController {
                 .map(o -> o.toDto(voteDto))
                 .collect(Collectors.toList());
         voteService.updateVote(voteId, voteDto, voteOptionDtos, hashtagDtos);
-        return "redirect:/timeLine"; // 투표 게시글 상세 페이지로 돌아간다던가
+        return "redirect:/timeline"; // 투표 게시글 상세 페이지로 돌아간다던가
     }
 
     @PostMapping("/{voteId}/delete")

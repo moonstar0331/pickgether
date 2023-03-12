@@ -28,6 +28,7 @@ public class VoteService {
     private final VoteHashtagRepository voteHashtagRepository;
     private final HashtagRepository hashtagRepository;
 
+    @Transactional(readOnly = true)
     public List<VoteDto> findAllVotes() {
         List<Vote> votes = voteRepository.findAll();
         return votes.stream()
@@ -35,6 +36,7 @@ public class VoteService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<VoteDto> searchVotes(SearchType searchType, String searchValue) {
 
         List<VoteDto> voteDtos = new ArrayList<>();
