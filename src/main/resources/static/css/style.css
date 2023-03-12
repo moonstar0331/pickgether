@@ -279,3 +279,14 @@
     color: black;
     border-radius: 0px !important;
 }
+
+.all-follow-btn:hover {
+    color: black !important;
+    background: #fff !important;
+}
+
+.all-follow-btn:focus {
+    color: black !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
