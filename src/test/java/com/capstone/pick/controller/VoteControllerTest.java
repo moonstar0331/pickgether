@@ -27,8 +27,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -210,5 +209,27 @@ class VoteControllerTest {
 
         // then
         then(voteService).should().updateVote(any(Long.class), any(VoteDto.class), Mockito.<VoteOptionDto>anyList(), Mockito.<HashtagDto>anyList());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 투표 게시글 삭제 - 정상 호출")
+    @Test
+    void deleteVote_POST() throws Exception {
+        // given
+        long voteId = 1L;
+        String userId = "user";
+        willDoNothing().given(voteService).deleteVote(voteId, userId);
+
+        // when
+        mvc.perform(post("/" + voteId + "/delete")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .with(csrf())
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/timeline"))
+                .andExpect(redirectedUrl("/timeline"));
+
+        // then
+        then(voteService).should().deleteVote(voteId, userId);
     }
 }
