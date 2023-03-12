@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,7 +56,7 @@ public class VoteCommentsController {
      * @param commentForm 작성내용
      * @return redirection to GET
      */
-    @PostMapping("/{voteId}/comments/{commentId}")
+    @PostMapping("/{voteId}/comments/{commentId}/edit")
     public String updateComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
                                 @PathVariable Long voteId, @PathVariable Long commentId,
                                 CommentForm commentForm) throws UserMismatchException {
@@ -73,7 +72,7 @@ public class VoteCommentsController {
      * @param commentId 투표 댓글 id
      * @return redirection to GET
      */
-    @DeleteMapping("/{voteId}/comments/{commentId}")
+    @PostMapping("/{voteId}/comments/{commentId}/delete")
     public String deleteComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
                                 @PathVariable Long voteId, @PathVariable Long commentId) throws UserMismatchException {
 

@@ -109,7 +109,7 @@ class VoteCommentsControllerTest {
                 .build();
 
         // when
-        mvc.perform(post("/" + voteId + "/comments/" + commentId)
+        mvc.perform(post("/" + voteId + "/comments/" + commentId + "/edit")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .flashAttr("commentForm", commentForm)
                         .with(csrf())
@@ -132,7 +132,7 @@ class VoteCommentsControllerTest {
         CommentForm commentForm = createCommentForm(voteId);
 
         // when
-        mvc.perform(delete("/" + voteId + "/comments/" + commentId)
+        mvc.perform(post("/" + voteId + "/comments/" + commentId + "/delete")
                         .with(csrf()))
                 .andExpect(view().name("redirect:/" + voteId + "/comments"))
                 .andExpect(redirectedUrl("/" + voteId + "/comments"));
