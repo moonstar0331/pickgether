@@ -11,6 +11,7 @@ $(document).ready(function () {
         $("#vote_btn_open").css("display", "block");
     });
 
+    $('#vote_content_cnt').html("" + $('#vote_content').val().length + "/500");
     $('#vote_content').on('keyup', function () {
         // 투표 내용 글자수 제한
         $('#vote_content_cnt').html("" + $(this).val().length + "/500");

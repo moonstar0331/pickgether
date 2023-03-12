@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("View 컨트롤러 - 댓글")
 @Import(TestSecurityConfig.class)
 @WebMvcTest(VoteCommentsController.class)
-@WithMockUser
 class VoteCommentsControllerTest {
 
     private final MockMvc mvc;
@@ -40,7 +39,23 @@ class VoteCommentsControllerTest {
         this.mvc = mvc;
     }
 
-    @DisplayName("[Comment][GET][/{voteId}/comments] 댓글 상세보기 페이지")
+    @DisplayName("[Comment][GET][/{voteId}/comments] 댓글 상세보기 페이지 - 인증이 없을 땐 로그인 페이지로 이동")
+    @Test
+    void noLoginUser_readComments() throws Exception {
+        // given
+        long voteId = 1L;
+
+        // when
+        mvc.perform(get("/" + voteId + "/comments"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+
+        // then
+        then(voteCommentService).shouldHaveNoInteractions();
+    }
+
+    @WithMockUser
+    @DisplayName("[Comment][GET][/{voteId}/comments] 댓글 상세보기 페이지 - 인증된 사용자")
     @Test
     void 댓글상세보기_뷰_엔드포인트_테스트() throws Exception {
         long voteId = 1L;

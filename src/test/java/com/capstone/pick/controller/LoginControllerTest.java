@@ -36,6 +36,4 @@ class LoginControllerTest {
                 .andExpect(view().name("/page/login")); // 리턴하는 뷰 이름은 무엇인가?
                 //.andExpect(model().attributeExists("")); // 뷰에 애트리뷰트가 존재하는가?
     }
-
-
 }

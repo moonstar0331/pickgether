@@ -19,7 +19,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -74,5 +73,29 @@ public class Vote {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    public void changeTitle(String updateTitle) {
+        this.title = updateTitle;
+    }
+
+    public void changeContent(String updateContent) {
+        this.content = updateContent;
+    }
+
+    public void changeCategory(Category updateCategory) {
+        this.category = updateCategory;
+    }
+
+    public void changeExpiredAt(LocalDateTime updateExpiredAt) {
+        this.expiredAt = updateExpiredAt;
+    }
+
+    public void changeIsMultiPick(boolean updateIsMultiPick) {
+        this.isMultiPick = updateIsMultiPick;
+    }
+
+    public void changeDisplayRange(DisplayRange updateDisplayRange) {
+        this.displayRange = updateDisplayRange;
     }
 }
