@@ -437,43 +437,40 @@
                 style="width: 30px; height: 30px; background: #FFFFFF;">
         </button>
 
-
         <div class="floating-button">
             <div id="vote_btn_list" style="display: none;">
-                <!-- 일반 투표 버튼 -->
-                <div>
-                    <button id="vote_btn_normal" class="rounded-circle border-none mb-3 focus-none"
-                            style="width: 60px; height: 60px; background: #7F8AE5;" th:onclick="|location.href='@{form}'|">
-                        <img style="width: 35px;"
-                             src="https://user-images.githubusercontent.com/90389517/220803459-fd7eab6b-3d22-4e44-88fa-74d729b4eb01.png">
-                    </button>
-                </div>
                 <!-- 월드컵 투표 버튼  -->
-                <div>
+                <span>
                     <button id="vote_btn_worldcup" class="rounded-circle border-none mb-3 focus-none"
-                            style="width: 60px; height: 60px; background: #7F8AE5;">
+                            style="width: 60px; height: 60px; background: #7F61E9; box-shadow: 3px 3px 3px #b0aeae;">
                         <img style="width: 35px;"
                              src="https://user-images.githubusercontent.com/90389517/220832225-a766d80e-34ef-4872-b7a1-a435d36ddea8.png">
                     </button>
-                </div>
+                </span>
                 <!-- 투표 버튼 close -->
-                <div>
-                    <button id="vote_btn_close" class="rounded-circle border-none focus-none"
-                            style="width: 60px; height: 60px; background: #7F61E9;">
+                <span>
+                    <button id="vote_btn_close" class="rounded-circle border-none focus-none list-open-btn"
+                            style="width: 60px; height: 60px; background: #7F61E9; box-shadow: 3px 3px 3px #b0aeae;">
                         <img style="width: 25px;"
                              src="/images/icons/close.png">
                     </button>
-                </div>
+                </span>
+                <!-- 일반 투표 버튼 -->
+                <span>
+                    <button id="vote_btn_normal" class="rounded-circle border-none mb-3 focus-none"
+                            style="width: 60px; height: 60px; background: #7F61E9;" th:onclick="|location.href='@{form}'|">
+                        <img style="width: 35px;"
+                             src="https://user-images.githubusercontent.com/90389517/220803459-fd7eab6b-3d22-4e44-88fa-74d729b4eb01.png">
+                    </button>
+                </span>
             </div>
             <!-- 투표 버튼 open -->
             <button id="vote_btn_open" class="rounded-circle border-none focus-none"
-                    style="width: 60px; height: 60px; background: #7F61E9;">
+                    style="width: 60px; height: 60px; background: #7F61E9; box-shadow: 3px 3px 3px #b0aeae;">
                 <img style="width: 25px;"
                      src="/images/icons/plus.png">
             </button>
         </div>
-
-
 
         <button type="button">
             <img src="/images/icons/bell.svg" width="30" height="30" style="fill: #BCB5D2;">
