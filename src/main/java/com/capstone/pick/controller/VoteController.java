@@ -2,15 +2,19 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormListDto;
+import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.HashtagDto;
+import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.dto.VoteOptionDto;
 import com.capstone.pick.security.VotePrincipal;
+import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,16 +25,40 @@ import java.util.stream.Collectors;
 public class VoteController {
 
     private final VoteService voteService;
+    private final UserService userService;
 
     @GetMapping("/")
     public String home() {
         return "redirect:/timeline";
     }
 
+    @GetMapping("/search")
+    public String search() {
+        return "/page/search";
+    }
+
+    @PostMapping("/search")
+    public String search(@RequestParam(required = false) SearchType searchType,
+                         @RequestParam(required = false) String searchValue,
+                         ModelMap map) {
+
+        if(searchType == SearchType.USER) {
+            List<UserDto> users = userService.findUsersById(searchValue);
+            map.addAttribute("users", users);
+            return "/page/search";
+        } else {
+            List<VoteDto> votes = voteService.searchVotes(searchType, searchValue);
+            map.addAttribute("votes", votes);
+            return "/page/timeline";
+        }
+    }
+
     @GetMapping("/timeline")
     public String timeLine(Model model) {
-        List<VoteDto> votes = voteService.findAllVotes();
-        model.addAttribute("votes", votes);
+        if(!model.containsAttribute("votes")) {
+            List<VoteDto> votes = voteService.findAllVotes();
+            model.addAttribute("votes", votes);
+        }
         return "/page/timeLine";
     }
 
