@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // 투표 작성 버튼리스트 open
     $("#vote_btn_open").click(function () {
-        $("#vote_btn_list").css("display", "block");
+        $("#vote_btn_list").css("display", "inline");
         $("#vote_btn_open").css("display", "none");
     });
 

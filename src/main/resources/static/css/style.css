@@ -28,6 +28,19 @@
     overflow: hidden;
 }
 
+.profile-circle {
+    position: absolute;
+    background-color:#CA5151;
+    width: 10px;
+    height: 10px;
+
+    left: 70px;
+    top: 20px;
+
+    border-radius:70%;
+    z-index: 999;
+}
+
 .hashtag p{
     color: #7F61E9 !important;
 }
@@ -39,23 +52,23 @@
 
 .vote-background-1{
     height: 250px;
-    width: 580px;
+    width: 570px;
     margin: auto;
 
     background: linear-gradient(254.72deg, rgba(255, 222, 125, 0.5) -23.18%, rgba(122, 87, 246, 0.5) 84.66%);
     backdrop-filter: blur(2px);
-    box-shadow: 5px 8px 20px rgb(197, 197, 197);
+    box-shadow: 3px 8px 20px rgb(197, 197, 197);
 
     border-radius: 13px;
 }
 
 .vote-background-2 {
     height: 250px;
-    width: 580px;
+    width: 570px;
     margin: auto;
 
     background: linear-gradient(254.72deg, #F07F7F -23.18%, #F6B657 84.66%);
-    box-shadow: 5px 8px 20px rgb(197, 197, 197);
+    box-shadow: 3px 8px 20px rgb(197, 197, 197);
 
     border-radius: 13px;
 }
@@ -149,8 +162,8 @@
 
 .floating-button {
     position: fixed;
-    right: 30%;
-    bottom: 90px;
+    margin:auto;
+    bottom: 1px;
     z-index: 998;
 }
 
@@ -256,4 +269,24 @@
     padding: 0 10px;
     border-radius: 100px;
     z-index: 2;
+}
+
+/* 전체,팔로우 버튼*/
+.all-follow-btn {
+    width: 300px;
+    background: white;
+    border: none;
+    color: black;
+    border-radius: 0px !important;
+}
+
+.all-follow-btn:hover {
+    color: black !important;
+    background: #fff !important;
+}
+
+.all-follow-btn:focus {
+    color: black !important;
+    background: #fff !important;
+    box-shadow: none !important;
 }
