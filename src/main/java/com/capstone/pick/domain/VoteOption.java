@@ -27,5 +27,4 @@ public class VoteOption {
 
     @Column(length = 255)
     private String imageLink; // 이미지 링크
-
 }

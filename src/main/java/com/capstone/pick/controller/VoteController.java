@@ -22,6 +22,11 @@ public class VoteController {
 
     private final VoteService voteService;
 
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/timeline";
+    }
+
     @GetMapping("/timeline")
     public String timeLine(Model model) {
         List<VoteDto> votes = voteService.findAllVotes();

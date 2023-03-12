@@ -2,7 +2,6 @@ package com.capstone.pick.handler;
 
 import com.capstone.pick.controller.VoteCommentsController;
 import com.capstone.pick.exeption.UserMismatchException;
-import com.capstone.pick.handler.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice(assignableTypes = VoteCommentsController.class)
 public class VoteCommentsExceptionHandler {
-
 
     @ExceptionHandler(UserMismatchException.class)
     public ResponseEntity<ErrorResponse> UserMismatchException() {
