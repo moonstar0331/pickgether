@@ -52,23 +52,23 @@
 
 .vote-background-1{
     height: 250px;
-    width: 580px;
+    width: 570px;
     margin: auto;
 
     background: linear-gradient(254.72deg, rgba(255, 222, 125, 0.5) -23.18%, rgba(122, 87, 246, 0.5) 84.66%);
     backdrop-filter: blur(2px);
-    box-shadow: 5px 8px 20px rgb(197, 197, 197);
+    box-shadow: 3px 8px 20px rgb(197, 197, 197);
 
     border-radius: 13px;
 }
 
 .vote-background-2 {
     height: 250px;
-    width: 580px;
+    width: 570px;
     margin: auto;
 
     background: linear-gradient(254.72deg, #F07F7F -23.18%, #F6B657 84.66%);
-    box-shadow: 5px 8px 20px rgb(197, 197, 197);
+    box-shadow: 3px 8px 20px rgb(197, 197, 197);
 
     border-radius: 13px;
 }
