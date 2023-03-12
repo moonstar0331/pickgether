@@ -8,4 +8,6 @@ import java.util.List;
 public interface VoteHashtagRepository  extends JpaRepository<VoteHashtag, Long> {
     List<VoteHashtag> findAllByVoteId(Long voteId);
     void deleteAllByVoteId(Long voteId);
+
+    List<VoteHashtag> findByHashtag_ContentContaining(String content);
 }
