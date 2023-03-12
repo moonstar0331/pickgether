@@ -29,7 +29,6 @@ public class SecurityConfig {
                 .rememberMe().and()
                 .authorizeRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .mvcMatchers(HttpMethod.GET, "/", "/timeLine").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin()
