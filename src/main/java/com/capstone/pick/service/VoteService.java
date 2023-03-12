@@ -93,6 +93,10 @@ public class VoteService {
         }
     }
 
+    public void deleteVote(Long voteId, String userId) {
+        voteRepository.deleteByIdAndUser_UserId(voteId, userId);
+    }
+
     public VoteDto getVote(Long voteId) {
         return VoteDto.from(voteRepository.getReferenceById(voteId));
     }

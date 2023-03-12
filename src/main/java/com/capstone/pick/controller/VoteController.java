@@ -81,4 +81,14 @@ public class VoteController {
         voteService.updateVote(voteId, voteDto, voteOptionDtos, hashtagDtos);
         return "redirect:/timeLine"; // 투표 게시글 상세 페이지로 돌아간다던가
     }
+
+    @PostMapping("/{voteId}/delete")
+    public String deleteVote(
+            @AuthenticationPrincipal VotePrincipal votePrincipal,
+            @PathVariable Long voteId) {
+
+        voteService.deleteVote(voteId, votePrincipal.getUsername());
+
+        return "redirect:/timeline";
+    }
 }
