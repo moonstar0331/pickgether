@@ -118,4 +118,13 @@ public class VoteController {
 
         return "redirect:/timeline";
     }
+
+    //Todo : 카테고리별 정렬 기능 구현
+    @GetMapping("/timeline{category}")
+    public String sortVote(@PathVariable(value = "category", required = false) Category category,
+                              Model model) {
+        List<PostDto> posts = voteService.findAllVotesByCategory(category);
+        model.addAttribute("posts", posts);
+        return "/page/timeLine";
+    }
 }
