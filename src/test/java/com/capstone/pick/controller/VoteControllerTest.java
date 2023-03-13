@@ -162,8 +162,6 @@ class VoteControllerTest {
                 .userDto(userDto)
                 .title("title")
                 .content("new content")
-                .voteOptions(List.of(VoteOptionFormDto.builder().content("new option1").imageLink("/link/image1.png").build(),
-                        VoteOptionFormDto.builder().content("new option2").imageLink("/link/image2.png").build()))
                 .category(Category.WORRY)
                 .expiredAt(LocalDateTime.now().plusDays(5))
                 .createAt(LocalDateTime.now())
