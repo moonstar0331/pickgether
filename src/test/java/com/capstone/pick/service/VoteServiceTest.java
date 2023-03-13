@@ -2,14 +2,14 @@ package com.capstone.pick.service;
 
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormDto;
-import com.capstone.pick.domain.User;
-import com.capstone.pick.domain.Vote;
+import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.dto.VoteOptionDto;
-import com.capstone.pick.repository.VoteRepository;
+import com.capstone.pick.repository.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,15 +24,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.*;
 
 @DisplayName("비즈니스 서비스 로직 - 투표 게시글")
 @ExtendWith(MockitoExtension.class)
 public class VoteServiceTest {
 
-    @InjectMocks private VoteService voteService;
+    @InjectMocks
+    private VoteService voteService;
 
-    @Mock private VoteRepository voteRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private VoteRepository voteRepository;
+    @Mock
+    private VoteOptionRepository voteOptionRepository;
+    @Mock
+    private HashtagRepository hashtagRepository;
+    @Mock
+    private VoteHashtagRepository voteHashtagRepository;
 
     @DisplayName("타임라인을 조회하면, 모든 투표 게시글을 타임라인에 반환한다.")
     @Test
@@ -100,32 +114,55 @@ public class VoteServiceTest {
     @Test
     void saveVote() {
         // given
-        VoteOptionFormDto voteOptionFormDto1 = createOptionFormDto("option1", "/image/link1");
-        VoteOptionFormDto voteOptionFormDto2 = createOptionFormDto("option2", "/image/link2");
-        ArrayList<VoteOptionFormDto> voteOptionFormDtos = new ArrayList<>(List.of(voteOptionFormDto1, voteOptionFormDto2));
+        User user = createUser();
+        Vote vote = createVote(user, "new title", "new content #hi");
+        ReflectionTestUtils.setField(vote, "id", 1L);
+        VoteOption option1 = createVoteOption(vote, "option1", "/image/link1");
+        VoteOption option2 = createVoteOption(vote, "option2", "/image/link2");
+        List<VoteOptionDto> options = List.of(VoteOptionDto.from(option1), VoteOptionDto.from(option2));
+        ReflectionTestUtils.setField(option1, "id", 1L);
+        ReflectionTestUtils.setField(option2, "id", 2L);
+        Hashtag hashtag = createHashtag("hi");
+        List<Hashtag> hashtags = List.of(hashtag);
+        List<HashtagDto> hashtagDtos = List.of(HashtagDto.from(hashtag));
+        ReflectionTestUtils.setField(hashtag, "id", 1L);
+        VoteHashtag voteHashtag = createVoteHashtag(vote, hashtag);
+        ReflectionTestUtils.setField(voteHashtag, "id", 1L);
 
-        VoteForm voteForm = VoteForm.builder()
-                .title("new title")
-                .content("new content")
-                .category(Category.FREE)
-                .voteOptions(voteOptionFormDtos)
-                .isMultiPick(true)
-                .expiredAt(LocalDateTime.now().plusDays(5))
-                .createAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now())
-                .displayRange(DisplayRange.PUBLIC)
-                .build();
-
-        UserDto userDto = createUserDto();
-        VoteDto voteDto = voteForm.toDto(userDto);
-        List<VoteOptionDto> optionDtos = voteOptionFormDtos.stream().map(o -> o.toDto(voteDto)).collect(Collectors.toList());
-
+        given(userRepository.getReferenceById(anyString())).willReturn(user);
+        given(voteRepository.save(any(Vote.class))).willReturn(vote);
+        options.forEach(o -> voteOptionRepository.save(o.toEntity(vote)));
+        hashtagDtos.stream().map(h -> given(hashtagRepository.save(h.toEntity())).willReturn(h.toEntity()));
+        hashtags.forEach(h -> voteHashtagRepository.save(createVoteHashtag(vote, hashtag)));
 
         // when
-
+        voteService.saveVote(VoteDto.from(vote), List.of(VoteOptionDto.from(option1), VoteOptionDto.from(option2)), List.of(HashtagDto.from(hashtag)));
 
         // then
+        then(userRepository).should().getReferenceById(anyString());
+        then(voteRepository).should().save(any(Vote.class));
+        verify(voteOptionRepository, atLeastOnce()).save(any(VoteOption.class));
+        then(hashtagRepository).should().save(any(Hashtag.class));
+        verify(voteHashtagRepository, atLeastOnce()).save(any(VoteHashtag.class));
+    }
 
+    private static VoteHashtag createVoteHashtag(Vote vote, Hashtag hashtag) {
+        return VoteHashtag.builder()
+                .vote(vote)
+                .hashtag(hashtag)
+                .build();
+    }
+
+    private static Hashtag createHashtag(String content) {
+        return Hashtag.builder().content(content).build();
+    }
+
+    private static VoteOption createVoteOption(Vote vote, String content, String imageLink) {
+        return VoteOption.builder()
+                .vote(vote)
+                .content(content)
+                .imageLink(imageLink)
+                .build();
     }
 
     private static VoteOptionFormDto createOptionFormDto(String content, String imageLink) {
