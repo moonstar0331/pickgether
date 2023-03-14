@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -28,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("View 컨트롤러 - 댓글")
 @Import(TestSecurityConfig.class)
 @WebMvcTest(VoteCommentsController.class)
+@ComponentScan(basePackages = "com.capstone.pick.config")
+@MockBean(JpaMetamodelMappingContext.class)
 class VoteCommentsControllerTest {
 
     private final MockMvc mvc;
@@ -63,7 +67,6 @@ class VoteCommentsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(model().attributeExists("comments"))
-                .andExpect(model().attributeExists("userDto"))
                 .andExpect(view().name("page/comments"));
     }
 

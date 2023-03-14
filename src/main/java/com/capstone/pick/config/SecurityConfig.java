@@ -23,11 +23,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

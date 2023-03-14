@@ -16,6 +16,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
@@ -28,6 +31,8 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("비즈니스 서비스 로직 - 투표 게시글")
 @ExtendWith(MockitoExtension.class)
+@ComponentScan(basePackages = "com.capstone.pick.config")
+@MockBean(JpaMetamodelMappingContext.class)
 public class VoteServiceTest {
 
     @InjectMocks private VoteService voteService;
@@ -91,7 +96,7 @@ public class VoteServiceTest {
                 .email("email@email.com")
                 .nickname("nick")
                 .memo("memo")
-                .birthday(LocalDateTime.now())
+                .birthday("0101")
                 .createdAt(LocalDateTime.now())
                 .build();
     }
@@ -142,7 +147,7 @@ public class VoteServiceTest {
                 .email("email@email.com")
                 .nickname("nick")
                 .memo("memo")
-                .birthday(LocalDateTime.now())
+                .birthday("0101")
                 .createdAt(LocalDateTime.now())
                 .build();
     }
