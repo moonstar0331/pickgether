@@ -15,17 +15,54 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://kit.fontawesome.com/52921a30db.css" crossorigin="anonymous">
+
+    <!-- 스크립트 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/script.js"></script>
 </head>
 <body>
     <div class="timeline-background">
         <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light ">
             <div class="container-fluid">
-                <div class="mb-3">
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="검색">
+                <div class="mb-3" style="width: 480px;">
+                    <!-- 변경 필요 -->
+                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="검색"
+                           style="background-color: #EFEFEF; border-radius: 4rem; margin-top: 18px;">
                 </div>
                 <button type="button" class="btn btn-primary search-cancel-btn">취소</button>
             </div>
         </nav>
+
+        <section style="margin-left: 30px;">
+            <header class="profile" style="margin-bottom: 10px; margin-top: 10px;">
+                <div style="float: left;">
+                    <img src="/images/avatar.jpg" style="height: 48px"/>
+                </div>
+                <div>
+                    <section style="float: left; padding-left: 10px;">
+                        <div>픽커 1</div>
+                        <div>picker 1</div>
+                    </section>
+                </div>
+            </header>
+
+            <header class="profile" style="margin-bottom: 10px;">
+                <div style="float: left;">
+                    <img src="/images/avatar.jpg" style="height: 48px"/>
+                </div>
+                <div>
+                    <section style="float: left; padding-left: 10px;">
+                        <div>픽커 2</div>
+                        <div>picker 2</div>
+                    </section>
+                </div>
+            </header>
+            <button class="look-result-all-btn">
+                <p>결과 모두 보기</p>
+            </button>
+        </section>
     </div>
 
     <div class="icons">

@@ -308,3 +308,15 @@
     background: #fff !important;
     box-shadow: none !important;
 }
+
+.look-result-all-btn {
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    width: 120px;
+    display: block;
+    border: none;
+    color: #7F61E9;
+    background-color: #FFFFFF;
+}
