@@ -24,8 +24,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.*;
 
 @DisplayName("비즈니스 서비스 로직 - 투표 게시글")
@@ -170,6 +169,22 @@ public class VoteServiceTest {
 
         // then
         then(voteRepository).should().getReferenceById(voteDto.getId());
+    }
+
+    @DisplayName("게시글의 ID를 입력하면, 게시글을 삭제한다.")
+    @Test
+    void deleteVote() {
+        // given
+        Long voteId = 1L;
+        String userId = "user";
+
+        willDoNothing().given(voteRepository).deleteByIdAndUser_UserId(voteId, userId);
+
+        // when
+        voteService.deleteVote(voteId, userId);
+
+        // then
+        then(voteRepository).should().deleteByIdAndUser_UserId(voteId, userId);
     }
 
     private static VoteDto createVoteDto(String title, String content) {
