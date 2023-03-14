@@ -148,7 +148,7 @@ class VoteControllerTest {
                 .email("email@email.com")
                 .nickname("nick")
                 .memo("memo")
-                .birthday(LocalDateTime.now())
+                .birthday("0101")
                 .createdAt(LocalDateTime.now())
                 .build();
 

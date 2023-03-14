@@ -3,6 +3,7 @@ package com.capstone.pick.controller;
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormListDto;
 import com.capstone.pick.dto.HashtagDto;
+import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.dto.VoteOptionDto;
 import com.capstone.pick.security.VotePrincipal;
@@ -28,9 +29,10 @@ public class VoteController {
     }
 
     @GetMapping("/timeline")
-    public String timeLine(Model model) {
+    public String timeLine(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
         List<VoteDto> votes = voteService.findAllVotes();
         model.addAttribute("votes", votes);
+        model.addAttribute("userDto",votePrincipal.toDto());
         return "/page/timeLine";
     }
 

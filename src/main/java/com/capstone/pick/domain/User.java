@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -33,8 +34,8 @@ public class User {
     @Column(length = 100)
     private String nickname; // 닉네임
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime birthday; // 출생일시
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private String birthday; // 출생일시
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
@@ -42,6 +43,9 @@ public class User {
     private LocalDateTime createdAt; // 생성일시
 
     private String memo; // 메모
+
+    private String gender; // 성별
+    private String age_range; // 연령대
 
     /* TODO: 가입방식과 멤버십은 주요 기능이 완료된 후에
          멤버십과 소셜 로그인 기능을 구현한 후에 진행하도록 한다.
