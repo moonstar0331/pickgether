@@ -25,7 +25,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 
 @DisplayName("비즈니스 서비스 로직 - 투표 게시글")
 @ExtendWith(MockitoExtension.class)

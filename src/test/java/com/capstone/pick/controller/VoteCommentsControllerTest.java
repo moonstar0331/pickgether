@@ -82,8 +82,7 @@ class VoteCommentsControllerTest {
         mvc.perform(post("/" + voteId + "/comments")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .flashAttr("commentForm", commentForm)
-                        .with(csrf())
-                )
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/" + voteId + "/comments"))
                 .andExpect(redirectedUrl("/" + voteId + "/comments"));
@@ -112,8 +111,7 @@ class VoteCommentsControllerTest {
         mvc.perform(post("/" + voteId + "/comments/" + commentId + "/edit")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .flashAttr("commentForm", commentForm)
-                        .with(csrf())
-                )
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/" + voteId + "/comments"))
                 .andExpect(redirectedUrl("/" + voteId + "/comments"));

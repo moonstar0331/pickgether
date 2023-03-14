@@ -57,6 +57,7 @@ class VoteControllerTest {
     @DisplayName("[view][GET] 홈페이지 - 정상 호출, 인증된 사용자")
     @Test
     void home() throws Exception {
+        // when & then
         mvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/timeline"))
@@ -66,6 +67,8 @@ class VoteControllerTest {
     @DisplayName("[view][GET] 홈페이지 - 인증이 없을 땐 로그인 페이지로 이동")
     @Test
     void noLoginUser_home() throws Exception {
+
+        // when & then
         mvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
@@ -78,14 +81,12 @@ class VoteControllerTest {
     void timeLine() throws Exception {
         // given
 
-        // when
+        // when & then
         mvc.perform(get("/timeline"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("/page/timeLine"))
                 .andExpect(model().attributeExists("votes"));
-
-        // then
     }
 
     @DisplayName("[view][GET] 투표 게시글 조회 - 인증이 없을 땐 로그인 페이지로 이동")
@@ -119,8 +120,8 @@ class VoteControllerTest {
         mvc.perform(post("/form")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .flashAttr("voteForm", voteForm)
-                        .with(csrf())
-                ).andExpect(status().is3xxRedirection())
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/timeline"))
                 .andExpect(redirectedUrl("/timeline"));
 
@@ -134,10 +135,12 @@ class VoteControllerTest {
         // given
         long voteId = 1L;
 
-        // when & then
+        // when
         mvc.perform(get("/" + voteId + "/edit"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
+
+        // then
         then(voteService).shouldHaveNoInteractions();
     }
 
@@ -206,8 +209,8 @@ class VoteControllerTest {
         mvc.perform(post("/" + voteId + "/edit")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .flashAttr("voteForm", voteForm)
-                        .with(csrf())
-                ).andExpect(status().is3xxRedirection())
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/timeline"))
                 .andExpect(redirectedUrl("/timeline"));
 
@@ -227,8 +230,7 @@ class VoteControllerTest {
         // when
         mvc.perform(post("/" + voteId + "/delete")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .with(csrf())
-                )
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/timeline"))
                 .andExpect(redirectedUrl("/timeline"));
@@ -241,7 +243,7 @@ class VoteControllerTest {
     @DisplayName("[view][GET] 검색 페이지 - 정상 호출")
     @Test
     void search_GET() throws Exception {
-        // when
+        // when & then
         mvc.perform(get("/search"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -251,6 +253,7 @@ class VoteControllerTest {
     @DisplayName("[view][GET] 검색 페이지 - 정상 호출")
     @Test
     void noLoginUser_search_GET() throws Exception {
+        // when & then
         mvc.perform(get("/search"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));

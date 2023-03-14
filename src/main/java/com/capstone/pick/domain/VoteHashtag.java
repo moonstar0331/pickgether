@@ -24,5 +24,4 @@ public class VoteHashtag {
     @ManyToOne
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag; // 해시태그 내용
-
 }

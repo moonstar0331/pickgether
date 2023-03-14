@@ -111,6 +111,7 @@ public class VoteService {
                      List<Hashtag> savedHashtags = hashtagDtos.stream()
                              .map(h -> hashtagRepository.save(h.toEntity()))
                              .collect(Collectors.toList());
+
                      savedHashtags.forEach(hashtag -> {
                          voteHashtagRepository.save(
                                  VoteHashtag.builder()

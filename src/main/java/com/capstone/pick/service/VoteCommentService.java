@@ -26,11 +26,9 @@ public class VoteCommentService {
 
     public List<CommentDto> readComment(Long voteId) {
         List<VoteComment> voteComments = voteCommentRepository.getVoteCommentsByVoteId(voteId);
-        List<CommentDto> comments = voteComments
-                .stream()
-                .map(voteComment -> CommentDto.from(voteComment))
+        return voteComments.stream()
+                .map(CommentDto::from)
                 .collect(Collectors.toList());
-        return comments;
     }
 
     public void saveComment(CommentDto commentDto) {
@@ -43,8 +41,8 @@ public class VoteCommentService {
         VoteComment comment = voteCommentRepository.getReferenceById(commentId);
         User user = userRepository.getReferenceById(commentDto.getUserDto().getUserId());
 
-        if(comment.getUser().equals(user)) {
-            if(commentDto.getContent() != null) {
+        if (comment.getUser().equals(user)) {
+            if (commentDto.getContent() != null) {
                 comment.changeContent(commentDto.getContent());
             }
         } else {
@@ -56,7 +54,7 @@ public class VoteCommentService {
         User user = userRepository.getReferenceById(userId);
         VoteComment voteComment = voteCommentRepository.getReferenceById(commentId);
 
-        if(voteComment.getUser().equals(user)) {
+        if (voteComment.getUser().equals(user)) {
             voteCommentRepository.delete(voteComment);
         } else {
             throw new UserMismatchException();
