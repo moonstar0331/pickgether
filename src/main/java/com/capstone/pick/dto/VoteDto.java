@@ -1,6 +1,5 @@
 package com.capstone.pick.dto;
 
-import com.capstone.pick.controller.form.VoteOptionFormDto;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.constant.Category;
@@ -8,7 +7,6 @@ import com.capstone.pick.domain.constant.DisplayRange;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder
