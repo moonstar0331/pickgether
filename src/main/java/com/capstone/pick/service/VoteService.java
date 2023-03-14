@@ -4,6 +4,7 @@ import com.capstone.pick.domain.Hashtag;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteHashtag;
+import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.dto.VoteOptionDto;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,11 +28,37 @@ public class VoteService {
     private final VoteHashtagRepository voteHashtagRepository;
     private final HashtagRepository hashtagRepository;
 
+    @Transactional(readOnly = true)
     public List<VoteDto> findAllVotes() {
         List<Vote> votes = voteRepository.findAll();
         return votes.stream()
                 .map(VoteDto::from)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<VoteDto> searchVotes(SearchType searchType, String searchValue) {
+
+        List<VoteDto> voteDtos = new ArrayList<>();
+
+        switch (searchType) {
+            case TITLE:
+                voteDtos = voteRepository.findByTitleContaining(searchValue).stream().map(VoteDto::from).collect(Collectors.toList());
+                break;
+            case CONTENT:
+                voteDtos = voteRepository.findByContentContaining(searchValue).stream().map(VoteDto::from).collect(Collectors.toList());
+                break;
+            case NICKNAME:
+                voteDtos = voteRepository.findByUser_NicknameContaining(searchValue).stream().map(VoteDto::from).collect(Collectors.toList());
+                break;
+            case HASHTAG:
+                List<Vote> votes = voteHashtagRepository.findByHashtag_ContentContaining(searchValue).stream()
+                        .map(VoteHashtag::getVote).collect(Collectors.toList());
+                voteDtos = votes.stream().map(VoteDto::from).collect(Collectors.toList());
+                break;
+        }
+
+        return voteDtos;
     }
 
     public void saveVote(VoteDto dto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) {

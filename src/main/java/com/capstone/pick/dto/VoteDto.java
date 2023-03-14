@@ -19,7 +19,6 @@ public class VoteDto {
     private UserDto userDto;
     private String title;
     private String content;
-    private List<VoteOptionFormDto> voteOptions;
     private Category category;
     private LocalDateTime expiredAt;
     private LocalDateTime createAt;
