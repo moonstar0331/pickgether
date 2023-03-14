@@ -1,14 +1,17 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.config.TestSecurityConfig;
+import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormDto;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.dto.VoteOptionDto;
+import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,6 +45,9 @@ class VoteControllerTest {
 
     @MockBean
     private VoteService voteService;
+
+    @MockBean
+    private UserService userService;
 
     public VoteControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
@@ -90,7 +96,7 @@ class VoteControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
 
-        // when
+        // then
         then(voteService).shouldHaveNoInteractions();
     }
 
@@ -115,8 +121,8 @@ class VoteControllerTest {
                         .flashAttr("voteForm", voteForm)
                         .with(csrf())
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/timeLine"))
-                .andExpect(redirectedUrl("/timeLine"));
+                .andExpect(view().name("redirect:/timeline"))
+                .andExpect(redirectedUrl("/timeline"));
 
         // then
         then(voteService).should().saveVote(any(VoteDto.class), Mockito.<VoteOptionDto>anyList(), Mockito.<HashtagDto>anyList());
@@ -156,8 +162,6 @@ class VoteControllerTest {
                 .userDto(userDto)
                 .title("title")
                 .content("new content")
-                .voteOptions(List.of(VoteOptionFormDto.builder().content("new option1").imageLink("/link/image1.png").build(),
-                        VoteOptionFormDto.builder().content("new option2").imageLink("/link/image2.png").build()))
                 .category(Category.WORRY)
                 .expiredAt(LocalDateTime.now().plusDays(5))
                 .createAt(LocalDateTime.now())
@@ -204,8 +208,8 @@ class VoteControllerTest {
                         .flashAttr("voteForm", voteForm)
                         .with(csrf())
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/timeLine"))
-                .andExpect(redirectedUrl("/timeLine"));
+                .andExpect(view().name("redirect:/timeline"))
+                .andExpect(redirectedUrl("/timeline"));
 
         // then
         then(voteService).should().updateVote(any(Long.class), any(VoteDto.class), Mockito.<VoteOptionDto>anyList(), Mockito.<HashtagDto>anyList());
@@ -231,5 +235,139 @@ class VoteControllerTest {
 
         // then
         then(voteService).should().deleteVote(voteId, userId);
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][GET] 검색 페이지 - 정상 호출")
+    @Test
+    void search_GET() throws Exception {
+        // when
+        mvc.perform(get("/search"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(view().name("/page/search"));
+    }
+
+    @DisplayName("[view][GET] 검색 페이지 - 정상 호출")
+    @Test
+    void noLoginUser_search_GET() throws Exception {
+        mvc.perform(get("/search"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 검색 페이지 - 정상 호출, 유저 검색")
+    @Test
+    void search_POST_search_user() throws Exception {
+        // given
+        SearchForm searchForm = SearchForm.builder()
+                .searchType(SearchType.USER)
+                .searchValue("u")
+                .build();
+
+        // when
+        mvc.perform(post("/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("searchForm", searchForm)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/page/search"))
+                .andExpect(model().attributeExists("users"));
+
+        // then
+        then(userService).should().findUsersById(anyString());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 검색 페이지 - 정상 호출, 제목 검색")
+    @Test
+    void search_POST_search_title() throws Exception {
+        // given
+        SearchForm searchForm = SearchForm.builder()
+                .searchType(SearchType.TITLE)
+                .searchValue("t")
+                .build();
+
+        // when
+        mvc.perform(post("/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("searchForm", searchForm)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/page/timeLine"))
+                .andExpect(model().attributeExists("votes"));
+
+        // then
+        then(voteService).should().searchVotes(any(SearchType.class), anyString());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 검색 페이지 - 정상 호출, 내용 검색")
+    @Test
+    void search_POST_search_content() throws Exception {
+        // given
+        SearchForm searchForm = SearchForm.builder()
+                .searchType(SearchType.CONTENT)
+                .searchValue("c")
+                .build();
+
+        // when
+        mvc.perform(post("/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("searchForm", searchForm)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/page/timeLine"))
+                .andExpect(model().attributeExists("votes"));
+
+        // then
+        then(voteService).should().searchVotes(any(SearchType.class), anyString());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 검색 페이지 - 정상 호출, 닉네임 검색")
+    @Test
+    void search_POST_search_nickname() throws Exception {
+        // given
+        SearchForm searchForm = SearchForm.builder()
+                .searchType(SearchType.NICKNAME)
+                .searchValue("n")
+                .build();
+
+        // when
+        mvc.perform(post("/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("searchForm", searchForm)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/page/timeLine"))
+                .andExpect(model().attributeExists("votes"));
+
+        // then
+        then(voteService).should().searchVotes(any(SearchType.class), anyString());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 검색 페이지 - 정상 호출, 해시태그 검색")
+    @Test
+    void search_POST_search_hashtag() throws Exception {
+        // given
+        SearchForm searchForm = SearchForm.builder()
+                .searchType(SearchType.HASHTAG)
+                .searchValue("h")
+                .build();
+
+        // when
+        mvc.perform(post("/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("searchForm", searchForm)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/page/timeLine"))
+                .andExpect(model().attributeExists("votes"));
+
+        // then
+        then(voteService).should().searchVotes(any(SearchType.class), anyString());
     }
 }

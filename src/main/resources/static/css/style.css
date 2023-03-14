@@ -290,3 +290,33 @@
     background: #fff !important;
     box-shadow: none !important;
 }
+
+.search-cancel-btn {
+    background: white;
+    border: none;
+    color: black;
+    border-radius: 0px !important;
+}
+
+.search-cancel-btn:hover {
+    color: black !important;
+    background: #fff !important;
+}
+
+.search-cancel-btn:focus {
+    color: black !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+.look-result-all-btn {
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    width: 120px;
+    display: block;
+    border: none;
+    color: #7F61E9;
+    background-color: #FFFFFF;
+}

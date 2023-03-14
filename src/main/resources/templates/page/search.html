@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <title>Pickgether</title>
+
+    <!-- style sheet -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min2.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style2.css">
+
+    <!-- 픽게더 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://kit.fontawesome.com/52921a30db.css" crossorigin="anonymous">
+
+    <!-- 스크립트 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+</head>
+<body>
+    <div class="timeline-background">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light ">
+            <div class="container-fluid">
+                <div class="mb-3" style="width: 480px;">
+                    <!-- 변경 필요 -->
+                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="검색"
+                           style="background-color: #EFEFEF; border-radius: 4rem; margin-top: 18px;">
+                </div>
+                <button type="button" class="btn btn-primary search-cancel-btn">취소</button>
+            </div>
+        </nav>
+
+        <section style="margin-left: 30px;">
+            <header class="profile" style="margin-bottom: 10px; margin-top: 10px;">
+                <div style="float: left;">
+                    <img src="/images/avatar.jpg" style="height: 48px"/>
+                </div>
+                <div>
+                    <section style="float: left; padding-left: 10px;">
+                        <div>픽커 1</div>
+                        <div>picker 1</div>
+                    </section>
+                </div>
+            </header>
+
+            <header class="profile" style="margin-bottom: 10px;">
+                <div style="float: left;">
+                    <img src="/images/avatar.jpg" style="height: 48px"/>
+                </div>
+                <div>
+                    <section style="float: left; padding-left: 10px;">
+                        <div>픽커 2</div>
+                        <div>picker 2</div>
+                    </section>
+                </div>
+            </header>
+            <button class="look-result-all-btn">
+                <p>결과 모두 보기</p>
+            </button>
+        </section>
+    </div>
+
+    <div class="icons">
+        <nav class="nav justify-content-around bg-light fixed-bottom bottom-navbar" style="width: 600px; margin: auto; z-index: 998;">
+            <!-- home icon -->
+            <button type="button">
+                <img src="/images/icons/home.svg" width="30" height="30" style="fill: #BCB5D2;">
+            </button>
+            <button type="button">
+                <img src="/images/icons/search.svg" width="30" height="30" style="fill: #BCB5D2;">
+            </button>
+
+            <button class="rounded-circle border-none focus-none"
+                    style="width: 30px; height: 30px; background: #FFFFFF;">
+            </button>
+
+            <div class="floating-button">
+                <div id="vote_btn_list" style="display: none;">
+                    <!-- 월드컵 투표 버튼  -->
+                    <span>
+                    <button id="vote_btn_worldcup" class="rounded-circle border-none mb-3 focus-none"
+                            style="width: 60px; height: 60px; background: #7F61E9; box-shadow: 3px 3px 3px #b0aeae;">
+                        <img style="width: 35px;"
+                             src="https://user-images.githubusercontent.com/90389517/220832225-a766d80e-34ef-4872-b7a1-a435d36ddea8.png">
+                    </button>
+                </span>
+                    <!-- 투표 버튼 close -->
+                    <span>
+                    <button id="vote_btn_close" class="rounded-circle border-none focus-none list-open-btn"
+                            style="width: 60px; height: 60px; background: #7F61E9; box-shadow: 3px 3px 3px #b0aeae;">
+                        <img style="width: 25px;"
+                             src="/images/icons/close.png">
+                    </button>
+                </span>
+                    <!-- 일반 투표 버튼 -->
+                    <span>
+                    <button id="vote_btn_normal" class="rounded-circle border-none mb-3 focus-none"
+                            style="width: 60px; height: 60px; background: #7F61E9; box-shadow: 3px 3px 3px #b0aeae;" th:onclick="|location.href='@{form}'|">
+                        <img style="width: 35px;"
+                             src="https://user-images.githubusercontent.com/90389517/220803459-fd7eab6b-3d22-4e44-88fa-74d729b4eb01.png">
+                    </button>
+                </span>
+                </div>
+                <!-- 투표 버튼 open -->
+                <button id="vote_btn_open" class="rounded-circle border-none focus-none"
+                        style="width: 60px; height: 60px; background: #7F61E9; box-shadow: 3px 3px 3px #b0aeae;">
+                    <img style="width: 25px;"
+                         src="/images/icons/plus.png">
+                </button>
+            </div>
+
+            <button type="button">
+                <img src="/images/icons/bell.svg" width="30" height="30" style="fill: #BCB5D2;">
+            </button>
+            <button type="button">
+                <img src="/images/icons/setting.svg" width="30" height="30" style="fill: #BCB5D2;">
+            </button>
+        </nav>
+    </div>
+</body>
+</html>
