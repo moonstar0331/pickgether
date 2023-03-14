@@ -2,6 +2,7 @@ package com.capstone.pick.service;
 
 import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
+import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.domain.Hashtag;
 import com.capstone.pick.domain.User;
@@ -43,7 +44,8 @@ public class VoteService {
                 .collect(Collectors.toList());
     }
 
-    public List<PostDto> findAllVotesByCategory(Category category) {
+    public List<PostDto> findAllVotesByCategoryAndOrderCriteria(Category category, OrderCriteria orderBy) {
+        // 1. 카테고리별 게시글 가져오기
         List<Vote> votes = new ArrayList<>();
         if(category.equals(Category.ALL)) {
             for (Category c : Category.values()) {
@@ -62,6 +64,9 @@ public class VoteService {
                             .build()
             );
         }
+
+        // 2. 기준에 맞게 게시글 정렬하기
+
         return postList;
     }
 

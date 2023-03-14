@@ -3,11 +3,9 @@ package com.capstone.pick.controller;
 import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormListDto;
-import com.capstone.pick.domain.constant.SearchType;
-import com.capstone.pick.dto.HashtagDto;
-import com.capstone.pick.dto.UserDto;
-import com.capstone.pick.dto.VoteDto;
-import com.capstone.pick.dto.VoteOptionDto;
+import com.capstone.pick.domain.constant.Category;
+import com.capstone.pick.domain.constant.OrderCriteria;
+import com.capstone.pick.dto.*;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteService;
@@ -53,11 +51,13 @@ public class VoteController {
     }
 
     @GetMapping("/timeline")
-    public String timeLine(Model model) {
-        if(!model.containsAttribute("votes")) {
-            List<VoteDto> votes = voteService.findAllVotes();
-            model.addAttribute("votes", votes);
-        }
+    public String timeLine(@RequestParam(value = "category", required = false, defaultValue = "ALL") Category category,
+                           @RequestParam(value = "orderBy", required = false, defaultValue = "LATEST") OrderCriteria orderBy,
+                           Model model) {
+        List<PostDto> posts = voteService.findAllVotesByCategoryAndOrderCriteria(category, orderBy);
+        model.addAttribute("posts", posts);
+        model.addAttribute("category", category);
+        model.addAttribute("orderBy", orderBy);
         return "/page/timeLine";
     }
 
@@ -117,13 +117,5 @@ public class VoteController {
         voteService.deleteVote(voteId, votePrincipal.getUsername());
 
         return "redirect:/timeline";
-    }
-
-    @GetMapping("/timeline{category}")
-    public String sortVote(@PathVariable(value = "category", required = false) Category category,
-                              Model model) {
-        List<PostDto> posts = voteService.findAllVotesByCategory(category);
-        model.addAttribute("posts", posts);
-        return "/page/timeLine";
     }
 }
