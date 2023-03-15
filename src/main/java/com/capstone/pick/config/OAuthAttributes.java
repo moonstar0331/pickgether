@@ -30,14 +30,13 @@ public class OAuthAttributes {
         if (registrationId.equals("kakao")) {
             return ofKakao(userNameAttributeName, attributes);
         }
-//        else if (registrationId.equals("naver")) {
-//            return ofNaver(userNameAttributeName,attributes);
-//        }
+        else if (registrationId.equals("naver")) {
+            return ofNaver(userNameAttributeName,attributes);
+        }
 //        return ofGoogle(userNameAttributeName, attributes);
         return ofKakao(userNameAttributeName, attributes);
     }
-
-    // 카카오 예시
+//    카카오 예시
 //    attributes = {
 //        id=354353456,
 //        connected_at=2023-03-12T18:03:55Z,
@@ -91,27 +90,36 @@ public class OAuthAttributes {
                 .build();
     }
 
-    // 네이버 예시
-    // attributes = {
-    //          resultcode=00,
-    //          message=success,
-    //          response= {
-    //               id=lkdslsdkfjsdf-sdf98334twfdgdfv,  이 부분을 가져온다
-    //               nickname=xx,
-    //               email=xx@naver.com,    이 부분을 가져온다
-    //               name=xxx     이 부분을 가져온다
-    //               }
-    //         }
-//    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
-//        Map<String, Object> response = (Map<String, Object>) attributes.get("response");    // 네이버에서 받은 데이터에서 프로필 정보다 담긴 response 값을 꺼낸다.
-//        return new OAuthAttributes(attributes,
-//                userNameAttributeName,
-//                (String) response.get("name"),
-//                (String) response.get("email"),
-//                (String)response.get("id")
-//               );
+//    네이버 예시
+//    response = {
+//         id=2pWHrMsdf78996Y36za-qdY-Isddskdsf34dfvc,
+//         nickname=오옹,
+//         profile_image=https://ssl.pstatic.net/static/pwe/address/img_profile.png,
+//         age=20-29,
+//         gender=M,
+//         email=test@naver.com,
+//         mobile=010-1234-5678,
+//         mobile_e164=+821012345678,
+//         name=홍길동,
+//         birthday=01-10,
+//         birthyear=2000
+//        }
 //    }
-//
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");    // 네이버에서 받은 데이터에서 프로필 정보다 담긴 response 값을 꺼낸다.
+        return OAuthAttributes.builder()
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .name((String) response.get("name"))
+                .email((String) response.get("email"))
+                .username((String) response.get("id"))
+                .age_range((String) response.get("age"))
+                .birthday((String) response.get("birthday"))
+                .gender((String) response.get("gender"))
+                .provider("naver")
+                .build();
+    }
+
 //    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
 //
 //        String username = attributes.get(userNameAttributeName).toString();
