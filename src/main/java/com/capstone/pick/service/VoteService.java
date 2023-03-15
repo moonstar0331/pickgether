@@ -54,15 +54,13 @@ public class VoteService {
     public List<VoteDto> findSortedVotesByCategory(Category category, OrderCriteria orderBy) {
         List<Vote> votes = new ArrayList<>();
         if (orderBy.equals(OrderCriteria.LATEST)) {
-            votes = filterVotesByCategory(category, voteRepository.findAll(Sort.by(Sort.Direction.DESC, "createAt")));
+            votes = voteRepository.findAll(Sort.by(Sort.Direction.DESC, "createAt"));
         } else if (orderBy.equals(OrderCriteria.POPULAR)) {
-            votes = filterVotesByCategory(category, voteRepository.findAllOrderByPopular());
+            votes = voteRepository.findAllOrderByPopular();
         }
-        return votes.stream().map(VoteDto::from).collect(Collectors.toList());
-    }
-
-    public List<Vote> filterVotesByCategory(Category category, List<Vote> votes) {
-        return category.equals(Category.ALL) ? votes : votes.stream().filter(v -> v.getCategory().equals(category)).collect(Collectors.toList());
+        return category.equals(Category.ALL)
+                ? votes.stream().map(VoteDto::from).collect(Collectors.toList())
+                : votes.stream().filter(v -> v.getCategory().equals(category)).map(VoteDto::from).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
