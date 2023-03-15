@@ -52,21 +52,17 @@ public class VoteService {
     }
 
     public List<VoteDto> findSortedVotesByCategory(Category category, OrderCriteria orderBy) {
-        List<VoteDto> votes = new ArrayList<>();
-        if (category.equals(Category.ALL)) {
-            if (orderBy.equals(OrderCriteria.LATEST)) {
-                voteRepository.findAll(Sort.by(Sort.Direction.DESC, "createAt")).forEach(v -> votes.add(VoteDto.from(v)));
-            } else if (orderBy.equals(OrderCriteria.POPULAR)) {
-                voteRepository.findAllOrderByPopular().forEach(v -> votes.add(VoteDto.from(v)));
-            }
-        } else {
-            if (orderBy.equals(OrderCriteria.LATEST)) {
-                voteRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, "createAt")).forEach(v -> votes.add(VoteDto.from(v)));
-            } else if (orderBy.equals(OrderCriteria.POPULAR)) {
-                voteRepository.findByCategoryOrderByPopular(category).forEach(v -> votes.add(VoteDto.from(v)));
-            }
+        List<Vote> votes = new ArrayList<>();
+        if (orderBy.equals(OrderCriteria.LATEST)) {
+            votes = filterVotesByCategory(category, voteRepository.findAll(Sort.by(Sort.Direction.DESC, "createAt")));
+        } else if (orderBy.equals(OrderCriteria.POPULAR)) {
+            votes = filterVotesByCategory(category, voteRepository.findAllOrderByPopular());
         }
-        return votes;
+        return votes.stream().map(VoteDto::from).collect(Collectors.toList());
+    }
+
+    public List<Vote> filterVotesByCategory(Category category, List<Vote> votes) {
+        return category.equals(Category.ALL) ? votes : votes.stream().filter(v -> v.getCategory().equals(category)).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
