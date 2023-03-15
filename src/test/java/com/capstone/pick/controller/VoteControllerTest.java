@@ -6,6 +6,7 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormDto;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.UserDto;
@@ -67,14 +68,13 @@ class VoteControllerTest {
     @DisplayName("[view][GET] 홈페이지 - 인증이 없을 땐 로그인 페이지로 이동")
     @Test
     void noLoginUser_home() throws Exception {
-
         // when & then
         mvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
     }
 
-    // TODO : 타임라인 조회의 경우 추후에 정렬과 페이징이 적용되면 테스트를 수정 해야한다.
+    // TODO : 타임라인 조회의 경우 추후에 페이징이 적용되면 테스트를 수정 해야한다.
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("[view][GET] 투표 게시글 조회 - 정상 호출, 인증된 사용자")
     @Test
@@ -82,7 +82,7 @@ class VoteControllerTest {
         // given
 
         // when & then
-        mvc.perform(get("/timeline"))
+        mvc.perform(get("/timeline").param("category", Category.ALL.name()).param("orderBy", OrderCriteria.LATEST.name()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("/page/timeLine"))
@@ -94,6 +94,29 @@ class VoteControllerTest {
     void noLoginUser_timeline() throws Exception {
         // when
         mvc.perform(get("/timeline"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+
+        // then
+        then(voteService).shouldHaveNoInteractions();
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][GET] 투표 게시글 생성 페이지 - 정상 호출, 인증된 사용자")
+    @Test
+    void saveVote_GET() throws Exception {
+        // when & then
+        mvc.perform(get("/form"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(view().name("/page/form"));
+    }
+
+    @DisplayName("[view][GET] 투표 게시글 생성 페이지 - 인증이 없을 땐 로그인 페이지로 이동")
+    @Test
+    void noLoginUser_saveVote() throws Exception {
+        // when
+        mvc.perform(get("/form"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
 
@@ -127,21 +150,6 @@ class VoteControllerTest {
 
         // then
         then(voteService).should().saveVote(any(VoteDto.class), Mockito.<VoteOptionDto>anyList(), Mockito.<HashtagDto>anyList());
-    }
-
-    @DisplayName("[view][GET] 투표 게시글 수정 페이지 - 인증이 없을 땐 로그인 페이지로 이동")
-    @Test
-    void noLoginUser_editVote() throws Exception {
-        // given
-        long voteId = 1L;
-
-        // when
-        mvc.perform(get("/" + voteId + "/edit"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("**/login"));
-
-        // then
-        then(voteService).shouldHaveNoInteractions();
     }
 
     @WithMockUser
@@ -186,6 +194,21 @@ class VoteControllerTest {
 
         // then
         then(voteService).should().getVote(voteId);
+    }
+
+    @DisplayName("[view][GET] 투표 게시글 수정 페이지 - 인증이 없을 땐 로그인 페이지로 이동")
+    @Test
+    void noLoginUser_editVote() throws Exception {
+        // given
+        long voteId = 1L;
+
+        // when
+        mvc.perform(get("/" + voteId + "/edit"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+
+        // then
+        then(voteService).shouldHaveNoInteractions();
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
@@ -250,7 +273,7 @@ class VoteControllerTest {
                 .andExpect(view().name("/page/search"));
     }
 
-    @DisplayName("[view][GET] 검색 페이지 - 정상 호출")
+    @DisplayName("[view][GET] 검색 페이지 - 인증이 없을 땐 로그인 페이지로 이동")
     @Test
     void noLoginUser_search_GET() throws Exception {
         // when & then
