@@ -1,52 +1,84 @@
 insert into user(user_Id, user_password, email, nickname, memo, birthday, created_at)
-values ('user', '{noop}password', 'email@email.com', 'nick', 'memo', now(), now());
+values ('user', '{noop}password', 'email@email.com', 'nick', 'memo', now(), '2023-03-13T00:00:00');
 
 -- 게시글 수정
 insert into vote(category, content, create_at, display_range, expired_at, is_multi_pick, modified_at, title, user_id)
-values('WORRY', 'This is #content', now(), 'FRIEND', now(), false, now(), 'title', 'user');
+values ('WORRY', 'This is #content', '2023-03-14T00:00:00', 'FRIEND', now(), false, '2023-03-14T00:00:00', 'title',
+        'user');
 
 insert into vote_option(content, image_link, vote_id)
-values('new option1', '/link/image1.png', 1);
+values ('new option1', '/link/image1.png', 1);
 
 insert into vote_option(content, image_link, vote_id)
-values('new option2', '/link/image2.png', 1);
+values ('new option2', '/link/image2.png', 1);
 
 insert into hashtag(content)
-values('content');
+values ('content');
 
 insert into vote_hashtag(hashtag_id, vote_id)
-values(1, 1);
+values (1, 1);
 
 -- 게시글 정렬
 insert into user(user_Id, user_password, email, nickname, memo, birthday, created_at)
-values ('user2', '{noop}password', 'email@email.com', 'nick', 'memo', now(), now());
+values ('user2', '{noop}password', 'email@email.com', 'nick', 'memo', now(), '2023-03-13T00:00:00');
+
+insert into pick(user_id, vote_option_id)
+values ('user', 1);
+
+insert into pick(user_id, vote_option_id)
+values ('user2', 1);
 
 insert into vote(category, content, create_at, display_range, expired_at, is_multi_pick, modified_at, title, user_id)
-values('FREE', 'This is FREE', now(), 'FRIEND', now(), false, now(), 'FREE', 'user2');
+values ('FREE', 'This is #freecontent2', '2023-03-14T01:00:00', 'FRIEND', now(), false, '2023-03-14T01:00:00', 'FREE',
+        'user2');
 
 insert into hashtag(content)
-values('content2');
+values ('freecontent2');
 
 insert into vote_hashtag(hashtag_id, vote_id)
-values(1, 2);
-
-insert into vote_hashtag(hashtag_id, vote_id)
-values(2, 2);
+values (2, 2);
 
 insert into vote(category, content, create_at, display_range, expired_at, is_multi_pick, modified_at, title, user_id)
-values('SURVEY', 'This is SURVEY', now(), 'FRIEND', now(), false, now(), 'SURVEY', 'user2');
+values ('SURVEY', 'This is SURVEY. this #is #hashtag', '2023-03-14T02:00:00', 'FRIEND', now(), false,
+        '2023-03-14T02:00:00', 'SURVEY', 'user2');
+
+insert into hashtag(content)
+values ('is');
+
+insert into hashtag(content)
+values ('hashtag');
 
 insert into vote_hashtag(hashtag_id, vote_id)
-values(1, 3);
+values (3, 3);
+
+insert into vote_hashtag(hashtag_id, vote_id)
+values (4, 3);
 
 insert into vote(category, content, create_at, display_range, expired_at, is_multi_pick, modified_at, title, user_id)
-values('ENTERPRISE', 'This is ENTERPRISE', now(), 'FRIEND', now(), false, now(), 'ENTERPRISE', 'user2');
+values ('ENTERPRISE', '#This is ENTERPRISE', '2023-03-14T03:00:00', 'FRIEND', now(), false, '2023-03-14T03:00:00',
+        'ENTERPRISE', 'user2');
+
+insert into hashtag(content)
+values ('This');
 
 insert into vote_hashtag(hashtag_id, vote_id)
-values(1, 4);
+values (5, 4);
+
+insert into vote_option(content, image_link, vote_id)
+values ('new option1', '/link/image1.png', 4);
+
+insert into vote_option(content, image_link, vote_id)
+values ('new option2', '/link/image2.png', 4);
+
+insert into pick(user_id, vote_option_id)
+values ('user2', 3);
 
 insert into vote(category, content, create_at, display_range, expired_at, is_multi_pick, modified_at, title, user_id)
-values('WORRY', 'This is WORRY', now(), 'FRIEND', now(), false, now(), 'WORRY', 'user2');
+values ('WORRY', '#ThisIsWORRY', '2023-03-14T04:00:00', 'FRIEND', now(), false, '2023-03-14T04:00:00', 'WORRY',
+        'user2');
+
+insert into hashtag(content)
+values ('ThisIsWORRY');
 
 insert into vote_hashtag(hashtag_id, vote_id)
-values(1, 5);
+values (6, 5);
