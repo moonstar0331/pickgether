@@ -3,6 +3,7 @@ package com.capstone.pick.service;
 import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteDto;
@@ -14,6 +15,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,7 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.*;
@@ -48,13 +52,12 @@ public class VoteServiceTest {
     @Test
     void findAllVotes() {
         // given
-        Long voteId = 1L;
         List<Vote> votes = new ArrayList<>();
 
         User user = createUser();
 
-        Vote vote1 = createVote(1L, user, "title1", "content1");
-        Vote vote2 = createVote(2L, user, "title2", "content2");
+        Vote vote1 = createVote(1L, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+        Vote vote2 = createVote(2L, user, "title2", "content2", Category.FREE, LocalDateTime.now());
 
         votes.add(vote1);
         votes.add(vote2);
@@ -77,12 +80,71 @@ public class VoteServiceTest {
         assertThat(voteDtos.size()).isEqualTo(2);
     }
 
+    @MockitoSettings(strictness = Strictness.WARN)
+    @DisplayName("타임라인을 조회하면, 카테고리와 정렬기준에 따른 투표 게시글을 타임라인에 반환한다.")
+    @Test
+    void findSortedVotesByCategory() {
+        // given
+        User user = createUser();
+        Vote vote1 = createVote(1L, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+        Vote vote2 = createVote(2L, user, "title2", "content2", Category.FREE, LocalDateTime.now().minusHours(1));
+        Vote vote3 = createVote(3L, user, "title3", "content3", Category.WORRY, LocalDateTime.now().minusHours(2));
+        Vote vote4 = createVote(4L, user, "title4", "content4", Category.SURVEY, LocalDateTime.now().minusHours(3));
+        Vote vote5 = createVote(5L, user, "title5", "content5", Category.ENTERPRISE, LocalDateTime.now().minusHours(4));
+        VoteOption option1 = createVoteOption(vote1, "option1", "/image/link1");
+        VoteOption option2 = createVoteOption(vote1, "option2", "/image/link2");
+        VoteOption option3 = createVoteOption(vote2, "option1", "/image/link3");
+        ReflectionTestUtils.setField(option1, "id", 1L);
+        ReflectionTestUtils.setField(option2, "id", 2L);
+        ReflectionTestUtils.setField(option3, "id", 3L);
+        Pick pick1 = createPick(user, option1);
+        Pick pick2 = createPick(user, option2);
+        Pick pick3 = createPick(user, option3);
+        ReflectionTestUtils.setField(pick1, "id", 1L);
+        ReflectionTestUtils.setField(pick2, "id", 2L);
+        ReflectionTestUtils.setField(pick3, "id", 3L);
+
+        given(voteRepository.findAll(Sort.by(Sort.Direction.DESC, "modifiedAt"))).willReturn(List.of(vote1, vote2, vote3, vote4, vote5));
+        given(voteRepository.findByCategory(Category.FREE, Sort.by(Sort.Direction.DESC, "modifiedAt"))).willReturn(List.of(vote1, vote2));
+        given(voteRepository.findAllOrderByPopular()).willReturn(List.of(vote2, vote1, vote3, vote4, vote5));
+        given(voteRepository.findByCategoryOrderByPopular(Category.FREE)).willReturn(List.of(vote2, vote1));
+
+        // when
+        List<VoteDto> All_LATEST = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.LATEST);
+        List<VoteDto> All_POPULAR = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.POPULAR);
+        List<VoteDto> FREE_LATEST = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.LATEST);
+        List<VoteDto> FREE_POPULAR = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.POPULAR);
+
+        // then
+        assertThat(All_LATEST.get(0))
+                .hasFieldOrPropertyWithValue("title", vote1.getTitle())
+                .hasFieldOrPropertyWithValue("category", vote1.getCategory())
+                .hasFieldOrPropertyWithValue("modifiedAt", vote1.getModifiedAt());
+        assertThat(All_POPULAR.get(0))
+                .hasFieldOrPropertyWithValue("title", vote2.getTitle())
+                .hasFieldOrPropertyWithValue("category", vote2.getCategory())
+                .hasFieldOrPropertyWithValue("modifiedAt", vote2.getModifiedAt());
+        assertThat(FREE_LATEST.get(0))
+                .hasFieldOrPropertyWithValue("title", vote1.getTitle())
+                .hasFieldOrPropertyWithValue("category", vote1.getCategory())
+                .hasFieldOrPropertyWithValue("modifiedAt", vote1.getModifiedAt());
+        assertThat(FREE_POPULAR.get(0))
+                .hasFieldOrPropertyWithValue("title", vote2.getTitle())
+                .hasFieldOrPropertyWithValue("category", vote2.getCategory())
+                .hasFieldOrPropertyWithValue("modifiedAt", vote2.getModifiedAt());
+
+        assertThat(All_LATEST.size()).isEqualTo(5);
+        assertThat(All_POPULAR.size()).isEqualTo(5);
+        assertThat(FREE_LATEST.size()).isEqualTo(2);
+        assertThat(FREE_POPULAR.size()).isEqualTo(2);
+    }
+
     @DisplayName("투표 게시글 정보를 입력하면, 투표 게시글을 저장한다.")
     @Test
     void saveVote() {
         // given
         User user = createUser();
-        Vote vote = createVote(1L, user, "new title", "new content #hi");
+        Vote vote = createVote(1L, user, "new title", "new content #hi", Category.FREE, LocalDateTime.now());
         VoteOption option1 = createVoteOption(vote, "option1", "/image/link1");
         VoteOption option2 = createVoteOption(vote, "option2", "/image/link2");
         List<VoteOptionDto> options = List.of(VoteOptionDto.from(option1), VoteOptionDto.from(option2));
@@ -117,7 +179,7 @@ public class VoteServiceTest {
     void updateVote() {
         // given
         User user = createUser();
-        Vote vote = createVote(1L, user, "title", "content");
+        Vote vote = createVote(1L, user, "title", "content", Category.FREE, LocalDateTime.now());
         VoteDto voteDto = createVoteDto("new title", "new content");
 
         VoteOption option1 = createVoteOption(vote, "option1", "/image/link1");
@@ -216,17 +278,24 @@ public class VoteServiceTest {
                 .build();
     }
 
+    private static Pick createPick(User user, VoteOption voteOption) {
+        return Pick.builder()
+                .user(user)
+                .voteOption(voteOption)
+                .build();
+    }
+
     private static Hashtag createHashtag(String content) {
         return Hashtag.builder().content(content).build();
     }
 
-    private static Vote createVote(Long id, User user, String title, String content) {
+    private static Vote createVote(Long id, User user, String title, String content, Category category, LocalDateTime createAt) {
         Vote vote = Vote.builder()
                 .user(user)
                 .title(title)
                 .content(content)
-                .category(Category.FREE)
-                .createAt(LocalDateTime.now())
+                .category(category)
+                .createAt(createAt)
                 .expiredAt(LocalDateTime.now().plusDays(3))
                 .isMultiPick(true)
                 .displayRange(DisplayRange.PUBLIC)
