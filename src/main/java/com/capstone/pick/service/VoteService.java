@@ -1,6 +1,9 @@
 package com.capstone.pick.service;
 
-import com.capstone.pick.domain.*;
+import com.capstone.pick.domain.Hashtag;
+import com.capstone.pick.domain.User;
+import com.capstone.pick.domain.Vote;
+import com.capstone.pick.domain.VoteHashtag;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.*;
@@ -12,9 +15,13 @@ import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.dto.VoteOptionDto;
+import com.capstone.pick.dto.HashtagDto;
+import com.capstone.pick.dto.VoteDto;
+import com.capstone.pick.dto.VoteOptionDto;
 import com.capstone.pick.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,30 +51,22 @@ public class VoteService {
                 .collect(Collectors.toList());
     }
 
-    public List<PostDto> findAllVotesByCategoryAndOrderCriteria(Category category, OrderCriteria orderBy) {
-        // 1. 카테고리별 게시글 가져오기
-        List<Vote> votes = new ArrayList<>();
-        if(category.equals(Category.ALL)) {
-            for (Category c : Category.values()) {
-                votes.addAll(voteRepository.findByCategory(c));
+    public List<VoteDto> findSortedVotesByCategory(Category category, OrderCriteria orderBy) {
+        List<VoteDto> votes = new ArrayList<>();
+        if (category.equals(Category.ALL)) {
+            if (orderBy.equals(OrderCriteria.LATEST)) {
+                voteRepository.findAll(Sort.by(Sort.Direction.DESC, "createAt")).forEach(v -> votes.add(VoteDto.from(v)));
+            } else if (orderBy.equals(OrderCriteria.POPULAR)) {
+                voteRepository.findAllOrderByPopular().forEach(v -> votes.add(VoteDto.from(v)));
             }
-        } else votes.addAll(voteRepository.findByCategory(category));
-        List<PostDto> postList = new ArrayList<>();
-        for(Vote vote : votes) {
-            List<VoteHashtag> hashtags = voteHashtagRepository.findAllByVoteId(vote.getId());
-            postList.add(
-                    PostDto.builder()
-                            .VoteDto(VoteDto.from(vote))
-                            .voteHashtagDto(hashtags.stream()
-                                    .map(VoteHashtagDto::from)
-                                    .collect(Collectors.toList()))
-                            .build()
-            );
+        } else {
+            if (orderBy.equals(OrderCriteria.LATEST)) {
+                voteRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, "createAt")).forEach(v -> votes.add(VoteDto.from(v)));
+            } else if (orderBy.equals(OrderCriteria.POPULAR)) {
+                voteRepository.findByCategoryOrderByPopular(category).forEach(v -> votes.add(VoteDto.from(v)));
+            }
         }
-
-        // 2. 기준에 맞게 게시글 정렬하기
-
-        return postList;
+        return votes;
     }
 
     @Transactional(readOnly = true)

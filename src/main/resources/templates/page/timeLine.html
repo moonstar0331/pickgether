@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Pickgether</title>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min2.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/style2.css">
+    <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min2.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style2.css}">
 
     <!-- 픽게더 폰트 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,7 +82,7 @@
         <button type="button" class="btn btn-primary all-follow-btn border-start border-bottom">팔로우</button>
     </div>
 
-    <div th:each="post: ${posts}">
+    <div th:each="vote: ${votes}">
         <div>
             <header class="profile" style="margin-bottom: 10px;">
                 <div style="float: left;">
@@ -90,8 +90,8 @@
                 </div>
                 <div>
                     <section style="float: left; padding-left: 10px;">
-                        <div th:text="${post.getVoteDto().userDto.getNickname()}"/>
-                        <div th:text="${post.getVoteDto().userDto.getUserId()}"/>
+                        <div th:text="${vote.userDto.nickname}"/>
+                        <div th:text="${vote.userDto.userId}"/>
                     </section>
                     <!--Todo: 버튼으로 변경-->
                     <div align="right" style="margin-right: 15px">
@@ -102,15 +102,9 @@
                     </div>
                 </div>
             </header>
-
             <!--글 내용-->
-            <div style="padding-top: 5px;">
-                <section class="timeline-content-title" th:text="${post.getVoteDto().content}"/>
-
-                <!--해시태그-->
-                <p class="hashtag timeline-content-title">
-                    <span th:each="hashtag: ${post.getVoteHashtagDto()}">#[[${hashtag.getHashtagDto().content}]]&nbsp;</span>
-                </p>
+            <div class="m-2" style="padding-top: 5px;">
+                <div class="timeline-content-title" th:text="${vote.content}"/>
             </div>
 
             <!--투표-->
@@ -121,7 +115,7 @@
                          class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
                         <circle cx="8" cy="8" r="8"/>
                     </svg>
-                    <p class="vote-background-p" th:text="${post.getVoteDto().title}"/>
+                    <p class="vote-background-p" th:text="${vote.title}"/>
                 </div>
 
                 <div style="float: left;">
@@ -133,9 +127,7 @@
                         Best
                     </button>
                 </div>
-                <div align="right" style="color: white; margin-right: 15px; font-size: 20px;">
-                    D-5
-                </div>
+                <div th:text="${vote.createAt}" align="right" style="color: white; margin-right: 15px; font-size: 20px;"></div>
             </section>
         </div>
         <div style="margin-top: 10px" class="icons">

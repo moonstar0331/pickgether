@@ -4,7 +4,9 @@ import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.OrderCriteria;
-import com.capstone.pick.dto.*;
+import com.capstone.pick.dto.HashtagDto;
+import com.capstone.pick.dto.VoteDto;
+import com.capstone.pick.dto.VoteOptionDto;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteService;
@@ -53,8 +55,8 @@ public class VoteController {
     public String timeLine(@RequestParam(value = "category", required = false, defaultValue = "ALL") Category category,
                            @RequestParam(value = "orderBy", required = false, defaultValue = "LATEST") OrderCriteria orderBy,
                            Model model) {
-        List<PostDto> posts = voteService.findAllVotesByCategoryAndOrderCriteria(category, orderBy);
-        model.addAttribute("posts", posts);
+        List<VoteDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
+        model.addAttribute("votes", votes);
         model.addAttribute("category", category);
         model.addAttribute("orderBy", orderBy);
         return "/page/timeLine";
