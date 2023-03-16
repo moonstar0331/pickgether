@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="h-100" style="height: 150% !important;">
+<html xmlns:th="http://www.thymeleaf.org" class="h-100" style="height: 110% !important;">
 <head>
     <meta charset="UTF-8">
     <title>Pickgether</title>
 
     <!-- stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min2.css">
-    <link rel="stylesheet" type="text/css" href="css/style1.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/style2.css">
 
     <!-- 픽게더 폰트 -->
@@ -16,7 +16,7 @@
 </head>
 <body class="bg-linear-gradient py-5">
     <!-- 본문 -->
-    <div class="position-absolute center-center" style="margin-top: 200px; min-height: 100%;">
+    <div class="position-absolute center-center" style="margin-top: 30px; min-height: 100%;">
         <!-- 픽게더 타이틀 -->
         <div class="d-flex justify-content-center logo my-4">
             <p class="text-blue text-shadow-white mr-3">Pick</p>
@@ -32,7 +32,7 @@
                         <label>아이디</label>
                     </div>
                     <div>
-                        <input class="login-input px-3 py-2 mb-2" type="text" id="username" name="username" placeholder="아이디"
+                        <input class="login-input px-3 py-2 mb-2" type="text" id="username" name="username"
                                style="width: 80%">
                     </div>
 
@@ -42,14 +42,31 @@
                     </div>
                     <div>
                         <input class="login-input px-3 py-2 mb-2" type="password" id="password" name="password"
-                               placeholder="비밀번호" style="width: 80%">
+                               style="width: 80%">
                     </div>
+
+                    <!-- Todo: 비밀번호 규칙 부합 여부 확인하는 코드 추가 -->
+                    <div class="password-validate">
+                        <img src="/images/icons/cross-small.svg"
+                             style="width: 15px; height: auto;
+                             filter: invert(37%) sepia(21%) saturate(4534%) hue-rotate(334deg) brightness(108%) contrast(73%);">
+                        <label>대문자와 소문자, 특수문자가 포함되어 있어야 합니다.</label>
+                    </div>
+
                     <div style="text-align: left; margin-left: 60px;">
                         <label>비밀번호 확인</label>
                     </div>
                     <div>
                         <input class="login-input px-3 py-2 mb-2" type="password" id="password_check" name="password_check"
-                               placeholder="비밀번호 확인" style="width: 80%">
+                               style="width: 80%">
+                    </div>
+
+                    <!-- Todo: 비밀번호 동일 여부 판단 -->
+                    <div class="password-validate">
+                        <img src="/images/icons/cross-small.svg"
+                             style="width: 15px; height: auto;
+                             filter: invert(37%) sepia(21%) saturate(4534%) hue-rotate(334deg) brightness(108%) contrast(73%);">
+                        <label>동일한 비밀번호가 입력되지 않았습니다.</label>
                     </div>
 
                     <!-- 이메일 -->
@@ -58,7 +75,7 @@
                     </div>
                     <div>
                         <input class="login-input px-3 py-2 mb-2" type="email" id="email" name="email"
-                               placeholder="이메일" style="width: 80%">
+                               placeholder="email@domain.com" style="width: 80%">
                     </div>
 
                     <!-- 출생일 -->
@@ -76,7 +93,7 @@
                         <label style="display: block; text-align: left; margin-left: 60px;">Memo</label>
                     </div>
                     <div class="mb-3" style="width: 80%; display: block; margin: auto;">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" style="resize: none;"></textarea>
+                        <textarea placeholder="한 줄 소개" class="form-control" id="exampleFormControlTextarea1" rows="3" style="resize: none;"></textarea>
                     </div>
 
                     <button class="login-submit p-2 mb-2" type="submit" style="width: 80%">회원가입</button>
