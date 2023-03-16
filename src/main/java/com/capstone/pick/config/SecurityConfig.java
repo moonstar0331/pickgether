@@ -32,28 +32,30 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.httpBasic().disable()
-                .csrf().and()
-                .rememberMe().and()
-                .authorizeRequests(auth -> auth
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .antMatchers("/login").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/timeline")
-                .permitAll()
+                .csrf()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
+                    .rememberMe()
                 .and()
-                .oauth2Login() // 소셜로그인을 진행하는데
-                .loginPage("/login")
-                .defaultSuccessUrl("/timeline")
-                //.successHandler(authenticationSuccessHandler) //성공하면 커스텀한 핸들러에서 처리한다
-                .userInfoEndpoint() // 사용자 정보를 가져올 때
-                .userService(customOAuth2UserService); // 커스텀한 서비스에서 정보를 처리한다
-
+                    .authorizeRequests(auth -> auth
+                            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                            .antMatchers("/login").permitAll()
+                            .anyRequest().authenticated()
+                    )
+                    .formLogin()
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/timeline")
+                    .permitAll()
+                .and()
+                    .logout()
+                    .logoutSuccessUrl("/")
+                .and()
+                    .oauth2Login() // 소셜로그인을 진행하는데
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/timeline")
+                    //.successHandler(authenticationSuccessHandler) //성공하면 커스텀한 핸들러에서 처리한다
+                    .userInfoEndpoint() // 사용자 정보를 가져올 때
+                    .userService(customOAuth2UserService); // 커스텀한 서비스에서 정보를 처리한다
+        
         return http.build();
     }
 

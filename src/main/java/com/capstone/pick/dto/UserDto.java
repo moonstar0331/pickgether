@@ -22,6 +22,7 @@ public class UserDto {
 
     private String gender;
     private String age_range;
+    private String provider; // 가입방식
 
     public static UserDto from(User entity) {
         return UserDto.builder()
@@ -34,6 +35,7 @@ public class UserDto {
                 .createdAt(entity.getCreatedAt())
                 .gender(entity.getGender())
                 .age_range(entity.getAge_range())
+                .provider(entity.getProvider())
                 .build();
     }
 
@@ -47,6 +49,7 @@ public class UserDto {
                 .birthday(birthday)
                 .gender(gender)
                 .age_range(age_range)
+                .provider(provider)
                 .build();
     }
 }

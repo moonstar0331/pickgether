@@ -33,8 +33,8 @@ public class OAuthAttributes {
         else if (registrationId.equals("naver")) {
             return ofNaver(userNameAttributeName,attributes);
         }
-//        return ofGoogle(userNameAttributeName, attributes);
-        return ofKakao(userNameAttributeName, attributes);
+        return ofGoogle(userNameAttributeName, attributes);
+
     }
 //    카카오 예시
 //    attributes = {
@@ -120,14 +120,31 @@ public class OAuthAttributes {
                 .build();
     }
 
-//    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
-//
-//        String username = attributes.get(userNameAttributeName).toString();
-//        return new OAuthAttributes(attributes,
-//                userNameAttributeName,
-//                (String) attributes.get("name"),
-//                (String) attributes.get("email"),username
-//               );
-//    }
+//  구글 예시
+//  attributes = {
+//     sub=1130477235475676341,
+//     name=홍길동,
+//     given_name=길동,
+//     family_name=홍,
+//     picture=https://lh3.googleusercontent.com/a/AGNmyxZNq_Qc9vxL0BCrzoe4AZqlQ0wixlyY9IudBxRK=s96-c,
+//     email=test@gmail.com,
+//     email_verified=true,
+//     locale=ko
+//     }
+//   연령대, 성별, 생일 정보 받아올 수 없음.
+    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+
+        return OAuthAttributes.builder()
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .username((String) attributes.get(userNameAttributeName))
+                .age_range("비공개")
+                .birthday("비공개")
+                .gender("비공개")
+                .provider("google")
+                .build();
+    }
 
 }
