@@ -328,3 +328,10 @@
     text-align: left;
     margin-left: 60px;
 }
+
+.signup-hr {
+    width: 80px;
+    background-color: darkgray;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
