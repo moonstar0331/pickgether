@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="h-100" style="height: 135% !important;">
+<html xmlns:th="http://www.thymeleaf.org" class="h-100" style="height: 120% !important;">
 <head>
     <meta charset="UTF-8">
     <title>Pickgether</title>
@@ -24,33 +24,60 @@
         </div>
 
         <!-- 회원가입 창-->
-        <!-- 아이 -->
         <div class="mb-4">
             <form class="text-center">
                 <div>
                     <!-- 아이디 -->
-                    <input class="login-input px-3 py-2 mb-2" type="text" id="username" name="username" placeholder="아이디"
-                           style="width: 80%">
+                    <div style="text-align: left; margin-left: 60px;">
+                        <label>아이디</label>
+                    </div>
+                    <div>
+                        <input class="login-input px-3 py-2 mb-2" type="text" id="username" name="username" placeholder="아이디"
+                               style="width: 80%">
+                    </div>
 
                     <!-- 비밀번호, 비밀번호 확인 -->
-                    <input class="login-input px-3 py-2 mb-2" type="password" id="password" name="password"
-                           placeholder="비밀번호" style="width: 80%">
-                    <input class="login-input px-3 py-2 mb-2" type="password" id="password_check" name="password_check"
-                           placeholder="비밀번호 확인" style="width: 80%">
+                    <div style="text-align: left; margin-left: 60px;">
+                        <label>비밀번호</label>
+                    </div>
+                    <div>
+                        <input class="login-input px-3 py-2 mb-2" type="password" id="password" name="password"
+                               placeholder="비밀번호" style="width: 80%">
+                    </div>
+                    <div style="text-align: left; margin-left: 60px;">
+                        <label>비밀번호 확인</label>
+                    </div>
+                    <div>
+                        <input class="login-input px-3 py-2 mb-2" type="password" id="password_check" name="password_check"
+                               placeholder="비밀번호 확인" style="width: 80%">
+                    </div>
+
 
                     <!-- 이메일 -->
-                    <input class="login-input px-3 py-2 mb-2" type="email" id="email" name="email"
-                           placeholder="이메일" style="width: 80%">
+                    <div style="text-align: left; margin-left: 60px;">
+                        <label>이메일</label>
+                    </div>
+                    <div>
+                        <input class="login-input px-3 py-2 mb-2" type="email" id="email" name="email"
+                               placeholder="이메일" style="width: 80%">
+                    </div>
 
                     <!-- 출생일 -->
-                    <form class="login-input px-3 py-2 mb-2">
-                        <input type="date" name="birthday">
-                    </form>
+                    <div style="text-align: left; margin-left: 60px;">
+                        <label>출생일</label>
+                    </div>
+                    <div>
+                        <form class="login-input px-3 py-2 mb-2">
+                            <input type="date" name="birthday">
+                        </form>
+                    </div>
 
                     <!-- 메모 -->
+                    <div>
+                        <label style="display: block; text-align: left; margin-left: 60px;">Memo</label>
+                    </div>
                     <div class="mb-3" style="width: 80%; display: block; margin: auto;">
-                        <label for="exampleFormControlTextarea1" class="memo">Memo</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" style="resize: none;"></textarea>
                     </div>
 
                     <button class="login-submit p-2 mb-2" type="submit" style="width: 80%">회원가입</button>
