@@ -4,6 +4,8 @@ import com.capstone.pick.domain.Hashtag;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteHashtag;
+import com.capstone.pick.domain.constant.Category;
+import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.VoteDto;
@@ -11,6 +13,7 @@ import com.capstone.pick.dto.VoteOptionDto;
 import com.capstone.pick.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +40,24 @@ public class VoteService {
         return votes.stream()
                 .map(VoteDto::from)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<VoteDto> findSortedVotesByCategory(Category category, OrderCriteria orderBy) {
+        List<Vote> votes = new ArrayList<>();
+        switch (orderBy) {
+            case LATEST:
+                votes = category.equals(Category.ALL)
+                        ? voteRepository.findAll(Sort.by(Sort.Direction.DESC, "modifiedAt"))
+                        : voteRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, "modifiedAt"));
+                break;
+            case POPULAR:
+                votes = category.equals(Category.ALL)
+                        ? voteRepository.findAllOrderByPopular()
+                        : voteRepository.findByCategoryOrderByPopular(category);
+                break;
+        }
+        return votes.stream().map(VoteDto::from).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -81,50 +102,51 @@ public class VoteService {
         });
     }
 
-    public void updateVote(Long voteId, VoteDto voteDto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) {
-         try {
-             Vote vote = voteRepository.getReferenceById(voteId);
-             User user = userRepository.getReferenceById(voteDto.getUserDto().getUserId());
+    public void updateVote(Long voteId, VoteDto
+            voteDto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) {
+        try {
+            Vote vote = voteRepository.getReferenceById(voteId);
+            User user = userRepository.getReferenceById(voteDto.getUserDto().getUserId());
 
-             if (vote.getUser().equals(user)) {
-                 if (!voteDto.getTitle().equals(vote.getTitle())) {
-                     vote.changeTitle(voteDto.getTitle());
-                 }
-                 if (voteDto.getCategory() != vote.getCategory()) {
-                     vote.changeCategory(voteDto.getCategory());
-                 }
-                 if (voteDto.getExpiredAt() != vote.getExpiredAt()) {
-                     vote.changeExpiredAt(voteDto.getExpiredAt());
-                 }
-                 if (voteDto.isMultiPick() != vote.isMultiPick()) {
-                     vote.changeIsMultiPick(voteDto.isMultiPick());
-                 }
-                 if (voteDto.getDisplayRange() != vote.getDisplayRange()) {
-                     vote.changeDisplayRange(voteDto.getDisplayRange());
-                 }
-                 if (!voteDto.getContent().equals(vote.getContent())) {
-                     vote.changeContent(voteDto.getContent());
+            if (vote.getUser().equals(user)) {
+                if (!voteDto.getTitle().equals(vote.getTitle())) {
+                    vote.changeTitle(voteDto.getTitle());
+                }
+                if (voteDto.getCategory() != vote.getCategory()) {
+                    vote.changeCategory(voteDto.getCategory());
+                }
+                if (voteDto.getExpiredAt() != vote.getExpiredAt()) {
+                    vote.changeExpiredAt(voteDto.getExpiredAt());
+                }
+                if (voteDto.isMultiPick() != vote.isMultiPick()) {
+                    vote.changeIsMultiPick(voteDto.isMultiPick());
+                }
+                if (voteDto.getDisplayRange() != vote.getDisplayRange()) {
+                    vote.changeDisplayRange(voteDto.getDisplayRange());
+                }
+                if (!voteDto.getContent().equals(vote.getContent())) {
+                    vote.changeContent(voteDto.getContent());
 
-                     voteHashtagRepository.findAllByVoteId(voteId).forEach(vh -> hashtagRepository.delete(vh.getHashtag()));
-                     voteHashtagRepository.deleteAllByVoteId(voteId);
+                    voteHashtagRepository.findAllByVoteId(voteId).forEach(vh -> hashtagRepository.delete(vh.getHashtag()));
+                    voteHashtagRepository.deleteAllByVoteId(voteId);
 
-                     List<Hashtag> savedHashtags = hashtagDtos.stream()
-                             .map(h -> hashtagRepository.save(h.toEntity()))
-                             .collect(Collectors.toList());
+                    List<Hashtag> savedHashtags = hashtagDtos.stream()
+                            .map(h -> hashtagRepository.save(h.toEntity()))
+                            .collect(Collectors.toList());
 
-                     savedHashtags.forEach(hashtag -> {
-                         voteHashtagRepository.save(
-                                 VoteHashtag.builder()
-                                         .vote(vote)
-                                         .hashtag(hashtag)
-                                         .build());
-                     });
-                 }
-                 // TODO : 투표 선택지 수정 여부, 수정 가능한 범위 등 상의 후에 voteOption update 작성할 예정입니다
-             }
-         } catch (EntityNotFoundException e) {
-             log.warn("투표 게시글 수정 실패. 게시글을 수정하는데 필요한 정보를 찾을 수 없습니다 - {}", e.getLocalizedMessage());
-         }
+                    savedHashtags.forEach(hashtag -> {
+                        voteHashtagRepository.save(
+                                VoteHashtag.builder()
+                                        .vote(vote)
+                                        .hashtag(hashtag)
+                                        .build());
+                    });
+                }
+                // TODO : 투표 선택지 수정 여부, 수정 가능한 범위 등 상의 후에 voteOption update 작성할 예정입니다
+            }
+        } catch (EntityNotFoundException e) {
+            log.warn("투표 게시글 수정 실패. 게시글을 수정하는데 필요한 정보를 찾을 수 없습니다 - {}", e.getLocalizedMessage());
+        }
     }
 
     public void deleteVote(Long voteId, String userId) {
