@@ -20,6 +20,9 @@ values (1, 1);
 insert into user(user_Id, user_password, email, nickname, memo, birthday, created_at)
 values ('user2', '{noop}password', 'email@email.com', 'nick2', 'memo', now(), '2023-03-13T00:00:00');
 
+insert into user(user_Id, user_password, email, nickname, memo, birthday, created_at)
+values ('user3', '{noop}password', 'email@email.com', 'nick3', 'memo', now(), '2023-03-13T00:00:00');
+
 insert into pick(user_id, vote_option_id)
 values ('user', 1);
 
@@ -86,3 +89,9 @@ values (1, 'user', '재밌다', now(), now());
 
 insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
 values (1, 'user2', '재밌냐?', now(), now());
+
+insert into comment_like(vote_comment_id, user_id)
+values (1, 'user2');
+
+insert into comment_like(vote_comment_id, user_id)
+values (2, 'user3');

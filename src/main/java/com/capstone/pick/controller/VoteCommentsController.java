@@ -1,7 +1,8 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.CommentForm;
-import com.capstone.pick.dto.CommentDto;
+import com.capstone.pick.dto.CommentLikeDto;
+import com.capstone.pick.dto.CommentPostDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.VoteCommentService;
@@ -10,10 +11,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -29,10 +31,16 @@ public class VoteCommentsController {
      */
     @GetMapping("/{voteId}/comments")
     public String readComments(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, Model model) {
-        List<CommentDto> comments = voteCommentService.readComment(voteId);
-        model.addAttribute("voteId", voteId);
+        List<CommentPostDto> commentPosts = voteCommentService.readComment(voteId).stream()
+                .map(c -> CommentPostDto.builder()
+                        .commentDto(c)
+                        .likeCount(voteCommentService.getLikeCount(c.getId()))
+                        .likeId(voteCommentService.findLikeId(c.getId(), votePrincipal.toDto().getUserId()))
+                        .build())
+                .collect(Collectors.toList());
+
         model.addAttribute("userId", votePrincipal.toDto().getUserId());
-        model.addAttribute("comments", comments);
+        model.addAttribute("commentPosts", commentPosts);
         return "page/comments";
     }
 
@@ -82,6 +90,39 @@ public class VoteCommentsController {
     public String deleteComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
                                 @PathVariable Long voteId, @PathVariable Long commentId) throws UserMismatchException {
         voteCommentService.deleteComment(commentId, votePrincipal.toDto().getUserId());
+        return "redirect:/" + voteId + "/comments";
+    }
+
+    /**
+     * 댓글 좋아요를 저장한다
+     *
+     * @param votePrincipal 사용자
+     * @param voteId        게시글 id
+     * @param commentId     투표 댓글 id
+     * @return redirection to GET
+     */
+    @PostMapping("/{voteId}/comments/{commentId}/like")
+    public String saveLike(@AuthenticationPrincipal VotePrincipal votePrincipal,
+                           @PathVariable Long voteId, @PathVariable Long commentId) {
+        voteCommentService.saveCommentLike(CommentLikeDto.builder()
+                .voteCommentId(commentId)
+                .userDto(votePrincipal.toDto())
+                .build());
+        return "redirect:/" + voteId + "/comments";
+    }
+
+    /**
+     * 댓글 좋아요를 삭제한다
+     *
+     * @param votePrincipal 사용자
+     * @param voteId        게시글 id
+     * @param likeId        댓글 좋아요 id
+     * @return redirection to GET
+     */
+    @PostMapping("/{voteId}/comments/{likeId}/deleteLike")
+    public String deleteLike(@AuthenticationPrincipal VotePrincipal votePrincipal,
+                             @PathVariable Long voteId, @PathVariable Long likeId) {
+        voteCommentService.deleteCommentLike(likeId, votePrincipal.toDto().getUserId());
         return "redirect:/" + voteId + "/comments";
     }
 }
