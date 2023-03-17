@@ -89,8 +89,6 @@ public class VoteServiceTest {
         Vote vote1 = createVote(1L, user, "title1", "content1", Category.FREE, LocalDateTime.now());
         Vote vote2 = createVote(2L, user, "title2", "content2", Category.FREE, LocalDateTime.now().minusHours(1));
         Vote vote3 = createVote(3L, user, "title3", "content3", Category.WORRY, LocalDateTime.now().minusHours(2));
-        Vote vote4 = createVote(4L, user, "title4", "content4", Category.SURVEY, LocalDateTime.now().minusHours(3));
-        Vote vote5 = createVote(5L, user, "title5", "content5", Category.ENTERPRISE, LocalDateTime.now().minusHours(4));
         VoteOption option1 = createVoteOption(vote1, "option1", "/image/link1");
         VoteOption option2 = createVoteOption(vote1, "option2", "/image/link2");
         VoteOption option3 = createVoteOption(vote2, "option1", "/image/link3");
@@ -104,9 +102,9 @@ public class VoteServiceTest {
         ReflectionTestUtils.setField(pick2, "id", 2L);
         ReflectionTestUtils.setField(pick3, "id", 3L);
 
-        given(voteRepository.findAll(Sort.by(Sort.Direction.DESC, "modifiedAt"))).willReturn(List.of(vote1, vote2, vote3, vote4, vote5));
+        given(voteRepository.findAll(Sort.by(Sort.Direction.DESC, "modifiedAt"))).willReturn(List.of(vote1, vote2, vote3));
         given(voteRepository.findByCategory(Category.FREE, Sort.by(Sort.Direction.DESC, "modifiedAt"))).willReturn(List.of(vote1, vote2));
-        given(voteRepository.findAllOrderByPopular()).willReturn(List.of(vote2, vote1, vote3, vote4, vote5));
+        given(voteRepository.findAllOrderByPopular()).willReturn(List.of(vote2, vote1, vote3));
         given(voteRepository.findByCategoryOrderByPopular(Category.FREE)).willReturn(List.of(vote2, vote1));
 
         // when
@@ -133,8 +131,8 @@ public class VoteServiceTest {
                 .hasFieldOrPropertyWithValue("category", vote2.getCategory())
                 .hasFieldOrPropertyWithValue("modifiedAt", vote2.getModifiedAt());
 
-        assertThat(All_LATEST.size()).isEqualTo(5);
-        assertThat(All_POPULAR.size()).isEqualTo(5);
+        assertThat(All_LATEST.size()).isEqualTo(3);
+        assertThat(All_POPULAR.size()).isEqualTo(3);
         assertThat(FREE_LATEST.size()).isEqualTo(2);
         assertThat(FREE_POPULAR.size()).isEqualTo(2);
     }
