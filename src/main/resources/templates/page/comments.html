@@ -44,8 +44,8 @@
                         <div class="text-dark text-bold" th:text="${comment.userDto.nickname}"></div>
                         <div class="mr-2 d-flex">
                             <th:block th:if="${comment.userDto.userId != userId}">
-                                <form method="post">
-                                    <button class="text-bold bg-none border-none" onclick="beforeCheck('이 댓글에 공감하십니까?')"
+                                <form method="post" onsubmit="return beforeCheck('이 댓글에 공감하십니까?')">
+                                    <button class="text-bold bg-none border-none"
                                             type="submit">공감
                                     </button>
                                 </form>
@@ -54,9 +54,9 @@
                                 <button th:id="${comment.id}" class="text-bold bg-none border-none"
                                         onclick="click_editCommentBtn(this.id)">수정
                                 </button>
-                                <form method="post"
+                                <form method="post" onsubmit="return beforeCheck('정말 제출하시겠습니까?')"
                                       th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getId()} + '/delete'">
-                                    <button class="text-bold bg-none border-none" onclick="beforeCheck('댓글을 삭제하시겠습니까?')"
+                                    <button class="text-bold bg-none border-none"
                                             type="submit">삭제
                                     </button>
                                 </form>
@@ -73,7 +73,11 @@
                             </button>
                         </form>
                     </div>
-                    <div th:text="${#temporals.format(comment.modifiedAt, 'yy/MM/dd HH:mm')}" class="small"></div>
+                    <div class="d-flex">
+                        <div th:text="${#temporals.format(comment.modifiedAt, 'yy/MM/dd HH:mm')}" class="mr-2"></div>
+                        <img src="/images/icons/like.png" style="height: 15px;"/>
+                        <div></div>
+                    </div>
                 </div>
             </div>
         </th:block>
