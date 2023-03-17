@@ -1,11 +1,13 @@
 package com.capstone.pick.service;
 
+import com.capstone.pick.domain.CommentLike;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteComment;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.dto.CommentDto;
+import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.CommentLikeRepository;
@@ -126,6 +128,76 @@ public class VoteCommentServiceTest {
         then(voteCommentRepository).should().delete(any(VoteComment.class));
     }
 
+    @DisplayName("댓글 좋아요를 저장한다.")
+    @Test
+    void saveCommentLike() {
+        // given
+        User user1 = createUser("user1", "nick1");
+        Vote vote = createVote(1L, user1);
+        VoteComment voteComment = createVoteComment(1L, user1, vote, "content");
+        CommentLikeDto likeDto = createLikeDto(1L, UserDto.from(user1));
+
+        given(userRepository.getReferenceById(anyString())).willReturn(user1);
+        given(voteCommentRepository.getReferenceById(anyLong())).willReturn(voteComment);
+
+        // when
+        voteCommentService.saveCommentLike(likeDto);
+
+        // then
+        then(userRepository).should().getReferenceById(anyString());
+        then(voteCommentRepository).should().getReferenceById(anyLong());
+        then(commentLikeRepository).should().save(any(CommentLike.class));
+    }
+
+    @DisplayName("댓글 좋아요를 삭제한다.")
+    @Test
+    void deleteCommentLike() {
+        // given
+        User user1 = createUser("user1", "nick1");
+        Vote vote = createVote(1L, user1);
+        VoteComment voteComment = createVoteComment(1L, user1, vote, "content");
+        CommentLike like = createCommentLike(1L, voteComment, user1);
+
+        given(userRepository.getReferenceById(anyString())).willReturn(user1);
+        given(commentLikeRepository.getReferenceById(anyLong())).willReturn(like);
+
+        // when
+        voteCommentService.deleteCommentLike(like.getId(), user1.getUserId());
+
+        // then
+        then(userRepository).should().getReferenceById(anyString());
+        then(commentLikeRepository).should().getReferenceById(anyLong());
+        then(commentLikeRepository).should().delete(any(CommentLike.class));
+    }
+
+    @DisplayName("댓글에 눌린 좋아요 개수를 반환한다.")
+    @Test
+    void getLikeCount() {
+        // given
+        Long commentId = 1L;
+        given(commentLikeRepository.countByVoteCommentId(anyLong())).willReturn(1L);
+
+        // when
+        voteCommentService.getLikeCount(commentId);
+
+        // then
+        then(commentLikeRepository).should().countByVoteCommentId(anyLong());
+    }
+
+    @DisplayName("댓글 id와 유저 id를 받으면, 존재하는 좋아요 id를 반환한다.")
+    @Test
+    void findLikeId() {
+        // given
+        Long commentId = 1L;
+        String userId = "user";
+
+        // when
+        voteCommentService.findLikeId(commentId, userId);
+
+        // then
+        then(commentLikeRepository).should().findByVoteCommentIdAndUserUserId(anyLong(), anyString());
+    }
+
     private static User createUser(String userId, String nickname) {
         return User.builder()
                 .userId(userId)
@@ -170,6 +242,22 @@ public class VoteCommentServiceTest {
                 .userDto(userDto)
                 .content(content)
                 .createAt(LocalDateTime.now())
+                .build();
+    }
+
+    private static CommentLike createCommentLike(Long id, VoteComment voteComment, User user) {
+        CommentLike like = CommentLike.builder()
+                .voteComment(voteComment)
+                .user(user)
+                .build();
+        ReflectionTestUtils.setField(like, "id", id);
+        return like;
+    }
+
+    private static CommentLikeDto createLikeDto(Long commentId, UserDto userDto) {
+        return CommentLikeDto.builder()
+                .userDto(userDto)
+                .voteCommentId(commentId)
                 .build();
     }
 }
