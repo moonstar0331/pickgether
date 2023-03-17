@@ -90,6 +90,9 @@ values (1, 'user', '재밌다', now(), now());
 insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
 values (1, 'user2', '재밌냐?', now(), now());
 
+insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
+values (1, 'user3', '재미없어', now(), now());
+
 insert into comment_like(vote_comment_id, user_id)
 values (1, 'user2');
 

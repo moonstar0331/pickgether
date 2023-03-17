@@ -92,7 +92,21 @@ function beforeCheck(m) {
 }
 
 function click_editCommentBtn(id) {
-    $("#" + id).css("display", "none");
+    $("#defaultBtns" + id).css("display", "none");
     $("#content" + id).css("display", "none");
+    $("#editingBtns" + id).css("display", "block");
     $("#form" + id).css("display", "block");
+}
+
+function click_cancleEditBtn(id) {
+    $("#defaultBtns" + id).css("display", "flex");
+    $("#content" + id).css("display", "block");
+    $("#editingBtns" + id).css("display", "none");
+    $("#form" + id).css("display", "none");
+}
+
+// 투표 댓글 수정 textarea 자동 높이 조절
+function autoResizeTextarea(element) {
+    element.style.height = "auto";
+    element.style.height = (element.scrollHeight)+"px";
 }

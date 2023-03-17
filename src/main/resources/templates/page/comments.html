@@ -31,7 +31,7 @@
         </div>
     </header>
     <div class="mb-3">
-        <th:block th:each="comment : ${comments}">
+        <th:block th:each="comment : ${commentPosts}">
             <div class="d-flex text-muted pl-3 pt-3 border-bottom">
                 <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="32" height="32"
                      xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
@@ -41,42 +41,100 @@
                 </svg>
                 <div class="pb-3 mb-0 w-100 small lh-sm">
                     <div class="d-flex justify-content-between mb-1">
-                        <div class="text-dark text-bold" th:text="${comment.userDto.nickname}"></div>
+                        <div class="text-dark text-bold" th:text="${comment.getCommentDto().userDto.nickname}"></div>
                         <div class="mr-2 d-flex">
-                            <th:block th:if="${comment.userDto.userId != userId}">
-                                <form method="post" onsubmit="return beforeCheck('이 댓글에 공감하십니까?')">
-                                    <button class="text-bold bg-none border-none"
-                                            type="submit">공감
-                                    </button>
-                                </form>
+                            <th:block th:if="${comment.getCommentDto().userDto.userId != userId}">
+                                <th:block th:if="${comment.getLikeId() == -1}">
+                                    <form method="post" onsubmit="return beforeCheck('이 댓글에 공감하십니까?')"
+                                          th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getCommentDto().getId()} + '/like'">
+                                        <button class="text-bold bg-none border-none"
+                                                type="submit">공감
+                                        </button>
+                                    </form>
+                                </th:block>
+                                <th:block th:if="${comment.getLikeId() != -1}">
+                                    <form method="post" onsubmit="return beforeCheck('공감을 취소하시겠습니까?')"
+                                          th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getLikeId()} + '/deleteLike'">
+                                        <button class="text-bold bg-none border-none"
+                                                type="submit">공감 취소
+                                        </button>
+                                    </form>
+                                </th:block>
                             </th:block>
-                            <th:block th:if="${comment.userDto.userId == userId}">
-                                <button th:id="${comment.id}" class="text-bold bg-none border-none"
-                                        onclick="click_editCommentBtn(this.id)">수정
-                                </button>
-                                <form method="post" onsubmit="return beforeCheck('정말 제출하시겠습니까?')"
-                                      th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getId()} + '/delete'">
-                                    <button class="text-bold bg-none border-none"
-                                            type="submit">삭제
+                            <th:block th:if="${comment.getCommentDto().userDto.userId == userId}">
+                                <div th:id="${'defaultBtns' + comment.getCommentDto().getId()}" style="display: flex;">
+                                    <button th:id="${comment.getCommentDto().getId()}"
+                                            class="text-bold bg-none border-none"
+                                            onclick="click_editCommentBtn(this.id)">수정
                                     </button>
-                                </form>
+                                    <form method="post" onsubmit="return beforeCheck('정말 삭제하시겠습니까?')"
+                                          th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getCommentDto().getId()} + '/delete'">
+                                        <button class="text-bold bg-none border-none"
+                                                type="submit">삭제
+                                        </button>
+                                    </form>
+                                </div>
+                                <div th:id="${'editingBtns' + comment.getCommentDto().getId()}" style="display: none;">
+                                    <button th:id="${comment.getCommentDto().getId()}"
+                                            class="text-bold bg-none border-none"
+                                            onclick="click_cancleEditBtn(this.id)">취소</button>
+                                    <button type="submit" form="commentEditForm" class="text-bold bg-none border-none">
+                                        완료
+                                    </button>
+                                </div>
                             </th:block>
                         </div>
                     </div>
-                    <div th:id="${'content' + comment.getId()}" th:text="${comment.content}" class="mb-2"></div>
-                    <div class="mb-2" style="display: none;" th:id="${'form' + comment.getId()}">
-                        <form method="post"
-                              th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getId()} + '/edit'">
-                            <input type="text" th:value="${comment.content}" name="content">
-                            <button class="text-bold bg-none border-none"
-                                    type="submit">수정
-                            </button>
+                    <div th:id="${'content' + comment.getCommentDto().getId()}"
+                         th:text="${comment.getCommentDto().content}" class="mb-2"></div>
+                    <div class="mb-2" style="display: none;" th:id="${'form' + comment.getCommentDto().getId()}">
+                        <form method="post" id="commentEditForm"
+                              th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getCommentDto().getId()} + '/edit'">
+                            <div class="w-100 pt-2 pr-3">
+                            <textarea class="w-100 rounded focus-none p-2" rows="1" oninput="autoResizeTextarea(this)"
+                                      style="border: 1px solid #dee2e6; resize: none; overflow: hidden;"
+                                   th:text="${comment.getCommentDto().content}" name="content"></textarea>
+                            </div>
                         </form>
                     </div>
                     <div class="d-flex">
-                        <div th:text="${#temporals.format(comment.modifiedAt, 'yy/MM/dd HH:mm')}" class="mr-2"></div>
-                        <img src="/images/icons/like.png" style="height: 15px;"/>
-                        <div></div>
+                        <div th:text="${#temporals.format(comment.getCommentDto().modifiedAt, 'yy/MM/dd HH:mm')}"
+                             class="mr-2"></div>
+                        <th:block th:if="${comment.getLikeId() == -1 && comment.getLikeCount() != 0}">
+                            <th:block th:if="${comment.getCommentDto().userDto.userId != userId}">
+                                <form method="post" onsubmit="return beforeCheck('이 댓글에 공감하십니까?')"
+                                      th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getCommentDto().getId()} + '/like'">
+                                    <button type="submit" class="bg-none border-none">
+                                        <div class="d-flex">
+                                            <img src="/images/icons/like.png" style="height: 15px;" class="mr-1"/>
+                                            <div th:text="${comment.getLikeCount()}"></div>
+                                        </div>
+                                    </button>
+                                </form>
+                            </th:block>
+                            <th:block th:if="${comment.getCommentDto().userDto.userId == userId}">
+                                <button class="bg-none border-none mb-1" onclick="alert('본인이 쓴 댓글에는 공감할 수 없습니다.')">
+                                    <div class="d-flex">
+                                        <img src="/images/icons/like.png" style="height: 15px;" class="mr-1"/>
+                                        <div th:text="${comment.getLikeCount()}"></div>
+                                    </div>
+                                </button>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${comment.getLikeId() != -1 && comment.getLikeCount() != 0}">
+                            <th:block th:if="${comment.getCommentDto().userDto.userId != userId}">
+                                <form method="post" onsubmit="return beforeCheck('공감을 취소하시겠습니까?')"
+                                      th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getLikeId()} + '/deleteLike'">
+                                    <button type="submit" class="bg-none border-none">
+                                        <div class="d-flex">
+                                            <img src="/images/icons/like.png" class="mr-1"
+                                                 style="height: 15px; filter: invert(39%) sepia(86%) saturate(2173%) hue-rotate(231deg) brightness(94%) contrast(94%);"/>
+                                            <div th:text="${comment.getLikeCount()}"></div>
+                                        </div>
+                                    </button>
+                                </form>
+                            </th:block>
+                        </th:block>
                     </div>
                 </div>
             </div>
@@ -95,6 +153,5 @@
         </form>
     </footer>
 </div>
-
 </body>
 </html>
