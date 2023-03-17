@@ -109,16 +109,16 @@ insert into user (user_id, user_password, email, nickname, memo, birthday, creat
 insert into user (user_id, user_password, email, nickname, memo, birthday, created_at) values ('rclayson4', 'IVKw1XpapbzR', 'bbevis4@ehow.com', 'Strosin-O''Kon', 'Universal modular website', '2023-02-24 02:29:58', '2021-01-04 00:54:05');
 
 -- 10 votes
-insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (1, 'cvaldes0', 'Monsturd', 'Integrated intermediate functionalities', 'FREE', '2023-01-02 17:18:40', '2023-02-10 11:33:14', '2021-04-11 07:35:55', 'ALL', true);
-insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (2, 'cvaldes0', 'Raincoat', 'Switchable fresh-thinking secured line', 'SURVEY', '2022-03-28 16:01:59', '2022-06-09 02:20:49', '2021-04-07 01:20:52', 'FRIEND', true);
-insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (3, 'lness1', 'Expelled', 'Inverse user-facing interface', 'FREE', '2022-07-31 21:42:57', '2021-05-24 05:16:01', '2021-12-31 15:59:36', 'ALL', false);
-insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (4, 'lness1', 'Revengers Tragedy', 'Phased national productivity', 'SURVEY', '2022-10-31 19:26:14', '2020-08-12 15:50:03', '2020-11-12 23:49:37', 'FRIEND', false);
-insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (5, 'hcampa2', 'Hair Show', 'Pre-emptive maximized hub', 'FREE', '2022-10-30 14:39:50', '2022-09-12 13:27:59', '2023-01-08 11:09:39', 'Electrical', true);
-insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (6, 'hcampa2', 'God''s Comedy (A Comédia de Deus)', 'Fully-configurable high-level data-warehouse', 'WORRY', '2022-09-11 17:28:16', '2021-02-25 20:20:31', '2021-08-03 04:47:17', 'ALL', false);
-insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (7, 'tjackalin3', 'Guilty Hands', 'Profit-focused high-level protocol', 'FREE', '2022-09-04 00:48:32', '2021-09-26 11:03:36', '2021-12-13 12:09:56', 'ALL', true);
-insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (8, 'tjackalin3', 'Ivan the Terrible, Part Two (Ivan Groznyy II: Boyarsky zagovor)', 'Polarised composite interface', 'WORRY', '2023-01-12 09:24:16', '2020-10-29 15:06:22', '2020-12-26 06:09:46', 'FRIEND', true);
-insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (9, 'rclayson4', 'Lucky Night', 'Innovative mission-critical artificial intelligence', 'FREE', '2022-07-05 12:07:09', '2021-02-15 18:33:55', '2020-12-07 09:52:28', 'FRIEND', false);
-insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (10, 'rclayson4', 'Scalphunters, The', 'Centralized fault-tolerant structure', 'WORRY', '2023-03-13 11:00:24', '2021-06-19 20:38:28', '2021-04-04 15:15:26', 'ALL', false);
+insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (1, 'cvaldes0', 'Monsturd', 'Integrated #intermediate functionalities', 'FREE', '2023-01-02 17:18:40', '2023-02-10 11:33:14', '2021-04-11 07:35:55', 'ALL', true);
+insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (2, 'cvaldes0', 'Raincoat', 'Switchable fresh-thinking #secured line', 'SURVEY', '2022-03-28 16:01:59', '2022-06-09 02:20:49', '2021-04-07 01:20:52', 'FRIEND', true);
+insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (3, 'lness1', 'Expelled', 'Inverse user-facing #interface', 'FREE', '2022-07-31 21:42:57', '2021-05-24 05:16:01', '2021-12-31 15:59:36', 'ALL', false);
+insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (4, 'lness1', 'Revengers Tragedy', 'Phased #national productivity', 'SURVEY', '2022-10-31 19:26:14', '2020-08-12 15:50:03', '2020-11-12 23:49:37', 'FRIEND', false);
+insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (5, 'hcampa2', 'Hair Show', 'Pre-emptive maximized #hub', 'FREE', '2022-10-30 14:39:50', '2022-09-12 13:27:59', '2023-01-08 11:09:39', 'Electrical', true);
+insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (6, 'hcampa2', 'God''s Comedy (A Comédia de Deus)', 'Fully-configurable high-level #data-warehouse', 'WORRY', '2022-09-11 17:28:16', '2021-02-25 20:20:31', '2021-08-03 04:47:17', 'ALL', false);
+insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (7, 'tjackalin3', 'Guilty #Hands', 'Profit-focused high-level #protocol', 'FREE', '2022-09-04 00:48:32', '2021-09-26 11:03:36', '2021-12-13 12:09:56', 'ALL', true);
+insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (8, 'tjackalin3', 'Ivan the Terrible, Part Two (Ivan Groznyy II: Boyarsky zagovor)', 'Polarised composite #interface', 'WORRY', '2023-01-12 09:24:16', '2020-10-29 15:06:22', '2020-12-26 06:09:46', 'FRIEND', true);
+insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (9, 'rclayson4', 'Lucky Night', '#Innovative mission-critical artificial intelligence', 'FREE', '2022-07-05 12:07:09', '2021-02-15 18:33:55', '2020-12-07 09:52:28', 'FRIEND', false);
+insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (10, 'rclayson4', 'Scalphunters, The', 'Centralized fault-tolerant #structure', 'WORRY', '2023-03-13 11:00:24', '2021-06-19 20:38:28', '2021-04-04 15:15:26', 'ALL', false);
 
 
 -- 20 vote options
@@ -174,3 +174,27 @@ insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at,
 insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at, modified_at) values (28, 10, 'cvaldes0', 'Re-contextualized asymmetric function', '2021-10-14 16:01:41', '2022-08-12 05:58:48');
 insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at, modified_at) values (29, 10, 'lness1', 'Visionary user-facing frame', '2023-03-05 06:27:21', '2022-09-16 08:06:21');
 insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at, modified_at) values (30, 10, 'rclayson4', 'Operative mobile Graphical User Interface', '2023-02-11 02:06:27', '2021-07-22 08:31:44');
+
+-- 10 hashtags
+insert into hashtag(hashtag_id, content) VALUES (1, 'intermediate');
+insert into hashtag(hashtag_id, content) VALUES (2, 'secured');
+insert into hashtag(hashtag_id, content) VALUES (3, 'interface');
+insert into hashtag(hashtag_id, content) VALUES (4, 'national');
+insert into hashtag(hashtag_id, content) VALUES (5, 'hub');
+insert into hashtag(hashtag_id, content) VALUES (6, 'data-warehouse');
+insert into hashtag(hashtag_id, content) VALUES (7, 'protocol');
+insert into hashtag(hashtag_id, content) VALUES (8, 'interface');
+insert into hashtag(hashtag_id, content) VALUES (9, 'Innovative');
+insert into hashtag(hashtag_id, content) VALUES (10, 'structure');
+
+-- 10 vote_hashtags
+insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (1, 1, 1);
+insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (2, 2, 2);
+insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (3, 3, 3);
+insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (4, 4, 4);
+insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (5, 5, 5);
+insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (6, 6, 6);
+insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (7, 7, 7);
+insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (8, 8, 8);
+insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (9, 9, 9);
+insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (10, 10, 10);
