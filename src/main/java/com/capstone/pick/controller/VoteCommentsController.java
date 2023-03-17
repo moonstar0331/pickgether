@@ -23,21 +23,25 @@ public class VoteCommentsController {
 
     /**
      * 댓글을 조회한다
+     *
      * @param voteId 게시글 id
      * @return 댓글 목록 뷰
      */
     @GetMapping("/{voteId}/comments")
-    public String readComments(@PathVariable Long voteId, Model model) {
+    public String readComments(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, Model model) {
         List<CommentDto> comments = voteCommentService.readComment(voteId);
-        model.addAttribute("comments",comments);
+        model.addAttribute("voteId", voteId);
+        model.addAttribute("userId", votePrincipal.toDto().getUserId());
+        model.addAttribute("comments", comments);
         return "page/comments";
     }
 
     /**
      * 댓글을 작성한다
+     *
      * @param votePrincipal 사용자
-     * @param voteId 게시글 id
-     * @param commentForm 작성내용
+     * @param voteId        게시글 id
+     * @param commentForm   작성내용
      * @return redirection to GET
      */
     @PostMapping("/{voteId}/comments")
@@ -50,10 +54,11 @@ public class VoteCommentsController {
 
     /**
      * 댓글을 수정한다
+     *
      * @param votePrincipal 사용자
-     * @param voteId 게시글 id
-     * @param commentId 댓글 id
-     * @param commentForm 작성내용
+     * @param voteId        게시글 id
+     * @param commentId     댓글 id
+     * @param commentForm   작성내용
      * @return redirection to GET
      */
     @PostMapping("/{voteId}/comments/{commentId}/edit")
@@ -67,15 +72,15 @@ public class VoteCommentsController {
 
     /**
      * 댓글을 삭제한다
+     *
      * @param votePrincipal 사용자
-     * @param voteId 게시글 id
-     * @param commentId 투표 댓글 id
+     * @param voteId        게시글 id
+     * @param commentId     투표 댓글 id
      * @return redirection to GET
      */
     @PostMapping("/{voteId}/comments/{commentId}/delete")
     public String deleteComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
                                 @PathVariable Long voteId, @PathVariable Long commentId) throws UserMismatchException {
-
         voteCommentService.deleteComment(commentId, votePrincipal.toDto().getUserId());
         return "redirect:/" + voteId + "/comments";
     }

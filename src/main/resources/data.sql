@@ -1,7 +1,6 @@
 insert into user(user_Id, user_password, email, nickname, memo, birthday, created_at)
 values ('user', '{noop}password', 'email@email.com', 'nick', 'memo', now(), '2023-03-13T00:00:00');
 
--- 게시글 수정
 insert into vote(category, content, create_at, display_range, expired_at, is_multi_pick, modified_at, title, user_id)
 values ('WORRY', 'This is #content', '2023-03-14T00:00:00', 'FRIEND', now(), false, '2023-03-14T00:00:00', 'title',
         'user');
@@ -18,9 +17,8 @@ values ('content');
 insert into vote_hashtag(hashtag_id, vote_id)
 values (1, 1);
 
--- 게시글 정렬
 insert into user(user_Id, user_password, email, nickname, memo, birthday, created_at)
-values ('user2', '{noop}password', 'email@email.com', 'nick', 'memo', now(), '2023-03-13T00:00:00');
+values ('user2', '{noop}password', 'email@email.com', 'nick2', 'memo', now(), '2023-03-13T00:00:00');
 
 insert into pick(user_id, vote_option_id)
 values ('user', 1);
@@ -82,3 +80,9 @@ values ('ThisIsWORRY');
 
 insert into vote_hashtag(hashtag_id, vote_id)
 values (6, 5);
+
+insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
+values (1, 'user', '재밌다', now(), now());
+
+insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
+values (1, 'user2', '재밌냐?', now(), now());

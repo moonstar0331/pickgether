@@ -68,18 +68,31 @@ function create_voteOption() {
 
 // voteOption 태그 삭제
 function delete_voteOption() {
-    if(voteOptionCount === 1) {
+    if (voteOptionCount === 1) {
         alert("투표 선택지 항목은 2개 이상이어야 합니다.")
         return;
     }
     let removeOption = document.getElementById('voteOptions[' + voteOptionCount + '].content');
     let parent = removeOption.parentElement;
 
-    while(parent.hasChildNodes()) {
+    while (parent.hasChildNodes()) {
         parent.removeChild(parent.firstChild);
     }
 
     parent.remove();
 
     voteOptionCount--;
+}
+
+function beforeCheck(m) {
+    if (confirm(m)) {
+        return true;
+    }
+    return false;
+}
+
+function click_editCommentBtn(id) {
+    $("#" + id).css("display", "none");
+    $("#content" + id).css("display", "none");
+    $("#form" + id).css("display", "block");
 }
