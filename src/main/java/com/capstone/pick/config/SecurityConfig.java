@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .rememberMe().and()
                 .authorizeRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .antMatchers("/signup").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin()
