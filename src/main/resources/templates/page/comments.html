@@ -3,85 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <title>Pickgether</title>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min2.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/style2.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min2.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style2.css}">
 
     <!-- 픽게더 폰트 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
 
-
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
-    <script type="text/javascript" src="js/script.js"></script>
-    <script>
-        function go_back()
-        {
-            // 뒤로가기 url 을 "/timeline" 으로 설정하면 타임라인 첫 페이지 부터 시작되고
-            // "onclick="history.go(-1)" 을 쓰면 Post/Redirect/Get 패턴 때문에 뒤로가기를 해도 타임라인 페이지가 아니라 댓글 페이지가 등장 두둥 탁
-
-        }
-    </script>
-
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </head>
 <body>
 <div class="timeline-background h-100">
     <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16" onclick="go_back()" >
-            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
+             viewBox="0 0 16 16" onclick="location.href='/timeline'">
+            <path fill-rule="evenodd"
+                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
         </svg>
         <div class="my-0 mx-auto">
             <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0;">comments</h4>
         </div>
     </header>
     <div class="mb-3">
-        <div class="d-flex text-muted pl-3 pt-3 border-bottom">
-            <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false">
-                <title>Placeholder</title>
-                <rect width="100%" height="100%" fill="#CA5151"></rect>
-            </svg>
-            <p class="pb-3 mb-0 small lh-sm">
-                <strong class="d-block text-dark mb-1">picker3</strong>
-                행궁동 OO 예쁘던데 가보세요
-            </p>
-        </div>
-
-        <div class="d-flex text-muted pl-3 pt-3 border-bottom">
-            <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false">
-                <title>Placeholder</title>
-                <rect width="100%" height="100%" fill="#51CAAD"></rect>
-            </svg>
-            <p class="pb-3 mb-0 small lh-sm">
-                <strong class="d-block text-dark mb-1">picker5</strong>
-                수원역 고고고
-            </p>
-        </div>
+        <th:block th:each="comment : ${commentPosts}">
+            <div class="d-flex text-muted pl-3 pt-3 border-bottom">
+                <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="32" height="32"
+                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
+                     preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <title>Placeholder</title>
+                    <rect width="100%" height="100%" fill="#CA5151"></rect>
+                </svg>
+                <div class="pb-3 mb-0 w-100 small lh-sm">
+                    <div class="d-flex justify-content-between mb-1">
+                        <div class="text-dark text-bold" th:text="${comment.getCommentDto().userDto.nickname}"></div>
+                        <div class="mr-2 d-flex">
+                            <th:block th:if="${comment.getCommentDto().userDto.userId != userId}">
+                                <th:block th:if="${comment.getLikeId() == -1}">
+                                    <form method="post" onsubmit="return beforeCheck('이 댓글에 공감하십니까?')"
+                                          th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getCommentDto().getId()} + '/like'">
+                                        <button class="text-bold bg-none border-none"
+                                                type="submit">공감
+                                        </button>
+                                    </form>
+                                </th:block>
+                                <th:block th:if="${comment.getLikeId() != -1}">
+                                    <form method="post" onsubmit="return beforeCheck('공감을 취소하시겠습니까?')"
+                                          th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getLikeId()} + '/deleteLike'">
+                                        <button class="text-bold bg-none border-none"
+                                                type="submit">공감 취소
+                                        </button>
+                                    </form>
+                                </th:block>
+                            </th:block>
+                            <th:block th:if="${comment.getCommentDto().userDto.userId == userId}">
+                                <div th:id="${'defaultBtns' + comment.getCommentDto().getId()}" style="display: flex;">
+                                    <button th:id="${comment.getCommentDto().getId()}"
+                                            class="text-bold bg-none border-none"
+                                            onclick="click_editCommentBtn(this.id)">수정
+                                    </button>
+                                    <form method="post" onsubmit="return beforeCheck('정말 삭제하시겠습니까?')"
+                                          th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getCommentDto().getId()} + '/delete'">
+                                        <button class="text-bold bg-none border-none"
+                                                type="submit">삭제
+                                        </button>
+                                    </form>
+                                </div>
+                                <div th:id="${'editingBtns' + comment.getCommentDto().getId()}" style="display: none;">
+                                    <button th:id="${comment.getCommentDto().getId()}"
+                                            class="text-bold bg-none border-none"
+                                            onclick="click_cancleEditBtn(this.id)">취소</button>
+                                    <button type="submit" form="commentEditForm" class="text-bold bg-none border-none">
+                                        완료
+                                    </button>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                    <div th:id="${'content' + comment.getCommentDto().getId()}"
+                         th:text="${comment.getCommentDto().content}" class="mb-2"></div>
+                    <div class="mb-2" style="display: none;" th:id="${'form' + comment.getCommentDto().getId()}">
+                        <form method="post" id="commentEditForm"
+                              th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getCommentDto().getId()} + '/edit'">
+                            <div class="w-100 pt-2 pr-3">
+                            <textarea class="w-100 rounded focus-none p-2" rows="1" oninput="autoResizeTextarea(this)"
+                                      style="border: 1px solid #dee2e6; resize: none; overflow: hidden;"
+                                   th:text="${comment.getCommentDto().content}" name="content"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="d-flex">
+                        <div th:text="${#temporals.format(comment.getCommentDto().modifiedAt, 'yy/MM/dd HH:mm')}"
+                             class="mr-2"></div>
+                        <th:block th:if="${comment.getLikeId() == -1 && comment.getLikeCount() != 0}">
+                            <th:block th:if="${comment.getCommentDto().userDto.userId != userId}">
+                                <form method="post" onsubmit="return beforeCheck('이 댓글에 공감하십니까?')"
+                                      th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getCommentDto().getId()} + '/like'">
+                                    <button type="submit" class="bg-none border-none">
+                                        <div class="d-flex">
+                                            <img src="/images/icons/like.png" style="height: 15px;" class="mr-1"/>
+                                            <div th:text="${comment.getLikeCount()}"></div>
+                                        </div>
+                                    </button>
+                                </form>
+                            </th:block>
+                            <th:block th:if="${comment.getCommentDto().userDto.userId == userId}">
+                                <button class="bg-none border-none mb-1" onclick="alert('본인이 쓴 댓글에는 공감할 수 없습니다.')">
+                                    <div class="d-flex">
+                                        <img src="/images/icons/like.png" style="height: 15px;" class="mr-1"/>
+                                        <div th:text="${comment.getLikeCount()}"></div>
+                                    </div>
+                                </button>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${comment.getLikeId() != -1 && comment.getLikeCount() != 0}">
+                            <th:block th:if="${comment.getCommentDto().userDto.userId != userId}">
+                                <form method="post" onsubmit="return beforeCheck('공감을 취소하시겠습니까?')"
+                                      th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getLikeId()} + '/deleteLike'">
+                                    <button type="submit" class="bg-none border-none">
+                                        <div class="d-flex">
+                                            <img src="/images/icons/like.png" class="mr-1"
+                                                 style="height: 15px; filter: invert(39%) sepia(86%) saturate(2173%) hue-rotate(231deg) brightness(94%) contrast(94%);"/>
+                                            <div th:text="${comment.getLikeCount()}"></div>
+                                        </div>
+                                    </button>
+                                </form>
+                            </th:block>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </th:block>
     </div>
     <footer class="d-flex align-items-center py-3 ml-3 my-2 fixed-bottom">
-        <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="40" height="40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="40" height="40"
+             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
+             preserveAspectRatio="xMidYMid slice" focusable="false">
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#F07F7F"></rect>
         </svg>
-<!--        <form class="p-2 vw-100">-->
-<!--            <input type="text" class="form-control" placeholder="댓글 달기..." required>-->
-<!--            <span class="input-group">-->
-<!--                <button class="btn" type="submit" value="게시" ></button>-->
-<!--            </span>-->
-<!--        </form>-->
-        <form class="custom-form vw-100"  action="댓글 api에 댓글 작성 엔드포인트가 생기면 그때 추가 해야할듯 합니다." method="post">
-            <input type="text" class="custom-form-input" placeholder="댓글 달기..." required>
+        <form class="custom-form vw-100" method="post" th:action>
+            <input type="text" class="custom-form-input" name="content" placeholder="댓글 달기..." required>
             <button class="custom-botton" type="submit">게시</button>
-            <!-- 댓글 작성은 유효성 검사가 필요 없는데 js를 넣어야 하는지??-->
-            <!-- 유저 정보는 세션에서 꺼내면 되니까 안넘겨도 되겠죠?? -->
-            <!-- 히든 타입으로 게시글 번호를 넘겨야 컨트롤러에서 처리할 수 있을듯 합니다.-->
-            <!-- <input type="hidden" name="vote_id" value="${ model 에 저장된 투표 게시글 id 꺼내오기 }">  -->
         </form>
     </footer>
 </div>
-
 </body>
 </html>
