@@ -1,27 +1,27 @@
 package com.capstone.pick.service;
 
-import com.capstone.pick.domain.*;
+import com.capstone.pick.domain.User;
+import com.capstone.pick.domain.Vote;
+import com.capstone.pick.domain.VoteComment;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
-import com.capstone.pick.domain.constant.OrderCriteria;
-import com.capstone.pick.dto.*;
-import com.capstone.pick.repository.*;
+import com.capstone.pick.dto.CommentDto;
+import com.capstone.pick.dto.UserDto;
+import com.capstone.pick.exeption.UserMismatchException;
+import com.capstone.pick.repository.CommentLikeRepository;
+import com.capstone.pick.repository.UserRepository;
+import com.capstone.pick.repository.VoteCommentRepository;
+import com.capstone.pick.repository.VoteRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,18 +52,78 @@ public class VoteCommentServiceTest {
         User user2 = createUser("user2", "nick2");
         Vote vote = createVote(1L, user1);
 
-        VoteComment voteComment1 = createVoteComment(1L, user1, vote);
-        VoteComment voteComment2 = createVoteComment(2L, user2, vote);
+        VoteComment voteComment1 = createVoteComment(1L, user1, vote, "content");
+        VoteComment voteComment2 = createVoteComment(2L, user2, vote, "content");
 
         List<VoteComment> voteComments = List.of(voteComment1, voteComment2);
-        given(voteCommentRepository.getVoteCommentsByVoteId(vote.getId())).willReturn(voteComments);
+        given(voteCommentRepository.getVoteCommentsByVoteId(anyLong())).willReturn(voteComments);
 
         // when
         List<CommentDto> commentDtos = voteCommentService.readComment(vote.getId());
 
         // then
         assertThat(commentDtos.size()).isEqualTo(2);
-        then(voteCommentRepository).should().getVoteCommentsByVoteId(vote.getId());
+        then(voteCommentRepository).should().getVoteCommentsByVoteId(anyLong());
+    }
+
+    @DisplayName("투표 댓글을 입력하면, 투표 댓글을 저장한다.")
+    @Test
+    void saveComment() {
+        // given
+        User user1 = createUser("user1", "nick1");
+        Vote vote = createVote(1L, user1);
+        CommentDto commentDto = createCommentDto(vote.getId(), UserDto.from(user1), "content1");
+
+        given(userRepository.getReferenceById(anyString())).willReturn(user1);
+        given(voteRepository.getReferenceById(anyLong())).willReturn(vote);
+
+        // when
+        voteCommentService.saveComment(commentDto);
+
+        // then
+        then(userRepository).should().getReferenceById(anyString());
+        then(voteRepository).should().getReferenceById(anyLong());
+        then(voteCommentRepository).should().save(any(VoteComment.class));
+    }
+
+    @DisplayName("댓글 수정 정보를 입력하면, 투표 댓글을 수정한다.")
+    @Test
+    void updateComment() throws UserMismatchException {
+        // given
+        User user1 = createUser("user1", "nick1");
+        Vote vote = createVote(1L, user1);
+        VoteComment voteComment = createVoteComment(1L, user1, vote, "content1");
+
+        CommentDto commentDto = createCommentDto(vote.getId(), UserDto.from(user1), "content2");
+
+        given(voteCommentRepository.getReferenceById(anyLong())).willReturn(voteComment);
+        given(userRepository.getReferenceById(anyString())).willReturn(user1);
+
+        // when
+        voteCommentService.updateComment(voteComment.getId(), commentDto);
+
+        // then
+        assertThat(voteComment).hasFieldOrPropertyWithValue("content", commentDto.getContent());
+        then(voteCommentRepository).should().getReferenceById(anyLong());
+        then(userRepository).should().getReferenceById(anyString());
+    }
+
+    @DisplayName("댓글 id를 입력하면, 투표 댓글을 삭제한다.")
+    @Test
+    void deleteComment() throws UserMismatchException {
+        // given
+        User user1 = createUser("user1", "nick1");
+        Vote vote = createVote(1L, user1);
+        VoteComment voteComment = createVoteComment(1L, user1, vote, "content1");
+
+        given(userRepository.getReferenceById(anyString())).willReturn(user1);
+        given(voteCommentRepository.getReferenceById(anyLong())).willReturn(voteComment);
+
+        // when
+        voteCommentService.deleteComment(voteComment.getId(), user1.getUserId());
+
+        // then
+        then(voteCommentRepository).should().delete(any(VoteComment.class));
     }
 
     private static User createUser(String userId, String nickname) {
@@ -93,14 +153,23 @@ public class VoteCommentServiceTest {
         return vote;
     }
 
-    private static VoteComment createVoteComment(Long id, User user, Vote vote) {
+    private static VoteComment createVoteComment(Long id, User user, Vote vote, String content) {
         VoteComment voteComment = VoteComment.builder()
                 .user(user)
                 .vote(vote)
                 .createAt(LocalDateTime.now())
-                .content("content")
+                .content(content)
                 .build();
         ReflectionTestUtils.setField(voteComment, "id", id);
         return voteComment;
+    }
+
+    private static CommentDto createCommentDto(Long voteId, UserDto userDto, String content) {
+        return CommentDto.builder()
+                .voteId(voteId)
+                .userDto(userDto)
+                .content(content)
+                .createAt(LocalDateTime.now())
+                .build();
     }
 }
