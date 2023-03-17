@@ -31,8 +31,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.httpBasic().disable()
-                .csrf()
+        return http.httpBasic().disable()
+                .csrf().and()
+                .rememberMe().and()
+                .authorizeRequests(auth -> auth
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .antMatchers("/signup").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/timeLine")
+                .permitAll()
                 .and()
                     .rememberMe()
                 .and()
