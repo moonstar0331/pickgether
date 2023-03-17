@@ -67,7 +67,7 @@
                     <div class="mb-2" style="display: none;" th:id="${'form' + comment.getId()}">
                         <form method="post"
                               th:action="${#httpServletRequest.requestURI} + '/' + ${comment.getId()} + '/edit'">
-                            <input type="text" th:value="${comment.content}">
+                            <input type="text" th:value="${comment.content}" name="content">
                             <button class="text-bold bg-none border-none"
                                     type="submit">수정
                             </button>
