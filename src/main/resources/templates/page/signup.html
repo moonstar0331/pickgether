@@ -13,6 +13,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
+
+    <!-- 스크립트 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/signup.js"></script>
 </head>
 <body class="bg-linear-gradient py-5">
     <!-- 본문 -->
@@ -98,7 +104,7 @@
                         <textarea placeholder="한 줄 소개" class="form-control" id="exampleFormControlTextarea1" rows="3" style="resize: none;"></textarea>
                     </div>
 
-                    <button class="login-submit p-2 mb-2" type="submit" style="width: 80%">회원가입</button>
+                    <button class="login-submit p-2 mb-2" type="submit" onclick="signupValidation()" style="width: 80%">회원가입</button>
                 </div>
             </form>
             <div class="d-flex justify-content-center mt-2 login-etc">
