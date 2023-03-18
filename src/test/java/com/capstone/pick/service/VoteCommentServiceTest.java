@@ -84,7 +84,7 @@ public class VoteCommentServiceTest {
         CommentLike like = createCommentLike(1L, voteComment1, user2);
 
         given(voteCommentRepository.findAllByVoteId(anyLong(), any(Sort.class))).willReturn(List.of(voteComment2, voteComment1));
-        given(voteCommentRepository.findAllOrderByCommentLikeCountDesc()).willReturn(List.of(voteComment1, voteComment2));
+        given(voteCommentRepository.findAllByVoteIdOrderByLikeDesc(anyLong())).willReturn(List.of(voteComment1, voteComment2));
 
         // when
         List<CommentDto> LATEST = voteCommentService.readCommentOrderBy(vote.getId(), OrderCriteria.LATEST);

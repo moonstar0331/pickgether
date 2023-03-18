@@ -47,7 +47,7 @@ public class VoteCommentService {
                 voteComments = voteCommentRepository.findAllByVoteId(voteId, Sort.by(Sort.Direction.DESC, "modifiedAt"));
                 break;
             case POPULAR:
-                voteComments = voteCommentRepository.findAllOrderByCommentLikeCountDesc();
+                voteComments = voteCommentRepository.findAllByVoteIdOrderByLikeDesc(voteId);
                 break;
         }
         return voteComments.stream().map(CommentDto::from).collect(Collectors.toList());
