@@ -58,7 +58,7 @@
             </ul>
         </div>
     </header>
-    <div class="mb-3">
+    <div class="mb-3 scrollbar-none" style="overflow: auto; height: 80%;">
         <th:block th:each="comment : ${commentPosts}">
             <div class="d-flex text-muted pl-3 pt-3 border-bottom">
                 <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="32" height="32"
@@ -169,7 +169,7 @@
             </div>
         </th:block>
     </div>
-    <footer class="d-flex align-items-center py-3 ml-3 my-2 fixed-bottom">
+    <footer class="d-flex align-items-center py-3 pl-3 fixed-bottom bg-white">
         <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="40" height="40"
              xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
              preserveAspectRatio="xMidYMid slice" focusable="false">
