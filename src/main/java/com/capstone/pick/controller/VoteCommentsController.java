@@ -1,6 +1,7 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.CommentForm;
+import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.CommentPostDto;
 import com.capstone.pick.exeption.UserMismatchException;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,8 +32,9 @@ public class VoteCommentsController {
      * @return 댓글 목록 뷰
      */
     @GetMapping("/{voteId}/comments")
-    public String readComments(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, Model model) {
-        List<CommentPostDto> commentPosts = voteCommentService.readComment(voteId).stream()
+    public String readComments(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, Model model,
+                               @RequestParam(value = "orderBy", required = false, defaultValue = "LATEST") OrderCriteria orderBy) {
+        List<CommentPostDto> commentPosts = voteCommentService.readCommentOrderBy(voteId, orderBy).stream()
                 .map(c -> CommentPostDto.builder()
                         .commentDto(c)
                         .likeCount(voteCommentService.getLikeCount(c.getId()))
@@ -40,7 +43,9 @@ public class VoteCommentsController {
                 .collect(Collectors.toList());
 
         model.addAttribute("userId", votePrincipal.toDto().getUserId());
+        model.addAttribute("voteId", voteId);
         model.addAttribute("commentPosts", commentPosts);
+        model.addAttribute("orderBy", orderBy);
         return "page/comments";
     }
 
@@ -89,6 +94,7 @@ public class VoteCommentsController {
     @PostMapping("/{voteId}/comments/{commentId}/delete")
     public String deleteComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
                                 @PathVariable Long voteId, @PathVariable Long commentId) throws UserMismatchException {
+
         voteCommentService.deleteComment(commentId, votePrincipal.toDto().getUserId());
         return "redirect:/" + voteId + "/comments";
     }
