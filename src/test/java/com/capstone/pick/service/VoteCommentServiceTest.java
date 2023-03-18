@@ -6,6 +6,7 @@ import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteComment;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.UserDto;
@@ -20,10 +21,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -54,18 +58,44 @@ public class VoteCommentServiceTest {
         User user2 = createUser("user2", "nick2");
         Vote vote = createVote(1L, user1);
 
-        VoteComment voteComment1 = createVoteComment(1L, user1, vote, "content");
-        VoteComment voteComment2 = createVoteComment(2L, user2, vote, "content");
+        VoteComment voteComment1 = createVoteComment(1L, user1, vote, "content", LocalDateTime.now());
+        VoteComment voteComment2 = createVoteComment(2L, user2, vote, "content", LocalDateTime.now());
 
         List<VoteComment> voteComments = List.of(voteComment1, voteComment2);
-        given(voteCommentRepository.getVoteCommentsByVoteId(anyLong())).willReturn(voteComments);
+        given(voteCommentRepository.findAllByVoteId(anyLong())).willReturn(voteComments);
 
         // when
         List<CommentDto> commentDtos = voteCommentService.readComment(vote.getId());
 
         // then
         assertThat(commentDtos.size()).isEqualTo(2);
-        then(voteCommentRepository).should().getVoteCommentsByVoteId(anyLong());
+        then(voteCommentRepository).should().findAllByVoteId(anyLong());
+    }
+
+    @DisplayName("댓글 상세 보기 페이지를 조회하면, 해당 투표 게시글에 대한 투표 댓글을 정렬하여 반환한다.")
+    @Test
+    void readCommentOrderBy() {
+        // given
+        User user1 = createUser("user1", "nick1");
+        User user2 = createUser("user2", "nick2");
+        Vote vote = createVote(1L, user1);
+        VoteComment voteComment1 = createVoteComment(1L, user1, vote, "content1", LocalDateTime.now());
+        VoteComment voteComment2 = createVoteComment(2L, user2, vote, "content2", LocalDateTime.now().minusHours(1));
+        CommentLike like = createCommentLike(1L, voteComment1, user2);
+
+        given(voteCommentRepository.findAllByVoteId(anyLong(), any(Sort.class))).willReturn(List.of(voteComment2, voteComment1));
+        given(voteCommentRepository.findAllOrderByCommentLikeCountDesc()).willReturn(List.of(voteComment1, voteComment2));
+
+        // when
+        List<CommentDto> LATEST = voteCommentService.readCommentOrderBy(vote.getId(), OrderCriteria.LATEST);
+        List<CommentDto> POPULAR = voteCommentService.readCommentOrderBy(vote.getId(), OrderCriteria.POPULAR);
+
+        // then
+        assertThat(LATEST.size()).isEqualTo(2);
+        assertThat(LATEST.get(0)).hasFieldOrPropertyWithValue("content", "content2");
+        assertThat(POPULAR.size()).isEqualTo(2);
+        assertThat(POPULAR.get(0)).hasFieldOrPropertyWithValue("content", "content1");
+        then(voteCommentRepository).should().findAllByVoteId(anyLong(), any(Sort.class));
     }
 
     @DisplayName("투표 댓글을 입력하면, 투표 댓글을 저장한다.")
@@ -94,7 +124,7 @@ public class VoteCommentServiceTest {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
-        VoteComment voteComment = createVoteComment(1L, user1, vote, "content1");
+        VoteComment voteComment = createVoteComment(1L, user1, vote, "content1", LocalDateTime.now());
 
         CommentDto commentDto = createCommentDto(vote.getId(), UserDto.from(user1), "content2");
 
@@ -116,7 +146,7 @@ public class VoteCommentServiceTest {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
-        VoteComment voteComment = createVoteComment(1L, user1, vote, "content1");
+        VoteComment voteComment = createVoteComment(1L, user1, vote, "content1", LocalDateTime.now());
 
         given(userRepository.getReferenceById(anyString())).willReturn(user1);
         given(voteCommentRepository.getReferenceById(anyLong())).willReturn(voteComment);
@@ -134,7 +164,7 @@ public class VoteCommentServiceTest {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
-        VoteComment voteComment = createVoteComment(1L, user1, vote, "content");
+        VoteComment voteComment = createVoteComment(1L, user1, vote, "content", LocalDateTime.now());
         CommentLikeDto likeDto = createLikeDto(1L, UserDto.from(user1));
 
         given(userRepository.getReferenceById(anyString())).willReturn(user1);
@@ -155,7 +185,7 @@ public class VoteCommentServiceTest {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
-        VoteComment voteComment = createVoteComment(1L, user1, vote, "content");
+        VoteComment voteComment = createVoteComment(1L, user1, vote, "content", LocalDateTime.now());
         CommentLike like = createCommentLike(1L, voteComment, user1);
 
         given(userRepository.getReferenceById(anyString())).willReturn(user1);
@@ -225,11 +255,11 @@ public class VoteCommentServiceTest {
         return vote;
     }
 
-    private static VoteComment createVoteComment(Long id, User user, Vote vote, String content) {
+    private static VoteComment createVoteComment(Long id, User user, Vote vote, String content, LocalDateTime createTime) {
         VoteComment voteComment = VoteComment.builder()
                 .user(user)
                 .vote(vote)
-                .createAt(LocalDateTime.now())
+                .createAt(createTime)
                 .content(content)
                 .build();
         ReflectionTestUtils.setField(voteComment, "id", id);

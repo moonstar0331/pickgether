@@ -2,6 +2,8 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.form.CommentForm;
+import com.capstone.pick.domain.constant.Category;
+import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.service.VoteCommentService;
@@ -83,7 +85,7 @@ class VoteCommentsControllerTest {
         willDoNothing().given(voteCommentService).saveComment(any(CommentDto.class));
 
         // when
-        mvc.perform(post("/" + voteId + "/comments")
+        mvc.perform(post("/" + voteId + "/comments").param("orderBy", OrderCriteria.LATEST.name())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .flashAttr("commentForm", commentForm)
                         .with(csrf()))
