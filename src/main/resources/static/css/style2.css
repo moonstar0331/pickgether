@@ -31,3 +31,5 @@
 .vote-option:focus {border: 1px solid #dee2e6!important; padding-right: 75px!important;}
 .vote-option-img1 {width: 20px; right: 60px; top: 9px; content: url("https://user-images.githubusercontent.com/90389517/220822069-2962256f-4e12-4f48-869b-80fc123ee572.png")}
 .vote-option-img2 {width: 18px; right: 30px; top: 10px; content: url("https://user-images.githubusercontent.com/90389517/220822360-aa820f96-ab80-4e18-bede-fe445fdc375f.png")}
+.scrollbar-none {scrollbar-width: none; -ms-overflow-style: none;}
+.scrollbar-none::-webkit-scrollbar {display: none;}

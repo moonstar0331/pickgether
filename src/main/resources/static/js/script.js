@@ -108,5 +108,9 @@ function click_cancleEditBtn(id) {
 // 투표 댓글 수정 textarea 자동 높이 조절
 function autoResizeTextarea(element) {
     element.style.height = "auto";
-    element.style.height = (element.scrollHeight)+"px";
+    element.style.height = (element.scrollHeight) + "px";
+}
+
+function commentOrderBy(voteId, orderBy) {
+    location.href = "/" + voteId + "/comments?orderBy=" + orderBy;
 }

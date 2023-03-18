@@ -175,6 +175,13 @@ insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at,
 insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at, modified_at) values (29, 10, 'lness1', 'Visionary user-facing frame', '2023-03-05 06:27:21', '2022-09-16 08:06:21');
 insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at, modified_at) values (30, 10, 'rclayson4', 'Operative mobile Graphical User Interface', '2023-02-11 02:06:27', '2021-07-22 08:31:44');
 
+-- 5 comment likes
+insert into comment_like(vote_comment_id, user_id) values (1, 'lness1');
+insert into comment_like(vote_comment_id, user_id) values (1, 'hcampa2');
+insert into comment_like(vote_comment_id, user_id) values (2, 'tjackalin3');
+insert into comment_like(vote_comment_id, user_id) values (2, 'hcampa2');
+insert into comment_like(vote_comment_id, user_id) values (3, 'lness1');
+
 -- 10 hashtags
 insert into hashtag(hashtag_id, content) VALUES (1, 'intermediate');
 insert into hashtag(hashtag_id, content) VALUES (2, 'secured');
@@ -241,3 +248,59 @@ insert into pick(pick_id, user_id, vote_option_id) VALUES (37, 'rclayson4', 10);
 insert into pick(pick_id, user_id, vote_option_id) VALUES (38, 'rclayson4', 12);
 insert into pick(pick_id, user_id, vote_option_id) VALUES (39, 'rclayson4', 14);
 insert into pick(pick_id, user_id, vote_option_id) VALUES (40, 'rclayson4', 16);
+
+-- insert into hashtag(content)
+-- values ('is');
+--
+-- insert into hashtag(content)
+-- values ('hashtag');
+--
+-- insert into vote_hashtag(hashtag_id, vote_id)
+-- values (3, 3);
+--
+-- insert into vote_hashtag(hashtag_id, vote_id)
+-- values (4, 3);
+--
+-- insert into vote(category, content, create_at, display_range, expired_at, is_multi_pick, modified_at, title, user_id)
+-- values ('ENTERPRISE', '#This is ENTERPRISE', '2023-03-14T03:00:00', 'FRIEND', now(), false, '2023-03-14T03:00:00',
+--         'ENTERPRISE', 'user2');
+--
+-- insert into hashtag(content)
+-- values ('This');
+--
+-- insert into vote_hashtag(hashtag_id, vote_id)
+-- values (5, 4);
+--
+-- insert into vote_option(content, image_link, vote_id)
+-- values ('new option1', '/link/image1.png', 4);
+--
+-- insert into vote_option(content, image_link, vote_id)
+-- values ('new option2', '/link/image2.png', 4);
+--
+-- insert into pick(user_id, vote_option_id)
+-- values ('user2', 3);
+--
+-- insert into vote(category, content, create_at, display_range, expired_at, is_multi_pick, modified_at, title, user_id)
+-- values ('WORRY', '#ThisIsWORRY', '2023-03-14T04:00:00', 'FRIEND', now(), false, '2023-03-14T04:00:00', 'WORRY',
+--         'user2');
+--
+-- insert into hashtag(content)
+-- values ('ThisIsWORRY');
+--
+-- insert into vote_hashtag(hashtag_id, vote_id)
+-- values (6, 5);
+--
+-- insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
+-- values (1, 'user', '재밌다', '2023-03-14T03:00:00', '2023-03-14T03:00:00');
+--
+-- insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
+-- values (1, 'user2', '재밌냐?', '2023-03-14T04:00:00', '2023-03-14T04:00:00');
+--
+-- insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
+-- values (1, 'user3', '재미없어', '2023-03-14T05:00:00', '2023-03-14T05:00:00');
+--
+-- insert into comment_like(vote_comment_id, user_id)
+-- values (1, 'user2');
+--
+-- insert into comment_like(vote_comment_id, user_id)
+-- values (2, 'user3');
