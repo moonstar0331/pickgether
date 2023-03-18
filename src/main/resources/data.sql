@@ -85,13 +85,13 @@ insert into vote_hashtag(hashtag_id, vote_id)
 values (6, 5);
 
 insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
-values (1, 'user', '재밌다', now(), now());
+values (1, 'user', '재밌다', '2023-03-14T03:00:00', '2023-03-14T03:00:00');
 
 insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
-values (1, 'user2', '재밌냐?', now(), now());
+values (1, 'user2', '재밌냐?', '2023-03-14T04:00:00', '2023-03-14T04:00:00');
 
 insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
-values (1, 'user3', '재미없어', now(), now());
+values (1, 'user3', '재미없어', '2023-03-14T05:00:00', '2023-03-14T05:00:00');
 
 insert into comment_like(vote_comment_id, user_id)
 values (1, 'user2');
