@@ -4,17 +4,22 @@ import com.capstone.pick.domain.CommentLike;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteComment;
+import com.capstone.pick.domain.constant.Category;
+import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
+import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.CommentLikeRepository;
 import com.capstone.pick.repository.UserRepository;
 import com.capstone.pick.repository.VoteCommentRepository;
 import com.capstone.pick.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,10 +34,23 @@ public class VoteCommentService {
     private final CommentLikeRepository commentLikeRepository;
 
     public List<CommentDto> readComment(Long voteId) {
-        List<VoteComment> voteComments = voteCommentRepository.getVoteCommentsByVoteId(voteId);
+        List<VoteComment> voteComments = voteCommentRepository.findAllByVoteId(voteId);
         return voteComments.stream()
                 .map(CommentDto::from)
                 .collect(Collectors.toList());
+    }
+
+    public List<CommentDto> readCommentOrderBy(Long voteId, OrderCriteria orderBy) {
+        List<VoteComment> voteComments = new ArrayList<>();
+        switch (orderBy) {
+            case LATEST:
+                voteComments = voteCommentRepository.findAllByVoteId(voteId, Sort.by(Sort.Direction.DESC, "modifiedAt"));
+                break;
+            case POPULAR:
+                voteComments = voteCommentRepository.findAllOrderByCommentLikeCountDesc();
+                break;
+        }
+        return voteComments.stream().map(CommentDto::from).collect(Collectors.toList());
     }
 
     public void saveComment(CommentDto commentDto) {
@@ -59,6 +77,7 @@ public class VoteCommentService {
         VoteComment voteComment = voteCommentRepository.getReferenceById(commentId);
 
         if (voteComment.getUser().equals(user)) {
+            commentLikeRepository.deleteAllByVoteCommentId(voteComment.getId());
             voteCommentRepository.delete(voteComment);
         } else {
             throw new UserMismatchException();
