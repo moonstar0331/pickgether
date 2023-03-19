@@ -107,7 +107,7 @@ public class VoteServiceTest {
         ReflectionTestUtils.setField(pick2, "id", 2L);
         ReflectionTestUtils.setField(pick3, "id", 3L);
 
-        given(voteRepository.findAll(Sort.by(Sort.Direction.DESC, "modifiedAt"))).willReturn(List.of(vote1, vote2, vote3));
+        given(voteRepository.findByCategory(Category.ALL, Sort.by(Sort.Direction.DESC, "modifiedAt"))).willReturn(List.of(vote1, vote2, vote3));
         given(voteRepository.findByCategory(Category.FREE, Sort.by(Sort.Direction.DESC, "modifiedAt"))).willReturn(List.of(vote1, vote2));
         given(voteRepository.findAllOrderByPopular()).willReturn(List.of(vote2, vote1, vote3));
         given(voteRepository.findByCategoryOrderByPopular(Category.FREE)).willReturn(List.of(vote2, vote1));

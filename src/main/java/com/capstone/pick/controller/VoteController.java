@@ -89,7 +89,7 @@ public class VoteController {
     }
 
     @GetMapping("/{voteId}/edit")
-    public String editVote(@PathVariable("voteId") Long voteId, Model model) {
+    public String editVote(@PathVariable Long voteId, Model model) {
         VoteForm voteForm = VoteForm.builder().build();
         VoteDto voteDto = voteService.getVote(voteId);
         List<VoteOptionDto> optionDtos = voteService.getOptions(voteId);
