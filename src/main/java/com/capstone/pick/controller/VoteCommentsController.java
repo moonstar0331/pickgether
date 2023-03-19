@@ -33,7 +33,7 @@ public class VoteCommentsController {
      */
     @GetMapping("/{voteId}/comments")
     public String readComments(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, Model model,
-                               @RequestParam(value = "orderBy", required = false, defaultValue = "LATEST") OrderCriteria orderBy) {
+                               @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy) {
         List<CommentPostDto> commentPosts = voteCommentService.readCommentOrderBy(voteId, orderBy).stream()
                 .map(c -> CommentPostDto.builder()
                         .commentDto(c)
