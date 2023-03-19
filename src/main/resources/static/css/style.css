@@ -320,3 +320,38 @@
     color: #7F61E9;
     background-color: #FFFFFF;
 }
+
+.password-validate {
+    width: 380px;
+    font-size: 80%;
+    color: #3b3b3b;
+    text-align: left;
+    margin-left: 60px;
+}
+
+.signup-hr {
+    width: 80px;
+    background-color: darkgray;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.signup-height {
+    height: 110% !important;
+}
+
+.pickgether-title {
+    margin-top: 50px;
+    min-height: 100%;
+}
+
+@media (max-height: 880px){
+    .signup-height {
+        height: 180% !important;
+    }
+
+    .pickgether-title {
+        margin-top: 230px;
+        min-height: 100%;
+    }
+}
