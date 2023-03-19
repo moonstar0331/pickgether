@@ -8,6 +8,7 @@
         - 공백 X
         - 8 ~ 20자
     3. 비밀번호 - 비밀번호 확인 동일 여부 확인
+    4. 이메일 양식대로 입력했는지 확인
  */
 
 function signupValidation() {
@@ -63,5 +64,26 @@ function pw_validation() {
     }else {
         document.getElementById("pw_img").src = "/images/icons/check.svg";
         document.getElementById("pwLabel").innerHTML = "성공!";
+    }
+}
+
+function email_check(email) {
+    let regex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
+
+    return regex.test(email);
+}
+
+function email_validation() {
+    var email = $("#email").val();
+
+    if (email == ""){
+        document.getElementById("email_img").src = "/images/icons/cross-small.svg";
+        document.getElementById("emailLabel").innerHTML = "이메일을 입력해주세요.";
+    } else if (!email_check(email)) {
+            document.getElementById("email_img").src = "/images/icons/cross-small.svg";
+            document.getElementById("emailLabel").innerHTML = "이메일을 형식에 맞게 입력해주세요.";
+    } else {
+        document.getElementById("email_img").src = "/images/icons/check.svg";
+        document.getElementById("emailLabel").innerHTML = "성공!";
     }
 }

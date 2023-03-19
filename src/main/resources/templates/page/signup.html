@@ -83,7 +83,14 @@
                     </div>
                     <div>
                         <input class="login-input px-3 py-2 mb-2" type="email" id="email" name="email"
-                               placeholder="email@domain.com" style="width: 80%">
+                               onKeyup="email_validation();" placeholder="email@domain.com" style="width: 80%">
+                    </div>
+
+                    <div class="password-validate">
+                        <img src="" id="email_img"
+                             style="width: 15px; height: auto;
+                             filter: invert(37%) sepia(21%) saturate(4534%) hue-rotate(334deg) brightness(108%) contrast(73%);">
+                        <label id="emailLabel"></label>
                     </div>
 
                     <!-- 출생일 -->
