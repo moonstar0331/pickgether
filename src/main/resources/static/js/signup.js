@@ -41,3 +41,27 @@ function pw_pwcheck_isSame() {
         document.getElementById("pwCheckLabel").innerHTML = fail_message;
     }
 }
+
+function pw_validation() {
+    var pw = $("#password").val();
+    var num = pw.search(/[0-9]/g);
+    var eng = pw.search(/[a-z]/ig);
+    var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+    if (pw == "") {
+        document.getElementById("pw_img").src = "/images/icons/cross-small.svg";
+        document.getElementById("pwLabel").innerHTML = "영문(대소문자), 숫자, 특수문자를 혼합한 8~20자";
+    }else if(pw.length < 8 || pw.length > 20){
+        document.getElementById("pw_img").src = "/images/icons/cross-small.svg";
+        document.getElementById("pwLabel").innerHTML = "8자리 ~ 20자리 이내로 입력해주세요.";
+    }else if(pw.search(/\s/) != -1){
+        document.getElementById("pw_img").src = "/images/icons/cross-small.svg";
+        document.getElementById("pwLabel").innerHTML = "비밀번호는 공백 없이 입력해주세요.";
+    }else if(num < 0 || eng < 0 || spe < 0 ){
+        document.getElementById("pw_img").src = "/images/icons/cross-small.svg";
+        document.getElementById("pwLabel").innerHTML = "영문, 숫자, 특수문자를 혼합하여 입력해주세요.";
+    }else {
+        document.getElementById("pw_img").src = "/images/icons/check.svg";
+        document.getElementById("pwLabel").innerHTML = "성공!";
+    }
+}
