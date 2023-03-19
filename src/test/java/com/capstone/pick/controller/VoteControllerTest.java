@@ -51,8 +51,9 @@ class VoteControllerTest {
         this.mvc = mvc;
     }
 
-    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+
     @DisplayName("[view][GET] 홈페이지 - 정상 호출, 인증된 사용자")
+    @WithMockUser
     @Test
     void home() throws Exception {
         mvc.perform(get("/"))
