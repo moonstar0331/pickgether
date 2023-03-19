@@ -71,7 +71,7 @@
                     <div class="d-flex justify-content-between mb-1">
                         <div class="text-dark text-bold" th:text="${comment.getCommentDto().userDto.nickname}"></div>
                         <div class="mr-2 d-flex">
-                            <th:block th:if="${comment.getCommentDto().userDto.userId != userId}">
+                            <th:block th:if="${comment.getCommentDto().userDto.userId != user.getUserId()}">
                                 <th:block th:if="${comment.getLikeId() == -1}">
                                     <form method="post" onsubmit="return beforeCheck('이 댓글에 공감하십니까?')"
                                           th:action="'/' + ${voteId} + '/comments/' + ${comment.getCommentDto().getId()} + '/like'">
@@ -89,7 +89,7 @@
                                     </form>
                                 </th:block>
                             </th:block>
-                            <th:block th:if="${comment.getCommentDto().userDto.userId == userId}">
+                            <th:block th:if="${comment.getCommentDto().userDto.userId == user.getUserId()}">
                                 <div th:id="${'defaultBtns' + comment.getCommentDto().getId()}" style="display: flex;">
                                     <button th:id="${comment.getCommentDto().getId()}"
                                             class="text-bold bg-none border-none"
@@ -130,7 +130,7 @@
                         <div th:text="${#temporals.format(comment.getCommentDto().modifiedAt, 'yy/MM/dd HH:mm')}"
                              class="mr-2"></div>
                         <th:block th:if="${comment.getLikeId() == -1 && comment.getLikeCount() != 0}">
-                            <th:block th:if="${comment.getCommentDto().userDto.userId != userId}">
+                            <th:block th:if="${comment.getCommentDto().userDto.userId != user.getUserId()}">
                                 <form method="post" onsubmit="return beforeCheck('이 댓글에 공감하십니까?')"
                                       th:action="'/' + ${voteId} + '/comments/' + ${comment.getCommentDto().getId()} + '/like'">
                                     <button type="submit" class="bg-none border-none">
@@ -141,7 +141,7 @@
                                     </button>
                                 </form>
                             </th:block>
-                            <th:block th:if="${comment.getCommentDto().userDto.userId == userId}">
+                            <th:block th:if="${comment.getCommentDto().userDto.userId == user.getUserId()}">
                                 <button class="bg-none border-none mb-1" onclick="alert('본인이 쓴 댓글에는 공감할 수 없습니다.')">
                                     <div class="d-flex">
                                         <img src="/images/icons/like.png" style="height: 15px;" class="mr-1"/>
@@ -151,7 +151,7 @@
                             </th:block>
                         </th:block>
                         <th:block th:if="${comment.getLikeId() != -1 && comment.getLikeCount() != 0}">
-                            <th:block th:if="${comment.getCommentDto().userDto.userId != userId}">
+                            <th:block th:if="${comment.getCommentDto().userDto.userId != user.getUserId()}">
                                 <form method="post" onsubmit="return beforeCheck('공감을 취소하시겠습니까?')"
                                       th:action="'/' + ${voteId} + '/comments/' + ${comment.getLikeId()} + '/deleteLike'">
                                     <button type="submit" class="bg-none border-none">

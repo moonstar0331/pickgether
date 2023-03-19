@@ -42,7 +42,7 @@ public class VoteCommentsController {
                         .build())
                 .collect(Collectors.toList());
 
-        model.addAttribute("userId", votePrincipal.toDto().getUserId());
+        model.addAttribute("user", votePrincipal.toDto());
         model.addAttribute("voteId", voteId);
         model.addAttribute("commentPosts", commentPosts);
         model.addAttribute("orderBy", orderBy);
