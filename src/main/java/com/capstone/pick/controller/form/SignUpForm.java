@@ -1,10 +1,7 @@
 package com.capstone.pick.controller.form;
 
 import com.capstone.pick.dto.UserDto;
-import com.capstone.pick.dto.VoteDto;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

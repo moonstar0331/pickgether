@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -34,7 +33,6 @@ public class User {
     @Column(length = 100)
     private String nickname; // 닉네임
 
-//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private String birthday; // 출생일시
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
