@@ -19,7 +19,7 @@ public class TestSecurityConfig {
 
     @BeforeTestMethod
     public void securitySetUp() {
-        given(userRepository.findById(anyString())).willReturn(
+        given(userRepository.findById("user")).willReturn(
                 Optional.of(User.builder()
                         .userId("user")
                         .userPassword("password")

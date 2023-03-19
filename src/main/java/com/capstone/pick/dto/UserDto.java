@@ -3,6 +3,7 @@ package com.capstone.pick.dto;
 import com.capstone.pick.domain.User;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,8 +17,12 @@ public class UserDto {
     private String email;
     private String nickname;
     private String memo;
-    private LocalDateTime birthday;
+    private String birthday;
     private LocalDateTime createdAt;
+
+    private String gender;
+    private String age_range;
+    private String provider; // 가입방식
 
     public static UserDto from(User entity) {
         return UserDto.builder()
@@ -28,6 +33,9 @@ public class UserDto {
                 .memo(entity.getMemo())
                 .birthday(entity.getBirthday())
                 .createdAt(entity.getCreatedAt())
+                .gender(entity.getGender())
+                .age_range(entity.getAge_range())
+                .provider(entity.getProvider())
                 .build();
     }
 
@@ -38,6 +46,10 @@ public class UserDto {
                 .email(email)
                 .nickname(nickname)
                 .memo(memo)
+                .birthday(birthday)
+                .gender(gender)
+                .age_range(age_range)
+                .provider(provider)
                 .build();
     }
 }

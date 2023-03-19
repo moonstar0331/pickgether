@@ -56,11 +56,13 @@ public class VoteController {
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(value = "category", required = false, defaultValue = "ALL") Category category,
                            @RequestParam(value = "orderBy", required = false, defaultValue = "LATEST") OrderCriteria orderBy,
+                           @AuthenticationPrincipal VotePrincipal votePrincipal,
                            Model model) {
         List<VoteDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
         model.addAttribute("votes", votes);
         model.addAttribute("category", category);
         model.addAttribute("orderBy", orderBy);
+        model.addAttribute("userDto",votePrincipal.toDto());
         return "/page/timeLine";
     }
 

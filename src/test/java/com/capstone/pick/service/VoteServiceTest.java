@@ -18,6 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.data.domain.Sort;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.persistence.EntityNotFoundException;
@@ -32,6 +35,8 @@ import static org.mockito.BDDMockito.*;
 
 @DisplayName("비즈니스 서비스 로직 - 투표 게시글")
 @ExtendWith(MockitoExtension.class)
+@ComponentScan(basePackages = "com.capstone.pick.config")
+@MockBean(JpaMetamodelMappingContext.class)
 public class VoteServiceTest {
 
     @InjectMocks
@@ -309,7 +314,7 @@ public class VoteServiceTest {
                 .email("email@email.com")
                 .nickname("nick")
                 .memo("memo")
-                .birthday(LocalDateTime.now())
+                .birthday("0101")
                 .createdAt(LocalDateTime.now())
                 .build();
     }
@@ -321,7 +326,7 @@ public class VoteServiceTest {
                 .email("email@email.com")
                 .nickname("nick")
                 .memo("memo")
-                .birthday(LocalDateTime.now())
+                .birthday("0101")
                 .createdAt(LocalDateTime.now())
                 .build();
     }
