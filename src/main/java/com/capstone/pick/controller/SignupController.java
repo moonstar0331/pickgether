@@ -20,10 +20,10 @@ public class SignupController {
      * 회원가입 양식을 불러온다
      * @return 회원가입 뷰
      */
-    @GetMapping("/signUp")
+    @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute("signUpForm",new SignUpForm());
-        return "/page/signUp";
+        return "/page/signup";
     }
 
     /**
@@ -31,9 +31,9 @@ public class SignupController {
      * @param signUpForm 회원가입 요청 데이터 폼
      * @return 홈 화면으로 이동
      */
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public String signup(@ModelAttribute SignUpForm signUpForm) throws DuplicatedUserException {
         customUserDetailsService.save(signUpForm.toDto());
-        return  "redirect:/";
+        return  "redirect:/login";
     }
 }

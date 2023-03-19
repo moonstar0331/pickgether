@@ -10,8 +10,8 @@ public class LoginController {
         return "/page/login";
     }
 
-    @GetMapping("/signup")
-    public String signup() {
-        return "/page/signup";
-    }
+//    @GetMapping("/signup")
+//    public String signup() {
+//        return "/page/signup";
+//    }
 }

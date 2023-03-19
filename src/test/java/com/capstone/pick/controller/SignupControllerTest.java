@@ -36,15 +36,15 @@ class SignupControllerTest {
     @Test
     @DisplayName("[GET][/signUp] 회원가입 페이지 요청")
     void 회원가입_페이지_요청() throws Exception {
-        mvc.perform(get("/signUp"))
+        mvc.perform(get("/signup"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(model().attributeExists("signUpForm"))
-                .andExpect(view().name("/page/signUp"));
+                .andExpect(view().name("/page/signup"));
     }
 
     @Test
-    @DisplayName("[POST][/signUp] 회원가입 승인")
+    @DisplayName("[POST][/signup] 회원가입 승인")
     void 회원가입_승인() throws Exception {
 
         //given
@@ -55,11 +55,12 @@ class SignupControllerTest {
                 .build();
 
         //when
-        mvc.perform(post("/signUp")
+        mvc.perform(post("/signup")
                 .flashAttr("signUpForm",form)
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(view().name("redirect:/login"))
+                .andExpect(redirectedUrl("/login"));
     }
 
     @Test
@@ -74,7 +75,7 @@ class SignupControllerTest {
                 .build();
 
         //when
-        mvc.perform(post("/signUp")
+        mvc.perform(post("/signup")
                 .flashAttr("signUpForm",failForm)
                 .with(csrf()))
                 .andExpect(status().is4xxClientError()); // 핸들러에서 409 에러로 처리
