@@ -64,15 +64,15 @@
                     </div>
                     <div>
                         <input class="login-input px-3 py-2 mb-2" type="password" id="password_check" name="password_check"
-                               style="width: 80%">
+                               onKeyup="pw_pwcheck_isSame();" style="width: 80%">
                     </div>
 
                     <!-- Todo: 비밀번호 동일 여부 판단 -->
                     <div class="password-validate">
-                        <img src="/images/icons/cross-small.svg"
+                        <img src="" id="pw_check_img"
                              style="width: 15px; height: auto;
                              filter: invert(37%) sepia(21%) saturate(4534%) hue-rotate(334deg) brightness(108%) contrast(73%);">
-                        <label>동일한 비밀번호가 입력되지 않았습니다.</label>
+                        <label id="pwCheckLabel"></label>
                     </div>
 
                     <hr class="signup-hr">
