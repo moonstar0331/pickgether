@@ -54,8 +54,8 @@ public class VoteController {
     }
 
     @GetMapping("/timeline")
-    public String timeLine(@RequestParam(value = "category", required = false, defaultValue = "ALL") Category category,
-                           @RequestParam(value = "orderBy", required = false, defaultValue = "LATEST") OrderCriteria orderBy,
+    public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,
+                           @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy,
                            @AuthenticationPrincipal VotePrincipal votePrincipal,
                            Model model) {
         List<VoteDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
@@ -89,7 +89,7 @@ public class VoteController {
     }
 
     @GetMapping("/{voteId}/edit")
-    public String editVote(@PathVariable("voteId") Long voteId, Model model) {
+    public String editVote(@PathVariable Long voteId, Model model) {
         VoteForm voteForm = VoteForm.builder().build();
         VoteDto voteDto = voteService.getVote(voteId);
         List<VoteOptionDto> optionDtos = voteService.getOptions(voteId);

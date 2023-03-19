@@ -47,9 +47,7 @@ public class VoteService {
         List<Vote> votes = new ArrayList<>();
         switch (orderBy) {
             case LATEST:
-                votes = category.equals(Category.ALL)
-                        ? voteRepository.findAll(Sort.by(Sort.Direction.DESC, "modifiedAt"))
-                        : voteRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, "modifiedAt"));
+                votes = voteRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, "modifiedAt"));
                 break;
             case POPULAR:
                 votes = category.equals(Category.ALL)
@@ -102,8 +100,7 @@ public class VoteService {
         });
     }
 
-    public void updateVote(Long voteId, VoteDto
-            voteDto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) {
+    public void updateVote(Long voteId, VoteDto voteDto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) {
         try {
             Vote vote = voteRepository.getReferenceById(voteId);
             User user = userRepository.getReferenceById(voteDto.getUserDto().getUserId());

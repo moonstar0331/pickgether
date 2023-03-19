@@ -2,7 +2,6 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.form.CommentForm;
-import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
@@ -72,7 +71,7 @@ class VoteCommentsControllerTest {
         mvc.perform(get("/" + voteId + "/comments"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(model().attributeExists("userId"))
+                .andExpect(model().attributeExists("user"))
                 .andExpect(model().attributeExists("commentPosts"))
                 .andExpect(view().name("page/comments"));
     }

@@ -7,8 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -31,7 +29,6 @@ public class VotePrincipal implements OAuth2User,UserDetails {
     private String gender;
     private String age_range;
 
-    //private UserDto userDto;
     private OAuthAttributes oAuthAttributes;
 
     public static VotePrincipal from(UserDto dto) {
@@ -59,18 +56,6 @@ public class VotePrincipal implements OAuth2User,UserDetails {
                 .provider(provider)
                 .build();
     }
-
-//    public VotePrincipal(UserDto userDto) {
-//        this.userDto=userDto;
-//    }
-
-//    public VotePrincipal(UserDto userDto, OAuthAttributes oAuthAttributes) {
-//        this.userDto=userDto;
-//        this.username = userDto.getUserId();
-//        this.password = userDto.getUserPassword();
-//        this.oAuthAttributes=oAuthAttributes;
-//
-//    }
 
     @Override
     public String getPassword() {
