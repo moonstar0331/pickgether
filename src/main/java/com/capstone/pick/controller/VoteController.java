@@ -54,8 +54,8 @@ public class VoteController {
     }
 
     @GetMapping("/timeline")
-    public String timeLine(@RequestParam(value = "category", required = false, defaultValue = "ALL") Category category,
-                           @RequestParam(value = "orderBy", required = false, defaultValue = "LATEST") OrderCriteria orderBy,
+    public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,
+                           @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy,
                            @AuthenticationPrincipal VotePrincipal votePrincipal,
                            Model model) {
         List<VoteDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
