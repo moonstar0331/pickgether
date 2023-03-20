@@ -4,10 +4,7 @@ import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.domain.constant.OrderCriteria;
-import com.capstone.pick.dto.HashtagDto;
-import com.capstone.pick.dto.UserDto;
-import com.capstone.pick.dto.VoteDto;
-import com.capstone.pick.dto.VoteOptionDto;
+import com.capstone.pick.dto.*;
 import com.capstone.pick.repository.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -97,9 +94,11 @@ public class VoteServiceTest {
         VoteOption option1 = createVoteOption(vote1, "option1", "/image/link1");
         VoteOption option2 = createVoteOption(vote1, "option2", "/image/link2");
         VoteOption option3 = createVoteOption(vote2, "option1", "/image/link3");
+        VoteOption option4 = createVoteOption(vote3, "option4", "/image/link4");
         ReflectionTestUtils.setField(option1, "id", 1L);
         ReflectionTestUtils.setField(option2, "id", 2L);
         ReflectionTestUtils.setField(option3, "id", 3L);
+        ReflectionTestUtils.setField(option4, "id", 4L);
         Pick pick1 = createPick(user, option1);
         Pick pick2 = createPick(user, option2);
         Pick pick3 = createPick(user, option3);
@@ -113,10 +112,10 @@ public class VoteServiceTest {
         given(voteRepository.findByCategoryOrderByPopular(Category.FREE)).willReturn(List.of(vote2, vote1));
 
         // when
-        List<VoteDto> All_LATEST = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.LATEST);
-        List<VoteDto> All_POPULAR = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.POPULAR);
-        List<VoteDto> FREE_LATEST = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.LATEST);
-        List<VoteDto> FREE_POPULAR = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.POPULAR);
+        List<VoteWithOptionDto> All_LATEST = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.LATEST);
+        List<VoteWithOptionDto> All_POPULAR = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.POPULAR);
+        List<VoteWithOptionDto> FREE_LATEST = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.LATEST);
+        List<VoteWithOptionDto> FREE_POPULAR = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.POPULAR);
 
         // then
         assertThat(All_LATEST.get(0))
@@ -274,11 +273,13 @@ public class VoteServiceTest {
     }
 
     private static VoteOption createVoteOption(Vote vote, String content, String imageLink) {
-        return VoteOption.builder()
+        VoteOption option = VoteOption.builder()
                 .vote(vote)
                 .content(content)
                 .imageLink(imageLink)
                 .build();
+        vote.getVoteOptions().add(option);
+        return option;
     }
 
     private static Pick createPick(User user, VoteOption voteOption) {
@@ -302,6 +303,7 @@ public class VoteServiceTest {
                 .expiredAt(LocalDateTime.now().plusDays(3))
                 .isMultiPick(true)
                 .displayRange(DisplayRange.PUBLIC)
+                .voteOptions(new ArrayList<>())
                 .build();
         ReflectionTestUtils.setField(vote, "id", id);
         return vote;
