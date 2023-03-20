@@ -273,13 +273,11 @@ public class VoteServiceTest {
     }
 
     private static VoteOption createVoteOption(Vote vote, String content, String imageLink) {
-        VoteOption option = VoteOption.builder()
+        return VoteOption.builder()
                 .vote(vote)
                 .content(content)
                 .imageLink(imageLink)
                 .build();
-        vote.getVoteOptions().add(option);
-        return option;
     }
 
     private static Pick createPick(User user, VoteOption voteOption) {
