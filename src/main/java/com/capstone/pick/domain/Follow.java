@@ -10,9 +10,8 @@ import java.io.Serializable;
 
 @Entity
 @Getter
-@Setter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @IdClass(Follow.PK.class)
 public class Follow {
