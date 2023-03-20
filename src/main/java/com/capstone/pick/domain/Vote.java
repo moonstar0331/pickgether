@@ -17,6 +17,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -61,6 +63,10 @@ public class Vote {
 
     @Enumerated(EnumType.STRING)
     private DisplayRange displayRange; // 공개범위
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
+    private List<VoteOption> voteOptions = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
