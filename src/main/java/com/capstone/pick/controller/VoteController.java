@@ -5,10 +5,7 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.domain.constant.SearchType;
-import com.capstone.pick.dto.HashtagDto;
-import com.capstone.pick.dto.UserDto;
-import com.capstone.pick.dto.VoteDto;
-import com.capstone.pick.dto.VoteOptionDto;
+import com.capstone.pick.dto.*;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteService;
@@ -58,7 +55,7 @@ public class VoteController {
                            @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy,
                            @AuthenticationPrincipal VotePrincipal votePrincipal,
                            Model model) {
-        List<VoteDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
+        List<VoteWithOptionDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
         model.addAttribute("votes", votes);
         model.addAttribute("category", category);
         model.addAttribute("orderBy", orderBy);
