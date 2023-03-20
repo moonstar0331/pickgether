@@ -116,6 +116,9 @@
                         <circle cx="8" cy="8" r="8"/>
                     </svg>
                     <p class="vote-background-p" th:text="${vote.title}"/>
+                    <div th:each="option : ${vote.voteOptionDtos}">
+                        <div th:text="${option.content}"></div>
+                    </div>
                 </div>
 
                 <div style="float: left;">
