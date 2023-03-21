@@ -20,8 +20,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
-    <script type="text/javascript" src="js/script.js"></script>
-    <script type="text/javascript" src="js/timeline.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
+<!--    <script type="text/javascript" src="/js/timeline.js"></script>-->
 </head>
 <body>
 <div class="timeline-background">
@@ -81,7 +81,7 @@
         <button type="button" class="btn btn-primary all-follow-btn border-start border-bottom">팔로우</button>
     </div>
 
-    <div th:each="vote: ${votes}">
+    <div th:each="vote, voteStat: ${votes}">
         <div>
             <header class="profile" style="margin-bottom: 10px;">
                 <div style="float: left;">
@@ -107,7 +107,7 @@
             </div>
 
             <!--투표-->
-            <section class="vote-background-1 vote-test1" id="vote-background-section">
+            <section class="vote-background-1 vote-test1" th:class="'vote'+${voteStat.index} + 'outer vote-background-1'" id="vote-background-section" th:idx="${voteStat.index}" th:onclick="show(this.getAttribute('idx'))">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
                          class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
@@ -132,14 +132,16 @@
             </section>
 
             <!-- 투표 클릭시 -->
-            <section class="vote-background-2 vote-test2" id="vote-background-section-clicked" style="display: none;">
+            <section class="vote-background-2 vote-test2" th:idx="${voteStat.index}" th:class="'vote'+${voteStat.index} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
                          class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
                         <circle cx="8" cy="8" r="8"/>
                     </svg>
-                    <div th:each="option : ${vote.voteOptionDtos}">
-                        <div th:text="${option.content}"></div>
+                    <div th:each="option, optionStat : ${vote.voteOptionDtos}">
+                        <div>
+                            <div th:text="${option.content}" th:name="'voteOption'+${optionStat.index}"></div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -261,4 +263,18 @@
     </nav>
 </div>
 </body>
+<script th:inline="javascript">
+    function show(idx) {
+        var outer = ".vote"+idx+"outer";
+        var inner = ".vote"+idx+"inner";
+        $(outer).click(function () {
+            $(inner).css("display", "block");
+            $(outer).css("display", "none");
+        });
+        $(inner).click(function () {
+            $(outer).css("display", "block");
+            $(inner).css("display", "none");
+        });
+    }
+</script>
 </html>
