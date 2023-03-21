@@ -114,9 +114,6 @@
                         <circle cx="8" cy="8" r="8"/>
                     </svg>
                     <p class="vote-background-p" th:text="${vote.title}"/>
-                    <div th:each="option : ${vote.voteOptionDtos}">
-                        <!-- <div th:text="${option.content}"></div> -->
-                    </div>
                 </div>
 
                 <div style="float: left;">
@@ -138,9 +135,12 @@
                          class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
                         <circle cx="8" cy="8" r="8"/>
                     </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none" style="margin-top: 10px; margin-right: 10px; float: right;">
+                        <path xmlns="http://www.w3.org/2000/svg" d="M1.125 7H14.875M14.875 7L9.25 1.375M14.875 7L9.25 12.625" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                     <div th:each="option, optionStat : ${vote.voteOptionDtos}">
                         <div>
-                            <div th:text="${option.content}" th:name="'voteOption'+${optionStat.index}"></div>
+                            <input th:value="${option.content}" th:name="'voteOption'+${optionStat.index}"/>
                         </div>
                     </div>
                 </div>
