@@ -355,3 +355,15 @@
         min-height: 100%;
     }
 }
+
+.vote-select-btn {
+    height: 40px;
+    width: 530px;
+    margin-top: 10px;
+    font-size: 20px;
+    background-color: rgba( 0, 0, 0, 0.5 );
+    color: #FFFFFF;
+    border-radius: 100px;
+    border: none;
+    text-align: center;
+}
