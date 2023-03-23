@@ -147,7 +147,16 @@
                     <div th:each="option, optionStat : ${vote.voteOptionDtos}">
                         <div class="vote-button-check" style="text-align: center; position: relative;">
                             <input class="vote-select-btn" th:value="${option.content}" th:name="'voteOption'+${optionStat.index}"/>
-                            <div class="vote-result" style="display: none;"></div>
+                            <div th:class="'vote-result'+${voteStat.index}"
+                                 style="display: none;
+                                        position: absolute;
+                                        top: 10px; left: 20px;
+                                        width: 300px; height: 55px;
+                                        background: #FFF2E9;
+                                        opacity: 0.2;
+                                        border-radius: 100px;">
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -287,8 +296,11 @@
         });
          */
 
+        var submit = "#vote-submit-btn" + idx;
+        var result = ".vote-result" + idx;
+
         $("#vote-submit-btn").click(function () {
-            $(".vote-result").css("display", "inline");
+            $(result).css("display", "inline");
         });
     }
 </script>

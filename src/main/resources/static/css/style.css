@@ -367,12 +367,3 @@
     border: none;
     text-align: center;
 }
-
-.vote-result {
-    position: absolute;
-    top: 10px; left: 20px;
-    width: 300px; height: 55px;
-    background: #FFF2E9;
-    opacity: 0.2;
-    border-radius: 100px;
-}
