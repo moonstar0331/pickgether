@@ -106,7 +106,7 @@
             </div>
 
             <!--투표-->
-            <section class="vote-background-1 vote-test1" th:class="'vote'+${voteStat.index} + 'outer vote-background-1'" id="vote-background-section" th:idx="${voteStat.index}" th:onclick="show(this.getAttribute('idx'))">
+            <section class="vote-background-1" th:class="'vote'+${voteStat.index} + 'outer vote-background-1'" id="vote-background-section" th:idx="${voteStat.index}" th:onclick="show(this.getAttribute('idx'))">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
                          class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
@@ -128,7 +128,7 @@
             </section>
 
             <!-- 투표 클릭시 -->
-            <section class="vote-background-2 vote-test2" th:idx="${voteStat.index}" th:class="'vote'+${voteStat.index} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;">
+            <section class="vote-background-2" th:idx="${voteStat.index}" th:class="'vote'+${voteStat.index} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
                          class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
@@ -144,8 +144,10 @@
                     <div style="height: 30px;"></div>
 
                     <div th:each="option, optionStat : ${vote.voteOptionDtos}">
-                        <div style="text-align: center">
+                        <div class="vote-button-check" style="text-align: center; position: relative;">
                             <input class="vote-select-btn" th:value="${option.content}" th:name="'voteOption'+${optionStat.index}"/>
+                            <div class="vote-result" style="z-index: 1;"></div>
+
                         </div>
                     </div>
                 </div>

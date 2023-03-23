@@ -62,7 +62,7 @@
     border-radius: 13px;
 }
 
-.vote-background-2 {
+.vote-background-2{
     height: 250px;
     width: 570px;
     margin: auto;
@@ -361,9 +361,18 @@
     width: 530px;
     margin-top: 10px;
     font-size: 20px;
-    background-color: rgba( 0, 0, 0, 0.5 );
+    background: rgba(0, 0, 0, 0.5);
     color: #FFFFFF;
     border-radius: 100px;
     border: none;
     text-align: center;
+}
+
+.vote-result {
+    position: absolute;
+    top: 10px; left: 20px;
+    width: 300px; height: 55px;
+    background: #FFF2E9;
+    opacity: 0.2;
+    border-radius: 100px;
 }
