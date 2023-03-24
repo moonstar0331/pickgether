@@ -60,7 +60,7 @@ public class VoteController {
         model.addAttribute("category", category);
         model.addAttribute("orderBy", orderBy);
         model.addAttribute("userDto",votePrincipal.toDto());
-        return "/page/timeLine";
+        return "page/timeLine";
     }
 
     @GetMapping("/form")
