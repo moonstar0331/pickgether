@@ -23,7 +23,7 @@ public class SignupController {
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute("signUpForm",new SignUpForm());
-        return "/page/signup";
+        return "page/signup";
     }
 
     /**

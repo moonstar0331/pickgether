@@ -33,7 +33,7 @@ public class VoteController {
 
     @GetMapping("/search")
     public String search() {
-        return "/page/search";
+        return "page/search";
     }
 
     @PostMapping("/search")
@@ -42,11 +42,11 @@ public class VoteController {
         if(searchForm.getSearchType() == SearchType.USER) {
             List<UserDto> users = userService.findUsersById(searchForm.getSearchValue());
             map.addAttribute("users", users);
-            return "/page/search";
+            return "page/search";
         } else {
             List<VoteDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("votes", votes);
-            return "/page/timeLine";
+            return "page/timeLine";
         }
     }
 
@@ -69,7 +69,7 @@ public class VoteController {
         VoteForm voteForm = VoteForm.builder().build();
         //th:object 사용을 위해 폼 객체를 넘겨줌
         model.addAttribute("voteForm", voteForm);
-        return "/page/form";
+        return "page/form";
     }
 
     @PostMapping("/form")
@@ -94,7 +94,7 @@ public class VoteController {
         model.addAttribute("voteForm", voteForm);
         model.addAttribute("voteDto", voteDto);
         model.addAttribute("optionDtos", optionDtos);
-        return "/page/editForm";
+        return "page/editForm";
     }
 
     @PostMapping("/{voteId}/edit")
