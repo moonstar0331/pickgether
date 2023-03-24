@@ -88,8 +88,8 @@
                 </div>
                 <div>
                     <section style="float: left; padding-left: 10px;">
-                        <div th:text="${vote.userDto.nickname}"/>
-                        <div th:text="${vote.userDto.userId}"/>
+                        <div th:text="${vote.userDto.nickname}" style="font-weight: bold"/>
+                        <div th:text="${vote.userDto.userId}" style="font-weight: bold"/>
                     </section>
                     <!--Todo: 버튼으로 변경-->
                     <div align="right" style="margin-right: 15px">
@@ -130,29 +130,30 @@
             <!-- 투표 클릭시 -->
             <section class="vote-background-2" th:idx="${voteStat.index}" th:class="'vote'+${voteStat.index} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;">
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
-                         class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
-                        <circle cx="8" cy="8" r="8"/>
-                    </svg>
-                    <!-- 투표 제출 버튼 -->
-                    <button th:class="'vote-submit-btn'+${voteStat.index}"
-                            style="border: none; float: right;
+                    <div th:class="'test'+${voteStat.index}" style="margin-bottom: 30px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                             class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="8"/>
+                        </svg>
+                        <!-- 투표 제출 버튼 -->
+                        <button th:class="'vote-submit-btn'+${voteStat.index}"
+                                style="border: none; float: right;
                                                  margin-top: 5px; margin-right: 15px;
                                                  background-color: transparent;
                                                  filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%);">
-                        <img src="/images/icons/arrow-right.svg"
-                             style="width: 25px; height: 30px;"/>
-                    </button>
-                    <!-- 투표 통계 버튼 -->
-                    <button th:class="'vote-analyze-btn'+${voteStat.index}"
-                            style="border: none; float: right; display: none;
+                            <img src="/images/icons/arrow-right.svg"
+                                 style="width: 25px; height: 30px;"/>
+                        </button>
+                        <!-- 투표 통계 버튼 -->
+                        <button th:class="'vote-analyze-btn'+${voteStat.index}"
+                                style="border: none; float: right; display: none;
                                                  margin-top: 5px; margin-right: 15px;
                                                  background-color: transparent;
                                                  /*filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(104deg) brightness(103%) contrast(103%);*/">
-                        <img src="/images/icons/analyze.svg"
-                             style="width: 25px; height: 30px; fill: #FFFFFF"/>
-                    </button>
-                    <div style="height: 30px;"></div>
+                            <img src="/images/icons/analyze.svg"
+                                 style="width: 25px; height: 30px; fill: #FFFFFF"/>
+                        </button>
+                    </div>
 
                     <div th:each="option, optionStat : ${vote.voteOptionDtos}">
                         <div class="vote-button-check" style="text-align: center; position: relative;">
@@ -169,6 +170,7 @@
                             </div>
                         </div>
                     </div>
+                    <div th:class="'test'+${voteStat.index}" style="display: block; height:65px;"></div>
                 </div>
             </section>
         </div>
@@ -219,7 +221,7 @@
             </div>
             <div>
                 <section style="float: left; padding-left: 10px; font-size: 15px;">
-                    <div>picker 3</div>
+                    <div><b>picker 3</b></div>
                     <div>행궁동 ㅇㅇ 예쁘던데 가보세요</div>
                 </section>
             </div>
@@ -299,12 +301,13 @@
             $(inner).css("display", "block");
             $(outer).css("display", "none");
         });
-        /*
-        $(inner).click(function () {
+
+        const test = document.getElementsByClassName("test"+idx);
+
+        $(test).click(function () {
             $(outer).css("display", "block");
             $(inner).css("display", "none");
         });
-         */
 
         var submit = ".vote-submit-btn" + idx;
         var analyze = ".vote-analyze-btn" + idx;
