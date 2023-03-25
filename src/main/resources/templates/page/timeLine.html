@@ -160,14 +160,8 @@
                             <input class="vote-select-btn" type="radio" th:id="'vote'+${voteStat.index}+'option'+${optionStat.index}" th:name="'vote'+${voteStat.index}+'option'"/>
                             <label th:for="'vote'+${voteStat.index}+'option'+${optionStat.index}" th:text="${option.content}"></label>
                             <div th:class="'vote-result'+${voteStat.index}"
-                                 style="display: none;
-                                        position: absolute;
-                                        top: 10px; left: 20px;
-                                        width: 300px; height: 55px;
-                                        background: #FFF2E9;
-                                        opacity: 0.2;
-                                        border-radius: 100px;">
-                                
+                                 style="display: none; position: absolute; top: 10px; left: 20px; width: 300px; height: 55px;
+                                        background: #FFF2E9; opacity: 0.4; border-radius: 100px; z-index:1;">
                             </div>
                         </div>
                     </div>

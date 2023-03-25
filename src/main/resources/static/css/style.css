@@ -379,6 +379,8 @@
     border-radius: 100px;
     border: none;
     text-align: center;
+    opacity: 0.8;
+    z-index: 10;
 }
 
 .vote-button-check input[type=radio]:checked+label {
