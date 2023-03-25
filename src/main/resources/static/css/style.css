@@ -355,8 +355,21 @@
         min-height: 100%;
     }
 }
-
 .vote-select-btn {
+    display: none;
+}
+
+.vote-button-check {
+    text-align: center;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+}
+
+.vote-select-btn+label {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
     height: 55px;
     width: 530px;
     margin-top: 10px;
@@ -366,4 +379,9 @@
     border-radius: 100px;
     border: none;
     text-align: center;
+}
+
+.vote-button-check input[type=radio]:checked+label {
+    background: #7F8AE5;
+    color: #FFF2E9;
 }

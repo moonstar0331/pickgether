@@ -128,7 +128,7 @@
             </section>
 
             <!-- 투표 클릭시 -->
-            <section class="vote-background-2" th:idx="${voteStat.index}" th:class="'vote'+${voteStat.index} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;">
+            <section class="vote-background-2" th:idx="${voteStat.index}" th:class="'vote'+${voteStat.index} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;" th:onclick="submitPick(this.getAttribute('idx'))">
                 <div>
                     <div th:class="'test'+${voteStat.index}" style="padding-bottom: 30px;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
@@ -156,8 +156,9 @@
                     </div>
 
                     <div th:each="option, optionStat : ${vote.voteOptionDtos}">
-                        <div class="vote-button-check" style="text-align: center; position: relative;">
-                            <input class="vote-select-btn" th:value="${option.content}" th:name="'voteOption'+${optionStat.index}"/>
+                        <div class="vote-button-check">
+                            <input class="vote-select-btn" type="radio" th:id="'vote'+${voteStat.index}+'option'+${optionStat.index}" th:name="'vote'+${voteStat.index}+'option'"/>
+                            <label th:for="'vote'+${voteStat.index}+'option'+${optionStat.index}" th:text="${option.content}"></label>
                             <div th:class="'vote-result'+${voteStat.index}"
                                  style="display: none;
                                         position: absolute;
@@ -319,5 +320,26 @@
             $(analyze).css("display", "inline");
         });
     }
+
+    function submitPick(idx) {
+        const btn = document.getElementsByClassName("vote-submit-btn" + idx);
+        $(btn).click(function(){
+            // $.ajax({
+            //     type: 'post',
+            //     url: '/pick',
+            //     async: 'true',
+            //     headers : {
+            //         "Content-Type" : "application/json",
+            //         "X-HTTP-Method-Override" : "POST"
+            //     },
+            //     dataType: idx,
+            //     success: function(idx) {
+            //         alert(idx);
+            //     }
+            // });
+            alert(idx);
+        });
+    }
+
 </script>
 </html>
