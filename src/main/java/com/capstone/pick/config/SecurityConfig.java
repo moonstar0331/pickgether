@@ -30,7 +30,7 @@ public class SecurityConfig {
                 )
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/timeLine")
+                .defaultSuccessUrl("/timeline")
                 .permitAll().and()
                 .logout()
                 .logoutSuccessUrl("/").and()
@@ -48,5 +48,4 @@ public class SecurityConfig {
     public static PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
 }
