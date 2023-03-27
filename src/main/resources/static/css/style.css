@@ -385,15 +385,20 @@
 }
 
 .title-margin {
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 1.125rem;
+    margin-right: 1.125rem;
 }
 
 .participants-title {
     font-family: 'Noto Sans KR', sans-serif;
+    font-size: 18pt;
 }
 
-.participants-title:after {
+.wrap {
+
+}
+
+.wrap:after {
     display: block;
     clear: both;
     content: "";
@@ -418,12 +423,53 @@
 }
 
 .influencer-background {
-    height: 150px;
-    width: 570px;
-    margin: auto;
+    height: 9.375rem;
+    width: 35.625rem;
+    margin: 1.125rem;
 
     background: #D7DCE4;
-    border-radius: 13px;
+    border-radius: 0.8rem;
     border-style: solid;
     border-color: #AFBACA;
+}
+
+.p-subtitle {
+    font-size: 1.3rem;
+}
+
+.p-id {
+    font-size: 1.125rem;
+}
+
+.cp {
+    cursor : pointer;
+}
+
+.m-20 {
+    margin: 1.25rem;
+}
+
+.fl {
+    float: left;
+}
+
+.circle-img {
+    object-fit: cover;
+    object-position: top;
+    border-radius: 50%;
+    position: relative;
+    display: block;
+    width: 4rem;
+    height: 4rem;
+}
+
+.circle-position {
+    display: flex;
+    justify-content: center;
+    position: absolute
+}
+
+.border-white {
+    border-style: solid;
+    border-color: white;
 }

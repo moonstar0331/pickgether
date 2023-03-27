@@ -33,7 +33,7 @@
                   d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
         </svg>
         <div class="my-0 mx-auto">
-            <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0;">participants</h4>
+            <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0; font-size: 1.75rem">participants</h4>
         </div>
     </header>
 
@@ -41,8 +41,8 @@
     <!-- TODO : participants -> influencers 로 리스트 수정-->
     <!-- 인플루언서 참여자 리스트 -->
     <section class="influencer-background">
-        <div class="title-margin">
-            <div class="participants-title">
+        <div class="title-margin mt-2">
+            <div class="participants-title wrap">
                 <div class="float-left" th:text="|인플루언서|">
                     <!--인플루언서 설명 아이콘-->
                     <button type="button" class="btn-no-outline">
@@ -56,57 +56,64 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="wrap m-3" style="position: relative">
             <th:block th:each="participant : ${participants}">
-                <!--TODO : 인플루언서 프로필사진 반복 출력-->
                 <!--TODO : max 인원이 넘어가면 더보기 버튼 생성-->
+                <!-- 프로필 사진 -->
+                <div th:if="${participants.indexOf(participant)} < 8">
+                    <div class="mr-3 fl circle-position" th:onclick="'location.href=\'' + '#\''"
+                         th:style="${'left:' + participants.indexOf(participant) * 3.2 +'rem'}" style="border: 0.5rem white;">
+                        <img src="https://pbs.twimg.com/media/EkDBc-LU0AEK5kB.jpg" class="circle-img cp border-white">
+                    </div>
+                </div>
             </th:block>
         </div>
     </section>
 
     <!-- 일반 참여자 리스트 -->
-    <div class="title-margin">
-        <div class="participants-title">
-            <div class="float-left" th:text="|일반 참여자|">
-            </div>
-            <div class="float-right" th:text="${participants.size()} + '명'">
-            </div>
-        </div>
-        <div class="participants-title">
-            <button type="button" class="btn-no-outline" style="float: left;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
-                    <path d="M10.4219 5.90625L6.52602 9.625L4.57812 7.76562M13.875 7.5C13.875 11.0208 11.0208 13.875 7.5 13.875C3.97918 13.875 1.125 11.0208 1.125 7.5C1.125 3.97918 3.97918 1.125 7.5 1.125C11.0208 1.125 13.875 3.97918 13.875 7.5Z"
-                          stroke="#5E718D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-            <div style="float: left;" th:text="|친구만 보기|"></div>
-        </div>
-    </div>
-
-    <div class="mb-3 scrollbar-none" style="overflow: auto; height: 80%;">
-        <th:block th:each="participant : ${participants}">
-            <div class="d-flex text-muted pl-3 pt-3 border-bottom">
-                <!-- 프로필 사진 -->
-                <button type="button" class="btn-no-outline" th:onclick="'location.href=\'' + '#\''">
-                    <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="35" height="35"
-                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
-                         preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <rect width="100%" height="100%" fill="#CA5151"></rect>
-                    </svg>
-                </button>
-                <!-- 닉네임 및 아이디 -->
-                <div class="pb-3 mb-0 w-100 small lh-sm">
-                    <div class="d-flex justify-content-between mb-1">
-                        <div style="cursor : pointer;" class="text-dark text-bold"
-                             th:text="${participant.getNickname()}" th:onclick="'location.href=\'' + '#\''"></div>
-                        <div class="mr-2 d-flex">
-                        </div>
-                    </div>
-                    <div th:id="${'participant' + participant.getUserId()}" style="cursor : pointer;" class="mb-2"
-                         th:text="${participant.getUserId()}" th:onclick="'location.href=\'' + '#\''"></div>
+    <div class="m-20">
+        <div class="title-margin">
+            <div class="participants-title wrap mb-2">
+                <div class="float-left" th:text="|일반 참여자|">
+                </div>
+                <div class="float-right" th:text="${participants.size()} + '명'">
                 </div>
             </div>
-        </th:block>
+            <div>
+                <button type="button" class="btn-no-outline wrap">
+                    <svg class="fl mr-1" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 15 15"
+                         fill="none">
+                        <path d="M10.4219 5.90625L6.52602 9.625L4.57812 7.76562M13.875 7.5C13.875 11.0208 11.0208 13.875 7.5 13.875C3.97918 13.875 1.125 11.0208 1.125 7.5C1.125 3.97918 3.97918 1.125 7.5 1.125C11.0208 1.125 13.875 3.97918 13.875 7.5Z"
+                              stroke="#5E718D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div th:text="|친구만 보기|" class="p-subtitle fl" style="font-size: 1.125rem;"></div>
+                </button>
+            </div>
+        </div>
+
+        <div class="scrollbar-none pl-3 pr-3" style="overflow: auto; height: 80%;">
+            <th:block th:each="participant : ${participants}">
+                <div class="d-flex text-muted pl-1 pt-4 pb-4 border-bottom">
+                    <!-- 프로필 사진 -->
+                    <div class="mr-3" style="display: flex; justify-content: center;"
+                         th:onclick="'location.href=\'' + '#\''">
+                        <img src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"
+                             class="circle-img cp">
+                    </div>
+                    <!-- 닉네임 및 아이디 -->
+                    <div class="mb-0 w-100 small lh-sm">
+                        <div class="d-flex justify-content-between mb-1">
+                            <div class="text-dark text-bold p-subtitle cp"
+                                 th:text="${participant.getNickname()}" th:onclick="'location.href=\'' + '#\''"></div>
+                            <div class="mr-2 d-flex">
+                            </div>
+                        </div>
+                        <div th:id="${'participant' + participant.getUserId()}" class="mb-2 p-id cp"
+                             th:text="${participant.getUserId()}" th:onclick="'location.href=\'' + '#\''"></div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
     </div>
 </div>
 </body>
