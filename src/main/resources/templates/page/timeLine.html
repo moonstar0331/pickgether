@@ -79,7 +79,7 @@
         <button type="button" class="btn btn-primary all-follow-btn border-start border-bottom">팔로우</button>
     </div>
 
-    <div th:each="vote, voteStat: ${votes}">
+    <div th:each="vote: ${votes}">
         <div>
             <header class="profile" style="margin-bottom: 10px;">
                 <div style="float: left;">
@@ -104,7 +104,7 @@
             </div>
 
             <!--투표-->
-            <section class="vote-background-1" th:class="'vote'+${voteStat.index} + 'outer vote-background-1'" id="vote-background-section" th:idx="${voteStat.index}" th:onclick="show(this.getAttribute('idx'))">
+            <section class="vote-background-1" th:class="'vote'+${vote.getId()} + 'outer vote-background-1'" id="vote-background-section" th:voteId="${vote.getId()}" th:onclick="show(this.getAttribute('voteId'))">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
                          class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
@@ -126,9 +126,9 @@
             </section>
 
             <!-- 투표 클릭시 -->
-            <section class="vote-background-2" th:idx="${voteStat.index}" th:class="'vote'+${voteStat.index} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;" th:onclick="submitPick(this.getAttribute('idx'))">
+            <section class="vote-background-2" th:voteId="${vote.getId()}" th:class="'vote'+${vote.getId()} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;" th:onclick="submitPick(this.getAttribute('voteId'))">
                 <div>
-                    <div th:class="'test'+${voteStat.index}" style="padding-bottom: 30px; width:515px; float: left;">
+                    <div th:class="'test'+${vote.getId()}" style="padding-bottom: 30px; width:515px; float: left;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
                              class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="8"/>
@@ -137,7 +137,7 @@
 
                     <div>
                         <!-- 투표 제출 버튼 -->
-                        <button th:class="'vote-submit-btn'+${voteStat.index}"
+                        <button th:class="'vote-submit-btn'+${vote.getId()}"
                                 style="border: none;
                                 margin-top: 5px; margin-right: 15px;
                                 background-color: transparent;
@@ -146,7 +146,7 @@
                                  style="width: 25px; height: 30px;"/>
                         </button>
                         <!-- 투표 통계 버튼 -->
-                        <button th:class="'vote-analyze-btn'+${voteStat.index}"
+                        <button th:class="'vote-analyze-btn'+${vote.getId()}"
                                 style="border: none; display: none;
                                 margin-top: 5px; margin-right: 15px;
                                 background-color: transparent;">
@@ -156,11 +156,11 @@
                     </div>
 
                     <div style="margin-top: 20px;">
-                        <div th:each="option, optionStat : ${vote.voteOptionDtos}">
+                        <div th:each="option : ${vote.voteOptionDtos}">
                             <div class="vote-button-check">
-                                <input class="vote-select-btn" type="radio" th:id="'vote'+${voteStat.index}+'option'+${optionStat.index}" th:name="'vote'+${voteStat.index}+'option'"/>
-                                <label th:for="'vote'+${voteStat.index}+'option'+${optionStat.index}" th:text="${option.content}"></label>
-                                <div th:class="'vote-result'+${voteStat.index}"
+                                <input class="vote-select-btn" type="radio" th:id="'vote'+${vote.getId()}+'option'+${option.getId()}" th:name="'vote'+${vote.getId()}+'option'+${option.getId()}"/>
+                                <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}" th:text="${option.content}"></label>
+                                <div th:class="'vote-result'+${vote.getId()}"
                                      style="display: none; position: absolute; top: 10px; left: 20px; width: 300px; height: 55px;
                                         background: #FFF2E9; opacity: 0.4; border-radius: 100px; z-index:1;">
                                 </div>
@@ -168,7 +168,7 @@
                         </div>
                     </div>
 
-                    <div th:class="'test'+${voteStat.index}" style="display: block; height:65px;"></div>
+                    <div th:class="'test'+${vote.getId()}" style="display: block; height:65px;"></div>
                 </div>
             </section>
         </div>
@@ -292,24 +292,24 @@
 </div>
 </body>
 <script th:inline="javascript">
-    function show(idx) {
-        var outer = ".vote"+idx+"outer";
-        var inner = ".vote"+idx+"inner";
+    function show(voteId) {
+        var outer = ".vote"+voteId+"outer";
+        var inner = ".vote"+voteId+"inner";
         $(outer).click(function () {
             $(inner).css("display", "block");
             $(outer).css("display", "none");
         });
 
-        const test = document.getElementsByClassName("test"+idx);
+        const test = document.getElementsByClassName("test"+voteId);
 
         $(test).click(function () {
             $(outer).css("display", "block");
             $(inner).css("display", "none");
         });
 
-        var submit = ".vote-submit-btn" + idx;
-        var analyze = ".vote-analyze-btn" + idx;
-        var result = ".vote-result" + idx;
+        var submit = ".vote-submit-btn" + voteId;
+        var analyze = ".vote-analyze-btn" + voteId;
+        var result = ".vote-result" + voteId;
 
         $(submit).click(function () {
             $(result).css("display", "inline");
@@ -318,8 +318,8 @@
         });
     }
 
-    function submitPick(idx) {
-        const btn = document.getElementsByClassName("vote-submit-btn" + idx);
+    function submitPick(voteId) {
+        const btn = document.getElementsByClassName("vote-submit-btn" + voteId);
         $(btn).click(function(){
             // $.ajax({
             //     type: 'post',
@@ -334,7 +334,7 @@
             //         alert(idx);
             //     }
             // });
-            alert(idx);
+            alert(voteId);
         });
     }
 </script>
