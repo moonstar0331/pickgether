@@ -35,7 +35,7 @@
                     </select>
                 </div>
                 <div style="width: 80%; position: relative;">
-                    <input type="text" class="form-control" id="SearchInput" placeholder="검색"
+                    <input type="text" class="form-control" id="SearchInput" placeholder="검색" th:name="searchValue"
                            style="background-color: #EFEFEF; border-radius: 4rem; padding-right: 2rem;">
                     <div style="position: absolute; right: 0.8rem; top: 0.3rem;">
                         <img style="width: 1.2rem;" onclick="clearSearchInput()"
@@ -59,7 +59,6 @@
                     </section>
                 </div>
             </header>
-            <button class="look-result-all-btn">결과 모두 보기</button>
         </section>
     </th:block>
 </div>
