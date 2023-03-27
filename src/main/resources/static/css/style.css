@@ -30,18 +30,18 @@
 
 .profile-circle {
     position: absolute;
-    background-color:#CA5151;
+    background-color: #CA5151;
     width: 10px;
     height: 10px;
 
     left: 70px;
     top: 20px;
 
-    border-radius:70%;
+    border-radius: 70%;
     z-index: 999;
 }
 
-.hashtag p{
+.hashtag p {
     color: #7F61E9 !important;
 }
 
@@ -50,7 +50,7 @@
     margin-left: 10px;
 }
 
-.vote-background-1{
+.vote-background-1 {
     height: 250px;
     width: 570px;
     margin: auto;
@@ -89,7 +89,7 @@
     margin-left: 10px;
     background-color: #6c757d;
     border-color: #6c757d;
-    opacity:0.8;
+    opacity: 0.8;
     border-radius: 13px;
 }
 
@@ -101,12 +101,12 @@
     word-break: break-all;
     white-space: normal;
     margin-bottom: 0px !important;
-    text-align : center;
+    text-align: center;
     margin-top: 10px;
     padding: 35px;
 }
 
-#vote-background-image-vote{
+#vote-background-image-vote {
     color: white;
     font-weight: 400;
     font-family: 'Noto Sans KR', sans-serif;
@@ -114,7 +114,7 @@
     word-break: break-all;
     white-space: normal;
     margin-bottom: 0px !important;
-    text-align : center;
+    text-align: center;
     margin-top: 30px;
     padding: 35px;
 }
@@ -131,7 +131,7 @@
 }
 
 .icons button {
-    background-color:transparent;
+    background-color: transparent;
     fill: gray;
     border: none;
     margin-top: 10px;
@@ -147,13 +147,7 @@
 }
 
 .icons img:hover {
-    filter:
-            invert(47%)
-            sepia(38%)
-            saturate(6705%)
-            hue-rotate(233deg)
-            brightness(97%)
-            contrast(89%);
+    filter: invert(47%) sepia(38%) saturate(6705%) hue-rotate(233deg) brightness(97%) contrast(89%);
 }
 
 .bottom-navbar {
@@ -162,7 +156,7 @@
 
 .floating-button {
     position: fixed;
-    margin:auto;
+    margin: auto;
     bottom: 1px;
     z-index: 998;
 }
@@ -247,6 +241,7 @@
     position: relative;
     width: 300px;
 }
+
 .custom-form-input {
     width: 100%;
     border: 1px solid #ccc;
@@ -256,6 +251,7 @@
     box-sizing: border-box;
     outline: none;
 }
+
 .custom-botton {
     position: absolute;
     right: 3px;
@@ -345,7 +341,7 @@
     min-height: 100%;
 }
 
-@media (max-height: 880px){
+@media (max-height: 880px) {
     .signup-height {
         height: 180% !important;
     }
@@ -386,4 +382,48 @@
 .vote-button-check input[type=radio]:checked+label {
     background: #7F8AE5;
     color: #FFF2E9;
+}
+
+.title-margin {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.participants-title {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.participants-title:after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.float-right {
+    text-align:right;
+    float: right;
+    width: 33%;
+    color: slateblue;
+}
+
+.float-left {
+    text-align:left;
+    float: left;
+    width: 33%;
+}
+
+.btn-no-outline {
+    border: none;
+    background-color: transparent;
+}
+
+.influencer-background {
+    height: 150px;
+    width: 570px;
+    margin: auto;
+
+    background: #D7DCE4;
+    border-radius: 13px;
+    border-style: solid;
+    border-color: #AFBACA;
 }

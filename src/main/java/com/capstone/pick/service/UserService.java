@@ -22,7 +22,6 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
     public List<UserDto> getParticipants(Long voteId) {
         return userRepository.findAllParticipants(voteId).stream()
                 .map(UserDto::from)

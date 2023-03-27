@@ -36,11 +36,80 @@
             <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0;">participants</h4>
         </div>
     </header>
-    <div class="mb-3 scrollbar-none" style="overflow: auto; height: 80%;">
-        <th:block th:each="participants : ${participants}">
 
+    <!-- TODO : 인플루언서 리스트 받아오기 -->
+    <!-- TODO : participants -> influencers 로 리스트 수정-->
+    <!-- 인플루언서 참여자 리스트 -->
+    <section class="influencer-background">
+        <div class="title-margin">
+            <div class="participants-title">
+                <div class="float-left" th:text="|인플루언서|">
+                    <!--인플루언서 설명 아이콘-->
+                    <button type="button" class="btn-no-outline">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M7.442 7.442H8V11.384H8.558M8 14.75C11.726 14.75 14.75 11.726 14.75 8C14.75 4.274 11.726 1.25 8 1.25C4.274 1.25 1.25 4.274 1.25 8C1.25 11.726 4.274 14.75 8 14.75ZM7.856 5.309C8.081 5.309 8.261 5.129 8.261 4.904C8.261 4.679 8.081 4.499 7.856 4.499C7.631 4.499 7.451 4.679 7.451 4.904C7.451 5.129 7.631 5.309 7.856 5.309Z"
+                                  stroke="#5E718D" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="float-right" th:text="|N명|">
+                </div>
+            </div>
+        </div>
+        <div>
+            <th:block th:each="participant : ${participants}">
+                <!--TODO : 인플루언서 프로필사진 반복 출력-->
+                <!--TODO : max 인원이 넘어가면 더보기 버튼 생성-->
+            </th:block>
+        </div>
+    </section>
+
+    <!-- 일반 참여자 리스트 -->
+    <div class="title-margin">
+        <div class="participants-title">
+            <div class="float-left" th:text="|일반 참여자|">
+            </div>
+            <div class="float-right" th:text="${participants.size()} + '명'">
+            </div>
+        </div>
+        <div class="participants-title">
+            <button type="button" class="btn-no-outline" style="float: left;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <path d="M10.4219 5.90625L6.52602 9.625L4.57812 7.76562M13.875 7.5C13.875 11.0208 11.0208 13.875 7.5 13.875C3.97918 13.875 1.125 11.0208 1.125 7.5C1.125 3.97918 3.97918 1.125 7.5 1.125C11.0208 1.125 13.875 3.97918 13.875 7.5Z"
+                          stroke="#5E718D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <div style="float: left;" th:text="|친구만 보기|"></div>
+        </div>
+    </div>
+
+    <div class="mb-3 scrollbar-none" style="overflow: auto; height: 80%;">
+        <th:block th:each="participant : ${participants}">
+            <div class="d-flex text-muted pl-3 pt-3 border-bottom">
+                <!-- 프로필 사진 -->
+                <button type="button" class="btn-no-outline" th:onclick="'location.href=\'' + '#\''">
+                    <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="35" height="35"
+                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
+                         preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <rect width="100%" height="100%" fill="#CA5151"></rect>
+                    </svg>
+                </button>
+                <!-- 닉네임 및 아이디 -->
+                <div class="pb-3 mb-0 w-100 small lh-sm">
+                    <div class="d-flex justify-content-between mb-1">
+                        <div style="cursor : pointer;" class="text-dark text-bold"
+                             th:text="${participant.getNickname()}" th:onclick="'location.href=\'' + '#\''"></div>
+                        <div class="mr-2 d-flex">
+                        </div>
+                    </div>
+                    <div th:id="${'participant' + participant.getUserId()}" style="cursor : pointer;" class="mb-2"
+                         th:text="${participant.getUserId()}" th:onclick="'location.href=\'' + '#\''"></div>
+                </div>
+            </div>
         </th:block>
     </div>
 </div>
 </body>
 </html>
+
+<!--TODO : 디자인 디테일 수정-->
