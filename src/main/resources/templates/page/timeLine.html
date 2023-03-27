@@ -126,7 +126,7 @@
             </section>
 
             <!-- 투표 클릭시 -->
-            <section class="vote-background-2" th:voteId="${vote.getId()}" th:class="'vote'+${vote.getId()} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;" th:onclick="submitPick(this.getAttribute('voteId'))">
+            <section class="vote-background-2" th:voteId="${vote.getId()}" th:class="'vote'+${vote.getId()} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;">
                 <div>
                     <div th:class="'test'+${vote.getId()}" style="padding-bottom: 30px; width:515px; float: left;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
@@ -137,7 +137,7 @@
 
                     <div>
                         <!-- 투표 제출 버튼 -->
-                        <button th:class="'vote-submit-btn'+${vote.getId()}"
+                        <button th:class="'vote-submit-btn'+${vote.getId()}" th:voteId="${vote.getId()}" th:onclick="submitPick(this.getAttribute('voteId'))"
                                 style="border: none;
                                 margin-top: 5px; margin-right: 15px;
                                 background-color: transparent;
@@ -157,8 +157,8 @@
 
                     <div style="margin-top: 20px;">
                         <div th:each="option : ${vote.voteOptionDtos}">
-                            <div class="vote-button-check">
-                                <input class="vote-select-btn" type="radio" th:id="'vote'+${vote.getId()}+'option'+${option.getId()}" th:name="'vote'+${vote.getId()}+'option'+${option.getId()}"/>
+                            <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
+                                <input class="vote-select-btn" type="radio" th:id="'vote'+${vote.getId()}+'option'+${option.getId()}" th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
                                 <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}" th:text="${option.content}"></label>
                                 <div th:class="'vote-result'+${vote.getId()}"
                                      style="display: none; position: absolute; top: 10px; left: 20px; width: 300px; height: 55px;
@@ -319,23 +319,29 @@
     }
 
     function submitPick(voteId) {
-        const btn = document.getElementsByClassName("vote-submit-btn" + voteId);
-        $(btn).click(function(){
-            // $.ajax({
-            //     type: 'post',
-            //     url: '/pick',
-            //     async: 'true',
-            //     headers : {
-            //         "Content-Type" : "application/json",
-            //         "X-HTTP-Method-Override" : "POST"
-            //     },
-            //     dataType: idx,
-            //     success: function(idx) {
-            //         alert(idx);
-            //     }
-            // });
-            alert(voteId);
-        });
+        // const btn = document.getElementsByClassName("vote-submit-btn" + voteId);
+        // alert(voteId);
+
+        const selected = document.querySelector("#vote"+voteId+"options input[type=radio]:checked");
+        alert(selected.id);
+
+
+        // $(btn).click(function(){
+        //     // $.ajax({
+        //     //     type: 'post',
+        //     //     url: '/pick',
+        //     //     async: 'true',
+        //     //     headers : {
+        //     //         "Content-Type" : "application/json",
+        //     //         "X-HTTP-Method-Override" : "POST"
+        //     //     },
+        //     //     dataType: idx,
+        //     //     success: function(idx) {
+        //     //         alert(idx);
+        //     //     }
+        //     // });
+        //     alert(voteId);
+        // });
     }
 </script>
 </html>
