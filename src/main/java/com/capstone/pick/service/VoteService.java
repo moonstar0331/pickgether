@@ -59,28 +59,24 @@ public class VoteService {
     }
 
     @Transactional(readOnly = true)
-    public List<VoteDto> searchVotes(SearchType searchType, String searchValue) {
-
-        List<VoteDto> voteDtos = new ArrayList<>();
-
+    public List<VoteWithOptionDto> searchVotes(SearchType searchType, String searchValue) {
+        List<Vote> votes = new ArrayList<>();
         switch (searchType) {
             case TITLE:
-                voteDtos = voteRepository.findByTitleContaining(searchValue).stream().map(VoteDto::from).collect(Collectors.toList());
+                votes = voteRepository.findByTitleContaining(searchValue);
                 break;
             case CONTENT:
-                voteDtos = voteRepository.findByContentContaining(searchValue).stream().map(VoteDto::from).collect(Collectors.toList());
+                votes = voteRepository.findByContentContaining(searchValue);
                 break;
             case NICKNAME:
-                voteDtos = voteRepository.findByUser_NicknameContaining(searchValue).stream().map(VoteDto::from).collect(Collectors.toList());
+                votes = voteRepository.findByUser_NicknameContaining(searchValue);
                 break;
             case HASHTAG:
-                List<Vote> votes = voteHashtagRepository.findByHashtag_ContentContaining(searchValue).stream()
+                votes = voteHashtagRepository.findByHashtag_ContentContaining(searchValue).stream()
                         .map(VoteHashtag::getVote).collect(Collectors.toList());
-                voteDtos = votes.stream().map(VoteDto::from).collect(Collectors.toList());
                 break;
         }
-
-        return voteDtos;
+        return votes.stream().map(VoteWithOptionDto::from).collect(Collectors.toList());
     }
 
     public void saveVote(VoteDto dto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) {

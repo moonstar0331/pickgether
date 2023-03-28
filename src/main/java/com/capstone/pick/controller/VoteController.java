@@ -38,16 +38,15 @@ public class VoteController {
 
     @PostMapping("/search")
     public String search(@ModelAttribute SearchForm searchForm, ModelMap map) {
-
         if(searchForm.getSearchType() == SearchType.USER) {
             List<UserDto> users = userService.findUsersById(searchForm.getSearchValue());
             map.addAttribute("users", users);
-            return "page/search";
+
         } else {
-            List<VoteDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
+            List<VoteWithOptionDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("votes", votes);
-            return "page/timeLine";
         }
+        return "page/search";
     }
 
     @GetMapping("/timeline")
