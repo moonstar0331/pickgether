@@ -322,10 +322,9 @@
 
     function submitPick(voteId) {
         const selected = document.querySelector("#vote"+voteId+"options input[type=radio]:checked");
-        alert(selected.value);
 
         var data = {
-            'voteId': voteId,
+            // 'voteId': voteId,
             "optionId": selected.value
         }
 

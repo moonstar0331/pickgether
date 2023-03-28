@@ -1,4 +1,4 @@
-package com.capstone.pick.controller.form;
+package com.capstone.pick.controller.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PickRequest {
 
-    private Integer voteId;
-    private Integer optionId;
+    private Long optionId;
 }
