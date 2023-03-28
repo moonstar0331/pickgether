@@ -1,6 +1,5 @@
 package com.capstone.pick.controller;
 
-import com.capstone.pick.controller.form.PickRequest;
 import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
@@ -11,7 +10,6 @@ import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class VoteController {
@@ -64,14 +61,6 @@ public class VoteController {
         model.addAttribute("orderBy", orderBy);
         model.addAttribute("userDto",votePrincipal.toDto());
         return "page/timeLine";
-    }
-
-    @ResponseBody
-    @PostMapping("/pick")
-    public String pick(@RequestBody PickRequest request) {
-        log.info("voteId : {}, class : {}", request.getVoteId(), request.getVoteId().getClass());
-        log.info("optionId : {}, class : {}", request.getOptionId(), request.getOptionId().getClass());
-        return "ok";
     }
 
     @GetMapping("/form")
