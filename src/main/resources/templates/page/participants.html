@@ -48,10 +48,20 @@
                             <div class="fr ta-l mt-1">
                                 <!-- 닉네임 및 아이디 -->
                                 <div class="mb-0 w-100 small lh-sm">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <div class="text-dark text-bold p-subtitle cp mr-2 d-flex"
+                                    <div class="d-flex justify-content-between mb-1 wrap">
+                                        <div class="text-dark text-bold p-subtitle cp mr-1 fl"
                                              th:text="${participant.getNickname()}"
                                              th:onclick="'location.href=\'' + '#\''"/>
+                                        <!-- 인플루언서 뱃지 -->
+                                        <svg class="fl mr-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                             viewBox="0 0 22 22" fill="none" style="margin-top : 0.18rem">
+                                            <path d="M3.85571 17.6443C2.99283 16.7814 3.56514 14.9698 3.12595 13.9084C2.67066 12.808 1 11.9223 1 10.75C1 9.57761 2.67067 8.692 3.12595 7.59164C3.56515 6.53015 2.99283 4.71858 3.85571 3.85571C4.71858 2.99283 6.53016 3.56514 7.59165 3.12595C8.69203 2.67066 9.57766 1 10.75 1C11.9224 1 12.808 2.67067 13.9084 3.12595C14.9699 3.56515 16.7814 2.99283 17.6443 3.85571C18.5072 4.71858 17.9349 6.53016 18.3741 7.59165C18.8293 8.69203 20.5 9.57766 20.5 10.75C20.5 11.9224 18.374 13.9084 18.374 13.9084C17.9348 14.9699 18.5072 16.7814 17.6443 17.6443C16.7814 18.5072 14.9698 17.9349 13.9084 18.3741C12.808 18.8293 11.9223 20.5 10.75 20.5C9.57761 20.5 8.692 18.8293 7.59164 18.374C6.53015 17.9348 4.71858 18.5072 3.85571 17.6443Z"
+                                                  fill="#50BAFF"/>
+                                            <path d="M14.875 8.5L9.37497 13.75L6.625 11.125" fill="#50BAFF"/>
+                                            <path d="M14.875 8.5L9.37497 13.75L6.625 11.125M3.85571 17.6443C2.99283 16.7814 3.56514 14.9698 3.12595 13.9084C2.67066 12.808 1 11.9223 1 10.75C1 9.57761 2.67067 8.692 3.12595 7.59164C3.56515 6.53015 2.99283 4.71858 3.85571 3.85571C4.71858 2.99283 6.53016 3.56514 7.59165 3.12595C8.69203 2.67066 9.57766 1 10.75 1C11.9224 1 12.808 2.67067 13.9084 3.12595C14.9699 3.56515 16.7814 2.99283 17.6443 3.85571C18.5072 4.71858 17.9349 6.53016 18.3741 7.59165C18.8293 8.69203 20.5 9.57766 20.5 10.75C20.5 11.9224 18.374 13.9084 18.374 13.9084C17.9348 14.9699 18.5072 16.7814 17.6443 17.6443C16.7814 18.5072 14.9698 17.9349 13.9084 18.3741C12.808 18.8293 11.9223 20.5 10.75 20.5C9.57761 20.5 8.692 18.8293 7.59164 18.374C6.53015 17.9348 4.71858 18.5072 3.85571 17.6443Z"
+                                                  stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                        </svg>
                                     </div>
                                     <div th:id="${'participant' + participant.getUserId()}" class="mb-2 p-id cp"
                                          th:text="${participant.getUserId()}"
@@ -100,30 +110,32 @@
                     <!--인플루언서 설명 아이콘-->
                     <button type="button" class="fl btn-no-outline p-0 ml-1"
                             style="margin-top: 0.325rem; vertical-align: top">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 18 18" fill="none" style="vertical-align: top">
-                            <path d="M8.442 8.442H9V12.384H9.558M9 15.75C12.726 15.75 15.75 12.726 15.75 9C15.75 5.274 12.726 2.25 9 2.25C5.274 2.25 2.25 5.274 2.25 9C2.25 12.726 5.274 15.75 9 15.75ZM8.856 6.309C9.081 6.309 9.261 6.129 9.261 5.904C9.261 5.679 9.081 5.499 8.856 5.499C8.631 5.499 8.451 5.679 8.451 5.904C8.451 6.129 8.631 6.309 8.856 6.309Z" stroke="#5E718D" stroke-linecap="round" stroke-linejoin="round"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 18 18" fill="none"
+                             style="vertical-align: top">
+                            <path d="M8.442 8.442H9V12.384H9.558M9 15.75C12.726 15.75 15.75 12.726 15.75 9C15.75 5.274 12.726 2.25 9 2.25C5.274 2.25 2.25 5.274 2.25 9C2.25 12.726 5.274 15.75 9 15.75ZM8.856 6.309C9.081 6.309 9.261 6.129 9.261 5.904C9.261 5.679 9.081 5.499 8.856 5.499C8.631 5.499 8.451 5.679 8.451 5.904C8.451 6.129 8.631 6.309 8.856 6.309Z"
+                                  stroke="#5E718D" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
                 </div>
                 <div class="fr ta-r mr-3 cnt-color" th:text="${participants.size()} + '명'"/>
             </div>
         </div>
-        <div class="wrap m-3 pb-1" style="position: relative">
+        <div class="wrap ml-3 mr-3 mb-4 mt-2" style="position: relative">
             <th:block th:each="participant : ${participants.subList(0, maxCnt + 1)}">
                 <!-- 프로필 사진 -->
-                    <div class="ml-4 fl circle-position vertical-parent" th:onclick="'location.href=\'' + '#\''"
-                         th:style="${'left:' + participants.indexOf(participant) * 3.5 +'rem'}"
-                         style="border: outset 0.5rem white;">
-                        <div th:if="${participants.indexOf(participant) < maxCnt}">
-                            <img src="https://pbs.twimg.com/media/EkDBc-LU0AEK5kB.jpg"
-                                 class="circle-img circle-big cp border-white">
-                        </div>
-                        <!-- 나머지 인원 표시-->
-                        <div th:if="${participants.indexOf(participant) == maxCnt}">
-                            <div class="circle-img circle-big cp border-white more-icon vertical-child"
-                                 th:text="${((participants.size() - maxCnt) > 99 ? '99' : (participants.size() - maxCnt)) + '+'}"/>
-                        </div>
+                <div class="ml-4 fl circle-position vertical-parent" th:onclick="'location.href=\'' + '#\''"
+                     th:style="${'left:' + participants.indexOf(participant) * 3.5 +'rem'}"
+                     style="border: outset 0.5rem white;">
+                    <div th:if="${participants.indexOf(participant) < maxCnt}">
+                        <img src="https://pbs.twimg.com/media/EkDBc-LU0AEK5kB.jpg"
+                             class="circle-img circle-big cp border-white">
                     </div>
+                    <!-- 나머지 인원 표시-->
+                    <div th:if="${participants.indexOf(participant) == maxCnt}">
+                        <div class="circle-img circle-big cp border-white more-icon vertical-child"
+                             th:text="${((participants.size() - maxCnt) > 99 ? '99' : (participants.size() - maxCnt)) + '+'}"/>
+                    </div>
+                </div>
             </th:block>
             <!-- 더보기 버튼 -->
             <div class="ta-r">
@@ -166,7 +178,7 @@
                             <!-- 닉네임 및 아이디 -->
                             <div class="mb-0 w-100 small lh-sm">
                                 <div class="d-flex justify-content-between mb-1">
-                                    <div class="text-dark text-bold p-subtitle cp mr-2 d-flex"
+                                    <div class="text-dark text-bold p-subtitle cp mr-2"
                                          th:text="${participant.getNickname()}"
                                          th:onclick="'location.href=\'' + '#\''"/>
                                 </div>
