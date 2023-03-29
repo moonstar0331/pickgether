@@ -521,6 +521,7 @@
     text-align: center;
     font-size: 1.4rem;
     font-weight: bold;
+    color: #7F61E9;
 }
 
 .vertical-parent {
@@ -548,5 +549,24 @@
     line-height: 1.5;
     text-align: center;
     font-size: 1.3rem;
+}
+
+.modal-dialog {
+    max-width: 50vw; /* New width for default modal */
+}
+@media all and (max-width: 768px) {
+    .modal-dialog {
+        max-width: 80vw; /*mobile*/
+    }
+}
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    .modal-dialog {
+        max-width: 65vw; /*tablet*/
+    }
+}
+@media all and (min-width: 1024px) {
+    .modal-dialog {
+        max-width: 50vw; /*desktop*/
+    }
 }
 /*-- participants.html end --*/
