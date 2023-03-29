@@ -385,26 +385,31 @@
 }
 
 /*-- participants.html start --*/
-.p-body {
-    font-family: 'Noto Sans KR', sans-serif;
+.p-background {
+    width: 600px;
+    height: 100vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
 }
 
+.p-font {
+    font-family: 'Noto Sans KR', sans-serif;
+}
 .p-title {
     font-size: 18pt;
 }
-
 .p-title-margin {
     margin-left: 1.125rem;
     margin-right: 1.125rem;
 }
-
 .p-subtitle {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
 }
 
 .wrap {
 }
-
 .wrap:after {
     display: block;
     clear: both;
@@ -415,7 +420,6 @@
     float: right;
     width: auto;
 }
-
 .fl {
     float: left;
     width: auto;
@@ -424,7 +428,6 @@
 .ta-r {
     text-align:right;
 }
-
 .ta-l {
     text-align:left;
 }
@@ -464,17 +467,14 @@
     position: relative;
     display: block;
 }
-
 .circle-normal {
     width: 4rem;
     height: 4rem;
 }
-
 .circle-big {
     width: 4.25rem;
     height: 4.25rem;
 }
-
 .circle-position {
     display: flex;
     justify-content: center;
@@ -497,16 +497,20 @@
 .color-primary {
     background-color: #7F61E9;
 }
-
 .color-secondary {
     background-color: #AFAFAF;
+}
+
+.follow-btn {
+    background-color: #7F61E9;
+    border-color: #7F61E9;
+    box-shadow: transparent;
 }
 
 .layer-1st {
     z-index: 2;
     position: relative;
 }
-
 .layer-2nd {
     z-index: 1;
     position: relative;
@@ -515,17 +519,34 @@
 .more-icon {
     background-color: #F0F3F7;
     text-align: center;
-    display: table-cell;
-    vertical-align: middle;
     font-size: 1.4rem;
     font-weight: bold;
 }
 
-.circle-parent {
+.vertical-parent {
     display: table;
+}
+.vertical-child {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .outline-white {
     border: outset 0.5rem white;
+}
+
+.box {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.box::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+
+.modal-title-custom {
+    margin-bottom: 0;
+    line-height: 1.5;
+    text-align: center;
+    font-size: 1.3rem;
 }
 /*-- participants.html end --*/

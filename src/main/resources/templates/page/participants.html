@@ -25,15 +25,15 @@
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </head>
 <!-- 모달 다이얼로그 -->
-<div class="modal fade" id="influencerModal" data-easein="slideUpBigIn" data-bs-backdrop="static"
+<div class="modal fade p-font" id="influencerModal" data-easein="slideUpBigIn" data-bs-backdrop="static"
      data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content" style="border-radius: 1.5rem;">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title-custom m-1 pl-2" th:text="|인플루언서|"/>
+                <button type="button" class="btn-close m-1" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body box pt-1">
                 <th:block th:each="participant : ${participants}">
                     <div class="d-flex text-muted pl-2 pr-2 pt-3 pb-3 border-bottom wrap">
                         <div class="fl wrap" style="display: flex">
@@ -45,29 +45,29 @@
                                          class="circle-img circle-big cp">
                                 </div>
                             </div>
-                            <div class="fr ta-l">
+                            <div class="fr ta-l mt-1">
                                 <!-- 닉네임 및 아이디 -->
                                 <div class="mb-0 w-100 small lh-sm">
                                     <div class="d-flex justify-content-between mb-1">
-                                        <div class="text-dark text-bold p-subtitle cp"
+                                        <div class="text-dark text-bold p-subtitle cp mr-2 d-flex"
                                              th:text="${participant.getNickname()}"
-                                             th:onclick="'location.href=\'' + '#\''"></div>
-                                        <div class="mr-2 d-flex">
-                                        </div>
+                                             th:onclick="'location.href=\'' + '#\''"/>
                                     </div>
                                     <div th:id="${'participant' + participant.getUserId()}" class="mb-2 p-id cp"
                                          th:text="${participant.getUserId()}"
-                                         th:onclick="'location.href=\'' + '#\''"></div>
+                                         th:onclick="'location.href=\'' + '#\''"/>
                                 </div>
                             </div>
                         </div>
                         <!--팔로잉 & 팔로우 버튼-->
-                        <div class="fr ta-r" style="width: 50%; flex: 1;">
-                            <div th:if="${followerList.contains(participant)}">
-                                <button type="button" class="btn btn-secondary" th:text="|팔로잉|"/>
-                            </div>
-                            <div th:unless="${followerList.contains(participant)}">
-                                <button type="button" class="btn btn-primary" th:text="|팔로우|"/>
+                        <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
+                            <div class="vertical-child">
+                                <div th:if="${followerList.contains(participant)}">
+                                    <button type="button" class="btn btn-secondary" th:text="|팔로잉|"/>
+                                </div>
+                                <div th:unless="${followerList.contains(participant)}">
+                                    <button type="button" class="btn btn-primary follow-btn" th:text="|팔로우|"/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -76,8 +76,8 @@
         </div>
     </div>
 </div>
-<body class="p-body">
-<div class="timeline-background h-100">
+<body class="p-font">
+<div class="p-background">
     <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
              viewBox="0 0 16 16" onclick="location.href='/timeline'">
@@ -85,7 +85,7 @@
                   d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
         </svg>
         <div class="my-0 mx-auto">
-            <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0; font-size: 1.75rem">participants</h4>
+            <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0; font-size: 1.75rem" th:text="|투표 참여자|"/>
         </div>
     </header>
 
@@ -95,23 +95,23 @@
     <section class="inf-background m-4">
         <div class="p-title-margin mt-3">
             <div class="p-title wrap">
-                <div class="fl ta-l ml-3" th:text="|인플루언서|">
+                <div class="fl wrap">
+                    <div class="fl ta-l ml-3 item" th:text="|인플루언서|"/>
                     <!--인플루언서 설명 아이콘-->
-                    <button type="button" class="btn-no-outline">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M7.442 7.442H8V11.384H8.558M8 14.75C11.726 14.75 14.75 11.726 14.75 8C14.75 4.274 11.726 1.25 8 1.25C4.274 1.25 1.25 4.274 1.25 8C1.25 11.726 4.274 14.75 8 14.75ZM7.856 5.309C8.081 5.309 8.261 5.129 8.261 4.904C8.261 4.679 8.081 4.499 7.856 4.499C7.631 4.499 7.451 4.679 7.451 4.904C7.451 5.129 7.631 5.309 7.856 5.309Z"
-                                  stroke="#5E718D" stroke-linecap="round" stroke-linejoin="round"/>
+                    <button type="button" class="fl btn-no-outline p-0 ml-1"
+                            style="margin-top: 0.325rem; vertical-align: top">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 18 18" fill="none" style="vertical-align: top">
+                            <path d="M8.442 8.442H9V12.384H9.558M9 15.75C12.726 15.75 15.75 12.726 15.75 9C15.75 5.274 12.726 2.25 9 2.25C5.274 2.25 2.25 5.274 2.25 9C2.25 12.726 5.274 15.75 9 15.75ZM8.856 6.309C9.081 6.309 9.261 6.129 9.261 5.904C9.261 5.679 9.081 5.499 8.856 5.499C8.631 5.499 8.451 5.679 8.451 5.904C8.451 6.129 8.631 6.309 8.856 6.309Z" stroke="#5E718D" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
                 </div>
-                <div class="fr ta-r mr-3 cnt-color" th:text="${participants.size()} + '명'">
-                </div>
+                <div class="fr ta-r mr-3 cnt-color" th:text="${participants.size()} + '명'"/>
             </div>
         </div>
         <div class="wrap m-3 pb-1" style="position: relative">
             <th:block th:each="participant : ${participants.subList(0, maxCnt + 1)}">
                 <!-- 프로필 사진 -->
-                    <div class="ml-4 fl circle-position circle-parent" th:onclick="'location.href=\'' + '#\''"
+                    <div class="ml-4 fl circle-position vertical-parent" th:onclick="'location.href=\'' + '#\''"
                          th:style="${'left:' + participants.indexOf(participant) * 3.5 +'rem'}"
                          style="border: outset 0.5rem white;">
                         <div th:if="${participants.indexOf(participant) < maxCnt}">
@@ -120,7 +120,7 @@
                         </div>
                         <!-- 나머지 인원 표시-->
                         <div th:if="${participants.indexOf(participant) == maxCnt}">
-                            <div class="circle-img circle-big cp border-white more-icon"
+                            <div class="circle-img circle-big cp border-white more-icon vertical-child"
                                  th:text="${((participants.size() - maxCnt) > 99 ? '99' : (participants.size() - maxCnt)) + '+'}"/>
                         </div>
                     </div>
@@ -140,30 +140,19 @@
         </div>
     </section>
 
-    <!-- 일반 참여자 리스트 -->
-    <div class="m-20">
+    <div class="mr-2 ml-2">
         <div class="p-title-margin">
             <div class="p-title wrap mb-2">
-                <div class="fl ta-l" th:text="|일반 참여자|">
-                </div>
-                <div class="fr ta-r count-color" th:text="${participants.size()} + '명'">
-                </div>
-            </div>
-            <div>
-                <button type="button" class="btn-no-outline wrap">
-                    <svg class="fl mr-1" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 15 15"
-                         fill="none">
-                        <path d="M10.4219 5.90625L6.52602 9.625L4.57812 7.76562M13.875 7.5C13.875 11.0208 11.0208 13.875 7.5 13.875C3.97918 13.875 1.125 11.0208 1.125 7.5C1.125 3.97918 3.97918 1.125 7.5 1.125C11.0208 1.125 13.875 3.97918 13.875 7.5Z"
-                              stroke="#5E718D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <div th:text="|친구만 보기|" class="p-subtitle fl pb-3" style="font-size: 1.125rem;"></div>
-                </button>
+                <div class="fl ta-l" th:text="|일반 참여자|"/>
+                <div class="fr ta-r cnt-color" th:text="${participants.size()} + '명'"/>
             </div>
         </div>
-
-        <div class="scrollbar-none pl-2 pr-2" style="overflow: auto; height: 80%;">
+    </div>
+    <!-- 일반 참여자 리스트 -->
+    <div class="mr-4 ml-4">
+        <div class="scrollbar-none" style="overflow: auto; height: 100vh;">
             <th:block th:each="participant : ${participants}">
-                <div class="d-flex text-muted pl-2 pr-2 pt-3 pb-3 border-bottom wrap">
+                <div class="d-flex text-muted pl-1 pr-1 pt-3 pb-3 border-bottom wrap">
                     <div class="fl wrap" style="display: flex">
                         <div class="fl">
                             <!-- 프로필 사진 -->
@@ -173,29 +162,29 @@
                                      class="circle-img circle-big cp">
                             </div>
                         </div>
-                        <div class="fr ta-l">
+                        <div class="fr ta-l mt-1">
                             <!-- 닉네임 및 아이디 -->
                             <div class="mb-0 w-100 small lh-sm">
                                 <div class="d-flex justify-content-between mb-1">
-                                    <div class="text-dark text-bold p-subtitle cp"
+                                    <div class="text-dark text-bold p-subtitle cp mr-2 d-flex"
                                          th:text="${participant.getNickname()}"
-                                         th:onclick="'location.href=\'' + '#\''"></div>
-                                    <div class="mr-2 d-flex">
-                                    </div>
+                                         th:onclick="'location.href=\'' + '#\''"/>
                                 </div>
                                 <div th:id="${'participant' + participant.getUserId()}" class="mb-2 p-id cp"
                                      th:text="${participant.getUserId()}"
-                                     th:onclick="'location.href=\'' + '#\''"></div>
+                                     th:onclick="'location.href=\'' + '#\''"/>
                             </div>
                         </div>
                     </div>
                     <!--팔로잉 & 팔로우 버튼-->
-                    <div class="fr ta-r" style="width: 50%; flex: 1;">
-                        <div th:if="${followerList.contains(participant)}">
-                            <button type="button" class="btn btn-secondary" th:text="|팔로잉|"/>
-                        </div>
-                        <div th:unless="${followerList.contains(participant)}">
-                            <button type="button" class="btn btn-primary" th:text="|팔로우|"/>
+                    <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
+                        <div class="vertical-child">
+                            <div th:if="${followerList.contains(participant)}">
+                                <button type="button" class="btn btn-secondary" th:text="|팔로잉|"/>
+                            </div>
+                            <div th:unless="${followerList.contains(participant)}">
+                                <button type="button" class="btn btn-primary follow-btn" th:text="|팔로우|"/>
+                            </div>
                         </div>
                     </div>
                 </div>
