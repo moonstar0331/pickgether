@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" class="h-100">
 <head>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+
     <meta charset="UTF-8">
     <title>Pickgether</title>
     <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}">
@@ -17,16 +20,13 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             crossorigin="anonymous"></script>
-    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
 </head>
 <body>
 <div class="timeline-background">
 
-    <!-- Todo : 1. Pickgether 로고 오른쪽 카테고리(드롭다운) 추가 -->
-    <!-- Todo : 2. Pickgether 로고 왼쪽 프로필 등록 -->
     <!--Todo: 백->프론트 댓글 연동-->
     <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light ">
         <div class="container-fluid">
@@ -48,7 +48,6 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             정렬조건
                         </a>
-                        <!-- Todo: dropdown에 radio box 추가 -->
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="border-radius: 10px; z-index: 999;">
                             <li><h6 class="dropdown-header">카테고리</h6></li>
                             <li><hr class="dropdown-divider"></li>
@@ -90,10 +89,9 @@
                 </div>
                 <div>
                     <section style="float: left; padding-left: 10px;">
-                        <div th:text="${vote.userDto.nickname}"/>
-                        <div th:text="${vote.userDto.userId}"/>
+                        <div th:text="${vote.userDto.nickname}" style="font-weight: bold"/>
+                        <div th:text="${vote.userDto.userId}" style="font-weight: bold"/>
                     </section>
-                    <!--Todo: 버튼으로 변경-->
                     <div align="right" style="margin-right: 15px">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                              class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -108,17 +106,13 @@
             </div>
 
             <!--투표-->
-            <!--Todo: 버튼으로 변경-->
-            <section class="vote-background-1">
+            <section class="vote-background-1" th:class="'vote'+${vote.getId()} + 'outer vote-background-1'" id="vote-background-section" th:voteId="${vote.getId()}" th:onclick="show(this.getAttribute('voteId'))">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
                          class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
                         <circle cx="8" cy="8" r="8"/>
                     </svg>
                     <p class="vote-background-p" th:text="${vote.title}"/>
-                    <div th:each="option : ${vote.voteOptionDtos}">
-                        <div th:text="${option.content}"></div>
-                    </div>
                 </div>
 
                 <div style="float: left;">
@@ -132,7 +126,56 @@
                 </div>
                 <div th:text="${vote.createAt}" align="right" style="color: white; margin-right: 15px; font-size: 20px;"></div>
             </section>
+
+            <!-- 투표 클릭시 -->
+            <section class="vote-background-2" th:voteId="${vote.getId()}" th:class="'vote'+${vote.getId()} + 'inner vote-background-2'" id="vote-background-section-clicked" style="display: none;">
+                <div>
+                    <div th:class="'test'+${vote.getId()}" style="padding-bottom: 30px; width:515px; float: left;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                             class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="8"/>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <!-- 투표 제출 버튼 -->
+                        <button th:class="'vote-submit-btn'+${vote.getId()}" th:voteId="${vote.getId()}" th:onclick="submitPick(this.getAttribute('voteId'))"
+                                style="border: none;
+                                margin-top: 5px; margin-right: 15px;
+                                background-color: transparent;
+                                filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%);">
+                            <img src="/images/icons/arrow-right.svg"
+                                 style="width: 25px; height: 30px;"/>
+                        </button>
+                        <!-- 투표 통계 버튼 -->
+                        <button th:class="'vote-analyze-btn'+${vote.getId()}"
+                                style="border: none; display: none;
+                                margin-top: 5px; margin-right: 15px;
+                                background-color: transparent;">
+                            <img src="/images/icons/analyze.svg"
+                                 style="width: 25px; height: 30px; fill: #FFFFFF"/>
+                        </button>
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <div th:each="option : ${vote.voteOptionDtos}">
+                            <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
+                                <input class="vote-select-btn" type="radio" th:id="'vote'+${vote.getId()}+'option'+${option.getId()}" th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
+                                <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}" th:text="${option.content}"></label>
+                                <div th:class="'vote-result'+${vote.getId()}"
+                                     style="display: none; position: absolute; top: 10px; left: 20px; width: 300px; height: 55px;
+                                        background: #FFF2E9; opacity: 0.4; border-radius: 100px; z-index:1;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:class="'test'+${vote.getId()}" style="display: block; height:65px;"></div>
+                </div>
+            </section>
         </div>
+
+
         <div style="margin-top: 10px" class="icons">
             <div style="float: left;">
                 <!--투표 아이콘-->
@@ -178,7 +221,7 @@
             </div>
             <div>
                 <section style="float: left; padding-left: 10px; font-size: 15px;">
-                    <div>picker 3</div>
+                    <div><b>picker 3</b></div>
                     <div>행궁동 ㅇㅇ 예쁘던데 가보세요</div>
                 </section>
             </div>
@@ -190,9 +233,6 @@
 
 <!--bottom navbar-->
 
-<!-- Todo : 3. 아이콘 변경-->
-<!-- Todo : 4. 글쓰기 아이콘 위치 변경 -->
-
 <div class="icons">
     <nav class="nav justify-content-around bg-light fixed-bottom bottom-navbar" style="width: 600px; margin: auto; z-index: 998;">
         <!-- home icon -->
@@ -200,7 +240,9 @@
             <img src="/images/icons/home.svg" width="30" height="30" style="fill: #BCB5D2;">
         </button>
         <button type="button">
-            <img src="/images/icons/search.svg" width="30" height="30" style="fill: #BCB5D2;">
+            <a th:href="@{/search}">
+                <img src="/images/icons/search.svg" width="30" height="30" style="fill: #BCB5D2;">
+            </a>
         </button>
 
         <button class="rounded-circle border-none focus-none"
@@ -251,4 +293,60 @@
     </nav>
 </div>
 </body>
+<script th:inline="javascript">
+    function show(voteId) {
+        var outer = ".vote"+voteId+"outer";
+        var inner = ".vote"+voteId+"inner";
+        $(outer).click(function () {
+            $(inner).css("display", "block");
+            $(outer).css("display", "none");
+        });
+
+        const test = document.getElementsByClassName("test"+voteId);
+
+        $(test).click(function () {
+            $(outer).css("display", "block");
+            $(inner).css("display", "none");
+        });
+
+        var submit = ".vote-submit-btn" + voteId;
+        var analyze = ".vote-analyze-btn" + voteId;
+        var result = ".vote-result" + voteId;
+
+        $(submit).click(function () {
+            $(result).css("display", "inline");
+            $(submit).css("display", "none");
+            $(analyze).css("display", "inline");
+        });
+    }
+
+    function submitPick(voteId) {
+        const selected = document.querySelector("#vote"+voteId+"options input[type=radio]:checked");
+
+        var data = {
+            // 'voteId': voteId,
+            "optionId": selected.value
+        }
+
+        $.ajax({
+            url: '/pick',
+            data: JSON.stringify(data),
+            type: "POST",
+            async: true,
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function (jqXHR, settings) {
+                var header = $("meta[name='_csrf_header']").attr("content");
+                var token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
 </html>
