@@ -384,18 +384,25 @@
     color: #FFF2E9;
 }
 
-.title-margin {
+/*-- participants.html start --*/
+.p-body {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.p-title {
+    font-size: 18pt;
+}
+
+.p-title-margin {
     margin-left: 1.125rem;
     margin-right: 1.125rem;
 }
 
-.participants-title {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 18pt;
+.p-subtitle {
+    font-size: 1.3rem;
 }
 
 .wrap {
-
 }
 
 .wrap:after {
@@ -404,17 +411,26 @@
     content: "";
 }
 
-.float-right {
-    text-align:right;
+.fr {
     float: right;
-    width: 33%;
-    color: slateblue;
+    width: auto;
 }
 
-.float-left {
-    text-align:left;
+.fl {
     float: left;
-    width: 33%;
+    width: auto;
+}
+
+.ta-r {
+    text-align:right;
+}
+
+.ta-l {
+    text-align:left;
+}
+
+.cnt-color {
+    color: slateblue;
 }
 
 .btn-no-outline {
@@ -422,19 +438,15 @@
     background-color: transparent;
 }
 
-.influencer-background {
-    height: 9.375rem;
-    width: 35.625rem;
-    margin: 1.125rem;
-
+.inf-background {
+    height: auto;
+    width: auto;
+    margin: auto;
     background: #D7DCE4;
-    border-radius: 0.8rem;
+    border-radius: 1.5rem;
     border-style: solid;
     border-color: #AFBACA;
-}
-
-.p-subtitle {
-    font-size: 1.3rem;
+    border-width: 0.2rem;
 }
 
 .p-id {
@@ -445,22 +457,22 @@
     cursor : pointer;
 }
 
-.m-20 {
-    margin: 1.25rem;
-}
-
-.fl {
-    float: left;
-}
-
 .circle-img {
     object-fit: cover;
     object-position: top;
     border-radius: 50%;
     position: relative;
     display: block;
+}
+
+.circle-normal {
     width: 4rem;
     height: 4rem;
+}
+
+.circle-big {
+    width: 4.25rem;
+    height: 4.25rem;
 }
 
 .circle-position {
@@ -473,3 +485,47 @@
     border-style: solid;
     border-color: white;
 }
+
+.ml-a {
+    margin-left: auto;
+}
+
+.m-20 {
+    margin: 1.25rem;
+}
+
+.color-primary {
+    background-color: #7F61E9;
+}
+
+.color-secondary {
+    background-color: #AFAFAF;
+}
+
+.layer-1st {
+    z-index: 2;
+    position: relative;
+}
+
+.layer-2nd {
+    z-index: 1;
+    position: relative;
+}
+
+.more-icon {
+    background-color: #F0F3F7;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.circle-parent {
+    display: table;
+}
+
+.outline-white {
+    border: outset 0.5rem white;
+}
+/*-- participants.html end --*/

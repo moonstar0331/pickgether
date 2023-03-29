@@ -114,3 +114,4 @@ function autoResizeTextarea(element) {
 function commentOrderBy(voteId, orderBy) {
     location.href = "/" + voteId + "/comments?orderBy=" + orderBy;
 }
+
