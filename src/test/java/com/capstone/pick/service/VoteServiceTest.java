@@ -112,10 +112,10 @@ public class VoteServiceTest {
         given(voteRepository.findByCategoryOrderByPopular(Category.FREE)).willReturn(List.of(vote2, vote1));
 
         // when
-        List<VoteWithOptionDto> All_LATEST = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.LATEST);
-        List<VoteWithOptionDto> All_POPULAR = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.POPULAR);
-        List<VoteWithOptionDto> FREE_LATEST = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.LATEST);
-        List<VoteWithOptionDto> FREE_POPULAR = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.POPULAR);
+        List<VoteOptionCommentDto> All_LATEST = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.LATEST);
+        List<VoteOptionCommentDto> All_POPULAR = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.POPULAR);
+        List<VoteOptionCommentDto> FREE_LATEST = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.LATEST);
+        List<VoteOptionCommentDto> FREE_POPULAR = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.POPULAR);
 
         // then
         assertThat(All_LATEST.get(0))

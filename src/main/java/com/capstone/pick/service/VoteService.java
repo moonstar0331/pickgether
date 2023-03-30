@@ -7,10 +7,7 @@ import com.capstone.pick.domain.VoteHashtag;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.domain.constant.SearchType;
-import com.capstone.pick.dto.HashtagDto;
-import com.capstone.pick.dto.VoteDto;
-import com.capstone.pick.dto.VoteOptionDto;
-import com.capstone.pick.dto.VoteWithOptionDto;
+import com.capstone.pick.dto.*;
 import com.capstone.pick.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +41,7 @@ public class VoteService {
     }
 
     @Transactional(readOnly = true)
-    public List<VoteWithOptionDto> findSortedVotesByCategory(Category category, OrderCriteria orderBy) {
+    public List<VoteOptionCommentDto> findSortedVotesByCategory(Category category, OrderCriteria orderBy) {
         List<Vote> votes = new ArrayList<>();
         switch (orderBy) {
             case LATEST:
@@ -58,7 +55,7 @@ public class VoteService {
                         : voteRepository.findByCategoryOrderByPopular(category);
                 break;
         }
-        return votes.stream().map(VoteWithOptionDto::from).collect(Collectors.toList());
+        return votes.stream().map(VoteOptionCommentDto::from).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

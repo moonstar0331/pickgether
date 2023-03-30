@@ -68,6 +68,10 @@ public class Vote {
     @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
     private List<VoteOption> voteOptions = new ArrayList<>();
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
+    private List<VoteComment> voteComments = new ArrayList<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

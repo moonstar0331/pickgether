@@ -55,7 +55,7 @@ public class VoteController {
                            @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy,
                            @AuthenticationPrincipal VotePrincipal votePrincipal,
                            Model model) {
-        List<VoteWithOptionDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
+        List<VoteOptionCommentDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
         model.addAttribute("votes", votes);
         model.addAttribute("category", category);
         model.addAttribute("orderBy", orderBy);
