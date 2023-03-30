@@ -2,6 +2,7 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.request.PickRequest;
+import com.capstone.pick.service.PickService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,8 @@ public class PickControllerTest {
 
     private final MockMvc mvc;
     private final ObjectMapper objectMapper;
+
+    @MockBean private PickService pickService;
 
     public PickControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
