@@ -569,4 +569,48 @@
         max-width: 50vw; /*desktop*/
     }
 }
+
+.p-btn {
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .475rem .875rem;
+    font-size: 1.175rem;
+    border-radius: 0.5rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+@media (prefers-reduced-motion:reduce) {
+    .p-btn {
+        transition: none
+    }
+}
+
+.btn-follow {
+    color: #fff;
+    background-color: #7F61E9;
+    border-color: #7F61E9
+}
+
+.btn-following {
+    color: #fff;
+    background-color: darkgray;
+    border-color: darkgray
+}
+
+.btn-unfollow {
+    color: #fff;
+    background-color: #bb2d3b;
+    border-color: #bb2d3b
+}
 /*-- participants.html end --*/

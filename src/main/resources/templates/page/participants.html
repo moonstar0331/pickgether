@@ -22,7 +22,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
-    <script type="text/javascript" th:src="@{/js/script.js}"></script>
+    <script type="text/javascript" th:src="@{/js/participants.js}"></script>
 </head>
 <!-- 모달 다이얼로그 -->
 <div class="modal fade p-font" id="influencerModal" data-easein="slideUpBigIn" data-bs-backdrop="static"
@@ -34,7 +34,7 @@
                 <button type="button" class="btn-close m-1" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body box pt-1">
-                <th:block th:each="participant : ${participants}">
+                <th:block th:each="p : ${participants}">
                     <div class="d-flex text-muted pl-2 pr-2 pt-3 pb-3 border-bottom wrap">
                         <div class="fl wrap" style="display: flex">
                             <div class="fl">
@@ -50,7 +50,7 @@
                                 <div class="mb-0 w-100 small lh-sm">
                                     <div class="d-flex justify-content-between mb-1 wrap">
                                         <div class="text-dark text-bold p-subtitle cp mr-1 fl"
-                                             th:text="${participant.getNickname()}"
+                                             th:text="${p.getNickname()}"
                                              th:onclick="'location.href=\'' + '#\''"/>
                                         <!-- 인플루언서 뱃지 -->
                                         <svg class="fl mr-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
@@ -63,8 +63,8 @@
                                                   stroke-linejoin="round"/>
                                         </svg>
                                     </div>
-                                    <div th:id="${'participant' + participant.getUserId()}" class="mb-2 p-id cp"
-                                         th:text="${participant.getUserId()}"
+                                    <div th:id="${'p' + p.getUserId()}" class="mb-2 p-id cp"
+                                         th:text="${p.getUserId()}"
                                          th:onclick="'location.href=\'' + '#\''"/>
                                 </div>
                             </div>
@@ -72,12 +72,12 @@
                         <!--팔로잉 & 팔로우 버튼-->
                         <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
                             <div class="vertical-child">
-                                <div th:if="${followerList.contains(participant)}">
-                                    <button type="button" class="btn btn-secondary" th:text="|팔로잉|"/>
-                                </div>
-                                <div th:unless="${followerList.contains(participant)}">
-                                    <button type="button" class="btn btn-primary follow-btn" th:text="|팔로우|"/>
-                                </div>
+                                <button th:id="${'followBtnInfluencer' + participants.indexOf(p)}"
+                                        type="button" class="p-btn btn-follow">팔로우</button>
+                                <script>
+                                    addListener([[${'followBtnInfluencer' + participants.indexOf(p)}]])
+                                </script>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -121,17 +121,19 @@
             </div>
         </div>
         <div class="wrap ml-3 mr-3 mb-4 mt-2" style="position: relative">
-            <th:block th:each="participant : ${participants.subList(0, maxCnt + 1)}">
+            <!-- 인플루언서 미리보기 리스트 크기가 최대 디스플레이 수를 넘지 않게 처리 -->
+            <th:block
+                    th:each="p : ${(participants.size() > maxCnt) ? participants.subList(0, maxCnt + 1) : participants}">
                 <!-- 프로필 사진 -->
                 <div class="ml-4 fl circle-position vertical-parent" th:onclick="'location.href=\'' + '#\''"
-                     th:style="${'left:' + participants.indexOf(participant) * 3.5 +'rem'}"
+                     th:style="${'left:' + participants.indexOf(p) * 3.5 +'rem'}"
                      style="border: outset 0.5rem white;">
-                    <div th:if="${participants.indexOf(participant) < maxCnt}">
+                    <div th:if="${participants.indexOf(p) < maxCnt}">
                         <img src="https://pbs.twimg.com/media/EkDBc-LU0AEK5kB.jpg"
                              class="circle-img circle-big cp border-white">
                     </div>
                     <!-- 나머지 인원 표시-->
-                    <div th:if="${participants.indexOf(participant) == maxCnt}">
+                    <div th:if="${participants.indexOf(p) == maxCnt}">
                         <div class="circle-img circle-big cp border-white more-icon vertical-child"
                              th:text="${((participants.size() - maxCnt) > 99 ? '99' : (participants.size() - maxCnt)) + '+'}"/>
                     </div>
@@ -163,7 +165,7 @@
     <!-- 일반 참여자 리스트 -->
     <div class="mr-4 ml-4">
         <div class="scrollbar-none" style="overflow: auto; height: 100vh;">
-            <th:block th:each="participant : ${participants}">
+            <th:block th:each="p : ${participants}">
                 <div class="d-flex text-muted pl-1 pr-1 pt-3 pb-3 border-bottom wrap">
                     <div class="fl wrap" style="display: flex">
                         <div class="fl">
@@ -179,11 +181,11 @@
                             <div class="mb-0 w-100 small lh-sm">
                                 <div class="d-flex justify-content-between mb-1">
                                     <div class="text-dark text-bold p-subtitle cp mr-2"
-                                         th:text="${participant.getNickname()}"
+                                         th:text="${p.getNickname()}"
                                          th:onclick="'location.href=\'' + '#\''"/>
                                 </div>
-                                <div th:id="${'participant' + participant.getUserId()}" class="mb-2 p-id cp"
-                                     th:text="${participant.getUserId()}"
+                                <div th:id="${'p' + p.getUserId()}" class="mb-2 p-id cp"
+                                     th:text="${p.getUserId()}"
                                      th:onclick="'location.href=\'' + '#\''"/>
                             </div>
                         </div>
@@ -191,12 +193,11 @@
                     <!--팔로잉 & 팔로우 버튼-->
                     <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
                         <div class="vertical-child">
-                            <div th:if="${followerList.contains(participant)}">
-                                <button type="button" class="btn btn-secondary" th:text="|팔로잉|"/>
-                            </div>
-                            <div th:unless="${followerList.contains(participant)}">
-                                <button type="button" class="btn btn-primary follow-btn" th:text="|팔로우|"/>
-                            </div>
+                            <button th:id="${'followBtnOrdinary' + participants.indexOf(p)}"
+                                    type="button" class="p-btn btn-follow">팔로우</button>
+                                <script>
+                                    addListener([[${'followBtnOrdinary' + participants.indexOf(p)}]])
+                                </script>
                         </div>
                     </div>
                 </div>
