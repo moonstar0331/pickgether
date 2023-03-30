@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,8 +18,12 @@ public class VoteParticipantsController {
 
     @GetMapping("/{voteId}/participants")
     public String participant(@PathVariable Long voteId, Model model) {
+        int maxCnt = 6;
+        List<UserDto> followingList = new ArrayList<>();
         List<UserDto> participants = userService.getParticipants(voteId);
         model.addAttribute("participants", participants);
+        model.addAttribute("followingList", followingList);
+        model.addAttribute("maxCnt", maxCnt);
         return "page/participants";
     }
 }

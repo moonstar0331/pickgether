@@ -401,8 +401,8 @@
     font-size: 18pt;
 }
 .p-title-margin {
-    margin-left: 1.125rem;
-    margin-right: 1.125rem;
+    margin-left: 1.625rem;
+    margin-right: 1.625rem;
 }
 .p-subtitle {
     font-size: 1.25rem;
@@ -492,6 +492,11 @@
 
 .m-20 {
     margin: 1.25rem;
+}
+
+.m-scroll {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
 }
 
 .color-primary {
@@ -587,6 +592,7 @@
     padding: .475rem .875rem;
     font-size: 1.175rem;
     border-radius: 0.5rem;
+    white-space:nowrap;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
 }
 

@@ -73,18 +73,19 @@
                         <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
                             <div class="vertical-child">
                                 <button th:id="${'followBtnInfluencer' + participants.indexOf(p)}"
-                                        type="button" class="p-btn btn-follow">팔로우</button>
+                                        type="button" class="p-btn btn-follow">팔로우
+                                </button>
                                 <script>
                                     addListener([[${'followBtnInfluencer' + participants.indexOf(p)}]])
                                 </script>
                             </div>
-                            </div>
                         </div>
                     </div>
-                </th:block>
             </div>
+            </th:block>
         </div>
     </div>
+</div>
 </div>
 <body class="p-font">
 <div class="p-background">
@@ -153,17 +154,14 @@
             </div>
         </div>
     </section>
-
-    <div class="mr-2 ml-2">
-        <div class="p-title-margin">
-            <div class="p-title wrap mb-2">
-                <div class="fl ta-l" th:text="|일반 참여자|"/>
-                <div class="fr ta-r cnt-color" th:text="${participants.size()} + '명'"/>
-            </div>
+    <div class="p-title-margin">
+        <div class="p-title wrap mb-2">
+            <div class="fl ta-l" th:text="|일반 참여자|"/>
+            <div class="fr ta-r cnt-color" th:text="${participants.size()} + '명'"/>
         </div>
     </div>
     <!-- 일반 참여자 리스트 -->
-    <div class="mr-4 ml-4">
+    <div class="m-scroll">
         <div class="scrollbar-none" style="overflow: auto; height: 100vh;">
             <th:block th:each="p : ${participants}">
                 <div class="d-flex text-muted pl-1 pr-1 pt-3 pb-3 border-bottom wrap">
@@ -194,10 +192,11 @@
                     <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
                         <div class="vertical-child">
                             <button th:id="${'followBtnOrdinary' + participants.indexOf(p)}"
-                                    type="button" class="p-btn btn-follow">팔로우</button>
-                                <script>
-                                    addListener([[${'followBtnOrdinary' + participants.indexOf(p)}]])
-                                </script>
+                                    type="button" class="p-btn btn-follow">팔로우
+                            </button>
+                            <script>
+                                addListener([[${'followBtnOrdinary' + participants.indexOf(p)}]])
+                            </script>
                         </div>
                     </div>
                 </div>
