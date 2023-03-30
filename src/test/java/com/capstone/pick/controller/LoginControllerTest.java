@@ -38,7 +38,7 @@ class LoginControllerTest {
         mvc.perform(get("/login"))
                 .andExpect(status().isOk()) // 상태코드가 200인가?
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML)) // html 파일을 리턴해주는가?
-                .andExpect(view().name("/page/login")); // 리턴하는 뷰 이름은 무엇인가?
+                .andExpect(view().name("page/login")); // 리턴하는 뷰 이름은 무엇인가?
                 //.andExpect(model().attributeExists("")); // 뷰에 애트리뷰트가 존재하는가?
     }
 }

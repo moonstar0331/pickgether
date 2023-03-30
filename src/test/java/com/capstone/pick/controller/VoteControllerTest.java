@@ -89,7 +89,7 @@ class VoteControllerTest {
         mvc.perform(get("/timeline").param("category", Category.ALL.name()).param("orderBy", OrderCriteria.LATEST.name()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(view().name("/page/timeLine"))
+                .andExpect(view().name("page/timeLine"))
                 .andExpect(model().attributeExists("votes"))
                 .andExpect(model().attributeExists("userDto"));
 
@@ -116,7 +116,7 @@ class VoteControllerTest {
         mvc.perform(get("/form"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(view().name("/page/form"));
+                .andExpect(view().name("page/form"));
     }
 
     @DisplayName("[view][GET] 투표 게시글 생성 페이지 - 인증이 없을 땐 로그인 페이지로 이동")
@@ -194,7 +194,7 @@ class VoteControllerTest {
         mvc.perform(get("/" + voteId + "/edit"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(view().name("/page/editForm"))
+                .andExpect(view().name("page/editForm"))
 //                .andExpect(model().attribute("voteForm", voteForm))
 //                .andExpect(model().attribute("optionDtos", optionDtos))
                 .andExpect(model().attribute("voteDto", voteDto));
@@ -277,7 +277,7 @@ class VoteControllerTest {
         mvc.perform(get("/search"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(view().name("/page/search"));
+                .andExpect(view().name("page/search"));
     }
 
     @DisplayName("[view][GET] 검색 페이지 - 인증이 없을 땐 로그인 페이지로 이동")
@@ -305,7 +305,7 @@ class VoteControllerTest {
                         .flashAttr("searchForm", searchForm)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/page/search"))
+                .andExpect(view().name("page/search"))
                 .andExpect(model().attributeExists("users"));
 
         // then
@@ -328,7 +328,7 @@ class VoteControllerTest {
                         .flashAttr("searchForm", searchForm)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/page/timeLine"))
+                .andExpect(view().name("page/timeLine"))
                 .andExpect(model().attributeExists("votes"));
 
         // then
@@ -351,7 +351,7 @@ class VoteControllerTest {
                         .flashAttr("searchForm", searchForm)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/page/timeLine"))
+                .andExpect(view().name("page/timeLine"))
                 .andExpect(model().attributeExists("votes"));
 
         // then
@@ -374,7 +374,7 @@ class VoteControllerTest {
                         .flashAttr("searchForm", searchForm)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/page/timeLine"))
+                .andExpect(view().name("page/timeLine"))
                 .andExpect(model().attributeExists("votes"));
 
         // then
@@ -397,7 +397,7 @@ class VoteControllerTest {
                         .flashAttr("searchForm", searchForm)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/page/timeLine"))
+                .andExpect(view().name("page/timeLine"))
                 .andExpect(model().attributeExists("votes"));
 
         // then

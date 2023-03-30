@@ -40,7 +40,7 @@ class SignupControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(model().attributeExists("signUpForm"))
-                .andExpect(view().name("/page/signup"));
+                .andExpect(view().name("page/signup"));
     }
 
     @Test
