@@ -1,0 +1,63 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');*/
+
+/*body{*/
+
+/*    font-family: 'Roboto', sans-serif;*/
+/*}*/
+
+
+
+
+/*.card{*/
+
+/*    background-color:#B9F6CA;*/
+/*    width: 350px;*/
+/*    border-radius: 20px;*/
+/*}*/
+
+
+.heading{
+
+    font-weight: 700;
+
+}
+
+
+/*.hour{*/
+/*    margin-top: 1px;*/
+/*    color: green;*/
+/*    font-size: 12px;*/
+/*}*/
+
+/*.ratings i{*/
+
+/*    color: #388E3C;*/
+/*}*/
+
+.btn{
+
+    width: 49%;
+    border-radius: 15px !important;
+}
+
+
+/*.line-color{*/
+/*    color: green;*/
+/*    height: 3px;*/
+/*}*/
+
+.status{
+    width: 20%;
+    font-weight: 500;
+}
+
+.btn-outline-purple {
+    color: #C7C0E0;
+    border-color: #C7C0E0
+}
+
+.btn-outline-purple:hover {
+    color: #fff;
+    background-color: #C7C0E0;
+    border-color: #C7C0E0
+}
