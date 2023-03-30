@@ -33,6 +33,41 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    $('#searchValue').on('keyup', function () {
+        if ($(this).val().length === 0) {
+            clearSearchResult();
+        } else {
+            search();
+        }
+    });
+    $('#searchType').on('change', function () {
+        clearSearchValue();
+    });
+});
+
+function search() {
+    var searchValue = $('#searchValue').val();
+    var searchType = $('#searchType').val();
+
+    $.ajax({
+        url: '/search',
+        type: 'POST',
+        data: searchForm = {
+            searchValue: searchValue,
+            searchType: searchType
+        },
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        }
+    })
+        .done(function (fragment) {
+            $('#searchResult').replaceWith(fragment);
+        });
+}
+
 // voteOption 태그 생성 및 삭제 count
 let voteOptionCount = 1;
 
@@ -113,4 +148,18 @@ function autoResizeTextarea(element) {
 
 function commentOrderBy(voteId, orderBy) {
     location.href = "/" + voteId + "/comments?orderBy=" + orderBy;
+}
+
+// 검색창 clear & 기존 검색 결과 clear
+function clearSearchValue() {
+    $("#searchValue").val("");
+    clearSearchResult();
+}
+
+// 기존 검색 결과 clear
+function clearSearchResult() {
+    let searchResult = document.getElementById('searchResult');
+    while (searchResult.hasChildNodes()) {
+        searchResult.removeChild(searchResult.firstChild);
+    }
 }

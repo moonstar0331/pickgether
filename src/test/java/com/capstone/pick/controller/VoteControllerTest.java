@@ -305,7 +305,7 @@ class VoteControllerTest {
                         .flashAttr("searchForm", searchForm)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("page/search"))
+                .andExpect(view().name("page/search :: #searchResult"))
                 .andExpect(model().attributeExists("users"));
 
         // then
@@ -328,7 +328,7 @@ class VoteControllerTest {
                         .flashAttr("searchForm", searchForm)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("page/timeLine"))
+                .andExpect(view().name("page/search :: #searchResult"))
                 .andExpect(model().attributeExists("votes"));
 
         // then
@@ -351,7 +351,7 @@ class VoteControllerTest {
                         .flashAttr("searchForm", searchForm)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("page/timeLine"))
+                .andExpect(view().name("page/search :: #searchResult"))
                 .andExpect(model().attributeExists("votes"));
 
         // then
@@ -374,7 +374,7 @@ class VoteControllerTest {
                         .flashAttr("searchForm", searchForm)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("page/timeLine"))
+                .andExpect(view().name("page/search :: #searchResult"))
                 .andExpect(model().attributeExists("votes"));
 
         // then
@@ -397,7 +397,7 @@ class VoteControllerTest {
                         .flashAttr("searchForm", searchForm)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("page/timeLine"))
+                .andExpect(view().name("page/search :: #searchResult"))
                 .andExpect(model().attributeExists("votes"));
 
         // then

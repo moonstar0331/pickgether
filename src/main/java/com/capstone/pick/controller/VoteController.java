@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,16 +39,14 @@ public class VoteController {
 
     @PostMapping("/search")
     public String search(@ModelAttribute SearchForm searchForm, ModelMap map) {
-
         if(searchForm.getSearchType() == SearchType.USER) {
             List<UserDto> users = userService.findUsersById(searchForm.getSearchValue());
             map.addAttribute("users", users);
-            return "page/search";
         } else {
-            List<VoteDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
+            List<VoteWithOptionDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("votes", votes);
-            return "page/timeLine";
         }
+        return "page/search :: #searchResult";
     }
 
     @GetMapping("/timeline")

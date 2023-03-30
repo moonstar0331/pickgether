@@ -18,7 +18,7 @@
 .hover-cursor-pointer:hover {cursor: pointer;}
 .hover-shadow-white:hover {box-shadow: 0px 0px 5px 5px white;}
 .hover-decoration-none:hover {text-decoration: none;}
-.focus-none:focus {outline: none; border: none;}
+.focus-none:focus {outline: none!important; border: none!important;}
 .vertical-center {left: 50%; transform: translate(-50%, 0);}
 .horizontal-center {top: 50%; transform: translate(0, -50%);}
 .center-center {left: 50%; top: 50%; transform: translate(-50%, -50%);}
