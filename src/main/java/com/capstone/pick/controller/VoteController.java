@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,12 +42,11 @@ public class VoteController {
         if(searchForm.getSearchType() == SearchType.USER) {
             List<UserDto> users = userService.findUsersById(searchForm.getSearchValue());
             map.addAttribute("users", users);
-
         } else {
             List<VoteWithOptionDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("votes", votes);
         }
-        return "page/search";
+        return "page/search :: #searchResult";
     }
 
     @GetMapping("/timeline")
