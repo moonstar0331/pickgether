@@ -30,18 +30,18 @@
 
 .profile-circle {
     position: absolute;
-    background-color:#CA5151;
+    background-color: #CA5151;
     width: 10px;
     height: 10px;
 
     left: 70px;
     top: 20px;
 
-    border-radius:70%;
+    border-radius: 70%;
     z-index: 999;
 }
 
-.hashtag p{
+.hashtag p {
     color: #7F61E9 !important;
 }
 
@@ -50,7 +50,7 @@
     margin-left: 10px;
 }
 
-.vote-background-1{
+.vote-background-1 {
     height: 250px;
     width: 570px;
     margin: auto;
@@ -89,7 +89,7 @@
     margin-left: 10px;
     background-color: #6c757d;
     border-color: #6c757d;
-    opacity:0.8;
+    opacity: 0.8;
     border-radius: 13px;
 }
 
@@ -101,12 +101,12 @@
     word-break: break-all;
     white-space: normal;
     margin-bottom: 0px !important;
-    text-align : center;
+    text-align: center;
     margin-top: 10px;
     padding: 35px;
 }
 
-#vote-background-image-vote{
+#vote-background-image-vote {
     color: white;
     font-weight: 400;
     font-family: 'Noto Sans KR', sans-serif;
@@ -114,7 +114,7 @@
     word-break: break-all;
     white-space: normal;
     margin-bottom: 0px !important;
-    text-align : center;
+    text-align: center;
     margin-top: 30px;
     padding: 35px;
 }
@@ -131,7 +131,7 @@
 }
 
 .icons button {
-    background-color:transparent;
+    background-color: transparent;
     fill: gray;
     border: none;
     margin-top: 10px;
@@ -147,13 +147,7 @@
 }
 
 .icons img:hover {
-    filter:
-            invert(47%)
-            sepia(38%)
-            saturate(6705%)
-            hue-rotate(233deg)
-            brightness(97%)
-            contrast(89%);
+    filter: invert(47%) sepia(38%) saturate(6705%) hue-rotate(233deg) brightness(97%) contrast(89%);
 }
 
 .bottom-navbar {
@@ -162,7 +156,7 @@
 
 .floating-button {
     position: fixed;
-    margin:auto;
+    margin: auto;
     bottom: 1px;
     z-index: 998;
 }
@@ -247,6 +241,7 @@
     position: relative;
     width: 300px;
 }
+
 .custom-form-input {
     width: 100%;
     border: 1px solid #ccc;
@@ -256,6 +251,7 @@
     box-sizing: border-box;
     outline: none;
 }
+
 .custom-botton {
     position: absolute;
     right: 3px;
@@ -345,7 +341,7 @@
     min-height: 100%;
 }
 
-@media (max-height: 880px){
+@media (max-height: 880px) {
     .signup-height {
         height: 180% !important;
     }
@@ -387,3 +383,240 @@
     background: #7F8AE5;
     color: #FFF2E9;
 }
+
+/*-- participants.html start --*/
+.p-background {
+    width: 600px;
+    height: 100vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+}
+
+.p-font {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.p-title {
+    font-size: 18pt;
+}
+.p-title-margin {
+    margin-left: 1.625rem;
+    margin-right: 1.625rem;
+}
+.p-subtitle {
+    font-size: 1.25rem;
+}
+
+.wrap {
+}
+.wrap:after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.fr {
+    float: right;
+    width: auto;
+}
+.fl {
+    float: left;
+    width: auto;
+}
+
+.ta-r {
+    text-align:right;
+}
+.ta-l {
+    text-align:left;
+}
+
+.cnt-color {
+    color: slateblue;
+}
+
+.btn-no-outline {
+    border: none;
+    background-color: transparent;
+}
+
+.inf-background {
+    height: auto;
+    width: auto;
+    margin: auto;
+    background: #D7DCE4;
+    border-radius: 1.5rem;
+    border-style: solid;
+    border-color: #AFBACA;
+    border-width: 0.2rem;
+}
+
+.p-id {
+    font-size: 1.125rem;
+}
+
+.cp {
+    cursor : pointer;
+}
+
+.circle-img {
+    object-fit: cover;
+    object-position: top;
+    border-radius: 50%;
+    position: relative;
+    display: block;
+}
+.circle-normal {
+    width: 4rem;
+    height: 4rem;
+}
+.circle-big {
+    width: 4.25rem;
+    height: 4.25rem;
+}
+.circle-position {
+    display: flex;
+    justify-content: center;
+    position: absolute
+}
+
+.border-white {
+    border-style: solid;
+    border-color: white;
+}
+
+.ml-a {
+    margin-left: auto;
+}
+
+.m-20 {
+    margin: 1.25rem;
+}
+
+.m-scroll {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+}
+
+.color-primary {
+    background-color: #7F61E9;
+}
+.color-secondary {
+    background-color: #AFAFAF;
+}
+
+.follow-btn {
+    background-color: #7F61E9;
+    border-color: #7F61E9;
+    box-shadow: transparent;
+}
+
+.layer-1st {
+    z-index: 2;
+    position: relative;
+}
+.layer-2nd {
+    z-index: 1;
+    position: relative;
+}
+
+.more-icon {
+    background-color: #F0F3F7;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #7F61E9;
+}
+
+.vertical-parent {
+    display: table;
+}
+.vertical-child {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.outline-white {
+    border: outset 0.5rem white;
+}
+
+.box {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.box::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+
+.modal-title-custom {
+    margin-bottom: 0;
+    line-height: 1.5;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.modal-dialog {
+    max-width: 50vw; /* New width for default modal */
+}
+@media all and (max-width: 768px) {
+    .modal-dialog {
+        max-width: 80vw; /*mobile*/
+    }
+}
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    .modal-dialog {
+        max-width: 65vw; /*tablet*/
+    }
+}
+@media all and (min-width: 1024px) {
+    .modal-dialog {
+        max-width: 50vw; /*desktop*/
+    }
+}
+
+.p-btn {
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .475rem .875rem;
+    font-size: 1.175rem;
+    border-radius: 0.5rem;
+    white-space:nowrap;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+@media (prefers-reduced-motion:reduce) {
+    .p-btn {
+        transition: none
+    }
+}
+
+.btn-follow {
+    color: #fff;
+    background-color: #7F61E9;
+    border-color: #7F61E9
+}
+
+.btn-following {
+    color: #fff;
+    background-color: darkgray;
+    border-color: darkgray
+}
+
+.btn-unfollow {
+    color: #fff;
+    background-color: #bb2d3b;
+    border-color: #bb2d3b
+}
+/*-- participants.html end --*/

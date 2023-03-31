@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <title>Pickgether</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min2.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style2.css}">
+
+    <!-- 픽게더 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/js/participants.js}"></script>
+</head>
+<!-- 모달 다이얼로그 -->
+<div class="modal fade p-font" id="influencerModal" data-easein="slideUpBigIn" data-bs-backdrop="static"
+     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 1.5rem;">
+            <div class="modal-header">
+                <h5 class="modal-title-custom m-1 pl-2" th:text="|인플루언서|"/>
+                <button type="button" class="btn-close m-1" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body box pt-1">
+                <th:block th:each="p : ${participants}">
+                    <div class="d-flex text-muted pl-2 pr-2 pt-3 pb-3 border-bottom wrap">
+                        <div class="fl wrap" style="display: flex">
+                            <div class="fl">
+                                <!-- 프로필 사진 -->
+                                <div class="mr-3" style="display: flex; justify-content: center;"
+                                     th:onclick="'location.href=\'' + '#\''">
+                                    <img src="https://pbs.twimg.com/media/EkDBc-LU0AEK5kB.jpg"
+                                         class="circle-img circle-big cp">
+                                </div>
+                            </div>
+                            <div class="fr ta-l mt-1">
+                                <!-- 닉네임 및 아이디 -->
+                                <div class="mb-0 w-100 small lh-sm">
+                                    <div class="d-flex justify-content-between mb-1 wrap">
+                                        <div class="text-dark text-bold p-subtitle cp mr-1 fl"
+                                             th:text="${p.getNickname()}"
+                                             th:onclick="'location.href=\'' + '#\''"/>
+                                        <!-- 인플루언서 뱃지 -->
+                                        <svg class="fl mr-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                             viewBox="0 0 22 22" fill="none" style="margin-top : 0.18rem">
+                                            <path d="M3.85571 17.6443C2.99283 16.7814 3.56514 14.9698 3.12595 13.9084C2.67066 12.808 1 11.9223 1 10.75C1 9.57761 2.67067 8.692 3.12595 7.59164C3.56515 6.53015 2.99283 4.71858 3.85571 3.85571C4.71858 2.99283 6.53016 3.56514 7.59165 3.12595C8.69203 2.67066 9.57766 1 10.75 1C11.9224 1 12.808 2.67067 13.9084 3.12595C14.9699 3.56515 16.7814 2.99283 17.6443 3.85571C18.5072 4.71858 17.9349 6.53016 18.3741 7.59165C18.8293 8.69203 20.5 9.57766 20.5 10.75C20.5 11.9224 18.374 13.9084 18.374 13.9084C17.9348 14.9699 18.5072 16.7814 17.6443 17.6443C16.7814 18.5072 14.9698 17.9349 13.9084 18.3741C12.808 18.8293 11.9223 20.5 10.75 20.5C9.57761 20.5 8.692 18.8293 7.59164 18.374C6.53015 17.9348 4.71858 18.5072 3.85571 17.6443Z"
+                                                  fill="#50BAFF"/>
+                                            <path d="M14.875 8.5L9.37497 13.75L6.625 11.125" fill="#50BAFF"/>
+                                            <path d="M14.875 8.5L9.37497 13.75L6.625 11.125M3.85571 17.6443C2.99283 16.7814 3.56514 14.9698 3.12595 13.9084C2.67066 12.808 1 11.9223 1 10.75C1 9.57761 2.67067 8.692 3.12595 7.59164C3.56515 6.53015 2.99283 4.71858 3.85571 3.85571C4.71858 2.99283 6.53016 3.56514 7.59165 3.12595C8.69203 2.67066 9.57766 1 10.75 1C11.9224 1 12.808 2.67067 13.9084 3.12595C14.9699 3.56515 16.7814 2.99283 17.6443 3.85571C18.5072 4.71858 17.9349 6.53016 18.3741 7.59165C18.8293 8.69203 20.5 9.57766 20.5 10.75C20.5 11.9224 18.374 13.9084 18.374 13.9084C17.9348 14.9699 18.5072 16.7814 17.6443 17.6443C16.7814 18.5072 14.9698 17.9349 13.9084 18.3741C12.808 18.8293 11.9223 20.5 10.75 20.5C9.57761 20.5 8.692 18.8293 7.59164 18.374C6.53015 17.9348 4.71858 18.5072 3.85571 17.6443Z"
+                                                  stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <div th:id="${'p' + p.getUserId()}" class="mb-2 p-id cp"
+                                         th:text="${p.getUserId()}"
+                                         th:onclick="'location.href=\'' + '#\''"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!--팔로잉 & 팔로우 버튼-->
+                        <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
+                            <div class="vertical-child">
+                                <button th:id="${'followBtnInfluencer' + participants.indexOf(p)}"
+                                        type="button" class="p-btn btn-follow">팔로우
+                                </button>
+                                <script>
+                                    addListener([[${'followBtnInfluencer' + participants.indexOf(p)}]])
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            </th:block>
+        </div>
+    </div>
+</div>
+</div>
+<body class="p-font">
+<div class="p-background">
+    <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
+             viewBox="0 0 16 16" onclick="location.href='/timeline'">
+            <path fill-rule="evenodd"
+                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+        </svg>
+        <div class="my-0 mx-auto">
+            <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0; font-size: 1.75rem" th:text="|투표 참여자|"/>
+        </div>
+    </header>
+
+    <!-- TODO : 인플루언서 리스트 받아오기 -->
+    <!-- TODO : participants -> influencers 로 리스트 수정-->
+    <!-- 인플루언서 참여자 리스트 -->
+    <section class="inf-background m-4">
+        <div class="p-title-margin mt-3">
+            <div class="p-title wrap">
+                <div class="fl wrap">
+                    <div class="fl ta-l ml-3 item" th:text="|인플루언서|"/>
+                    <!--인플루언서 설명 아이콘-->
+                    <button type="button" class="fl btn-no-outline p-0 ml-1"
+                            style="margin-top: 0.325rem; vertical-align: top">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 18 18" fill="none"
+                             style="vertical-align: top">
+                            <path d="M8.442 8.442H9V12.384H9.558M9 15.75C12.726 15.75 15.75 12.726 15.75 9C15.75 5.274 12.726 2.25 9 2.25C5.274 2.25 2.25 5.274 2.25 9C2.25 12.726 5.274 15.75 9 15.75ZM8.856 6.309C9.081 6.309 9.261 6.129 9.261 5.904C9.261 5.679 9.081 5.499 8.856 5.499C8.631 5.499 8.451 5.679 8.451 5.904C8.451 6.129 8.631 6.309 8.856 6.309Z"
+                                  stroke="#5E718D" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="fr ta-r mr-3 cnt-color" th:text="${participants.size()} + '명'"/>
+            </div>
+        </div>
+        <div class="wrap ml-3 mr-3 mb-4 mt-2" style="position: relative">
+            <!-- 인플루언서 미리보기 리스트 크기가 최대 디스플레이 수를 넘지 않게 처리 -->
+            <th:block
+                    th:each="p : ${(participants.size() > maxCnt) ? participants.subList(0, maxCnt + 1) : participants}">
+                <!-- 프로필 사진 -->
+                <div class="ml-4 fl circle-position vertical-parent" th:onclick="'location.href=\'' + '#\''"
+                     th:style="${'left:' + participants.indexOf(p) * 3.5 +'rem'}"
+                     style="border: outset 0.5rem white;">
+                    <div th:if="${participants.indexOf(p) < maxCnt}">
+                        <img src="https://pbs.twimg.com/media/EkDBc-LU0AEK5kB.jpg"
+                             class="circle-img circle-big cp border-white">
+                    </div>
+                    <!-- 나머지 인원 표시-->
+                    <div th:if="${participants.indexOf(p) == maxCnt}">
+                        <div class="circle-img circle-big cp border-white more-icon vertical-child"
+                             th:text="${((participants.size() - maxCnt) > 99 ? '99' : (participants.size() - maxCnt)) + '+'}"/>
+                    </div>
+                </div>
+            </th:block>
+            <!-- 더보기 버튼 -->
+            <div class="ta-r">
+                <button id="openModalBtn" class="fr mr-4 btn-no-outline layer-1st" data-bs-dismiss="modal" type="button"
+                        data-bs-toggle="modal" data-bs-target="#influencerModal">
+                    <svg class="circle-normal"
+                         xmlns="http://www.w3.org/2000/svg" width="66" height="66" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="16" fill="#7A57F6"/>
+                        <path d="M10.5 16H21.5" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 10.5V21.5" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+    <div class="p-title-margin">
+        <div class="p-title wrap mb-2">
+            <div class="fl ta-l" th:text="|일반 참여자|"/>
+            <div class="fr ta-r cnt-color" th:text="${participants.size()} + '명'"/>
+        </div>
+    </div>
+    <!-- 일반 참여자 리스트 -->
+    <div class="m-scroll">
+        <div class="scrollbar-none" style="overflow: auto; height: 100vh;">
+            <th:block th:each="p : ${participants}">
+                <div class="d-flex text-muted pl-1 pr-1 pt-3 pb-3 border-bottom wrap">
+                    <div class="fl wrap" style="display: flex">
+                        <div class="fl">
+                            <!-- 프로필 사진 -->
+                            <div class="mr-3" style="display: flex; justify-content: center;"
+                                 th:onclick="'location.href=\'' + '#\''">
+                                <img src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"
+                                     class="circle-img circle-big cp">
+                            </div>
+                        </div>
+                        <div class="fr ta-l mt-1">
+                            <!-- 닉네임 및 아이디 -->
+                            <div class="mb-0 w-100 small lh-sm">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <div class="text-dark text-bold p-subtitle cp mr-2"
+                                         th:text="${p.getNickname()}"
+                                         th:onclick="'location.href=\'' + '#\''"/>
+                                </div>
+                                <div th:id="${'p' + p.getUserId()}" class="mb-2 p-id cp"
+                                     th:text="${p.getUserId()}"
+                                     th:onclick="'location.href=\'' + '#\''"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--팔로잉 & 팔로우 버튼-->
+                    <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
+                        <div class="vertical-child">
+                            <button th:id="${'followBtnOrdinary' + participants.indexOf(p)}"
+                                    type="button" class="p-btn btn-follow">팔로우
+                            </button>
+                            <script>
+                                addListener([[${'followBtnOrdinary' + participants.indexOf(p)}]])
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<!--TODO : 디자인 디테일 수정-->
+<!--TODO : 유저 프로필 링크 연동하기-->
+<!--TODO : 유저 프로필 사진 받아오기-->

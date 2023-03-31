@@ -3,6 +3,7 @@ package com.capstone.pick.controller;
 import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.request.PickRequest;
 import com.capstone.pick.service.PickService;
+import com.capstone.pick.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,9 +20,10 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("투표 참여 컨트롤러 테스트")
 @Import(TestSecurityConfig.class)
@@ -34,6 +36,8 @@ public class PickControllerTest {
     private final ObjectMapper objectMapper;
 
     @MockBean private PickService pickService;
+
+    @MockBean private UserService userService;
 
     public PickControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
@@ -71,5 +75,22 @@ public class PickControllerTest {
                         .content(objectMapper.writeValueAsBytes(pickRequest))
                 ).andDo(print())
                 .andExpect(status().isForbidden());
+    }
+
+    @DisplayName("[GET][/{voteId}/participants] 참여자 리스트 페이지 테스트")
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    public void 참여자_리스트_뷰_엔드포인트_테스트() throws Exception {
+        // given
+        long voteId = 1L;
+
+        // when & then
+        mvc.perform(get("/" + voteId + "/participants"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(model().attributeExists("participants"))
+                .andExpect(model().attributeExists("followingList"))
+                .andExpect(model().attributeExists("maxCnt"))
+                .andExpect(view().name("page/participants"));
     }
 }
