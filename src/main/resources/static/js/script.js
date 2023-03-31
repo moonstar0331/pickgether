@@ -192,6 +192,10 @@ function timelineOrderBy(orderBy) {
     }
 }
 
+function commentOrderBy_detail(voteId, orderBy) {
+    location.href = "/" + voteId + "/detail?orderBy=" + orderBy;
+}
+
 // 검색창 clear & 기존 검색 결과 clear
 function clearSearchValue() {
     $("#searchValue").val("");
