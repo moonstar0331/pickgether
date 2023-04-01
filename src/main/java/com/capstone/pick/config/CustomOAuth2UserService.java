@@ -61,19 +61,19 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .oAuthAttributes(attributes)
                 .build();
 
-        save(votePrincipal.toDto());
+//        save(votePrincipal.toDto());
 
         return votePrincipal;
 
     }
 
-    // 이미 저장된 유저가 아니라면 save
-    private void save(UserDto userDto) {
-
-        Optional<User> user = userRepository.findById(userDto.getUserId());
-
-        if (user.isEmpty()){ // 소셜로그인을 시도한 아이디가 없다면 저장
-            userRepository.save(userDto.toEntity());
-        }
-    }
+//    // 이미 저장된 유저가 아니라면 save
+//    private void save(UserDto userDto) {
+//
+//        Optional<User> user = userRepository.findById(userDto.getUserId());
+//
+//        if (user.isEmpty()){ // 소셜로그인을 시도한 아이디가 없다면 저장
+//            userRepository.save(userDto.toEntity());
+//        }
+//    }
 }

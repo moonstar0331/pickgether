@@ -12,4 +12,11 @@ public class ProfilesController {
     public String profiles(@AuthenticationPrincipal VotePrincipal votePrincipal) {
         return "page/profile";
     }
+
+    @GetMapping("/profile/edit")
+    public String profileEdit(@AuthenticationPrincipal VotePrincipal votePrincipal) {
+        return "page/profile";
+    }
+
+
 }
