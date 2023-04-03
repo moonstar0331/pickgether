@@ -10,4 +10,11 @@ public class LoginController {
         return "page/login";
     }
 
+
+    @GetMapping("/addMoreInfo")
+    public String addMoreInfo() {
+        return "page/addMoreInfo";
+    }
+
+
 }

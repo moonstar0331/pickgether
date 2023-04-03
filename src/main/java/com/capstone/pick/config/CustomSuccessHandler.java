@@ -36,7 +36,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         if(isEmpty(votePrincipal.toDto())){ // 기존에 저장된 유저정보가 없다면 저장시키고 2차 정보 입력페이지로 이동
 
             userRepository.save(votePrincipal.toDto().toEntity());
-            redirectStrategy.sendRedirect(request, response, "/profile/edit");
+            redirectStrategy.sendRedirect(request, response, "/addMoreInfo");
 
         }else { // 기존에 저장된 유저정보가 있다면 타임라인으로 이동
 
