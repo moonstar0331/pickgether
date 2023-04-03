@@ -67,18 +67,22 @@ public class VoteCommentService {
     public void saveCommentLike(CommentLikeDto commentLikeDto) {
         User user = userRepository.getReferenceById(commentLikeDto.getUserDto().getUserId());
         VoteComment voteComment = voteCommentRepository.getReferenceById(commentLikeDto.getVoteCommentId());
-        if (findLikeId(voteComment.getId(), user.getUserId()) == -1) {
-            commentLikeRepository.save(commentLikeDto.toEntity(user, voteComment));
-        }
+
+        commentLikeRepository.findByUserAndVoteComment(user, voteComment).ifPresent(l -> {
+            throw new IllegalStateException("이미 좋아요를 했습니다.");
+        });
+
+        commentLikeRepository.save(commentLikeDto.toEntity(user, voteComment));
     }
 
-    public void deleteCommentLike(Long commentLikeId, String userId) {
+    public void deleteCommentLike(Long commentId, String userId) {
         User user = userRepository.getReferenceById(userId);
-        CommentLike commentLike = commentLikeRepository.getReferenceById(commentLikeId);
+        VoteComment voteComment = voteCommentRepository.getReferenceById(commentId);
 
-        if (commentLike.getUser().equals(user)) {
-            commentLikeRepository.delete(commentLike);
-        }
+        CommentLike commentLike = commentLikeRepository.findByUserAndVoteComment(user, voteComment).orElseThrow(
+                () -> new IllegalStateException("좋아요를 하지 않았습니다."));
+
+        commentLikeRepository.delete(commentLike);
     }
 
     public Long getLikeCount(Long commentId) {
