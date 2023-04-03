@@ -48,12 +48,11 @@ public class VoteCommentsController {
      * @param commentForm   작성내용
      * @return redirection to GET
      */
-    @PostMapping("/{voteId}/comments")
+    @PostMapping("/{voteId}/comments/{path}")
     public String saveComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
-                              @PathVariable Long voteId, CommentForm commentForm) {
-
+                              @PathVariable Long voteId, @PathVariable String path, CommentForm commentForm) {
         voteCommentService.saveComment(commentForm.toDto(votePrincipal.toDto()));
-        return "redirect:/" + voteId + "/comments";
+        return "redirect:/" + voteId + "/" + path;
     }
 
     /**
@@ -65,13 +64,12 @@ public class VoteCommentsController {
      * @param commentForm   작성내용
      * @return redirection to GET
      */
-    @PostMapping("/{voteId}/comments/{commentId}/edit")
+    @PostMapping("/{voteId}/comments/{commentId}/edit/{path}")
     public String updateComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
-                                @PathVariable Long voteId, @PathVariable Long commentId,
+                                @PathVariable Long voteId, @PathVariable Long commentId, @PathVariable String path,
                                 CommentForm commentForm) throws UserMismatchException {
-
         voteCommentService.updateComment(commentId, commentForm.toDto(votePrincipal.toDto()));
-        return "redirect:/" + voteId + "/comments";
+        return "redirect:/" + voteId + "/" + path;
     }
 
     /**
@@ -82,12 +80,12 @@ public class VoteCommentsController {
      * @param commentId     투표 댓글 id
      * @return redirection to GET
      */
-    @PostMapping("/{voteId}/comments/{commentId}/delete")
+    @PostMapping("/{voteId}/comments/{commentId}/delete/{path}")
     public String deleteComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
-                                @PathVariable Long voteId, @PathVariable Long commentId) throws UserMismatchException {
+                                @PathVariable Long voteId, @PathVariable Long commentId, @PathVariable String path) throws UserMismatchException {
 
         voteCommentService.deleteComment(commentId, votePrincipal.toDto().getUserId());
-        return "redirect:/" + voteId + "/comments";
+        return "redirect:/" + voteId + "/" + path;
     }
 
     /**

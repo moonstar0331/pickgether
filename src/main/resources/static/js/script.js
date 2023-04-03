@@ -46,6 +46,10 @@ $(document).ready(function () {
     });
 });
 
+function href(path) {
+    location.href = '/' + path;
+}
+
 function search() {
     var searchValue = $('#searchValue').val();
     var searchType = $('#searchType').val();

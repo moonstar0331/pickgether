@@ -22,18 +22,24 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
+
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
+            integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/share.js}"></script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </head>
 <body>
 <div class="timeline-background min-vh-100">
-    <div class="d-flex justify-content-center py-2 fixed-top" style="height: 5rem;">
+    <div class="d-flex justify-content-center py-2 fixed-top" style="height: 6rem;">
         <a class="navbar-brand" href="/timeline"
            style="font-size: 35px; font-family: 'Oleo Script Swash Caps', cursive; color: #2D226E;">Pickgether</a>
     </div>
 
     <div>
         <div>
-            <header class="profile" style="margin-top: 5rem; margin-bottom: 10px;">
+            <header class="profile" style="margin-top: 6rem; margin-bottom: 10px;">
                 <div style="float: left;">
                     <img src="/images/avatar.jpg" style="height: 48px"/>
                 </div>
@@ -43,16 +49,33 @@
                         <div th:text="${vote.userDto.userId}" style="font-weight: bold"/>
                     </section>
                     <div align="right" style="margin-right: 15px">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                             class="bi bi-three-dots" viewBox="0 0 16 16">
-                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                        </svg>
+                        <div>
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false" style="color: black!important;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                             fill="currentColor"
+                                             class="bi bi-three-dots" viewBox="0 0 16 16">
+                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                        </svg>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
+                                        style="border-radius: 10px; z-index: 999;">
+                                        <li>
+                                            <a class="dropdown-item hover-cursor-pointer" id="kakaotalk-sharing-btn">카카오톡으로
+                                                공유하기</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </header>
             <!--글 내용-->
             <div class="m-2" style="padding-top: 5px;">
-                <div class="timeline-content-title" th:text="${vote.content}"/>
+                <div class="timeline-content-title" id="vote-content" th:text="${vote.content}"/>
             </div>
 
             <!--투표-->
@@ -64,7 +87,7 @@
                          class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
                         <circle cx="8" cy="8" r="8"/>
                     </svg>
-                    <p class="vote-background-p" th:text="${vote.title}"/>
+                    <p class="vote-background-p" id="vote-title" th:text="${vote.title}"/>
                 </div>
 
                 <div style="float: left;">
@@ -76,7 +99,7 @@
                         Best
                     </button>
                 </div>
-                <div th:text="${vote.createAt}" align="right"
+                <div th:text="${#temporals.format(vote.getCreateAt(), 'yy/MM/dd HH:mm')}" align="right"
                      style="color: white; margin-right: 15px; font-size: 20px;"></div>
             </section>
 
@@ -134,27 +157,26 @@
             </section>
         </div>
 
-
         <div style="margin-top: 10px" class="icons">
-            <div style="float: left;">
+            <div style="float: left;" class="d-flex align-items-center">
                 <!--투표 아이콘-->
-                <button type="button" th:onclick="'location.href=\'' + ${vote.getId()} + '/participants\''">
+                <button th:id="${vote.getId()}" type="button" onclick="href(this.id + '/participants')">
                     <svg style="margin-left: 10px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                          fill="currentColor" class="bi bi-file-earmark-check" viewBox="0 0 16 16">
                         <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
                         <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
                     </svg>
                 </button>
-                1K
+                <div id="vote-participantNum" class="mr-2">1000</div>
                 <!--댓글 아이콘-->
-                <button type="button" th:onclick="'location.href=\'' + ${vote.getId()} + '/comments\''">
+                <button th:id="${vote.getId()}" type="button" onclick="href(this.id + '/comments')">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                          class="bi bi-chat-dots" viewBox="0 0 16 16">
                         <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                         <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
                     </svg>
                 </button>
-                870
+                <div id="vote-commentNum">870</div>
             </div>
             <div align="right" style="margin-right: 15px;">
                 <!--북마크 아이콘(선택 X)-->
@@ -215,7 +237,7 @@
                             <th:block th:if="${comment.getCommentDto().userDto.userId != user.getUserId()}">
                                 <th:block th:if="${comment.getLikeId() == -1}">
                                     <form method="post" onsubmit="return beforeCheck('이 댓글에 공감하십니까?')"
-                                          th:action="'/' + ${voteId} + '/comments/' + ${comment.getCommentDto().getId()} + '/like'">
+                                          th:action="'/' + ${vote.getId()} + '/comments/' + ${comment.getCommentDto().getId()} + '/like/detail'">
                                         <button class="text-bold bg-none border-none"
                                                 type="submit">공감
                                         </button>
@@ -223,7 +245,7 @@
                                 </th:block>
                                 <th:block th:if="${comment.getLikeId() != -1}">
                                     <form method="post" onsubmit="return beforeCheck('공감을 취소하시겠습니까?')"
-                                          th:action="'/' + ${voteId} + '/comments/' + ${comment.getLikeId()} + '/deleteLike'">
+                                          th:action="'/' + ${vote.getId} + '/comments/' + ${comment.getLikeId()} + '/deleteLike/detail'">
                                         <button class="text-bold bg-none border-none"
                                                 type="submit">공감 취소
                                         </button>
@@ -237,7 +259,7 @@
                                             onclick="click_editCommentBtn(this.id)">수정
                                     </button>
                                     <form method="post" onsubmit="return beforeCheck('정말 삭제하시겠습니까?')"
-                                          th:action="'/' + ${voteId} + '/comments/' + ${comment.getCommentDto().getId()} + '/delete'">
+                                          th:action="'/' + ${vote.getId} + '/comments/' + ${comment.getCommentDto().getId()} + '/delete/detail'">
                                         <button class="text-bold bg-none border-none"
                                                 type="submit">삭제
                                         </button>
@@ -259,7 +281,7 @@
                          th:text="${comment.getCommentDto().content}" class="mb-2"></div>
                     <div class="mb-2" style="display: none;" th:id="${'form' + comment.getCommentDto().getId()}">
                         <form method="post" id="commentEditForm"
-                              th:action="'/' + ${voteId} + '/comments/' + ${comment.getCommentDto().getId()} + '/edit'">
+                              th:action="'/' + ${vote.getId} + '/comments/' + ${comment.getCommentDto().getId()} + '/edit/detail'">
                             <div class="w-100 pt-2 pr-3">
                             <textarea class="w-100 rounded focus-none p-2" rows="1" oninput="autoResizeTextarea(this)"
                                       style="border: 1px solid #dee2e6; resize: none; overflow: hidden;"
@@ -273,7 +295,7 @@
                         <th:block th:if="${comment.getLikeId() == -1 && comment.getLikeCount() != 0}">
                             <th:block th:if="${comment.getCommentDto().userDto.userId != user.getUserId()}">
                                 <form method="post" onsubmit="return beforeCheck('이 댓글에 공감하십니까?')"
-                                      th:action="'/' + ${voteId} + '/comments/' + ${comment.getCommentDto().getId()} + '/like'">
+                                      th:action="'/' + ${vote.getId} + '/comments/' + ${comment.getCommentDto().getId()} + '/like/detail'">
                                     <button type="submit" class="bg-none border-none">
                                         <div class="d-flex">
                                             <img src="/images/icons/like.png" style="height: 15px;" class="mr-1"/>
@@ -294,7 +316,7 @@
                         <th:block th:if="${comment.getLikeId() != -1 && comment.getLikeCount() != 0}">
                             <th:block th:if="${comment.getCommentDto().userDto.userId != user.getUserId()}">
                                 <form method="post" onsubmit="return beforeCheck('공감을 취소하시겠습니까?')"
-                                      th:action="'/' + ${voteId} + '/comments/' + ${comment.getLikeId()} + '/deleteLike'">
+                                      th:action="'/' + ${vote.getId} + '/comments/' + ${comment.getLikeId()} + '/deleteLike/detail'">
                                     <button type="submit" class="bg-none border-none">
                                         <div class="d-flex">
                                             <img src="/images/icons/like.png" class="mr-1"
@@ -318,8 +340,10 @@
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#F07F7F"></rect>
         </svg>
-        <form class="custom-form vw-100" method="post" th:action>
-            <input type="text" class="custom-form-input" name="content" placeholder="댓글 달기..." required>
+        <form id="commentForm" method="post" class="custom-form vw-100"
+              th:action="'/' + ${vote.getId} + '/comments/detail'">
+            <input id="commentInput" type="text" class="custom-form-input" name="content" placeholder="댓글 달기..."
+                   required>
             <button class="custom-botton" type="submit">게시</button>
         </form>
     </footer>
