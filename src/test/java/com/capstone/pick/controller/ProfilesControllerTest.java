@@ -43,7 +43,7 @@ class ProfilesControllerTest {
                 .andExpect(view().name("page/profile"));
     }
 
-    @DisplayName("[GET][/profile] 프로필 편집 페이지")
+    @DisplayName("[GET][/editProfile] 프로필 편집 페이지")
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
     public void 프로필_편집_뷰_엔드포인트_테스트() throws Exception {
