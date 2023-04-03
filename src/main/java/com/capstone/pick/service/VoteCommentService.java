@@ -4,22 +4,19 @@ import com.capstone.pick.domain.CommentLike;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteComment;
-import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
+import com.capstone.pick.dto.CommentWithLikeCountDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.CommentLikeRepository;
 import com.capstone.pick.repository.UserRepository;
 import com.capstone.pick.repository.VoteCommentRepository;
 import com.capstone.pick.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,24 +28,9 @@ public class VoteCommentService {
     private final VoteCommentRepository voteCommentRepository;
     private final CommentLikeRepository commentLikeRepository;
 
-    public List<CommentDto> readComment(Long voteId) {
-        List<VoteComment> voteComments = voteCommentRepository.findAllByVoteId(voteId);
-        return voteComments.stream()
-                .map(CommentDto::from)
-                .collect(Collectors.toList());
-    }
-
-    public List<CommentDto> readCommentOrderBy(Long voteId, OrderCriteria orderBy) {
-        List<VoteComment> voteComments = new ArrayList<>();
-        switch (orderBy) {
-            case LATEST:
-                voteComments = voteCommentRepository.findAllByVoteId(voteId, Sort.by(Sort.Direction.DESC, "modifiedAt"));
-                break;
-            case POPULAR:
-                voteComments = voteCommentRepository.findAllByVoteIdOrderByLikeDesc(voteId);
-                break;
-        }
-        return voteComments.stream().map(CommentDto::from).collect(Collectors.toList());
+    public Page<CommentWithLikeCountDto> commentsByVote(Long voteId, Pageable pageable) {
+        Vote vote = voteRepository.findById(voteId).orElseThrow();
+        return voteCommentRepository.findAllByVote(vote, pageable).map(CommentWithLikeCountDto::from);
     }
 
     public void saveComment(CommentDto commentDto) {

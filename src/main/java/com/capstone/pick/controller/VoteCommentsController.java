@@ -1,23 +1,22 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.CommentForm;
-import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentLikeDto;
-import com.capstone.pick.dto.CommentPostDto;
+import com.capstone.pick.dto.CommentWithLikeCountDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.VoteCommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -29,23 +28,14 @@ public class VoteCommentsController {
      * 댓글을 조회한다
      *
      * @param voteId 게시글 id
+     * @param pageable pageable
+     * @param model model
      * @return 댓글 목록 뷰
      */
     @GetMapping("/{voteId}/comments")
-    public String readComments(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, Model model,
-                               @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy) {
-        List<CommentPostDto> commentPosts = voteCommentService.readCommentOrderBy(voteId, orderBy).stream()
-                .map(c -> CommentPostDto.builder()
-                        .commentDto(c)
-                        .likeCount(voteCommentService.getLikeCount(c.getId()))
-                        .likeId(voteCommentService.findLikeId(c.getId(), votePrincipal.toDto().getUserId()))
-                        .build())
-                .collect(Collectors.toList());
-
-        model.addAttribute("user", votePrincipal.toDto());
-        model.addAttribute("voteId", voteId);
-        model.addAttribute("commentPosts", commentPosts);
-        model.addAttribute("orderBy", orderBy);
+    public String comments(@PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
+        model.addAttribute("comments", comments);
         return "page/comments";
     }
 

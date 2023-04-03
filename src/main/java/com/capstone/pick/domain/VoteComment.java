@@ -1,6 +1,7 @@
 package com.capstone.pick.domain;
 
 import lombok.*;
+import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -41,6 +42,9 @@ public class VoteComment {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime modifiedAt;
+
+    @Formula("(select count(*) from comment_like l where l.vote_comment_id = vote_comment_id)")
+    private Long likeCount;
 
     public void changeContent(String updateContent) {
         this.content = updateContent;

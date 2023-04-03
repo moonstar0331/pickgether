@@ -147,7 +147,7 @@ function autoResizeTextarea(element) {
 }
 
 function commentOrderBy(voteId, orderBy) {
-    location.href = "/" + voteId + "/comments?orderBy=" + orderBy;
+    location.href = "/" + voteId + "/comments?sort=" + orderBy + ",desc";
 }
 
 // 검색창 clear & 기존 검색 결과 clear
