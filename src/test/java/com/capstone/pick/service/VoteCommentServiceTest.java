@@ -189,14 +189,16 @@ public class VoteCommentServiceTest {
         CommentLike like = createCommentLike(1L, voteComment, user1);
 
         given(userRepository.getReferenceById(anyString())).willReturn(user1);
-        given(commentLikeRepository.getReferenceById(anyLong())).willReturn(like);
+        given(voteCommentRepository.getReferenceById(anyLong())).willReturn(voteComment);
+        given(commentLikeRepository.findByUserAndVoteComment(user1, voteComment)).willReturn(Optional.of(like));
 
         // when
-        voteCommentService.deleteCommentLike(like.getId(), user1.getUserId());
+        voteCommentService.deleteCommentLike(voteComment.getId(), user1.getUserId());
 
         // then
         then(userRepository).should().getReferenceById(anyString());
-        then(commentLikeRepository).should().getReferenceById(anyLong());
+        then(voteCommentRepository).should().getReferenceById(anyLong());
+        then(commentLikeRepository).should().findByUserAndVoteComment(any(User.class), any(VoteComment.class));
         then(commentLikeRepository).should().delete(any(CommentLike.class));
     }
 

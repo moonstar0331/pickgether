@@ -2,10 +2,12 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.form.CommentForm;
+import com.capstone.pick.controller.request.LikeRequest;
 import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.service.VoteCommentService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +26,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("View 컨트롤러 - 댓글")
@@ -40,12 +41,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class VoteCommentsControllerTest {
 
     private final MockMvc mvc;
+    private final ObjectMapper objectMapper;
 
     @MockBean
     private VoteCommentService voteCommentService;
 
-    public VoteCommentsControllerTest(@Autowired MockMvc mvc) {
+    public VoteCommentsControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
+        this.objectMapper = objectMapper;
     }
 
     @DisplayName("[Comment][GET][/{voteId}/comments] 댓글 상세보기 페이지 - 인증이 없을 땐 로그인 페이지로 이동")
@@ -154,42 +157,38 @@ class VoteCommentsControllerTest {
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @DisplayName("[commentLike][POST][/{voteId}/comments/{commentId}/like]")
+    @DisplayName("[commentLike][POST][/like]")
     @Test
     void saveCommentLike() throws Exception {
         // given
         long voteId = 1L;
         long commentId = 1L;
 
-        willDoNothing().given(voteCommentService).saveCommentLike(any(CommentLikeDto.class));
-
-        // when
-        mvc.perform(post("/" + voteId + "/comments/" + commentId + "/like")
+        // when & then
+        mvc.perform(post("/like")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(new LikeRequest(voteId, commentId)))
                         .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/" + voteId + "/comments"))
-                .andExpect(redirectedUrl("/" + voteId + "/comments"));
-
-        // then
-        then(voteCommentService).should().saveCommentLike(any(CommentLikeDto.class));
+                .andExpect(status().isOk());
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @DisplayName("[commentLike][DELETE][/{voteId}/comments/{likeId}/deleteLike]")
+    @DisplayName("[commentLike][DELETE][/like]")
     @Test
     void deleteCommentLike() throws Exception {
         // given
-        long voteId = 1L;
-        long likeId = 1L;
+        Long voteId = 1L;
+        Long commentId = 1L;
 
-        // when
-        mvc.perform(post("/" + voteId + "/comments/" + likeId + "/deleteLike")
+        // when & then
+        mvc.perform(delete("/like")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(new LikeRequest(voteId, commentId)))
                         .with(csrf()))
-                .andExpect(view().name("redirect:/" + voteId + "/comments"))
-                .andExpect(redirectedUrl("/" + voteId + "/comments"));
-
-        // then
-        then(voteCommentService).should().deleteCommentLike(any(Long.class), any(String.class));
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     private static CommentForm createCommentForm(long voteId) {
