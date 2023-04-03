@@ -4,22 +4,19 @@ import com.capstone.pick.domain.CommentLike;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteComment;
-import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
+import com.capstone.pick.dto.CommentWithLikeCountDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.CommentLikeRepository;
 import com.capstone.pick.repository.UserRepository;
 import com.capstone.pick.repository.VoteCommentRepository;
 import com.capstone.pick.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,24 +28,9 @@ public class VoteCommentService {
     private final VoteCommentRepository voteCommentRepository;
     private final CommentLikeRepository commentLikeRepository;
 
-    public List<CommentDto> readComment(Long voteId) {
-        List<VoteComment> voteComments = voteCommentRepository.findAllByVoteId(voteId);
-        return voteComments.stream()
-                .map(CommentDto::from)
-                .collect(Collectors.toList());
-    }
-
-    public List<CommentDto> readCommentOrderBy(Long voteId, OrderCriteria orderBy) {
-        List<VoteComment> voteComments = new ArrayList<>();
-        switch (orderBy) {
-            case LATEST:
-                voteComments = voteCommentRepository.findAllByVoteId(voteId, Sort.by(Sort.Direction.DESC, "modifiedAt"));
-                break;
-            case POPULAR:
-                voteComments = voteCommentRepository.findAllByVoteIdOrderByLikeDesc(voteId);
-                break;
-        }
-        return voteComments.stream().map(CommentDto::from).collect(Collectors.toList());
+    public Page<CommentWithLikeCountDto> commentsByVote(Long voteId, Pageable pageable) {
+        Vote vote = voteRepository.findById(voteId).orElseThrow();
+        return voteCommentRepository.findAllByVote(vote, pageable).map(CommentWithLikeCountDto::from);
     }
 
     public void saveComment(CommentDto commentDto) {
@@ -85,18 +67,22 @@ public class VoteCommentService {
     public void saveCommentLike(CommentLikeDto commentLikeDto) {
         User user = userRepository.getReferenceById(commentLikeDto.getUserDto().getUserId());
         VoteComment voteComment = voteCommentRepository.getReferenceById(commentLikeDto.getVoteCommentId());
-        if (findLikeId(voteComment.getId(), user.getUserId()) == -1) {
-            commentLikeRepository.save(commentLikeDto.toEntity(user, voteComment));
-        }
+
+        commentLikeRepository.findByUserAndVoteComment(user, voteComment).ifPresent(l -> {
+            throw new IllegalStateException("이미 좋아요를 했습니다.");
+        });
+
+        commentLikeRepository.save(commentLikeDto.toEntity(user, voteComment));
     }
 
-    public void deleteCommentLike(Long commentLikeId, String userId) {
+    public void deleteCommentLike(Long commentId, String userId) {
         User user = userRepository.getReferenceById(userId);
-        CommentLike commentLike = commentLikeRepository.getReferenceById(commentLikeId);
+        VoteComment voteComment = voteCommentRepository.getReferenceById(commentId);
 
-        if (commentLike.getUser().equals(user)) {
-            commentLikeRepository.delete(commentLike);
-        }
+        CommentLike commentLike = commentLikeRepository.findByUserAndVoteComment(user, voteComment).orElseThrow(
+                () -> new IllegalStateException("좋아요를 하지 않았습니다."));
+
+        commentLikeRepository.delete(commentLike);
     }
 
     public Long getLikeCount(Long commentId) {
