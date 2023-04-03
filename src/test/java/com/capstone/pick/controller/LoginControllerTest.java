@@ -14,17 +14,16 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+
 
 @DisplayName("로그인 컨트롤러")
 @Import(TestSecurityConfig.class)
 @WebMvcTest(LoginController.class)
 @ComponentScan(basePackages = "com.capstone.pick.config")
 @MockBean(JpaMetamodelMappingContext.class)
-@WithMockUser
+//@WithMockUser
 class LoginControllerTest {
 
     private final MockMvc mvc;
@@ -45,14 +44,23 @@ class LoginControllerTest {
                 //.andExpect(model().attributeExists("")); // 뷰에 애트리뷰트가 존재하는가?
     }
 
-    @DisplayName("[Login][GET][/oauth2/authorization/kakao] 소셜로그인 시도")
+    @DisplayName("[Login][GET][/oauth2/authorization/] 소셜로그인 시도")
     @Test
     public void 소셜로그인_테스트() throws Exception {
 
         // When & Then
         mvc.perform(get("/oauth2/authorization/kakao")) // 소셜로그인 버튼을 클릭했을때
                 .andExpect(status().is3xxRedirection()) // 카카오 로그인 페이지로 이동시키는지?
-        .andDo(MockMvcResultHandlers.print());
+                .andDo(MockMvcResultHandlers.print());
+
+        mvc.perform(get("/oauth2/authorization/naver")) // 소셜로그인 버튼을 클릭했을때
+                .andExpect(status().is3xxRedirection()) // 네이버 로그인 페이지로 이동시키는지?
+                .andDo(MockMvcResultHandlers.print());
+
+        mvc.perform(get("/oauth2/authorization/google")) // 소셜로그인 버튼을 클릭했을때
+                .andExpect(status().is3xxRedirection()) // 구글 로그인 페이지로 이동시키는지?
+                .andDo(MockMvcResultHandlers.print());
+
     }
 
 
