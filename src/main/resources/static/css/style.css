@@ -499,7 +499,7 @@
     margin-right: 2.5rem;
 }
 
-.color-primary {
+.bg-primary {
     background-color: #7F61E9;
 }
 .color-secondary {
@@ -602,13 +602,13 @@
     }
 }
 
-.btn-follow {
+.p-btn-primary {
     color: #fff;
     background-color: #7F61E9;
     border-color: #7F61E9
 }
 
-.btn-following {
+.p-btn-secondary {
     color: #fff;
     background-color: darkgray;
     border-color: darkgray
@@ -620,3 +620,89 @@
     border-color: #bb2d3b
 }
 /*-- participants.html end --*/
+
+/*-- editProfile.html end --*/
+.user-profile {
+    margin: 0 0 1rem 0;
+    padding-bottom: 1rem;
+    text-align: center;
+}
+.user-avatar {
+    margin: 0 0 1rem 0;
+}
+.user-avatar img {
+    width: 90px;
+    height: 90px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+}
+h5.user-name {
+    margin: 0 0 0.5rem 0;
+}
+h6.user-email {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #9fa8b9;
+}
+.about {
+    margin: 2rem 0 0 0;
+    text-align: center;
+}
+.about h5 {
+    margin: 0 0 15px 0;
+    color: #007ae1;
+}
+.about p {
+    font-size: 1rem;
+}
+.form-control {
+    border: 1px solid #cfd1d8;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    font-size: .825rem;
+    background: #ffffff;
+    color: #2e323c;
+}
+
+.card {
+    background: #ffffff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 0;
+    margin-bottom: 1rem;
+}
+
+.ep-form {
+    border-radius: 0.8rem;
+    height: 3.5rem;
+}
+
+.circle-profile {
+    width: 15rem;
+    height: 15rem;
+}
+
+.ep-nickname {
+    font-size: 2.35rem;
+}
+.ep-email {
+    font-size: 1.25rem;
+    color: gray;
+}
+
+.color-primary {
+    color: #7F61E9;
+}
+
+.ep-form-group {
+    margin-bottom: 1.5rem
+}
+
+.ep-textarea {
+    resize: none; border-radius: 0.8rem;
+}
+/*-- editProfile.html end --*/

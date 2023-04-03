@@ -73,7 +73,7 @@
                         <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
                             <div class="vertical-child">
                                 <button th:id="${'followBtnInfluencer' + participants.indexOf(p)}"
-                                        type="button" class="p-btn btn-follow">팔로우
+                                        type="button" class="p-btn p-btn-primary">팔로우
                                 </button>
                                 <script>
                                     addListener([[${'followBtnInfluencer' + participants.indexOf(p)}]])
@@ -192,7 +192,7 @@
                     <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
                         <div class="vertical-child">
                             <button th:id="${'followBtnOrdinary' + participants.indexOf(p)}"
-                                    type="button" class="p-btn btn-follow">팔로우
+                                    type="button" class="p-btn p-btn-primary">팔로우
                             </button>
                             <script>
                                 addListener([[${'followBtnOrdinary' + participants.indexOf(p)}]])

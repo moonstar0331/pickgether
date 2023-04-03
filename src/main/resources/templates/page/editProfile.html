@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <title>Pickgether</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min2.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style2.css}">
+
+    <!-- 픽게더 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/js/editProfile.js}"></script>
+</head>
+
+</div>
+<body class="p-font">
+<div class="p-background">
+    <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
+             viewBox="0 0 16 16" onclick="location.href='/timeline'">
+            <path fill-rule="evenodd"
+                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+        </svg>
+        <div class="my-0 mx-auto">
+            <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0; font-size: 1.75rem">내 프로필</h4>
+        </div>
+    </header>
+    <div class="container scrollbar-none" style="overflow: auto; height: 100vh">
+        <div class="row gutters">
+            <div class="card h-100">
+                <div class="card-body pb-0">
+                    <div class="user-profile pb-0 mb-0">
+                        <!-- 프로필 사진 -->
+                        <div style="position: relative">
+                            <div class="m-3" style="display: flex; justify-content: center;">
+                                <img src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"
+                                     class="circle-img circle-profile cp">
+                            </div>
+                            <!-- 사진 업로드 버튼 -->
+                            <svg style="border: .2rem solid white; border-radius:50%; background-color: #7F61E9; position: absolute; top: 85%; left: 65%; transform: translate(-50%, -50%);"
+                                    xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 38 38" fill="none">
+                                <path d="M26.5 26.5H11.5C11.1022 26.5 10.7206 26.342 10.4393 26.0607C10.158 25.7794 10 25.3978 10 25V14.5C10 14.1022 10.158 13.7206 10.4393 13.4393C10.7206 13.158 11.1022 13 11.5 13H14.4995L15.9995 10.75H21.9995L23.4995 13H26.5C26.8978 13 27.2794 13.158 27.5607 13.4393C27.842 13.7206 28 14.1022 28 14.5V25C28 25.3978 27.842 25.7794 27.5607 26.0607C27.2794 26.342 26.8978 26.5 26.5 26.5Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M19 22.75C20.864 22.75 22.375 21.239 22.375 19.375C22.375 17.511 20.864 16 19 16C17.136 16 15.625 17.511 15.625 19.375C15.625 21.239 17.136 22.75 19 22.75Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="ep-nickname fw-bold">유저 닉네임</div>
+                        <div class="ep-email">유저 아이디</div>
+                        <div class="about">
+                            <div class="p-title">Memo</div>
+                            <p class="p-subtitle">한줄소개</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <hr class="m-2">
+        </div>
+        <div class="card h-100 mb-0">
+            <div class="card-body pt-3">
+                <div class="row gutters">
+                    <div class="p-title mb-3 color-primary fw-bold">개인정보 수정</div>
+                    <div class="ep-form-group">
+                        <label class="p-subtitle fw-bold" for="userId">아이디</label>
+                        <input type="email" class="form-control ep-form" style="font-size: 1.25rem" id="userId" placeholder="유저 아이디" disabled>
+                    </div>
+                    <div class="ep-form-group">
+                        <label class="p-subtitle fw-bold" for="email">이메일</label>
+                        <input type="email" class="form-control ep-form" style="font-size: 1.25rem" id="email" placeholder="유저 이메일" disabled>
+                    </div>
+                    <div>
+                        <div class="ep-form-group">
+                            <div class="wrap">
+                                <label class="p-subtitle fw-bold fl" style="width: 50%" for="userPassword">비밀번호</label>
+                                <div class="p-subtitle color-primary fr" style="width: 50%; text-align: right">변경하기</div>
+                            </div>
+                            <input type="password" class="form-control ep-form" style="font-size: 1.25rem" id="userPassword" placeholder="유저 비밀번호" disabled>
+                        </div>
+                    </div>
+                    <div class="ep-form-group">
+                        <label class="p-subtitle fw-bold" for="nickname">닉네임</label>
+                        <input type="text" class="form-control ep-form" style="font-size: 1.25rem" id="nickname" placeholder="유저 닉네임">
+                    </div>
+                    <div class="wrap">
+                        <div class="ep-form-group fl" style="width: 70%">
+                            <!-- 캘린더 -->
+                            <label class="p-subtitle fw-bold" for="birthday">생년월일</label>
+                            <div>
+                                <input id="birthday" class="vote-date p-1 p-subtitle mr-3" style="width: 90%" type="datetime-local">
+                            </div>
+                        </div>
+                        <div class="ep-form-group fl" style="width: 30%">
+                            <!-- 성별 -->
+                            <label class="p-subtitle fw-bold" for="gender" style="display: block">성별</label>
+                            <select class="border-none focus-none border-bottom p-1 p-subtitle" id="gender" style="display: block; width: 100%" required>
+                                <option value="" class="p-subtitle" selected disabled hidden>성별선택</option>
+                                <option value="male" class="p-subtitle">남성</option>
+                                <option value="female" class="p-subtitle">여성</option>
+                                <option value="other-gender" class="p-subtitle">그 외</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="ep-form-group">
+                        <!-- 주소 -->
+                        <label class="p-subtitle fw-bold" for="address">주소</label>
+                        <!-- 카카오 지도 api -->
+                        <div id="address"/>
+                    </div>
+                    <div class="ep-form-group">
+                        <label class="p-subtitle fw-bold" for="memo">한줄소개</label>
+                        <div class="mb-3" style="display: block; margin: auto;">
+                            <textarea placeholder="한 줄 소개" class="form-control ep-textarea" style="font-size: 1.25rem;" id="memo" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row gutters">
+                    <div class="text-right">
+                        <button type="button" id="cancel" name="cancel" class="p-btn p-btn-secondary">취소
+                        </button>
+                        <button type="button" id="submit" name="submit" class="p-btn p-btn-primary">업데이트
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
