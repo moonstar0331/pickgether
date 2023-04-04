@@ -99,7 +99,7 @@
                     </div>
                     <div>
                         <form class="login-input px-3 py-2 mb-2">
-                            <input type="date" name="birthday">
+                            <input type="date" id="current" name="birthday">
                         </form>
                     </div>
 
@@ -141,3 +141,6 @@
     </div>
 </body>
 </html>
+<script>
+    document.getElementById('current').value= new Date().toISOString().slice(0, 10);
+</script>
