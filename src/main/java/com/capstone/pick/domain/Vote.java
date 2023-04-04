@@ -33,7 +33,7 @@ public class Vote {
     @Column(name = "vote_id")
     private Long id; // 투표 게시글 id
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 유저 정보 (id)
 
