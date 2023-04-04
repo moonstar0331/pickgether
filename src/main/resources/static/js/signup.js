@@ -56,10 +56,10 @@ function pw_validation() {
     var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
     if (pw == "") {
-        document.getElementById("pw_img").src = "/images/icons/cross-small.svg";
+        document.getElementById("pw_img").src = "/images/icons/minus.svg";
         document.getElementById("pw_img").style.height = '15px';
-        document.getElementById("pw_img").style.width = '15px';
-        document.getElementById("pw_img").style.filter = "invert(37%) sepia(21%) saturate(4534%) hue-rotate(334deg) brightness(108%) contrast(73%)";
+        document.getElementById("pw_img").style.width = '10px';
+        document.getElementById("pw_img").style.filter = "invert(40%) sepia(18%) saturate(15%) hue-rotate(41deg) brightness(96%) contrast(88%)";
         document.getElementById("pwLabel").innerHTML = "영문(대소문자), 숫자, 특수문자를 혼합한 8~20자";
     }else if(pw.length < 8 || pw.length > 20){
         document.getElementById("pw_img").src = "/images/icons/cross-small.svg";
