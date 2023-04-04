@@ -14,6 +14,22 @@
     transform: translateX(-50%);
 }
 
+@media (max-width: 600px) {
+    .timeline-background {
+        width: 100%;
+    }
+}
+
+.form-selections-edit-btn {
+    color: #65758E;
+}
+
+@media (max-width: 418px) {
+    .form-selections-edit-btn {
+        font-size: 0.9rem;
+    }
+}
+
 .profile {
     font-family: 'Noto Sans KR', sans-serif;
     height: 48px;

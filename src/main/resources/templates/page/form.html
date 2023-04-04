@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <title>Pickgether</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min2.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -73,23 +74,26 @@
                     </div>
                 </div>
                 <div class="col-12 d-flex justify-content-between">
-                    <div class="row" style="width: 280px;">
+                    <div class="row" style="width: 100%">
                         <div onclick="create_voteOption()"
                              class="optionAdd col d-flex justify-content-start align-items-center hover-cursor-pointer">
                             <img class="ml-2 mr-2" style="width: auto; height: 15px;"
                                  src="/images/icons/PlusCircle.svg">
-                            <div style="color: #65758E;">항목 추가</div>
+                            <div class="form-selections-edit-btn">항목 추가</div>
                         </div>
                         <div onclick="delete_voteOption()"
                              class="optionAdd col d-flex justify-content-start align-items-center hover-cursor-pointer">
                             <img class="ml-2 mr-2" style="width: auto; height: 20px;"
                                  src="/images/icons/MinusCircle.svg">
-                            <div style="color: #65758E;">항목 삭제</div>
+                            <div class="form-selections-edit-btn">항목 삭제</div>
                         </div>
                     </div>
-                    <div class="mr-2">
+                    <!--<div class="mr-2 form-selections-edit-btn">
                         <label><input th:field="*{isMultiPick}" type="checkbox" class="mr-1"> 다중 선택</label>
-                    </div>
+                    </div>-->
+                </div>
+                <div class="mr-2 form-selections-edit-btn" style="margin-left: 1.47rem; margin-top: 5px;">
+                    <label><input th:field="*{isMultiPick}" type="checkbox" class="mr-1"> 다중 선택</label>
                 </div>
             </div>
 
