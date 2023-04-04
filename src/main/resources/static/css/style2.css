@@ -2,6 +2,8 @@
     background: linear-gradient(180deg, #7F8AE5 0%, #E3DCEA 41.15%, rgba(255, 243, 236, 0.23) 77.08%, #FFFFFF 100%);
 }
 
+/* 로그인 */
+
 .logo p {
     font-size: 100px;
     font-family: 'Oleo Script Swash Caps', cursive;
@@ -124,6 +126,30 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+}
+
+@media (max-height: 600px) {
+    .center-center {
+        top: 70%;
+    }
+}
+
+@media (max-height: 700px) and (min-height: 601px) {
+    .center-center {
+        top: 45%;
+    }
+}
+
+@media (max-height: 800px) and (min-height: 701px) {
+    .center-center {
+        top: 65%;
+    }
+}
+
+@media (max-height: 900px) and (min-height: 801px) {
+    .center-center {
+        top: 55%;
+    }
 }
 
 .center-bottom {

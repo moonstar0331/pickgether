@@ -198,14 +198,55 @@
     background: none;
 }
 
-.login-input {
+.signup-input-memo {
+    width: 80%;
+    display: block;
+    margin: auto;
+}
+
+.signup-input-label {
+    margin-left: 60px;
+}
+
+.signup-input {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     border: none;
+    width: 80%;
 }
 
-.login-input:focus {
+.signup-input:focus {
     outline: none;
+}
+
+@media (max-width: 481px) {
+    .signup-input {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        border: none;
+        width: 80%;
+    }
+
+    .signup-input:focus {
+        outline: none;
+    }
+}
+
+@media (max-width: 418px) {
+    .signup-input-label {
+        margin-left: 75px;
+    }
+    .signup-input {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        border: none;
+        width: 70%;
+    }
+    .signup-input-memo {
+        width: 70%;
+        display: block;
+        margin: auto;
+    }
 }
 
 .login-submit {
@@ -220,13 +261,23 @@
     color: white;
 }
 
-.login-etc a {
-    color: #5E718D;
+.signup-submit {
+    background: none;
+    border-radius: 20px;
+    border: 1px solid #322293;
+    color: #322293;
+    width: 80%;
 }
 
-.login-etc a:hover {
-    text-decoration: none;
-    font-weight: bold;
+.login-submit:hover {
+    background: #322293;
+    color: white;
+}
+
+@media (max-width: 418px) {
+    .signup-submit {
+        width: 70%;
+    }
 }
 
 .hover-cursor-pointer:hover {
@@ -322,7 +373,6 @@
     font-size: 80%;
     color: #3b3b3b;
     text-align: left;
-    margin-left: 60px;
 }
 
 .signup-hr {
@@ -330,6 +380,17 @@
     background-color: darkgray;
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+@media (max-width: 481px) {
+    .signup-hr {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .title-margin-bottom {
+        margin-bottom: 0px !important;
+    }
 }
 
 .signup-height {
@@ -341,9 +402,15 @@
     min-height: 100%;
 }
 
-@media (max-height: 880px) {
+@media (max-height: 600px) {
     .signup-height {
-        height: 180% !important;
+        height: 160% !important;
+    }
+}
+
+@media (max-height: 700px) and (min-height: 601px) {
+    .signup-height {
+        height: 165% !important;
     }
 
     .pickgether-title {
@@ -351,6 +418,19 @@
         min-height: 100%;
     }
 }
+
+@media (max-height: 800px) and (min-height: 701px) {
+    .signup-height {
+        height: 140% !important;
+    }
+}
+
+@media (max-height: 900px) and (min-height: 801px) {
+    .signup-height {
+        height: 120% !important;
+    }
+}
+
 .vote-select-btn {
     display: none;
 }
