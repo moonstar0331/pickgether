@@ -73,7 +73,7 @@ public class Vote {
     @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
     private List<VoteComment> voteComments = new ArrayList<>();
 
-    @Formula("(select count(*) from vote_option o left join pick p on o.vote_option_id = p.vote_option_id where vote_id = vote_id)")
+    @Formula("(select count(*) from pick p left join vote_option o on p.vote_option_id = o.vote_option_id where o.vote_id = vote_id)")
     private Long pickCount;
 
     @Override

@@ -56,30 +56,8 @@
                                 <a class="dropdown-item" th:cate="${category}" th:onclick="|timelineCategory(this.getAttribute('cate'))|" th:text="${category.displayValue}"></a>
                             </li>
 
-<!--                            <li>-->
-<!--                                <a class="dropdown-item" th:data-cateogory="${com.capstone.pick.domain.constant.Category.ALL}" th:onclick="timelineCategory(${this.attribute('cateogory')})">전체</a>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <a class="dropdown-item" th:data-cateogory="${com.capstone.pick.domain.constant.Category.FREE}" th:onclick="timelineCategory(${this.attribute('cateogory')}})">자유</a>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <a class="dropdown-item" th:data-cateogory="${com.capstone.pick.domain.constant.Category.WORRY}" th:onclick="timelineCategory(${this.attribute('cateogory')}})">고민</a>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <a class="dropdown-item" th:data-cateogory="${com.capstone.pick.domain.constant.Category.SURVEY}" th:onclick="timelineCategory(${this.attribute('cateogory')}})">설문</a>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <a class="dropdown-item" th:data-cateogory="${com.capstone.pick.domain.constant.Category.ENTERPRISE}" th:onclick="timelineCategory(${this.attribute('cateogory')}})">기업</a>-->
-<!--                            </li>-->
-
-
                             <li><h6 class="dropdown-header">정렬기준</h6></li>
                             <li><hr class="dropdown-divider"></li>
-
-<!--                            <li th:each="orderBy : ${T(com.capstone.pick.domain.constant.OrderCriteria).values()}">-->
-<!--                                <a class="dropdown-item"-->
-<!--                                   th:href="@{/timeline(category=${category}, orderBy=${orderBy})}" th:text="${orderBy.displayValue}"></a>-->
-<!--                            </li>-->
 
                             <li>
                                 <a class="dropdown-item" onclick="timelineOrderBy('modifiedAt')">최신순</a>
@@ -90,7 +68,6 @@
                             <li>
                                 <a class="dropdown-item" onclick="timelineOrderBy('todo')">관련도순</a>
                             </li>
-
 
                             <!--<div class="form-check" th:each="orderBy : ${T(com.capstone.pick.domain.constant.OrderCriteria).values()}">
                                 <label class="form-check-label" th:for="${orderBy}" th:text="${orderBy.displayValue}">
@@ -214,7 +191,7 @@
                         <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
                     </svg>
                 </button>
-                1K
+                <span th:text="${vote.pickCount}"></span>
                 <!--댓글 아이콘-->
                 <button type="button" th:onclick="'location.href=\'' + ${vote.getId()} + '/comments\''">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
