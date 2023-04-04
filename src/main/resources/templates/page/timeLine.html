@@ -53,17 +53,45 @@
                             <li><hr class="dropdown-divider"></li>
 
                             <li th:each="category : ${T(com.capstone.pick.domain.constant.Category).values()}">
-                                <a class="dropdown-item"
-                                   th:href="@{/timeline(category=${category}, orderBy=${orderBy})}" th:text="${category.displayValue}"></a>
+                                <a class="dropdown-item" th:cate="${category}" th:onclick="|timelineCategory(this.getAttribute('cate'))|" th:text="${category.displayValue}"></a>
                             </li>
+
+<!--                            <li>-->
+<!--                                <a class="dropdown-item" th:data-cateogory="${com.capstone.pick.domain.constant.Category.ALL}" th:onclick="timelineCategory(${this.attribute('cateogory')})">전체</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a class="dropdown-item" th:data-cateogory="${com.capstone.pick.domain.constant.Category.FREE}" th:onclick="timelineCategory(${this.attribute('cateogory')}})">자유</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a class="dropdown-item" th:data-cateogory="${com.capstone.pick.domain.constant.Category.WORRY}" th:onclick="timelineCategory(${this.attribute('cateogory')}})">고민</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a class="dropdown-item" th:data-cateogory="${com.capstone.pick.domain.constant.Category.SURVEY}" th:onclick="timelineCategory(${this.attribute('cateogory')}})">설문</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a class="dropdown-item" th:data-cateogory="${com.capstone.pick.domain.constant.Category.ENTERPRISE}" th:onclick="timelineCategory(${this.attribute('cateogory')}})">기업</a>-->
+<!--                            </li>-->
+
 
                             <li><h6 class="dropdown-header">정렬기준</h6></li>
                             <li><hr class="dropdown-divider"></li>
 
-                            <li th:each="orderBy : ${T(com.capstone.pick.domain.constant.OrderCriteria).values()}">
-                                <a class="dropdown-item"
-                                   th:href="@{/timeline(category=${category}, orderBy=${orderBy})}" th:text="${orderBy.displayValue}"></a>
+<!--                            <li th:each="orderBy : ${T(com.capstone.pick.domain.constant.OrderCriteria).values()}">-->
+<!--                                <a class="dropdown-item"-->
+<!--                                   th:href="@{/timeline(category=${category}, orderBy=${orderBy})}" th:text="${orderBy.displayValue}"></a>-->
+<!--                            </li>-->
+
+                            <li>
+                                <a class="dropdown-item" onclick="timelineOrderBy('modifiedAt')">최신순</a>
                             </li>
+                            <li>
+                                <a class="dropdown-item" onclick="timelineOrderBy('pickCount')">인기순</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" onclick="timelineOrderBy('todo')">관련도순</a>
+                            </li>
+
+
                             <!--<div class="form-check" th:each="orderBy : ${T(com.capstone.pick.domain.constant.OrderCriteria).values()}">
                                 <label class="form-check-label" th:for="${orderBy}" th:text="${orderBy.displayValue}">
                                 </label>
