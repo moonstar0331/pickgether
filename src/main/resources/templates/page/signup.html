@@ -114,8 +114,9 @@
                     <button class="login-submit p-2 mb-2" type="submit" onclick="signupValidation()" style="width: 80%">회원가입</button>
                 </div>
             </form>
-            <div class="d-flex justify-content-center mt-2 login-etc">
-                <a th:onclick="|location.href='@{login}'|" class="mr-4">이미 계정이 있습니다.</a>
+            <div class="d-flex justify-content-center mt-2 login-etc" style="margin-top: 1px !important;">
+                <!--<a th:onclick="|location.href='@{login}'|" class="mr-4">이미 계정이 있습니다.</a>-->
+                <button class="login-submit p-2 mb-2" th:onclick="|location.href='@{login}'|" style="width: 80%">이미 계정이 있습니다.</button>
             </div>
         </div>
 
