@@ -30,6 +30,7 @@ public class VoteOptionCommentDto {
     private DisplayRange displayRange;
     private List<VoteOptionDto> voteOptionDtos;
     private CommentDto commentDto;
+    private Long pickCount;
 
     public static VoteOptionCommentDto from(Vote entity) {
         return VoteOptionCommentDto.builder()
@@ -45,6 +46,7 @@ public class VoteOptionCommentDto {
                 .voteOptionDtos(entity.getVoteOptions().stream()
                         .map(VoteOptionDto::from).collect(Collectors.toList()))
                 .commentDto(insertCommand(entity))
+                .pickCount(entity.getPickCount())
                 .build();
     }
 
