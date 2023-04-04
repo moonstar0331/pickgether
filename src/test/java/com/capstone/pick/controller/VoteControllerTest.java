@@ -22,6 +22,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.TestExecutionEvent;
@@ -84,15 +86,16 @@ class VoteControllerTest {
     @Test
     void timeLine() throws Exception {
         // given
+        given(voteService.viewTimeLine(eq(Category.ALL), any(Pageable.class))).willReturn(Page.empty());
 
         // when & then
-        mvc.perform(get("/timeline").param("category", Category.ALL.name()).param("orderBy", OrderCriteria.LATEST.name()))
+        mvc.perform(get("/timeline")
+                        .queryParam("category", Category.ALL.name())
+                        .queryParam("sort", "modifiedAt"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("page/timeLine"))
-                .andExpect(model().attributeExists("votes"))
-                .andExpect(model().attributeExists("userDto"));
-
+                .andExpect(model().attributeExists("votes"));
         // then
     }
 
