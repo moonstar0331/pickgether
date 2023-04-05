@@ -133,20 +133,12 @@ public class VoteController {
     }
 
     @GetMapping("/{voteId}/detail")
-    public String voteDetail(@PathVariable Long voteId, @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy, @AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
+    public String voteDetail(@PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
         VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
 
-        List<CommentPostDto> commentPosts = voteCommentService.readCommentOrderBy(voteId, orderBy).stream()
-                .map(c -> CommentPostDto.builder()
-                        .commentDto(c)
-                        .likeCount(voteCommentService.getLikeCount(c.getId()))
-                        .likeId(voteCommentService.findLikeId(c.getId(), votePrincipal.toDto().getUserId()))
-                        .build())
-                .collect(Collectors.toList());
-        model.addAttribute("commentPosts", commentPosts);
-
-        model.addAttribute("user", votePrincipal.toDto());
+        Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
+        model.addAttribute("comments", comments);
         return "page/voteDetail";
     }
 }
