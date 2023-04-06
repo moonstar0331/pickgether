@@ -29,7 +29,7 @@ public class VoteOptionCommentDto {
     private boolean isMultiPick;
     private DisplayRange displayRange;
     private List<VoteOptionDto> voteOptionDtos;
-    private CommentDto commentDto;
+    private List<CommentDto> commentDtos;
     private Long pickCount;
 
     public static VoteOptionCommentDto from(Vote entity) {
@@ -45,15 +45,9 @@ public class VoteOptionCommentDto {
                 .isMultiPick(entity.isMultiPick())
                 .voteOptionDtos(entity.getVoteOptions().stream()
                         .map(VoteOptionDto::from).collect(Collectors.toList()))
-                .commentDto(insertCommand(entity))
+                .commentDtos(entity.getVoteComments().stream()
+                        .map(CommentDto::from).collect(Collectors.toList()))
                 .pickCount(entity.getPickCount())
                 .build();
-    }
-
-    private static CommentDto insertCommand(Vote vote) {
-        if(vote.getVoteComments() == null || vote.getVoteComments().isEmpty()) {
-            return null;
-        }
-        return CommentDto.from(vote.getVoteComments().get(0));
     }
 }
