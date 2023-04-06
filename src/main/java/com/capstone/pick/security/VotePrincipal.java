@@ -39,6 +39,8 @@ public class VotePrincipal implements OAuth2User,UserDetails {
                 .nickname(dto.getNickname())
                 .birthday(dto.getBirthday())
                 .memo(dto.getMemo())
+                .gender(dto.getGender())
+                .age_range(dto.getAge_range())
                 .provider(dto.getProvider())
                 .build();
     }

@@ -47,27 +47,27 @@
     <p class="addMoreInfo-header__text">당신에 대해 더 알려주세요!</p>
   </header>
 
-  <form action="/추가정보입력처리 컨트롤러로 이동" method="POST" id="addMoreInfo-form">
+  <form th:action="@{/addMoreInfo}"  method="POST" id="addMoreInfo-form" th:object="${addMoreInfo}" enctype="application/x-www-form-urlencoded">
     <label>연령대</label>
-    <input name="age_range" type="text" placeholder="  20 또는 30과 같이 입력해주세요">
+    <input  type="text" placeholder="  20 또는 30과 같이 입력해주세요" th:field="*{age_range}">
 
     <label>성별</label>
-    <input name="gender" type="text" placeholder="  M 또는 F로 입력해주세요">
+    <input  type="text" placeholder="  M 또는 F로 입력해주세요" th:field="*{gender}">
 
     <label>직업</label>
     <div class="selectBox">
-      <select name="job" class="select">
-        <option disabled selected>직업 선택 👷</option>
-        <option value="???">전문가 및 관련 종사자</option>
-        <option value="???">사무 종사자</option>
-        <option value="???">서비스 종사자</option>
-        <option value="???">판매 종사자</option>
+      <select  type="text" class="select" th:field="*{job}">
+        <option th:value="none" disabled selected>직업 선택 👷</option>
+        <option th:value="expert">전문가 및 관련 종사자</option>
+        <option th:value="office">사무 종사자</option>
+        <option th:value="service">서비스 종사자</option>
+        <option th:value="sail">판매 종사자</option>
       </select>
       <div class="icoArrow"><i class="fa-thin fa-caret-down dropdown"></i></div>
     </div>
 
     <label>주소</label>
-    <input name="address" id="address" type="text" placeholder="  주소를 입력해주세요">
+    <input  id="address" type="text" placeholder="  주소를 입력해주세요" th:field="*{address}">
 
     <input type="submit" value="시작하기">
 

@@ -136,9 +136,6 @@ public class OAuthAttributes {
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
                 .username((String) attributes.get(userNameAttributeName))
-                .age_range("비공개")
-                .birthday("비공개")
-                .gender("비공개")
                 .provider("google")
                 .build();
     }

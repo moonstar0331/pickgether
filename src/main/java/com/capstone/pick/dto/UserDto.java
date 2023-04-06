@@ -24,6 +24,9 @@ public class UserDto {
     private String age_range;
     private String provider; // 가입방식
 
+    private String job;
+    private String address;
+
     public static UserDto from(User entity) {
         return UserDto.builder()
                 .userId(entity.getUserId())
@@ -36,6 +39,8 @@ public class UserDto {
                 .gender(entity.getGender())
                 .age_range(entity.getAge_range())
                 .provider(entity.getProvider())
+                .address(entity.getAddress())
+                .job(entity.getJob())
                 .build();
     }
 
@@ -50,6 +55,8 @@ public class UserDto {
                 .gender(gender)
                 .age_range(age_range)
                 .provider(provider)
+                .address(address)
+                .job(job)
                 .build();
     }
 }
