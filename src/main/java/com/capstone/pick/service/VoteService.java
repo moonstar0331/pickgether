@@ -11,6 +11,8 @@ import com.capstone.pick.dto.*;
 import com.capstone.pick.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,14 @@ public class VoteService {
         return votes.stream()
                 .map(VoteDto::from)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<VoteOptionCommentDto> viewTimeLine(Category category, Pageable pageable) {
+        if(category.equals(Category.ALL)) {
+            return voteRepository.findAll(pageable).map(VoteOptionCommentDto::from);
+        }
+        return voteRepository.findAllByCategory(category, pageable).map(VoteOptionCommentDto::from);
     }
 
     @Transactional(readOnly = true)

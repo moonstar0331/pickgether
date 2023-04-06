@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -33,7 +34,7 @@ public class Vote {
     @Column(name = "vote_id")
     private Long id; // 투표 게시글 id
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 유저 정보 (id)
 
@@ -71,6 +72,9 @@ public class Vote {
     @ToString.Exclude
     @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
     private List<VoteComment> voteComments = new ArrayList<>();
+
+    @Formula("(select count(*) from pick p left join vote_option o on p.vote_option_id = o.vote_option_id where o.vote_id = vote_id)")
+    private Long pickCount;
 
     @Override
     public boolean equals(Object o) {

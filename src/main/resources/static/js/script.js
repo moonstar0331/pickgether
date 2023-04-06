@@ -149,6 +149,48 @@ function autoResizeTextarea(element) {
 function commentOrderBy(voteId, orderBy) {
     location.href = "/" + voteId + "/comments?sort=" + orderBy + ",desc";
 }
+function timelineCategory(category) {
+    var checkOrder = document.location.href.includes("sort");
+    var checkCate = document.location.href.includes("category");
+
+    var search = location.search;
+    var cate = search.substring(search.indexOf("=")+1, search.indexOf("&"));
+
+    if(checkOrder && checkCate) {
+        location.href = "/timeline" + search.replaceAll(cate, category);
+    } else if (checkOrder && !checkCate) {
+        location.href = "/timeline?category=" + category + "&" + search.replaceAll("?", "");
+    } else {
+        location.href = "/timeline?category=" + category;
+    }
+}
+
+function timelineOrderBy(orderBy) {
+    var checkOrder = document.location.href.includes("sort");
+    var checkCate = document.location.href.includes("category");
+
+    var search = location.search;
+
+    if (checkCate && !checkOrder) {
+        if (orderBy === 'modifiedAt') {
+            location.href = "/timeline" + search + "&sort=" + orderBy + ",desc";
+        } else {
+            location.href = "/timeline" + search + "&sort=" + orderBy + ",asc";
+        }
+    } else if (checkCate && checkOrder) {
+        if (orderBy === 'modifiedAt') {
+            location.href = "/timeline" + search.split("&")[0] + "&sort=" + orderBy + ",desc";
+        } else {
+            location.href = "/timeline" + search.split("&")[0] + "&sort=" + orderBy + ",asc";
+        }
+    } else {
+        if (orderBy === 'modifiedAt') {
+            location.href = "/timeline?sort=" + orderBy + ",desc";
+        } else {
+            location.href = "/timeline?sort=" + orderBy + ",asc";
+        }
+    }
+}
 
 // 검색창 clear & 기존 검색 결과 clear
 function clearSearchValue() {

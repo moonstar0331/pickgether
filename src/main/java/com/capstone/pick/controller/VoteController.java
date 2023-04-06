@@ -10,6 +10,10 @@ import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,16 +53,28 @@ public class VoteController {
         return "page/search :: #searchResult";
     }
 
+//    @GetMapping("/timeline")
+//    public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,
+//                           @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy,
+//                           @AuthenticationPrincipal VotePrincipal votePrincipal,
+//                           Model model) {
+//        List<VoteOptionCommentDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
+//        model.addAttribute("votes", votes);
+//        model.addAttribute("category", category);
+//        model.addAttribute("orderBy", orderBy);
+//        model.addAttribute("userDto",votePrincipal.toDto());
+//        return "page/timeLine";
+//    }
+
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,
-                           @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy,
-                           @AuthenticationPrincipal VotePrincipal votePrincipal,
-                           Model model) {
-        List<VoteOptionCommentDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
+                           Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+//        List<VoteOptionCommentDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
+//        model.addAttribute("votes", votes);
+        System.out.println("category : " + category + ", " + category.getClass());
+        Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         model.addAttribute("votes", votes);
         model.addAttribute("category", category);
-        model.addAttribute("orderBy", orderBy);
-        model.addAttribute("userDto",votePrincipal.toDto());
         return "page/timeLine";
     }
 

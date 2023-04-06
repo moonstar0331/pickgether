@@ -72,14 +72,13 @@ class VoteCommentsControllerTest {
     void 댓글상세보기_뷰_엔드포인트_테스트() throws Exception {
         // given
         long voteId = 1L;
-        Pageable pageable = mock(Pageable.class);
-        given(voteCommentService.commentsByVote(voteId, pageable)).willReturn(Page.empty());
+        given(voteCommentService.commentsByVote(eq(voteId), any(Pageable.class))).willReturn(Page.empty());
 
         // when & then
         mvc.perform(get("/" + voteId + "/comments"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-//                .andExpect(model().attributeExists("comments")) // TODO : model 에 대한 테스트
+                .andExpect(model().attributeExists("comments")) // TODO : model 에 대한 테스트
                 .andExpect(view().name("page/comments"));
 
         then(voteCommentService).should().commentsByVote(any(), any());
