@@ -5,6 +5,8 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
+import com.capstone.pick.repository.VoteRepository;
+import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteService;
@@ -118,5 +120,19 @@ public class VoteController {
         VoteOptionCommentDto vote = voteService.getVoteOptionComment(voteId);
         model.addAttribute("vote", vote);
         return "page/voteDetail";
+    }
+
+    @GetMapping("/{userId}/bookmark")
+    public String bookmark(@PathVariable String userId, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        List<VoteOptionCommentDto> votes = voteService.findBookmarks(userId, pageable);
+        model.addAttribute("votes", votes);
+        model.addAttribute("userId", userId);
+        return "page/bookmark";
+    }
+
+    @PostMapping("/{userId}/bookmark/deleteAll")
+    public String deleteAllBookmark(@PathVariable String userId) throws UserMismatchException {
+        voteService.deleteAllBookmark(userId);
+        return "redirect:/" + userId + "/bookmark";
     }
 }
