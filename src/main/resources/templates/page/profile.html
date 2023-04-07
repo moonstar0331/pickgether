@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
+  <title>Pickgether</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min2.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
@@ -25,14 +26,14 @@
             crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </head>
-<body>
+<body style="overflow-x: hidden;">
 
 
 <div class="timeline-background h-100">
 
     <header class="d-flex flex-wrap align-items-center py-3 ">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
-             viewBox="0 0 16 16" onclick="location.href='/timeline'">
+             viewBox="0 0 16 16" onclick="location.href='/timeline'" style="margin-left: 1rem;">
             <path fill-rule="evenodd"
                   d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
         </svg>
@@ -43,7 +44,7 @@
 
 
     <div class="">
-        <div class="second d-flex flex-row">
+        <div class="row justify-content-around" style="margin-left: 0.1rem; margin-right: 0.1rem; --bs-gutter-x: 0px !important;">
 
             <div class="image status d-flex justify-content-center">
                 <img src="https://i.imgur.com/0LKZQYM.jpg" class="rounded-circle" width="80"/>
@@ -65,11 +66,11 @@
             </div>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4" style="margin-left: 1rem;">
             메모
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4" style="margin-left: 1rem; margin-right: 1rem;">
             <button class="btn btn-outline-purple btn-sm px-2">Follow</button>
             <button class="btn btn-outline-purple btn-sm">Profile Edit</button>
         </div>
@@ -163,7 +164,8 @@
     </div>
 </div>
 <div class="icons">
-    <nav class="nav justify-content-around bg-light fixed-bottom bottom-navbar" style="width: 600px; margin: auto; z-index: 998;">
+    <nav class="nav justify-content-around bg-light fixed-bottom bottom-navbar navbar-width"
+         style="margin: auto; z-index: 998;">
         <!-- home icon -->
         <button type="button">
             <img src="/images/icons/home.svg" width="30" height="30" style="fill: #BCB5D2;">
