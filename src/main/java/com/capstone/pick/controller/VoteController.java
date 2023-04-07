@@ -134,11 +134,8 @@ public class VoteController {
 
     @GetMapping("/{voteId}/detail")
     public String voteDetail(@PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
-        VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
+        VoteOptionCommentDto vote = voteService.getVoteOptionComment(voteId);
         model.addAttribute("vote", vote);
-
-        Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
-        model.addAttribute("comments", comments);
         return "page/voteDetail";
     }
 }
