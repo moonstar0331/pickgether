@@ -34,17 +34,18 @@
     <!-- 검색창 -->
     <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid mt-2">
-            <div style="width: 20%;">
+            <!--<div style="width: 20%;">-->
+            <div style="margin-right: 0.5rem; width: 10px;">
                 <select class="border-none focus-none p-1" th:name="searchType" id="searchType" required>
                     <option value="" selected disabled hidden>카테고리</option>
                     <option th:each="searchType : ${T(com.capstone.pick.domain.constant.SearchType).values()}"
                             th:value="${searchType}" th:text="${searchType.description}"></option>
                 </select>
             </div>
-            <div style="width: 80%; position: relative;">
+            <div class="search-input-width">
                 <input type="text" class="form-control" id="searchValue" placeholder="검색" th:name="searchValue"
                        style="background-color: #EFEFEF; border-radius: 4rem; padding-right: 2rem;">
-                <div style="position: absolute; right: 0.8rem; top: 0.3rem;">
+                <div style="position: absolute; right: 0.5rem; top: 10%;">
                     <img style="width: 1.2rem;" onclick="clearSearchValue()"
                          src="https://user-images.githubusercontent.com/90389517/227971743-18dff77f-3154-4d23-9d61-c754f9c7a6e2.png">
                 </div>

@@ -215,3 +215,26 @@
         width: 600px;
     }
 }
+
+.search-input-width {
+    width: 80%;
+    position: relative;
+}
+
+@media (max-width: 542px) and (min-width: 425px){
+    .search-input-width {
+        width: 75%;
+    }
+}
+
+@media (max-width: 424px) and (min-width: 386px){
+    .search-input-width {
+        width: 73%;
+    }
+}
+
+@media (max-width: 386px){
+    .search-input-width {
+        width: 70%;
+    }
+}
