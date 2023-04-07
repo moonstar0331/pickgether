@@ -129,7 +129,7 @@ function beforeCheck(m) {
 function click_editCommentBtn(id) {
     $("#defaultBtns" + id).css("display", "none");
     $("#content" + id).css("display", "none");
-    $("#editingBtns" + id).css("display", "block");
+    $("#editingBtns" + id).css("display", "flex");
     $("#form" + id).css("display", "block");
 }
 

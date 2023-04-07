@@ -32,8 +32,10 @@ public class VoteCommentsController {
      * @return 댓글 목록 뷰
      */
     @GetMapping("/{voteId}/comments")
-    public String comments(@PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+    public String comments(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId,
+                           @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
         Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
+        model.addAttribute("user", votePrincipal.toDto());
         model.addAttribute("comments", comments);
         return "page/comments";
     }
