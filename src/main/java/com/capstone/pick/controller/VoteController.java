@@ -5,8 +5,10 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
+import com.capstone.pick.repository.VoteRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
+import com.capstone.pick.service.VoteCommentService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 public class VoteController {
 
     private final VoteService voteService;
+    private final VoteCommentService voteCommentService;
     private final UserService userService;
 
     @GetMapping("/")
@@ -110,7 +113,7 @@ public class VoteController {
 
     @PostMapping("/{voteId}/edit")
     public String editVote(@AuthenticationPrincipal VotePrincipal votePrincipal,
-                           @PathVariable Long voteId, VoteForm voteForm) throws Exception {
+                           @PathVariable Long voteId, VoteForm voteForm) {
         VoteDto voteDto = voteForm.toDto(votePrincipal.toDto());
         List<HashtagDto> hashtagDtos = voteForm.getHashtagDtos();
         List<VoteOptionDto> voteOptionDtos = voteForm.getVoteOptions()
@@ -125,9 +128,14 @@ public class VoteController {
     public String deleteVote(
             @AuthenticationPrincipal VotePrincipal votePrincipal,
             @PathVariable Long voteId) {
-
         voteService.deleteVote(voteId, votePrincipal.getUsername());
-
         return "redirect:/timeline";
+    }
+
+    @GetMapping("/{voteId}/detail")
+    public String voteDetail(@PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
+        VoteOptionCommentDto vote = voteService.getVoteOptionComment(voteId);
+        model.addAttribute("vote", vote);
+        return "page/voteDetail";
     }
 }

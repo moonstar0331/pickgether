@@ -46,6 +46,10 @@ $(document).ready(function () {
     });
 });
 
+function href(path) {
+    location.href = '/' + path;
+}
+
 function search() {
     var searchValue = $('#searchValue').val();
     var searchType = $('#searchType').val();
@@ -190,6 +194,10 @@ function timelineOrderBy(orderBy) {
             location.href = "/timeline?sort=" + orderBy + ",asc";
         }
     }
+}
+
+function commentOrderBy_detail(voteId, orderBy) {
+    location.href = "/" + voteId + "/detail?orderBy=" + orderBy;
 }
 
 // 검색창 clear & 기존 검색 결과 clear

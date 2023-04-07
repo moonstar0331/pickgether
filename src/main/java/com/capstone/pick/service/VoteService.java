@@ -160,6 +160,10 @@ public class VoteService {
         return VoteDto.from(voteRepository.getReferenceById(voteId));
     }
 
+    public VoteOptionCommentDto getVoteOptionComment(Long voteId) {
+        return VoteOptionCommentDto.from(voteRepository.getReferenceById(voteId));
+    }
+
     public List<VoteOptionDto> getOptions(Long voteId) {
         return voteOptionRepository.findAllByVoteId(voteId).stream()
                 .map(VoteOptionDto::from)

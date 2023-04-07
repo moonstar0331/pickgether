@@ -22,6 +22,7 @@ public class CommentDto {
     private String content;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
+    private Long likeCount;
 
     public static CommentDto from(VoteComment entity) {
         return CommentDto.builder()
