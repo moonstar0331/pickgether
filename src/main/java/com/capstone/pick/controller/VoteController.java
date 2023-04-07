@@ -5,7 +5,6 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.repository.VoteRepository;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
@@ -43,7 +42,7 @@ public class VoteController {
 
     @PostMapping("/search")
     public String search(@ModelAttribute SearchForm searchForm, ModelMap map) {
-        if(searchForm.getSearchType() == SearchType.USER) {
+        if (searchForm.getSearchType() == SearchType.USER) {
             List<UserDto> users = userService.findUsersById(searchForm.getSearchValue());
             map.addAttribute("users", users);
         } else {
@@ -107,7 +106,8 @@ public class VoteController {
         return "redirect:/timeline";
     }
 
-    @PostMapping("/{voteId}/delete")
+    @ResponseBody
+    @DeleteMapping("/deleteVote")
     public String deleteVote(
             @AuthenticationPrincipal VotePrincipal votePrincipal,
             @PathVariable Long voteId) {
