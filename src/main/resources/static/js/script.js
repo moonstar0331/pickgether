@@ -72,6 +72,61 @@ function search() {
         });
 }
 
+function show(voteId) {
+    var outer = ".vote" + voteId + "outer";
+    var inner = ".vote" + voteId + "inner";
+    $(outer).click(function () {
+        $(inner).css("display", "block");
+        $(outer).css("display", "none");
+    });
+
+    const test = document.getElementsByClassName("test" + voteId);
+
+    $(test).click(function () {
+        $(outer).css("display", "block");
+        $(inner).css("display", "none");
+    });
+
+    var submit = ".vote-submit-btn" + voteId;
+    var analyze = ".vote-analyze-btn" + voteId;
+    var result = ".vote-result" + voteId;
+
+    $(submit).click(function () {
+        $(result).css("display", "inline");
+        $(submit).css("display", "none");
+        $(analyze).css("display", "inline");
+    });
+}
+
+function submitPick(voteId) {
+    const selected = document.querySelector("#vote" + voteId + "options input[type=radio]:checked");
+
+    var data = {
+        // 'voteId': voteId,
+        "optionId": selected.value
+    }
+
+    $.ajax({
+        url: '/pick',
+        data: JSON.stringify(data),
+        type: "POST",
+        async: true,
+        dataType: 'JSON',
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+}
+
 // voteOption 태그 생성 및 삭제 count
 let voteOptionCount = 1;
 
