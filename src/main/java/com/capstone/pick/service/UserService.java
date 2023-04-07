@@ -5,9 +5,11 @@ import com.capstone.pick.domain.User;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,4 +32,33 @@ public class UserService {
         userRepository.save(user.get()); // 정보를 저장
 
     }
-}
+
+    public AddMoreInfoForm findAttribute(OAuth2User oAuth2User) {
+
+        AddMoreInfoForm form = new AddMoreInfoForm();
+
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+
+        if(attributes.containsKey("response")){
+            Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+            form.setGender((String) response.get("gender"));
+            form.setAge_range((String) response.get("age"));
+
+            return form;
+
+        }else if(attributes.containsKey("kakao_account")){
+            Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
+
+            form.setGender((String) response.get("gender"));
+            form.setAge_range((String) response.get("age_range"));
+
+            return form;
+        }
+
+        return form;
+
+    }
+
+    }
+
