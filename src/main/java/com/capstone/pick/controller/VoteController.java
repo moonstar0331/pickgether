@@ -54,7 +54,6 @@ public class VoteController {
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,
                            Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        System.out.println("category : " + category + ", " + category.getClass());
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         model.addAttribute("votes", votes);
         model.addAttribute("category", category);
@@ -63,9 +62,7 @@ public class VoteController {
 
     @GetMapping("/form")
     public String createVote(Model model) {
-        //TODO : 임시로 만든 폼 페이지는 의논 후 처리해야 함
         VoteForm voteForm = VoteForm.builder().build();
-        //th:object 사용을 위해 폼 객체를 넘겨줌
         model.addAttribute("voteForm", voteForm);
         return "page/form";
     }
@@ -105,7 +102,7 @@ public class VoteController {
                 .map(o -> o.toDto(voteDto))
                 .collect(Collectors.toList());
         voteService.updateVote(voteId, voteDto, voteOptionDtos, hashtagDtos);
-        return "redirect:/timeline"; // 투표 게시글 상세 페이지로 돌아간다던가
+        return "redirect:/timeline";
     }
 
     @PostMapping("/{voteId}/delete")
