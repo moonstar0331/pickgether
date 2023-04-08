@@ -1,0 +1,96 @@
+.addMoreInfo-header {
+    margin: 90px 0px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.addMoreInfo-header__title {
+    margin-bottom: 40px;
+    font-size: 25px;
+}
+.addMoreInfo-header__text {
+    width: 50%;
+    opacity: 0.6;
+    font-size: 20px;
+}
+
+#addMoreInfo-form {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 30px;
+}
+
+#addMoreInfo-form input:not([type="submit"]) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#addMoreInfo-form input {
+    border: none;
+    margin-bottom: 22px;
+    padding: 15px 0px;
+    font-size: 18px;
+    background: rgba(255,  255, 255, 0.5);
+    border-radius: 20px;
+
+}
+
+#addMoreInfo-form input:focus {
+    outline: none;
+    border-color: #5974bd;
+    transition: 1s ease-in-out;
+}
+
+#addMoreInfo-form input::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+#addMoreInfo-form input[type="submit"] {
+    background-color: #5974bd;
+    cursor: pointer;
+    border-radius: 30px;
+    padding: 15px 0px;
+    color: white;
+}
+
+
+
+.selectBox {
+    position: relative;
+    width: 150px;
+    height: 35px;
+    border-radius: 4px;
+    border: 2px solid #5974bd;
+    margin-bottom: 22px;
+    margin-top: 15px;
+}
+.selectBox .select {
+    width: inherit;
+    height: inherit;
+    background: transparent;
+    border: 0 none;
+    outline: 0 none;
+    padding: 0 5px;
+    position: relative;
+    z-index: 3; // select가 위로 올라와야 함
+}
+.selectBox .select option {
+    background: #5974bd;
+    color: #fff;
+    padding: 3px 0;
+    font-size: 16px;
+}
+.selectBox .icoArrow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 21px;
+    height: inherit;
+    border-left: 2px solid #5974bd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
