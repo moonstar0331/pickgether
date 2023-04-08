@@ -5,10 +5,8 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.repository.VoteRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
-import com.capstone.pick.service.VoteCommentService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -52,19 +50,6 @@ public class VoteController {
         }
         return "page/search :: #searchResult";
     }
-
-//    @GetMapping("/timeline")
-//    public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,
-//                           @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy,
-//                           @AuthenticationPrincipal VotePrincipal votePrincipal,
-//                           Model model) {
-//        List<VoteOptionCommentDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
-//        model.addAttribute("votes", votes);
-//        model.addAttribute("category", category);
-//        model.addAttribute("orderBy", orderBy);
-//        model.addAttribute("userDto",votePrincipal.toDto());
-//        return "page/timeLine";
-//    }
 
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,

@@ -2,8 +2,6 @@ package com.capstone.pick.dto;
 
 import com.capstone.pick.domain.User;
 import lombok.*;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter

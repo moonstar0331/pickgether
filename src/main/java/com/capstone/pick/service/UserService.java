@@ -2,13 +2,11 @@ package com.capstone.pick.service;
 
 import com.capstone.pick.domain.User;
 import com.capstone.pick.controller.form.AddMoreInfoForm;
-import com.capstone.pick.domain.User;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;

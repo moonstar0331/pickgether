@@ -1,7 +1,6 @@
 package com.capstone.pick.dto;
 
 import com.capstone.pick.domain.Follow;
-import com.capstone.pick.domain.Hashtag;
 import lombok.*;
 
 @Getter

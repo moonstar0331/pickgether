@@ -1,8 +1,5 @@
 package com.capstone.pick.config;
 
-import com.capstone.pick.domain.User;
-import com.capstone.pick.dto.UserDto;
-import com.capstone.pick.repository.UserRepository;
 import com.capstone.pick.security.VotePrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +10,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 

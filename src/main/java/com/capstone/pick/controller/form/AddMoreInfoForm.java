@@ -1,6 +1,5 @@
 package com.capstone.pick.controller.form;
 
-import com.capstone.pick.dto.UserDto;
 import lombok.*;
 
 @Getter
