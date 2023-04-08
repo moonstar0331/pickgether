@@ -1,8 +1,6 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.AddMoreInfoForm;
-import com.capstone.pick.dto.UserDto;
-import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,8 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller

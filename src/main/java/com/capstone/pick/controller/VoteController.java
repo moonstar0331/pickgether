@@ -5,10 +5,8 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.repository.VoteRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
-import com.capstone.pick.service.VoteCommentService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -53,23 +51,9 @@ public class VoteController {
         return "page/search :: #searchResult";
     }
 
-//    @GetMapping("/timeline")
-//    public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,
-//                           @RequestParam(required = false, defaultValue = "LATEST") OrderCriteria orderBy,
-//                           @AuthenticationPrincipal VotePrincipal votePrincipal,
-//                           Model model) {
-//        List<VoteOptionCommentDto> votes = voteService.findSortedVotesByCategory(category, orderBy);
-//        model.addAttribute("votes", votes);
-//        model.addAttribute("category", category);
-//        model.addAttribute("orderBy", orderBy);
-//        model.addAttribute("userDto",votePrincipal.toDto());
-//        return "page/timeLine";
-//    }
-
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,
                            Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        System.out.println("category : " + category + ", " + category.getClass());
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         model.addAttribute("votes", votes);
         model.addAttribute("category", category);
@@ -78,9 +62,7 @@ public class VoteController {
 
     @GetMapping("/form")
     public String createVote(Model model) {
-        //TODO : 임시로 만든 폼 페이지는 의논 후 처리해야 함
         VoteForm voteForm = VoteForm.builder().build();
-        //th:object 사용을 위해 폼 객체를 넘겨줌
         model.addAttribute("voteForm", voteForm);
         return "page/form";
     }
@@ -120,7 +102,7 @@ public class VoteController {
                 .map(o -> o.toDto(voteDto))
                 .collect(Collectors.toList());
         voteService.updateVote(voteId, voteDto, voteOptionDtos, hashtagDtos);
-        return "redirect:/timeline"; // 투표 게시글 상세 페이지로 돌아간다던가
+        return "redirect:/timeline";
     }
 
     @PostMapping("/{voteId}/delete")

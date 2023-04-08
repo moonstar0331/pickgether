@@ -59,7 +59,7 @@
             </ul>
         </div>
     </header>
-    <div class="mb-3 scrollbar-none" style="overflow: auto; height: 80%;">
+    <div class="mb-3 scrollbar-none" style="overflow: auto; height: 80%;" id="commentList">
         <th:block th:each="comment : ${comments}">
             <div class="d-flex text-muted pl-3 pt-3 border-bottom">
                 <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="32" height="32"
@@ -90,10 +90,10 @@
                                         class="text-bold bg-none border-none"
                                         onclick="click_editCommentBtn(this.id)">수정
                                 </button>
-                                <form method="post" onsubmit="return beforeCheck('정말 삭제하시겠습니까?')"
-                                      th:action="'/' + ${voteId} + '/comments/' + ${comment.getId()} + '/delete'">
-                                    <button class="text-bold bg-none border-none"
-                                            type="submit">삭제
+                                <form method="post" onsubmit="return beforeCheck('정말 삭제하시겠습니까?')">
+                                    <button class="text-bold bg-none border-none" type="button"
+                                            th:commentId="${comment.getId()}" th:voteId="${voteId}"
+                                            th:onclick="deleteComment(this.getAttribute('voteId'), this.getAttribute('commentId'))">삭제
                                     </button>
                                 </form>
                             </div>
@@ -102,7 +102,8 @@
                                         class="text-bold bg-none border-none"
                                         onclick="click_cancleEditBtn(this.id)">취소
                                 </button>
-                                <button type="submit" form="commentEditForm" class="text-bold bg-none border-none">
+                                <button type="button" form="commentEditForm" class="text-bold bg-none border-none" th:voteId="${voteId}" th:commentId="${comment.getId()}"
+                                        th:onclick="updateComment(this.getAttribute('voteId'), this.getAttribute('commentId'))">
                                     완료
                                 </button>
                             </div>
@@ -113,7 +114,7 @@
                         <form method="post" id="commentEditForm"
                               th:action="'/' + ${voteId} + '/comments/' + ${comment.getId()} + '/edit'">
                             <div class="w-100 pt-2 pr-3">
-                            <textarea class="w-100 rounded focus-none p-2" rows="1" oninput="autoResizeTextarea(this)"
+                            <textarea class="w-100 rounded focus-none p-2" rows="1" id="editContent" oninput="autoResizeTextarea(this)"
                                       style="border: 1px solid #dee2e6; resize: none; overflow: hidden;"
                                       th:text="${comment.getContent()}" name="content"></textarea>
                             </div>
@@ -132,15 +133,76 @@
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#F07F7F"></rect>
         </svg>
-        <form id="commentForm" method="post" class="custom-form vw-100"
-              th:action="'/' + ${voteId} + '/comments/comments'">
+        <form id="commentForm" method="post" class="custom-form vw-100">
             <input id="commentInput" type="text" class="custom-form-input" name="content" placeholder="댓글 달기..." required>
-            <button class="custom-botton" type="submit">게시</button>
+            <button class="custom-botton" type="button" th:voteId="${voteId}" th:onclick="saveComment(this.getAttribute('voteId'))">게시</button>
         </form>
     </footer>
 </div>
 </body>
 <script th:inline="javascript">
+
+    function updateComment(voteId, commentId) {
+
+        var data = {
+            content: $("#editContent").val()
+        }
+
+        $.ajax({
+            url: '/' + voteId + '/comments/' + commentId,
+            type: "PUT",
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function (jqXHR, settings) {
+                var header = $("meta[name='_csrf_header']").attr("content");
+                var token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            }
+        }).done(function(fragment) {
+            $("#commentList").replaceWith(fragment);
+        });
+    }
+
+    function deleteComment(voteId, commentId) {
+        $.ajax({
+            url: '/' + voteId + '/comments/' + commentId,
+            type: "DELETE",
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function (jqXHR, settings) {
+                var header = $("meta[name='_csrf_header']").attr("content");
+                var token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            }
+        }).done(function(fragment) {
+            $("#commentList").replaceWith(fragment);
+        });
+    }
+
+    function saveComment(voteId) {
+        var data = {
+            content: $("#commentInput").val()
+        }
+        $.ajax({
+            url: '/' + voteId + '/comments',
+            type: "POST",
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function (jqXHR, settings) {
+                var header = $("meta[name='_csrf_header']").attr("content");
+                var token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            },
+            success: function(data) {
+                console.log(data);
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        }).done(function(fragment) {
+            $("#commentInput").val('');
+            $("#commentList").replaceWith(fragment);
+        });
+    }
     function doLike(voteId, commentId) {
         const heart = document.querySelector("#comment" + commentId + "heart");
 

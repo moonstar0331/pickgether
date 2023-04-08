@@ -6,10 +6,8 @@ import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteComment;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
-import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
-import com.capstone.pick.dto.CommentWithLikeCountDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.CommentLikeRepository;
@@ -24,11 +22,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
-
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
