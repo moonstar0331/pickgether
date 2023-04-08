@@ -2,32 +2,24 @@ package com.capstone.pick.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import java.io.Serializable;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Builder
+@Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@IdClass(Follow.PK.class)
 public class Follow {
     @Id
-    @Column(name = "from_user_id", insertable = false, updatable = false)
-    private String fromUserId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Id
-    @Column(name = "to_user_id", insertable = false, updatable = false)
-    private String toUserId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_user_id")
+    private User toUser;
 
-    @NoArgsConstructor
-    @EqualsAndHashCode
-    @AllArgsConstructor
-    public static class PK implements Serializable {
-        String fromUserId;
-        String toUserId;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_user_id")
+    private User fromUser;
 }

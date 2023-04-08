@@ -18,22 +18,19 @@ public class FollowService {
         followRepository.save(followDto.toEntity());
     }
 
-    public void unfollow(String fromUserId, String toUserId) {
-        Follow follow = followRepository.getReferenceById(
-                new Follow.PK(fromUserId, toUserId)
-        );
-        followRepository.delete(follow);
+    public void unfollow(String fromUser, String toUser) {
+        followRepository.delete(followRepository.findByFromUserAndToUser(fromUser, toUser));
     }
 
-    public List<FollowDto> findFollowerList(String userId) {
-        List<Follow> followerList = followRepository.findAllByToUserId(userId);
+    public List<FollowDto> findFollowerList(String toUser) {
+        List<Follow> followerList = followRepository.findAllByToUser(toUser);
         return followerList.stream()
                 .map(FollowDto::from)
                 .collect(Collectors.toList());
     }
 
-    public List<FollowDto> findFollowingList(String userId) {
-        List<Follow> followingList = followRepository.findAllByFromUserId(userId);
+    public List<FollowDto> findFollowingList(String fromUser) {
+        List<Follow> followingList = followRepository.findAllByFromUser(fromUser);
         return followingList.stream()
                 .map(FollowDto::from)
                 .collect(Collectors.toList());

@@ -9,20 +9,23 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class FollowDto {
-    private String fromUserId;
-    private String toUserId;
+    private Long id;
+    private UserDto fromUser;
+    private UserDto toUser;
 
     public static FollowDto from(Follow entity) {
         return FollowDto.builder()
-                .fromUserId(entity.getFromUserId())
-                .toUserId(entity.getToUserId())
+                .id(entity.getId())
+                .fromUser(UserDto.from(entity.getFromUser()))
+                .toUser(UserDto.from(entity.getToUser()))
                 .build();
     }
 
     public Follow toEntity() {
         return Follow.builder()
-                .fromUserId(fromUserId)
-                .toUserId(toUserId)
+                .id(id)
+                .fromUser(fromUser.toEntity())
+                .toUser(toUser.toEntity())
                 .build();
     }
 }

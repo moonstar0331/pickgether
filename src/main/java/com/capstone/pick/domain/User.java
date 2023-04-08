@@ -1,15 +1,15 @@
 package com.capstone.pick.domain;
 
 import lombok.*;
+import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -54,6 +54,12 @@ public class User {
          멤버십과 소셜 로그인 기능을 구현한 후에 진행하도록 한다.
     private String membership; // 멤버십
     */
+
+    @OneToMany(mappedBy = "fromUser")
+    private List<Follow> following;
+
+    @OneToMany(mappedBy = "toUser")
+    private List<Follow> followers;
 
     @Override
     public boolean equals(Object o) {
