@@ -6,6 +6,7 @@ import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.repository.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -82,7 +83,7 @@ public class VoteServiceTest {
         assertThat(voteDtos.size()).isEqualTo(2);
     }
 
-    @MockitoSettings(strictness = Strictness.WARN)
+    @Disabled("[타임라인 조회] - 더이상 사용하지 않는 메소드에 대한 테스트케이스")
     @DisplayName("타임라인을 조회하면, 카테고리와 정렬기준에 따른 투표 게시글을 타임라인에 반환한다.")
     @Test
     void findSortedVotesByCategory() {

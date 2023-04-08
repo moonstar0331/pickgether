@@ -3,6 +3,7 @@ package com.capstone.pick.controller;
 import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.form.CommentForm;
 import com.capstone.pick.controller.request.LikeRequest;
+import com.capstone.pick.controller.request.PostCommentRequest;
 import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
@@ -78,7 +79,8 @@ class VoteCommentsControllerTest {
         mvc.perform(get("/" + voteId + "/comments"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(model().attributeExists("comments")) // TODO : model 에 대한 테스트
+                .andExpect(model().attributeExists("comments"))
+                .andExpect(model().attributeExists("user"))
                 .andExpect(view().name("page/comments"));
 
         then(voteCommentService).should().commentsByVote(any(), any());
@@ -91,49 +93,51 @@ class VoteCommentsControllerTest {
     void saveVoteComment() throws Exception {
         // given
         long voteId = 1L;
-        CommentForm commentForm = createCommentForm(voteId);
 
         willDoNothing().given(voteCommentService).saveComment(any(CommentDto.class));
+        given(voteCommentService.commentsByVote(eq(voteId), any(Pageable.class))).willReturn(Page.empty());
 
         // when
-        mvc.perform(post("/" + voteId + "/comments").param("orderBy", OrderCriteria.LATEST.name())
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .flashAttr("commentForm", commentForm)
+        mvc.perform(post("/" + voteId + "/comments")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(new PostCommentRequest()))
                         .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/" + voteId + "/comments"))
-                .andExpect(redirectedUrl("/" + voteId + "/comments"));
+                .andExpect(status().isOk())
+                .andExpect(view().name("page/comments :: #commentList"))
+                .andExpect(model().attributeExists("comments"))
+                .andExpect(model().attributeExists("user"));
 
         // then
         then(voteCommentService).should().saveComment(any(CommentDto.class));
+        then(voteCommentService).should().commentsByVote(anyLong(), any(Pageable.class));
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @DisplayName("[comment][POST][/{voteId}/comments/{commentId}]")
+    @DisplayName("[comment][PUT][/{voteId}/comments/{commentId}]")
     @Test
     void updateComment() throws Exception {
         // given
         long voteId = 1L;
         long commentId = 1L;
 
-        CommentForm commentForm = CommentForm.builder()
-                .voteId(voteId)
-                .content("new content")
-                .createdAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now())
-                .build();
+        willDoNothing().given(voteCommentService).updateComment(eq(commentId), any(CommentDto.class));
+        given(voteCommentService.commentsByVote(eq(voteId), any(Pageable.class))).willReturn(Page.empty());
 
         // when
-        mvc.perform(post("/" + voteId + "/comments/" + commentId + "/edit")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .flashAttr("commentForm", commentForm)
+        mvc.perform(put("/" + voteId + "/comments/" + commentId)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(new PostCommentRequest()))
                         .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/" + voteId + "/comments"))
-                .andExpect(redirectedUrl("/" + voteId + "/comments"));
+                .andExpect(status().isOk())
+                .andExpect(view().name("page/comments :: #commentList"))
+                .andExpect(model().attributeExists("comments"))
+                .andExpect(model().attributeExists("user"));
 
         // then
-        then(voteCommentService).should().updateComment(any(Long.class), any(CommentDto.class));
+        then(voteCommentService).should().updateComment(anyLong(), any(CommentDto.class));
+        then(voteCommentService).should().commentsByVote(anyLong(), any(Pageable.class));
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
@@ -143,16 +147,25 @@ class VoteCommentsControllerTest {
         // given
         long voteId = 1L;
         long commentId = 1L;
-        CommentForm commentForm = createCommentForm(voteId);
+        String userId = "user";
+
+        willDoNothing().given(voteCommentService).deleteComment(eq(commentId), eq(userId));
+        given(voteCommentService.commentsByVote(eq(voteId), any(Pageable.class))).willReturn(Page.empty());
 
         // when
-        mvc.perform(post("/" + voteId + "/comments/" + commentId + "/delete")
+        mvc.perform(delete("/" + voteId + "/comments/" + commentId)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(null))
                         .with(csrf()))
-                .andExpect(view().name("redirect:/" + voteId + "/comments"))
-                .andExpect(redirectedUrl("/" + voteId + "/comments"));
+                .andExpect(status().isOk())
+                .andExpect(view().name("page/comments :: #commentList"))
+                .andExpect(model().attributeExists("comments"))
+                .andExpect(model().attributeExists("user"));
 
         // then
-        then(voteCommentService).should().deleteComment(any(Long.class), any(String.class));
+        then(voteCommentService).should().deleteComment(anyLong(), anyString());
+        then(voteCommentService).should().commentsByVote(anyLong(), any(Pageable.class));
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)

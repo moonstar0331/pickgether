@@ -6,7 +6,6 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormDto;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
-import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.UserDto;
@@ -80,7 +79,6 @@ class VoteControllerTest {
                 .andExpect(redirectedUrlPattern("**/login"));
     }
 
-    // TODO : 타임라인 조회의 경우 추후에 페이징이 적용되면 테스트를 수정 해야한다.
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("[view][GET] 투표 게시글 조회 - 정상 호출, 인증된 사용자")
     @Test
