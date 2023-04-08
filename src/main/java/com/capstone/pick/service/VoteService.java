@@ -5,7 +5,6 @@ import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteHashtag;
 import com.capstone.pick.domain.constant.Category;
-import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.repository.*;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,24 +46,6 @@ public class VoteService {
             return voteRepository.findAll(pageable).map(VoteOptionCommentDto::from);
         }
         return voteRepository.findAllByCategory(category, pageable).map(VoteOptionCommentDto::from);
-    }
-
-    @Transactional(readOnly = true)
-    public List<VoteOptionCommentDto> findSortedVotesByCategory(Category category, OrderCriteria orderBy) {
-        List<Vote> votes = new ArrayList<>();
-        switch (orderBy) {
-            case LATEST:
-                votes = category.equals(Category.ALL)
-                        ? voteRepository.findAll(Sort.by(Sort.Direction.DESC, "modifiedAt"))
-                        : voteRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, "modifiedAt"));
-                break;
-            case POPULAR:
-                votes = category.equals(Category.ALL)
-                        ? voteRepository.findAllOrderByPopular()
-                        : voteRepository.findByCategoryOrderByPopular(category);
-                break;
-        }
-        return votes.stream().map(VoteOptionCommentDto::from).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

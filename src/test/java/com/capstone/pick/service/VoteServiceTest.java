@@ -3,18 +3,17 @@ package com.capstone.pick.service;
 import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
-import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.repository.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -83,7 +82,6 @@ public class VoteServiceTest {
         assertThat(voteDtos.size()).isEqualTo(2);
     }
 
-    @Disabled("[타임라인 조회] - 더이상 사용하지 않는 메소드에 대한 테스트케이스")
     @DisplayName("타임라인을 조회하면, 카테고리와 정렬기준에 따른 투표 게시글을 타임라인에 반환한다.")
     @Test
     void findSortedVotesByCategory() {
@@ -106,40 +104,18 @@ public class VoteServiceTest {
         ReflectionTestUtils.setField(pick1, "id", 1L);
         ReflectionTestUtils.setField(pick2, "id", 2L);
         ReflectionTestUtils.setField(pick3, "id", 3L);
+        Pageable pageable = PageRequest.of(0, 8, Sort.by(Sort.Direction.DESC, "modifiedAt"));
 
-        given(voteRepository.findAll(Sort.by(Sort.Direction.DESC, "modifiedAt"))).willReturn(List.of(vote1, vote2, vote3));
-        given(voteRepository.findByCategory(Category.FREE, Sort.by(Sort.Direction.DESC, "modifiedAt"))).willReturn(List.of(vote1, vote2));
-        given(voteRepository.findAllOrderByPopular()).willReturn(List.of(vote2, vote1, vote3));
-        given(voteRepository.findByCategoryOrderByPopular(Category.FREE)).willReturn(List.of(vote2, vote1));
+        given(voteRepository.findAll(pageable)).willReturn(Page.empty());
+        given(voteRepository.findAllByCategory(Category.FREE, pageable)).willReturn(Page.empty());
 
         // when
-        List<VoteOptionCommentDto> All_LATEST = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.LATEST);
-        List<VoteOptionCommentDto> All_POPULAR = voteService.findSortedVotesByCategory(Category.ALL, OrderCriteria.POPULAR);
-        List<VoteOptionCommentDto> FREE_LATEST = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.LATEST);
-        List<VoteOptionCommentDto> FREE_POPULAR = voteService.findSortedVotesByCategory(Category.FREE, OrderCriteria.POPULAR);
+        Page<VoteOptionCommentDto> All_LATEST = voteService.viewTimeLine(Category.ALL, pageable);
+        Page<VoteOptionCommentDto> FREE_LATEST = voteService.viewTimeLine(Category.FREE, pageable);
 
         // then
-        assertThat(All_LATEST.get(0))
-                .hasFieldOrPropertyWithValue("title", vote1.getTitle())
-                .hasFieldOrPropertyWithValue("category", vote1.getCategory())
-                .hasFieldOrPropertyWithValue("modifiedAt", vote1.getModifiedAt());
-        assertThat(All_POPULAR.get(0))
-                .hasFieldOrPropertyWithValue("title", vote2.getTitle())
-                .hasFieldOrPropertyWithValue("category", vote2.getCategory())
-                .hasFieldOrPropertyWithValue("modifiedAt", vote2.getModifiedAt());
-        assertThat(FREE_LATEST.get(0))
-                .hasFieldOrPropertyWithValue("title", vote1.getTitle())
-                .hasFieldOrPropertyWithValue("category", vote1.getCategory())
-                .hasFieldOrPropertyWithValue("modifiedAt", vote1.getModifiedAt());
-        assertThat(FREE_POPULAR.get(0))
-                .hasFieldOrPropertyWithValue("title", vote2.getTitle())
-                .hasFieldOrPropertyWithValue("category", vote2.getCategory())
-                .hasFieldOrPropertyWithValue("modifiedAt", vote2.getModifiedAt());
-
-        assertThat(All_LATEST.size()).isEqualTo(3);
-        assertThat(All_POPULAR.size()).isEqualTo(3);
-        assertThat(FREE_LATEST.size()).isEqualTo(2);
-        assertThat(FREE_POPULAR.size()).isEqualTo(2);
+        then(voteRepository).should().findAll(any(Pageable.class));
+        then(voteRepository).should().findAllByCategory(any(Category.class), any(Pageable.class));
     }
 
     @DisplayName("투표 게시글 정보를 입력하면, 투표 게시글을 저장한다.")
