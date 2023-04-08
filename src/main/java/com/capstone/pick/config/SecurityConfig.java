@@ -26,18 +26,16 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .antMatchers("/signup").permitAll()
-                        .antMatchers("/addMoreInfo").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/timeLine")
+                .defaultSuccessUrl("/timeline")
                 .permitAll().and()
                 .logout()
                 .logoutSuccessUrl("/").and()
                 .oauth2Login() // 소셜로그인을 진행하는데
                 .loginPage("/login")
-                //.defaultSuccessUrl("/timeline")
                 .successHandler(authenticationSuccessHandler) // 인증에 성공하면 핸들러로 이동하여 처리한다
                 .userInfoEndpoint() // 사용자 정보를 가져올 때
                 .userService(customOAuth2UserService); // 서비스에서 정보를 처리한다

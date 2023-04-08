@@ -42,13 +42,13 @@ public class LoginController {
 
     /**
      * 소셜로그인시 추가정보를 받아 저장한다
-     * @param  addMoreInfoForm 추가정보 요청 데이터 폼
-     * @param  votePrincipal 유저정보
+     * @param  addMoreInfoForm 추가정보 데이터 폼
+     * @param  oAuth2User 소셜로그인 유저정보
      * @return 타임라인 화면으로 이동
      */
     @PostMapping("/addMoreInfo")
-    public String addMoreInfo(@ModelAttribute AddMoreInfoForm addMoreInfoForm, @AuthenticationPrincipal VotePrincipal votePrincipal) {
-        userService.updateMoreInfo(votePrincipal.toDto(),addMoreInfoForm);
+    public String saveMoreInfo(@ModelAttribute AddMoreInfoForm addMoreInfoForm, @AuthenticationPrincipal OAuth2User oAuth2User) {
+        userService.updateMoreInfo(oAuth2User,addMoreInfoForm);
         return  "redirect:/timeline";
 
     }

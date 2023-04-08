@@ -27,5 +27,17 @@ public class TestSecurityConfig {
                         .build()
                 )
         );
+
+        // 소셜로그인 유저정보 미리 셋팅
+        given(userRepository.findById("google_user")).willReturn(
+                Optional.of(User.builder()
+                        .userId("user")
+                        .userPassword("password")
+                        .email("test@email.com")
+                        .nickname("user-test")
+                        .memo("test memo")
+                        .build()
+                )
+        );
     }
 }

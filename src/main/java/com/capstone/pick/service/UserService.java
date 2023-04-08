@@ -25,14 +25,30 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public void updateMoreInfo(UserDto userDto, AddMoreInfoForm form){
+    // 추가정보를 소셜로그인 종류에 따라 업데이트한다
+    public void updateMoreInfo(OAuth2User oAuth2User, AddMoreInfoForm form){
 
-        Optional<User> user = userRepository.findById(userDto.getUserId()); // 유저를 찾고
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+        String id;
+
+        if(attributes.containsKey("response")){
+            Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+            id = "naver_"+(String) response.get("id");
+
+        }else if(attributes.containsKey("kakao_account")){
+            id = "kakao_"+String.valueOf(  (Long) attributes.get("id") );
+
+        }else {
+            id = "google_"+(String)attributes.get("sub");
+        }
+
+        Optional<User> user = userRepository.findById(id); // 유저를 찾고
         user.get().updateInfo(form.getGender(), form.getAge_range(), form.getJob(), form.getAddress()); // 추가로 받은 정보를 업데이트 하고
         userRepository.save(user.get()); // 정보를 저장
 
     }
 
+    // 소셜로그인 종류에 따라 성별, 연령대를 받아와 추가정보 입력 폼에 넣어준다.
     public AddMoreInfoForm findAttribute(OAuth2User oAuth2User) {
 
         AddMoreInfoForm form = new AddMoreInfoForm();
@@ -59,6 +75,11 @@ public class UserService {
         return form;
 
     }
+
+
+
+
+
 
     }
 
