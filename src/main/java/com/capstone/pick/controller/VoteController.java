@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 public class VoteController {
 
     private final VoteService voteService;
-    private final VoteCommentService voteCommentService;
     private final UserService userService;
 
     @GetMapping("/")
