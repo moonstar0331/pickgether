@@ -201,4 +201,8 @@ public class VoteService {
     public List<Long> findBookmarkVoteId(String userId) {
         return bookmarkRepository.findByUser(userRepository.getReferenceById(userId)).stream().map(b -> b.getVote().getId()).collect(Collectors.toList());
     }
+
+    public Long getPickCount(Long voteId) {
+        return voteRepository.getReferenceById(voteId).getPickCount();
+    }
 }

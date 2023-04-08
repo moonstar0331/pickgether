@@ -1,11 +1,17 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.request.PickRequest;
+import com.capstone.pick.dto.FollowDto;
 import com.capstone.pick.dto.UserDto;
+import com.capstone.pick.dto.VoteDto;
 import com.capstone.pick.security.VotePrincipal;
+import com.capstone.pick.service.FollowService;
 import com.capstone.pick.service.PickService;
-import com.capstone.pick.service.UserService;
+import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +19,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
 public class PickController {
 
     private final PickService pickService;
-    private final UserService userService;
+    private final FollowService followService;
+    private final VoteService voteService;
 
     @ResponseBody
     @PostMapping("/pick")
@@ -29,13 +37,15 @@ public class PickController {
     }
 
     @GetMapping("/{voteId}/participants")
-    public String participant(@PathVariable Long voteId, Model model) {
-        int maxCnt = 6;
-        List<UserDto> followingList = new ArrayList<>();
-        List<UserDto> participants = userService.getParticipants(voteId);
+    public String participant(@AuthenticationPrincipal VotePrincipal votePrincipal,
+                              Pageable pageable,
+                              @PathVariable Long voteId, Model model) {
+        List<FollowDto> followingList = followService.getFollowingList(votePrincipal.getUsername());
+        Page<UserDto> participants = pickService.getParticipants(voteId, pageable, followingList);
         model.addAttribute("participants", participants);
         model.addAttribute("followingList", followingList);
-        model.addAttribute("maxCnt", maxCnt);
+        model.addAttribute("maxCnt", 6);
+        model.addAttribute("size", voteService.getPickCount(voteId));
         return "page/participants";
     }
 }

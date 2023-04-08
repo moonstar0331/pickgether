@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Getter
+@Setter
 @ToString
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
