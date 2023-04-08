@@ -1,12 +1,9 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.config.TestSecurityConfig;
-import com.capstone.pick.controller.form.CommentForm;
 import com.capstone.pick.controller.request.LikeRequest;
 import com.capstone.pick.controller.request.PostCommentRequest;
-import com.capstone.pick.domain.constant.OrderCriteria;
 import com.capstone.pick.dto.CommentDto;
-import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.service.VoteCommentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -24,11 +21,8 @@ import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.mock;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -201,14 +195,5 @@ class VoteCommentsControllerTest {
                         .with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk());
-    }
-
-    private static CommentForm createCommentForm(long voteId) {
-        return CommentForm.builder()
-                .voteId(voteId)
-                .content("new comment")
-                .createdAt(LocalDateTime.now())
-                .modifiedAt(LocalDateTime.now())
-                .build();
     }
 }
