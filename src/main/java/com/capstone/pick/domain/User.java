@@ -56,10 +56,10 @@ public class User {
     */
 
     @OneToMany(mappedBy = "fromUser")
-    private List<Follow> following;
+    private List<Follow> following = new ArrayList<>();
 
     @OneToMany(mappedBy = "toUser")
-    private List<Follow> followers;
+    private List<Follow> followers = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

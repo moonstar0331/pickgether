@@ -24,60 +24,64 @@ public class FollowServiceTest {
     @Mock
     private FollowRepository followRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     @Test
     @DisplayName("유저 아이디를 넘겨주면, 해당 유저의 팔로워 리스트를 받아올 수 있다.")
     void findFollowerList() {
         //given
-        Follow follow1 = createFollow("from_id1", "to_id");
-        Follow follow2 = createFollow("from_id2", "to_id");
-        Follow follow3 = createFollow("from_id3", "to_id");
+        User fromUser1 = User.builder().userId("fromUser1").build();
+        User fromUser2 = User.builder().userId("fromUser2").build();
+        User user = User.builder().userId("user").build();
+        Follow follow1 = createFollow(1L, fromUser1, user);
+        Follow follow2 = createFollow(2L, fromUser2, user);
 
         List<Follow> followerList = new ArrayList<>();
         followerList.add(follow1);
         followerList.add(follow2);
-        followerList.add(follow3);
 
-        given(followRepository.findAllByToUserId("to_id")).willReturn(followerList);
+        given(followRepository.findAllByToUser("user")).willReturn(followerList);
 
         //when
-        List<FollowDto> followerDtos = followService.findFollowerList("to_id");
+        List<FollowDto> followerDtos = followService.findFollowerList("user");
 
         //then
         assertThat(followerDtos.get(0))
-                .hasFieldOrPropertyWithValue("fromUserId", follow1.getFromUserId())
-                .hasFieldOrPropertyWithValue("toUserId", follow1.getToUserId());
-        assertThat(followerDtos.size()).isEqualTo(3);
+                .hasFieldOrPropertyWithValue("id", follow1.getId());
+        assertThat(followerDtos.size()).isEqualTo(2);
     }
 
     @Test
     @DisplayName("유저 아이디를 넘겨주면, 해당 유저의 팔로잉 리스트를 받아올 수 있다.")
     void findFollowingList() {
         //given
-        Follow follow1 = createFollow("from_id", "to_id1");
-        Follow follow2 = createFollow("from_id", "to_id2");
-        Follow follow3 = createFollow("from_id", "to_id3");
+        User toUser1 = User.builder().userId("toUser1").build();
+        User toUser2 = User.builder().userId("toUser2").build();
+        User user = User.builder().userId("user").build();
+        Follow follow1 = createFollow(1L, user, toUser1);
+        Follow follow2 = createFollow(2L, user, toUser2);
 
-        List<Follow> followingList = new ArrayList<>();
-        followingList.add(follow1);
-        followingList.add(follow2);
-        followingList.add(follow3);
+        List<Follow> followerList = new ArrayList<>();
+        followerList.add(follow1);
+        followerList.add(follow2);
 
-        given(followRepository.findAllByFromUserId("from_id")).willReturn(followingList);
+        given(followRepository.findAllByToUser("user")).willReturn(followerList);
 
         //when
-        List<FollowDto> followingDtos = followService.findFollowingList("from_id");
+        List<FollowDto> followerDtos = followService.findFollowerList("user");
 
         //then
-        assertThat(followingDtos.get(0))
-                .hasFieldOrPropertyWithValue("fromUserId", follow1.getFromUserId())
-                .hasFieldOrPropertyWithValue("toUserId", follow1.getToUserId());
-        assertThat(followingDtos.size()).isEqualTo(3);
+        assertThat(followerDtos.get(0))
+                .hasFieldOrPropertyWithValue("id", follow1.getId());
+        assertThat(followerDtos.size()).isEqualTo(2);
     }
 
-    private static Follow createFollow(String fromUser, String toUser) {
+    private static Follow createFollow(Long id, User fromUser, User toUser) {
         return Follow.builder()
-                .fromUserId(fromUser)
-                .toUserId(toUser)
+                .id(id)
+                .fromUser(fromUser)
+                .toUser(toUser)
                 .build();
     }
 
