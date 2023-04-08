@@ -2,6 +2,8 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.CommentForm;
 import com.capstone.pick.controller.request.LikeRequest;
+import com.capstone.pick.controller.request.PostCommentRequest;
+import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.CommentWithLikeCountDto;
 import com.capstone.pick.exeption.UserMismatchException;
@@ -26,9 +28,9 @@ public class VoteCommentsController {
     /**
      * 댓글을 조회한다
      *
-     * @param voteId 게시글 id
+     * @param voteId   게시글 id
      * @param pageable pageable
-     * @param model model
+     * @param model    model
      * @return 댓글 목록 뷰
      */
     @GetMapping("/{voteId}/comments")
@@ -48,11 +50,27 @@ public class VoteCommentsController {
      * @param commentForm   작성내용
      * @return redirection to GET
      */
-    @PostMapping("/{voteId}/comments/{path}")
-    public String saveComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
-                              @PathVariable Long voteId, @PathVariable String path, CommentForm commentForm) {
-        voteCommentService.saveComment(commentForm.toDto(votePrincipal.toDto()));
-        return "redirect:/" + voteId + "/" + path;
+//    @PostMapping("/{voteId}/comments/{path}")
+//    public String saveComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
+//                              @PathVariable Long voteId, @PathVariable String path, CommentForm commentForm) {
+//        voteCommentService.saveComment(commentForm.toDto(votePrincipal.toDto()));
+//        return "redirect:/" + voteId + "/" + path;
+//    }
+//    @ResponseBody
+    @PostMapping("/{voteId}/comments")
+    public String saveComment(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId,
+                              @RequestBody PostCommentRequest request, Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        CommentDto commentDto = CommentDto.builder()
+                .voteId(voteId)
+                .content(request.getContent())
+                .userDto(votePrincipal.toDto())
+                .build();
+        voteCommentService.saveComment(commentDto);
+        Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
+        model.addAttribute("comments", comments);
+        model.addAttribute("user", votePrincipal.toDto());
+
+        return "page/comments :: #commentList";
     }
 
     /**
@@ -64,12 +82,21 @@ public class VoteCommentsController {
      * @param commentForm   작성내용
      * @return redirection to GET
      */
-    @PostMapping("/{voteId}/comments/{commentId}/edit/{path}")
-    public String updateComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
-                                @PathVariable Long voteId, @PathVariable Long commentId, @PathVariable String path,
-                                CommentForm commentForm) throws UserMismatchException {
-        voteCommentService.updateComment(commentId, commentForm.toDto(votePrincipal.toDto()));
-        return "redirect:/" + voteId + "/" + path;
+    @PutMapping("/{voteId}/comments/{commentId}")
+    public String updateComment(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable,
+                                @PathVariable Long voteId, @PathVariable Long commentId,
+                                @RequestBody PostCommentRequest request) throws UserMismatchException {
+        CommentDto commentDto = CommentDto.builder()
+                .voteId(voteId)
+                .content(request.getContent())
+                .userDto(votePrincipal.toDto())
+                .build();
+        voteCommentService.updateComment(commentId, commentDto);
+        Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
+        model.addAttribute("comments", comments);
+        model.addAttribute("user", votePrincipal.toDto());
+
+        return "page/comments :: #commentList";
     }
 
     /**
@@ -80,12 +107,16 @@ public class VoteCommentsController {
      * @param commentId     투표 댓글 id
      * @return redirection to GET
      */
-    @PostMapping("/{voteId}/comments/{commentId}/delete/{path}")
-    public String deleteComment(@AuthenticationPrincipal VotePrincipal votePrincipal,
-                                @PathVariable Long voteId, @PathVariable Long commentId, @PathVariable String path) throws UserMismatchException {
+    @DeleteMapping("/{voteId}/comments/{commentId}")
+    public String deleteComment(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable,
+                                @PathVariable Long voteId, @PathVariable Long commentId) throws UserMismatchException {
 
         voteCommentService.deleteComment(commentId, votePrincipal.toDto().getUserId());
-        return "redirect:/" + voteId + "/" + path;
+        Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
+        model.addAttribute("comments", comments);
+        model.addAttribute("user", votePrincipal.toDto());
+
+        return "page/comments :: #commentList";
     }
 
     /**
