@@ -1,6 +1,7 @@
 package com.capstone.pick.config;
 
 import com.capstone.pick.domain.User;
+import com.capstone.pick.repository.UserCacheRepository;
 import com.capstone.pick.repository.UserRepository;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -14,6 +15,8 @@ public class TestSecurityConfig {
 
     @MockBean
     private UserRepository userRepository;
+    @MockBean
+    UserCacheRepository userCacheRepository;
 
     @BeforeTestMethod
     public void securitySetUp() {

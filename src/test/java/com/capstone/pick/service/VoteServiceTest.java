@@ -49,6 +49,8 @@ public class VoteServiceTest {
     private HashtagRepository hashtagRepository;
     @Mock
     private VoteHashtagRepository voteHashtagRepository;
+    @Mock
+    private VoteRedisRepository voteRedisRepository;
 
     @DisplayName("타임라인을 조회하면, 모든 투표 게시글을 타임라인에 반환한다.")
     @Test
