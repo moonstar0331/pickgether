@@ -11,6 +11,7 @@ import com.capstone.pick.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,8 @@ public class VoteService {
     private final VoteHashtagRepository voteHashtagRepository;
     private final HashtagRepository hashtagRepository;
 
+    private final VoteRedisRepository voteRedisRepository;
+
     @Transactional(readOnly = true)
     public List<VoteDto> findAllVotes() {
         List<Vote> votes = voteRepository.findAll();
@@ -42,10 +45,24 @@ public class VoteService {
 
     @Transactional(readOnly = true)
     public Page<VoteOptionCommentDto> viewTimeLine(Category category, Pageable pageable) {
+        List<VoteOptionCommentDto> votes = new ArrayList<>();
+
         if(category.equals(Category.ALL)) {
-            return voteRepository.findAll(pageable).map(VoteOptionCommentDto::from);
+            voteRedisRepository.findAll().forEach(votes::add);
+            if(!votes.isEmpty()) return new PageImpl<>(votes, pageable, votes.size());
+            else {
+                Page<VoteOptionCommentDto> pages = voteRepository.findAll(pageable).map(VoteOptionCommentDto::from);
+                voteRedisRepository.saveAll(pages);
+                return pages;
+            }
         }
-        return voteRepository.findAllByCategory(category, pageable).map(VoteOptionCommentDto::from);
+        votes.addAll(voteRedisRepository.findAllByCategory(category));
+        if(!votes.isEmpty()) return new PageImpl<>(votes, pageable, votes.size());
+        else {
+            Page<VoteOptionCommentDto> pages = voteRepository.findAllByCategory(category, pageable).map(VoteOptionCommentDto::from);
+            voteRedisRepository.saveAll(pages);
+            return pages;
+        }
     }
 
     @Transactional(readOnly = true)
@@ -84,6 +101,7 @@ public class VoteService {
                             .hashtag(hashtag)
                             .build());
         });
+//        voteRedisRepository.save(VoteOptionCommentDto.from(voteRepository.getReferenceById(savedVote.getId())));
     }
 
     public void updateVote(Long voteId, VoteDto voteDto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) {
@@ -125,7 +143,6 @@ public class VoteService {
                                         .build());
                     });
                 }
-                // TODO : 투표 선택지 수정 여부, 수정 가능한 범위 등 상의 후에 voteOption update 작성할 예정입니다
             }
         } catch (EntityNotFoundException e) {
             log.warn("투표 게시글 수정 실패. 게시글을 수정하는데 필요한 정보를 찾을 수 없습니다 - {}", e.getLocalizedMessage());
