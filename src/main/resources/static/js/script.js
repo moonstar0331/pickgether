@@ -72,6 +72,65 @@ function search() {
         });
 }
 
+function saveBookmark(id) {
+    var voteId = id.substring(13);
+    var data = {
+        voteId: voteId,
+        category: $("meta[name='category']").attr("content")
+    }
+    $.ajax({
+        url: '/saveBookmark',
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        },
+        success: function(data) {
+            console.log(data);
+        },
+        error: function(data) {
+            console.log(data);
+        }
+    }).done(function(fragment) {
+        $("#voteArea").replaceWith(fragment);
+    });
+}
+
+function deleteBookmark(id) {
+    var voteId = id.substring(12);
+    $.ajax({
+        url: '/' + voteId + '/deleteBookmark',
+        type: "DELETE",
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        }
+    }).done(function(fragment) {
+        location.reload();
+    });
+}
+
+function deleteAllBookmark() {
+    var userId = $("meta[name='userId']").attr("content");
+    $.ajax({
+        url: '/' + userId + '/deleteAllBookmark',
+        type: "DELETE",
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        }
+    }).done(function(fragment) {
+        $("#bookmarkArea").replaceWith(fragment);
+    });
+}
+
 function show(voteId) {
     var outer = ".vote" + voteId + "outer";
     var inner = ".vote" + voteId + "inner";

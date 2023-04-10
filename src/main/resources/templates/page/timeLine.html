@@ -4,6 +4,8 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
 
+    <meta name="category" th:content="${category}">
+
     <meta charset="UTF-8">
     <title>Pickgether</title>
     <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}">
@@ -83,12 +85,6 @@
                             <li>
                                 <a class="dropdown-item" onclick="timelineOrderBy('todo')">관련도순</a>
                             </li>
-
-                            <!--<div class="form-check" th:each="orderBy : ${T(com.capstone.pick.domain.constant.OrderCriteria).values()}">
-                                <label class="form-check-label" th:for="${orderBy}" th:text="${orderBy.displayValue}">
-                                </label>
-                                <input th:value="${orderBy}" style="margin-left: 65px;" class="form-check-input" type="radio" checked>
-                            </div>-->
                         </ul>
                     </li>
                 </ul>
@@ -102,7 +98,7 @@
         <button type="button" class="btn btn-primary all-follow-btn border-start border-bottom">팔로우</button>
     </div>
 
-    <div th:each="vote: ${votes}">
+    <div id="voteArea" th:each="vote: ${votes}">
         <div>
             <header class="profile" style="margin-bottom: 10px;">
                 <div style="float: left;">
@@ -128,7 +124,8 @@
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
                                         style="border-radius: 10px; z-index: 999;">
                                         <li>
-                                            <a class="dropdown-item hover-cursor-pointer" id="kakaotalk-sharing-btn">카카오톡 공유</a>
+                                            <a class="dropdown-item hover-cursor-pointer" id="kakaotalk-sharing-btn">카카오톡
+                                                공유</a>
                                         </li>
                                         <!-- redis 적용 후 현재 로그인 유저와 투표 작성자가 일치할 때 display -->
                                         <li>
@@ -250,7 +247,8 @@
             </div>
             <div align="right" style="margin-right: 15px;">
                 <!--북마크 아이콘(선택 X)-->
-                <button id="bookmark-off" type="button" style="background-color:transparent; border: none;">
+                <button th:id="${'bookmark-off-' + vote.getId()}" type="button"
+                        style="background-color:transparent; border: none;" onclick="saveBookmark(this.id)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                          class="bi bi-bookmark" viewBox="0 0 16 16">
                         <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
@@ -258,8 +256,9 @@
                 </button>
 
                 <!--북마크 아이콘(선택 O)-->
-                <button id="bookmark-on" type="button"
-                        style="background-color:transparent; border: none; display: none;">
+                <button th:id="${'bookmark-on-' + vote.getId()}" type="button"
+                        onclick="deleteBookmark(this.id)"
+                        style="background-color:transparent; border: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                          class="bi bi-bookmark-fill" viewBox="0 0 16 16">
                         <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>

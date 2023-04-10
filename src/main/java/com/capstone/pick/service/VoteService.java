@@ -191,7 +191,7 @@ public class VoteService {
         }
     }
 
-    public void deleteAllBookmark(String userId) throws UserMismatchException {
+    public void deleteAllBookmark(String userId) {
         bookmarkRepository.deleteByUser(userRepository.getReferenceById(userId));
     }
 

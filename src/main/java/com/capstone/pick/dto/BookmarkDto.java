@@ -29,7 +29,7 @@ public class BookmarkDto {
                 .build();
     }
 
-    public Bookmark toEntity() {
+    public Bookmark toEntity(User user, Vote vote) {
         return Bookmark.builder()
                 .user(userDto.toEntity())
                 .vote(voteDto.toEntity(userDto.toEntity()))
