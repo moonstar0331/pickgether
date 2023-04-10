@@ -482,16 +482,34 @@
 /*-- participants.html start --*/
 .p-background {
     width: 600px;
-    height: 100vh;
+    /*height: 100vh;*/
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     overflow: hidden;
 }
 
+@media (max-width: 600px) {
+    .p-background {
+        width: 100%;
+    }
+
+    .p-margin {
+        margin: 0.5rem !important;
+    }
+}
+
 .p-font {
     font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem;
 }
+
+@media (max-width: 600px) {
+    .p-font {
+        font-size: 0.8rem;
+    }
+}
+
 .p-title {
     font-size: 18pt;
 }
