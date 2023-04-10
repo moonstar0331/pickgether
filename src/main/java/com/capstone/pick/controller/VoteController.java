@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 public class VoteController {
 
     private final VoteService voteService;
-    private final VoteCommentService voteCommentService;
     private final UserService userService;
 
     @GetMapping("/")
@@ -58,10 +57,13 @@ public class VoteController {
     }
 
     @GetMapping("/timeline")
-    public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,
+    public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category, @AuthenticationPrincipal VotePrincipal votePrincipal,
                            Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         model.addAttribute("votes", votes);
+
+        List<Long> bookmarks = voteService.findBookmarkVoteId(votePrincipal.getUsername());
+        model.addAttribute("bookmarks", bookmarks);
         model.addAttribute("category", category);
         return "page/timeLine";
     }
@@ -132,7 +134,7 @@ public class VoteController {
 
     @GetMapping("/{userId}/bookmark")
     public String bookmark(@PathVariable String userId, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
-        List<VoteOptionCommentDto> votes = voteService.findBookmarks(userId, pageable);
+        Page<VoteOptionCommentDto> votes = voteService.viewBookmarks(userId, pageable);
         model.addAttribute("votes", votes);
         model.addAttribute("userId", userId);
         return "page/bookmark";
@@ -142,24 +144,37 @@ public class VoteController {
     public String saveBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody BookmarkRequest request, Model model,
                                @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         voteService.saveBookmark(votePrincipal.getUsername(), request.getVoteId());
+
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(request.getCategory(), pageable);
         model.addAttribute("votes", votes);
+
+        List<Long> bookmarks = voteService.findBookmarkVoteId(votePrincipal.getUsername());
+        model.addAttribute("bookmarks", bookmarks);
         model.addAttribute("category", request.getCategory());
 
         return "page/timeLine :: #voteArea";
     }
 
-    @DeleteMapping("/{voteId}/deleteBookmark")
-    public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws UserMismatchException {
-        voteService.deleteBookmark(votePrincipal.getUsername(), voteId);
-        return null;
+    @DeleteMapping("/deleteBookmark")
+    public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody BookmarkRequest request, Model model,
+                                 @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) throws UserMismatchException {
+        voteService.deleteBookmark(votePrincipal.getUsername(), request.getVoteId());
+
+        Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(request.getCategory(), pageable);
+        model.addAttribute("votes", votes);
+
+        List<Long> bookmarks = voteService.findBookmarkVoteId(votePrincipal.getUsername());
+        model.addAttribute("bookmarks", bookmarks);
+        model.addAttribute("category", request.getCategory());
+
+        return "page/timeLine :: #voteArea";
     }
 
     @DeleteMapping("/{userId}/deleteAllBookmark")
     public String deleteAllBookmark(@PathVariable String userId, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws UserMismatchException {
         voteService.deleteAllBookmark(userId);
 
-        List<VoteOptionCommentDto> votes = voteService.findBookmarks(userId, pageable);
+        Page<VoteOptionCommentDto> votes = voteService.viewBookmarks(userId, pageable);
         model.addAttribute("votes", votes);
         model.addAttribute("userId", userId);
         return "page/bookmark :: #bookmarkArea";

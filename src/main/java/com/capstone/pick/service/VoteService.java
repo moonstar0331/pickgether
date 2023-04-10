@@ -200,8 +200,12 @@ public class VoteService {
     }
 
     @Transactional(readOnly = true)
-    public List<VoteOptionCommentDto> findBookmarks(String userId, Pageable pageble) {
-        List<Bookmark> bookmarks = bookmarkRepository.findByUser(userRepository.getReferenceById(userId), pageble);
-        return bookmarks.stream().map(b -> VoteOptionCommentDto.from(b.getVote())).collect(Collectors.toList());
+    public Page<VoteOptionCommentDto> viewBookmarks(String userId, Pageable pageble) {
+        return bookmarkRepository.findByUser(userRepository.getReferenceById(userId), pageble).map(b -> VoteOptionCommentDto.from(b.getVote()));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Long> findBookmarkVoteId(String userId) {
+        return bookmarkRepository.findByUser(userRepository.getReferenceById(userId)).stream().map(b -> b.getVote().getId()).collect(Collectors.toList());
     }
 }

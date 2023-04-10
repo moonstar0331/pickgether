@@ -108,9 +108,14 @@ function saveBookmark(id) {
 
 function deleteBookmark(id) {
     var voteId = id.substring(12);
+    var data = {
+        voteId: voteId,
+        category: $("meta[name='category']").attr("content")
+    }
     $.ajax({
-        url: '/' + voteId + '/deleteBookmark',
+        url: '/deleteBookmark',
         type: "DELETE",
+        data: JSON.stringify(data),
         contentType: 'application/json; charset=utf-8',
         beforeSend: function (jqXHR, settings) {
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -118,7 +123,7 @@ function deleteBookmark(id) {
             jqXHR.setRequestHeader(header, token);
         }
     }).done(function (fragment) {
-        location.reload();
+        $("#voteArea").replaceWith(fragment);
     });
 }
 

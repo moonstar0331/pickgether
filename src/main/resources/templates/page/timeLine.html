@@ -247,7 +247,7 @@
             </div>
             <div align="right" style="margin-right: 15px;">
                 <!--북마크 아이콘(선택 X)-->
-                <button th:id="${'bookmark-off-' + vote.getId()}" type="button"
+                <button th:if="${!bookmarks.contains(vote.getId())}" th:id="${'bookmark-off-' + vote.getId()}" type="button"
                         style="background-color:transparent; border: none;" onclick="saveBookmark(this.id)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                          class="bi bi-bookmark" viewBox="0 0 16 16">
@@ -256,7 +256,7 @@
                 </button>
 
                 <!--북마크 아이콘(선택 O)-->
-                <button th:id="${'bookmark-on-' + vote.getId()}" type="button"
+                <button th:if="${bookmarks.contains(vote.getId())}" th:id="${'bookmark-on-' + vote.getId()}" type="button"
                         onclick="deleteBookmark(this.id)"
                         style="background-color:transparent; border: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -264,7 +264,6 @@
                         <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
                     </svg>
                 </button>
-
             </div>
         </div>
         <!--댓글-->
