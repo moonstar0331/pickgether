@@ -815,12 +815,28 @@ h6.user-email {
     width: 15rem;
     height: 15rem;
 }
+.circle-img-edit {
+    width: 70px;
+    height: 70px;
+}
+
+@media (max-width: 600px) {
+    .circle-profile {
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .circle-img-edit {
+        width: 50px;
+        height: 50px;
+    }
+}
 
 .ep-nickname {
-    font-size: 2.35rem;
+    font-size: 1.5rem;
 }
 .ep-email {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: gray;
 }
 
