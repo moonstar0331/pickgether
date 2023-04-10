@@ -11,6 +11,7 @@ import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
+import com.capstone.pick.service.VoteCommentService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 public class VoteController {
 
     private final VoteService voteService;
+    private final VoteCommentService voteCommentService;
     private final UserService userService;
 
     @GetMapping("/")
@@ -119,9 +121,12 @@ public class VoteController {
     }
 
     @GetMapping("/{voteId}/detail")
-    public String voteDetail(@PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
-        VoteOptionCommentDto vote = voteService.getVoteOptionComment(voteId);
+    public String voteDetail(@PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
+
+//        Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
+//        model.addAttribute("comments", comments);
         return "page/voteDetail";
     }
 

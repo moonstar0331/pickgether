@@ -3,6 +3,8 @@
 <head>
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="voteId" th:content="${vote.getId()}">
+
     <meta charset="UTF-8">
     <title>Pickgether</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
@@ -65,7 +67,8 @@
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
                                         style="border-radius: 10px; z-index: 999;">
                                         <li>
-                                            <a class="dropdown-item hover-cursor-pointer" id="kakaotalk-sharing-btn">카카오톡 공유</a>
+                                            <a class="dropdown-item hover-cursor-pointer" id="kakaotalk-sharing-btn">카카오톡
+                                                공유</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -255,8 +258,8 @@
                                 </button>
                                 <form method="post" onsubmit="return beforeCheck('정말 삭제하시겠습니까?')">
                                     <button class="text-bold bg-none border-none" type="button"
-                                            th:commentId="${comment.getId()}" th:voteId="${voteId}"
-                                            th:onclick="deleteComment(this.getAttribute('voteId'), this.getAttribute('commentId'))">삭제
+                                            th:id="${comment.getId()}"
+                                            onclick="deleteComment(this.id)">삭제
                                     </button>
                                 </form>
                             </div>
@@ -265,8 +268,8 @@
                                         class="text-bold bg-none border-none"
                                         onclick="click_cancleEditBtn(this.id)">취소
                                 </button>
-                                <button type="button" form="commentEditForm" class="text-bold bg-none border-none" th:voteId="${voteId}" th:commentId="${comment.getId()}"
-                                        th:onclick="updateComment(this.getAttribute('voteId'), this.getAttribute('commentId'))">
+                                <button type="button" form="commentEditForm" class="text-bold bg-none border-none" th:id="${comment.getId()}"
+                                        onclick="updateComment(this.id)">
                                     완료
                                 </button>
                             </div>
@@ -283,7 +286,7 @@
                             </div>
                         </form>
                     </div>
-                    <div th:text="${#temporals.format(comment.getModifiedAt(), 'yy/MM/dd HH:mm')}" class="mr-2"></div>
+                    <div th:text="${#temporals.format(comment.getModifiedAt(), 'yy/MM/dd HH:mm')}" class="mr-2 mb-2"></div>
                 </div>
             </div>
         </th:block>
@@ -296,130 +299,15 @@
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#F07F7F"></rect>
         </svg>
-        <form id="commentForm" method="post" class="custom-form vw-100">
-            <input id="commentInput" type="text" class="custom-form-input" name="content" placeholder="댓글 달기..." required>
-            <button class="custom-botton" type="button" th:voteId="${voteId}" th:onclick="saveComment(this.getAttribute('voteId'))">게시</button>
+        <form class="custom-form vw-100">
+            <input id="commentInput" type="text" class="custom-form-input" name="content" placeholder="댓글 달기..."
+                   required>
+            <button class="custom-botton" type="button" onclick="saveComment()">게시</button>
         </form>
     </footer>
 </div>
 </body>
 <script th:inline="javascript">
-
-    function updateComment(voteId, commentId) {
-
-        var data = {
-            content: $("#editContent").val()
-        }
-
-        $.ajax({
-            url: '/' + voteId + '/comments/' + commentId,
-            type: "PUT",
-            data: JSON.stringify(data),
-            contentType: 'application/json; charset=utf-8',
-            beforeSend: function (jqXHR, settings) {
-                var header = $("meta[name='_csrf_header']").attr("content");
-                var token = $("meta[name='_csrf']").attr("content");
-                jqXHR.setRequestHeader(header, token);
-            }
-        }).done(function(fragment) {
-            $("#commentList").replaceWith(fragment);
-        });
-    }
-
-    function deleteComment(voteId, commentId) {
-        $.ajax({
-            url: '/' + voteId + '/comments/' + commentId,
-            type: "DELETE",
-            contentType: 'application/json; charset=utf-8',
-            beforeSend: function (jqXHR, settings) {
-                var header = $("meta[name='_csrf_header']").attr("content");
-                var token = $("meta[name='_csrf']").attr("content");
-                jqXHR.setRequestHeader(header, token);
-            }
-        }).done(function(fragment) {
-            $("#commentList").replaceWith(fragment);
-        });
-    }
-
-    function saveComment(voteId) {
-        var data = {
-            content: $("#commentInput").val()
-        }
-        $.ajax({
-            url: '/' + voteId + '/comments',
-            type: "POST",
-            data: JSON.stringify(data),
-            contentType: 'application/json; charset=utf-8',
-            beforeSend: function (jqXHR, settings) {
-                var header = $("meta[name='_csrf_header']").attr("content");
-                var token = $("meta[name='_csrf']").attr("content");
-                jqXHR.setRequestHeader(header, token);
-            },
-            success: function(data) {
-                console.log(data);
-            },
-            error: function(data) {
-                console.log(data);
-            }
-        }).done(function(fragment) {
-            $("#commentInput").val('');
-            $("#commentList").replaceWith(fragment);
-        });
-
-    function show(voteId) {
-        var outer = ".vote" + voteId + "outer";
-        var inner = ".vote" + voteId + "inner";
-        $(outer).click(function () {
-            $(inner).css("display", "block");
-            $(outer).css("display", "none");
-        });
-
-        const test = document.getElementsByClassName("test" + voteId);
-
-        $(test).click(function () {
-            $(outer).css("display", "block");
-            $(inner).css("display", "none");
-        });
-
-        var submit = ".vote-submit-btn" + voteId;
-        var analyze = ".vote-analyze-btn" + voteId;
-        var result = ".vote-result" + voteId;
-
-        $(submit).click(function () {
-            $(result).css("display", "inline");
-            $(submit).css("display", "none");
-            $(analyze).css("display", "inline");
-        });
-    }
-
-    function submitPick(voteId) {
-        const selected = document.querySelector("#vote" + voteId + "options input[type=radio]:checked");
-
-        var data = {
-            // 'voteId': voteId,
-            "optionId": selected.value
-        }
-
-        $.ajax({
-            url: '/pick',
-            data: JSON.stringify(data),
-            type: "POST",
-            async: true,
-            dataType: 'JSON',
-            contentType: 'application/json; charset=utf-8',
-            beforeSend: function (jqXHR, settings) {
-                var header = $("meta[name='_csrf_header']").attr("content");
-                var token = $("meta[name='_csrf']").attr("content");
-                jqXHR.setRequestHeader(header, token);
-            },
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (data) {
-                console.log(data);
-            }
-        });
-    }
     function doLike(voteId, commentId) {
         const heart = document.querySelector("#comment" + commentId + "heart");
 
@@ -429,11 +317,11 @@
         var likeCount = Number(document.querySelector("#comment" + commentId + "likeCount").innerHTML);
 
         var data = {
-            "voteId" : voteId,
+            "voteId": voteId,
             "commentId": commentId
         }
 
-        if(heart.classList.contains('heart-box')) {
+        if (heart.classList.contains('heart-box')) {
             $.ajax({
                 url: '/like',
                 type: "POST",
@@ -445,11 +333,11 @@
                     var token = $("meta[name='_csrf']").attr("content");
                     jqXHR.setRequestHeader(header, token);
                 },
-                success: function(data) {
+                success: function (data) {
                     likeCount++;
-                    $("#comment"+commentId+"likeCount").text(likeCount.toString());
+                    $("#comment" + commentId + "likeCount").text(likeCount.toString());
                 },
-                error: function(data) {
+                error: function (data) {
                     console.log(data);
                 }
             });
@@ -471,9 +359,9 @@
                 success: function (data) {
                     console.log(data);
                     likeCount--;
-                    $("#comment"+commentId+"likeCount").text(likeCount.toString());
+                    $("#comment" + commentId + "likeCount").text(likeCount.toString());
                 },
-                error: function(data) {
+                error: function (data) {
                     console.log(data);
                 }
             });
@@ -481,6 +369,6 @@
             fillHeart.style.display = "none";
             emptyHeart.style.display = "inline-block";
         }
-    }}
+    }
 </script>
 </html>

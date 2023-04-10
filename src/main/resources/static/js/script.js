@@ -44,6 +44,13 @@ $(document).ready(function () {
     $('#searchType').on('change', function () {
         clearSearchValue();
     });
+
+    $('#commentInput').on('keyup', function (e) {
+        if (e.keyCode === 13) {
+            saveComment();
+            console.log('hi');
+        }
+    });
 });
 
 function href(path) {
@@ -88,13 +95,13 @@ function saveBookmark(id) {
             var token = $("meta[name='_csrf']").attr("content");
             jqXHR.setRequestHeader(header, token);
         },
-        success: function(data) {
+        success: function (data) {
             console.log(data);
         },
-        error: function(data) {
+        error: function (data) {
             console.log(data);
         }
-    }).done(function(fragment) {
+    }).done(function (fragment) {
         $("#voteArea").replaceWith(fragment);
     });
 }
@@ -110,7 +117,7 @@ function deleteBookmark(id) {
             var token = $("meta[name='_csrf']").attr("content");
             jqXHR.setRequestHeader(header, token);
         }
-    }).done(function(fragment) {
+    }).done(function (fragment) {
         location.reload();
     });
 }
@@ -126,7 +133,7 @@ function deleteAllBookmark() {
             var token = $("meta[name='_csrf']").attr("content");
             jqXHR.setRequestHeader(header, token);
         }
-    }).done(function(fragment) {
+    }).done(function (fragment) {
         $("#bookmarkArea").replaceWith(fragment);
     });
 }
@@ -219,6 +226,73 @@ function create_voteOption() {
     area.appendChild(new_div);
 }
 
+function saveComment() {
+    var voteId = $("meta[name='voteId']").attr("content");
+
+    var data = {
+        content: $("#commentInput").val()
+    }
+    $.ajax({
+        url: '/' + voteId + '/comments',
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    }).done(function (fragment) {
+        $("#commentInput").val('');
+        $("#commentList").replaceWith(fragment);
+    });
+}
+
+function updateComment(commentId) {
+    var voteId = $("meta[name='voteId']").attr("content");
+
+    var data = {
+        content: $("#editContent").val()
+    }
+
+    $.ajax({
+        url: '/' + voteId + '/comments/' + commentId,
+        type: "PUT",
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        }
+    }).done(function (fragment) {
+        $("#commentList").replaceWith(fragment);
+    });
+}
+
+function deleteComment(voteId, commentId) {
+    var voteId = $("meta[name='voteId']").attr("content");
+
+    $.ajax({
+        url: '/' + voteId + '/comments/' + commentId,
+        type: "DELETE",
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        }
+    }).done(function (fragment) {
+        $("#commentList").replaceWith(fragment);
+    });
+}
+
 // voteOption 태그 삭제
 function delete_voteOption() {
     if (voteOptionCount === 1) {
@@ -267,14 +341,15 @@ function autoResizeTextarea(element) {
 function commentOrderBy(voteId, orderBy) {
     location.href = "/" + voteId + "/comments?sort=" + orderBy + ",desc";
 }
+
 function timelineCategory(category) {
     var checkOrder = document.location.href.includes("sort");
     var checkCate = document.location.href.includes("category");
 
     var search = location.search;
-    var cate = search.substring(search.indexOf("=")+1, search.indexOf("&"));
+    var cate = search.substring(search.indexOf("=") + 1, search.indexOf("&"));
 
-    if(checkOrder && checkCate) {
+    if (checkOrder && checkCate) {
         location.href = "/timeline" + search.replaceAll(cate, category);
     } else if (checkOrder && !checkCate) {
         location.href = "/timeline?category=" + category + "&" + search.replaceAll("?", "");
