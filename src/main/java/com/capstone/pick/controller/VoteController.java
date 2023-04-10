@@ -2,8 +2,11 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
+import com.capstone.pick.domain.Bookmark;
+import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
+import com.capstone.pick.controller.request.BookmarkRequest;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.security.VotePrincipal;
@@ -130,9 +133,30 @@ public class VoteController {
         return "page/bookmark";
     }
 
-    @PostMapping("/{userId}/bookmark/deleteAll")
-    public String deleteAllBookmark(@PathVariable String userId) throws UserMismatchException {
+    @PostMapping("/saveBookmark")
+    public String saveBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody BookmarkRequest request, Model model,
+                               @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        voteService.saveBookmark(votePrincipal.getUsername(), request.getVoteId());
+        Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(request.getCategory(), pageable);
+        model.addAttribute("votes", votes);
+        model.addAttribute("category", request.getCategory());
+
+        return "page/timeLine :: #voteArea";
+    }
+
+    @DeleteMapping("/{voteId}/deleteBookmark")
+    public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws UserMismatchException {
+        voteService.deleteBookmark(votePrincipal.getUsername(), voteId);
+        return null;
+    }
+
+    @DeleteMapping("/{userId}/deleteAllBookmark")
+    public String deleteAllBookmark(@PathVariable String userId, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws UserMismatchException {
         voteService.deleteAllBookmark(userId);
-        return "redirect:/" + userId + "/bookmark";
+
+        List<VoteOptionCommentDto> votes = voteService.findBookmarks(userId, pageable);
+        model.addAttribute("votes", votes);
+        model.addAttribute("userId", userId);
+        return "page/bookmark :: #bookmarkArea";
     }
 }
