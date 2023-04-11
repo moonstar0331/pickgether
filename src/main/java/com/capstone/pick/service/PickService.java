@@ -34,16 +34,16 @@ public class PickService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserDto> getParticipants(Long voteId, Pageable pageable, List<FollowDto> followingList) {
+    public Page<UserDto> getParticipants(Long voteId, Pageable pageable, List<String> followingUserIdList) {
         List<UserDto> participants = pickRepository.findAllByVoteId(voteId, pageable).stream()
                 .sorted((u1, u2) -> {
                     // 참여유저가 팔로잉 유저와 일치하면 true
-                    boolean u1Followed = followingList.stream()
-                            .anyMatch(f -> f.getToUser().getUserId().equals(u1.getUserId()));
-                    boolean u2Followed = followingList.stream()
-                            .anyMatch(f -> f.getToUser().getUserId().equals(u2.getUserId()));
+                    boolean u1Followed = followingUserIdList.stream()
+                            .anyMatch(f -> f.equals(u1.getUserId()));
+                    boolean u2Followed = followingUserIdList.stream()
+                            .anyMatch(f -> f.equals(u2.getUserId()));
                     // true 인 객체를 앞으로 정렬
-                    return Boolean.compare(u1Followed, u2Followed);
+                    return Boolean.compare(!u1Followed, !u2Followed);
                 })
                 .map(UserDto::from)
                 .collect(Collectors.toList());

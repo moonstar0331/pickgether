@@ -72,7 +72,13 @@
                         <!--팔로잉 & 팔로우 버튼-->
                         <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
                             <div class="vertical-child">
-                                <button th:id="${'followBtnInfluencer' + participants.content.indexOf(p)}"
+                                <button th:if="${followingUserIdList.contains(p.getUserId())}"
+                                        th:id="${'followBtnInfluencer' + participants.content.indexOf(p)}"
+                                        type="button" class="p-btn p-btn-secondary">팔로잉
+                                </button>
+                                <!--아닌 경우 팔로우(파란색) 버튼-->
+                                <button th:unless="${followingUserIdList.contains(p.getUserId())}"
+                                        th:id="${'followBtnInfluencer' + participants.content.indexOf(p)}"
                                         type="button" class="p-btn p-btn-primary">팔로우
                                 </button>
                                 <script>
@@ -192,7 +198,19 @@
                         <!--팔로잉 & 팔로우 버튼-->
                         <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
                             <div class="vertical-child">
-                                <button th:id="${'followBtnOrdinary' + participants.content.indexOf(p)}"
+                                <!--이미 팔로우 중이라면 팔로잉(회색) 버튼-->
+                                <script>
+                                    console.log([[${p.getUserId()}]]);
+                                    console.log([[${followingUserIdList.get(0)}]]);
+                                    console.log([[${followingUserIdList.contains(p.getUserId())}]]);
+                                </script>
+                                <button th:if="${followingUserIdList.contains(p.getUserId())}"
+                                        th:id="${'followBtnOrdinary' + participants.content.indexOf(p)}"
+                                        type="button" class="p-btn p-btn-secondary">팔로잉
+                                </button>
+                                <!--아닌 경우 팔로우(파란색) 버튼-->
+                                <button th:unless="${followingUserIdList.contains(p.getUserId())}"
+                                        th:id="${'followBtnOrdinary' + participants.content.indexOf(p)}"
                                         type="button" class="p-btn p-btn-primary">팔로우
                                 </button>
                                 <script>

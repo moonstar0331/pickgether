@@ -108,22 +108,25 @@ public class PickControllerTest {
         Long voteId = 1L;
         User user = User.builder().userId("user").build();
         List<FollowDto> followingList = createFollowList(user);
+        List<String> followingUserIdList = createFollowList(user).stream()
+                .map(FollowDto::getToUser).map(UserDto::getUserId).collect(Collectors.toList());
+
         Page<UserDto> participants = new PageImpl<>(Arrays.asList(
                 UserDto.from(User.builder().userId("participants1").build()),
-                UserDto.from(User.builder().userId("participants2").build()),
-                UserDto.from(User.builder().userId("participants3").build())
+                UserDto.from(User.builder().userId("participants3").build()),
+                UserDto.from(User.builder().userId("participants2").build())
         ));
 
         //when
         when(votePrincipal.getUsername()).thenReturn("user");
-        when(pickService.getParticipants(eq(voteId), any(Pageable.class), eq(followingList))).thenReturn(participants);
+        when(pickService.getParticipants(eq(voteId), any(Pageable.class), eq(followingUserIdList))).thenReturn(participants);
         when(followService.getFollowingList("user")).thenReturn(followingList);
 
         //then
         mvc.perform(get("/" + voteId + "/participants"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("participants", participants))
-                .andExpect(model().attribute("followingList", followingList))
+                .andExpect(model().attribute("followingUserIdList", followingUserIdList))
                 .andExpect(model().attribute("maxCnt", 6))
                 .andExpect(view().name("page/participants"));
     }

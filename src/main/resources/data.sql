@@ -249,6 +249,8 @@ insert into pick(pick_id, user_id, vote_option_id) VALUES (38, 'rclayson4', 12);
 insert into pick(pick_id, user_id, vote_option_id) VALUES (39, 'rclayson4', 14);
 insert into pick(pick_id, user_id, vote_option_id) VALUES (40, 'rclayson4', 16);
 
+insert into follow(follow_id, from_user_id, to_user_id) values(1, 'user', 'hcampa2');
+insert into follow(follow_id, from_user_id, to_user_id) values(2, 'user', 'rclayson4');
 -- insert into hashtag(content)
 -- values ('is');
 --
