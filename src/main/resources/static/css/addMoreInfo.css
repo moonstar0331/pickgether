@@ -16,6 +16,16 @@
     color: #363636;
 }
 
+.option-job-and-gender {
+    width: 30%;
+}
+
+@media (max-width: 418px) {
+    .option-job-and-gender label{
+        margin-left: 2rem;
+    }
+}
+
 /*
 #addMoreInfo-form {
     display: flex;
@@ -95,3 +105,6 @@
     align-items: center;
 }
 
+.addMoreInfo-height {
+    height: 100% !important;
+}

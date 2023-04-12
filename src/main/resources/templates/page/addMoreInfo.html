@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="h-100 signup-height">
+<html xmlns:th="http://www.thymeleaf.org" class="h-100 addMoreInfo-height">
 <head>
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <title>Pickgether</title>
     <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min2.css}">
@@ -40,9 +41,12 @@
 </head>
 <body class="bg-linear-gradient py-5" style="min-height: 100%; overflow-x: hidden;">
 <!-- 본문 -->
-<div class="position-absolute center-center pickgether-title">
+<div class="position-absolute"
+     style="left: 50%;
+     top: 50%;
+     transform: translate(-50%, -50%);">
     <!-- 픽게더 타이틀 -->
-    <div class="d-flex justify-content-center logo my-4 title-margin-bottom">
+    <div class="d-flex justify-content-center logo my-4 title-margin-bottom" style="margin-bottom: 0px;">
         <p class="text-blue text-shadow-white mr-3">Pick</p>
         <p class="text-white text-shadow-blue">gether</p>
     </div>
@@ -65,26 +69,26 @@
                 </div>
 
                 <!-- 성별 -->
-                <div class="ep-form-group" style="width: 30%">
+                <div class="ep-form-group option-job-and-gender">
                     <label  for="gender" style="display: block">성별</label>
-                    <select class="signup-input-label border-none focus-none border-bottom p-1 p-subtitle" id="gender" style="display: block; width: 100%" required>
-                        <option value="" class="p-subtitle" selected disabled hidden>성별선택</option>
-                        <option value="male" class="p-subtitle">남성</option>
-                        <option value="female" class="p-subtitle">여성</option>
-                        <option value="other-gender" class="p-subtitle">그 외</option>
+                    <select class="signup-input-label border-none focus-none border-bottom p-1" id="gender" style="display: block; width: 100%" required>
+                        <option value="" selected disabled hidden>성별선택</option>
+                        <option value="male">남성</option>
+                        <option value="female">여성</option>
+                        <option value="other-gender">그 외</option>
                     </select>
                 </div>
 
 
                 <!-- 직업 -->
-                <div class="ep-form-group" style="width: 30%">
+                <div class="ep-form-group option-job-and-gender">
                     <label for="job" style="display: block;">직업</label>
-                    <select class="signup-input-label border-none focus-none border-bottom p-1 p-subtitle" style="display: block; width: 100%" id="job">
-                        <option th:value="none" class="p-subtitle" disabled selected hidden>직업 선택 👷</option>
-                        <option th:value="expert" class="p-subtitle">전문가 및 관련 종사자</option>
-                        <option th:value="office" class="p-subtitle">사무 종사자</option>
-                        <option th:value="service" class="p-subtitle">서비스 종사자</option>
-                        <option th:value="sail" class="p-subtitle">판매 종사자</option>
+                    <select class="signup-input-label border-none focus-none border-bottom p-1" style="display: block; width: 100%" id="job">
+                        <option th:value="none" disabled selected hidden>직업 선택 👷</option>
+                        <option th:value="expert">전문가 및 관련 종사자</option>
+                        <option th:value="office">사무 종사자</option>
+                        <option th:value="service">서비스 종사자</option>
+                        <option th:value="sail">판매 종사자</option>
                     </select>
                     <div class="icoArrow"><i class="fa-thin fa-caret-down dropdown"></i></div>
                 </div>
