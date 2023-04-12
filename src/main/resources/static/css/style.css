@@ -67,7 +67,7 @@
 }
 
 .vote-background-1 {
-    height: 250px;
+    height: 100%;
     width: 93%;
     margin: auto;
 
@@ -79,8 +79,8 @@
 }
 
 .vote-background-2{
-    height: 250px;
-    width: 570px;
+    height: 100%;
+    width: 93%;
     margin: auto;
 
     background: linear-gradient(254.72deg, #FFDE7D -23.18%, #7A57F6 84.66%);
@@ -335,7 +335,7 @@
 
 /* 전체,팔로우 버튼*/
 .all-follow-btn {
-    width: 300px;
+    width: 50%;
     background: white;
     border: none;
     color: black;
@@ -462,7 +462,7 @@
     align-items: center;
     justify-content: space-around;
     height: 55px;
-    width: 530px;
+    width: 90%;
     margin-top: 10px;
     font-size: 20px;
     background: rgba(0, 0, 0, 0.5);
