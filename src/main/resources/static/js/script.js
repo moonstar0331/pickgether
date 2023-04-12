@@ -79,58 +79,54 @@ function search() {
         });
 }
 
-function saveBookmark(id) {
-    var voteId = id.substring(13);
-    var data = {
-        voteId: voteId,
-        category: $("meta[name='category']").attr("content")
+function clickBookmark(id) {
+    let voteId = id.substring(8);
+    let bookmarkClass = document.getElementById(id).getElementsByTagName('svg').item(0).classList;
+    if (bookmarkClass.contains('bi-bookmark-fill')) { // bookmark 저장된 상태
+        deleteBookmark(voteId);
+        bookmarkClass.replace('bi-bookmark-fill', 'bi-bookmark');
+        bookmarkClass.replace('bookmark-on', 'bookmark-off');
+    } else {
+        saveBookmark(voteId);
+        bookmarkClass.replace('bi-bookmark', 'bi-bookmark-fill');
+        bookmarkClass.replace('bookmark-off', 'bookmark-on');
     }
+}
+
+function deleteBookmarkPost(id) {
+    deleteBookmark(id);
+    $('#votePost-' + id).remove();
+}
+
+function saveBookmark(voteId) {
     $.ajax({
-        url: '/saveBookmark',
+        url: '/' + voteId + '/saveBookmark',
         type: "POST",
-        data: JSON.stringify(data),
         contentType: 'application/json; charset=utf-8',
         beforeSend: function (jqXHR, settings) {
             var header = $("meta[name='_csrf_header']").attr("content");
             var token = $("meta[name='_csrf']").attr("content");
             jqXHR.setRequestHeader(header, token);
-        },
-        success: function (data) {
-            console.log(data);
-        },
-        error: function (data) {
-            console.log(data);
         }
-    }).done(function (fragment) {
-        $("#voteArea").replaceWith(fragment);
     });
 }
 
-function deleteBookmark(id) {
-    var voteId = id.substring(12);
-    var data = {
-        voteId: voteId,
-        category: $("meta[name='category']").attr("content")
-    }
+function deleteBookmark(voteId) {
     $.ajax({
-        url: '/deleteBookmark',
+        url: '/' + voteId + '/deleteBookmark',
         type: "DELETE",
-        data: JSON.stringify(data),
         contentType: 'application/json; charset=utf-8',
         beforeSend: function (jqXHR, settings) {
             var header = $("meta[name='_csrf_header']").attr("content");
             var token = $("meta[name='_csrf']").attr("content");
             jqXHR.setRequestHeader(header, token);
         }
-    }).done(function (fragment) {
-        $("#voteArea").replaceWith(fragment);
     });
 }
 
 function deleteAllBookmark() {
-    var userId = $("meta[name='userId']").attr("content");
     $.ajax({
-        url: '/' + userId + '/deleteAllBookmark',
+        url: '/deleteAllBookmark',
         type: "DELETE",
         contentType: 'application/json; charset=utf-8',
         beforeSend: function (jqXHR, settings) {
@@ -138,9 +134,8 @@ function deleteAllBookmark() {
             var token = $("meta[name='_csrf']").attr("content");
             jqXHR.setRequestHeader(header, token);
         }
-    }).done(function (fragment) {
-        $("#bookmarkArea").replaceWith(fragment);
     });
+    $('#voteArea').remove();
 }
 
 function show(voteId) {
@@ -173,7 +168,6 @@ function submitPick(voteId) {
     const selected = document.querySelector("#vote" + voteId + "options input[type=radio]:checked");
 
     var data = {
-        // 'voteId': voteId,
         "optionId": selected.value
     }
 
