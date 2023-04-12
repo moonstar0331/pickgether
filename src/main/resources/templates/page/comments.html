@@ -74,36 +74,46 @@
                         <div class="d-flex">
                             <div class="text-dark text-bold mr-3" th:text="${comment.getUserDto().getNickname()}"></div>
                             <div class="d-flex">
-                                <div class="heart-box" th:id="'comment'+${comment.getId()}+'heart'" th:voteId="${voteId}" th:commentId="${comment.getId()}" th:onclick="|doLike(${voteId}, ${comment.id})|">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" th:id="'comment'+${comment.getId()}+'empty'">
-                                        <path fill-rule="evenodd" d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                <div class="heart-box" th:id="'comment'+${comment.getId()}+'heart'"
+                                     th:voteId="${voteId}" th:commentId="${comment.getId()}"
+                                     th:onclick="|doLike(${voteId}, ${comment.id})|">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="16" fill="currentColor"
+                                         class="bi bi-heart" viewBox="0 0 16 16"
+                                         th:id="'comment'+${comment.getId()}+'empty'">
+                                        <path fill-rule="evenodd"
+                                              d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                                     </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16" style="display: none;" th:id="'comment'+${comment.getId()}+'fill'">
-                                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                         class="bi bi-heart-fill" viewBox="0 0 16 16" style="display: none;"
+                                         th:id="'comment'+${comment.getId()}+'fill'">
+                                        <path fill-rule="evenodd"
+                                              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                                     </svg>
                                 </div>
-                                <p style="margin-left: 5px; margin-bottom: 5px;" th:text="${comment.getLikeCount()}" th:id="'comment'+${comment.getId()}+'likeCount'">123</p>
+                                <p style="margin-left: 5px; margin-bottom: 5px;" th:text="${comment.getLikeCount()}"
+                                   th:id="'comment'+${comment.getId()}+'likeCount'">123</p>
                             </div>
                         </div>
                         <th:block th:if="${comment.getUserDto().getUserId() == user.getUserId()}">
-                            <div th:id="${'defaultBtns' + comment.getId()}" class="col align-items-center" style="display: flex; justify-content: flex-end;">
+                            <div th:id="${'defaultBtns' + comment.getId()}" class="col align-items-center"
+                                 style="display: flex; justify-content: flex-end;">
                                 <button th:id="${comment.getId()}"
                                         class="text-bold bg-none border-none"
                                         onclick="click_editCommentBtn(this.id)">수정
                                 </button>
-                                <form method="post" onsubmit="return beforeCheck('정말 삭제하시겠습니까?')">
-                                    <button class="text-bold bg-none border-none" type="button"
-                                            th:id="${comment.getId()}"
-                                            onclick="deleteComment(this.id)">삭제
-                                    </button>
-                                </form>
+                                <button class="text-bold bg-none border-none" type="button"
+                                        th:id="${comment.getId()}"
+                                        onclick="deleteComment(this.id)">삭제
+                                </button>
                             </div>
-                            <div th:id="${'editingBtns' + comment.getId()}" class="col align-items-center" style="display: none; justify-content: flex-end;">
+                            <div th:id="${'editingBtns' + comment.getId()}" class="col align-items-center"
+                                 style="display: none; justify-content: flex-end;">
                                 <button th:id="${comment.getId()}"
                                         class="text-bold bg-none border-none"
                                         onclick="click_cancleEditBtn(this.id)">취소
                                 </button>
-                                <button type="button" form="commentEditForm" class="text-bold bg-none border-none" th:id="${comment.getId()}"
+                                <button type="button" form="commentEditForm" class="text-bold bg-none border-none"
+                                        th:id="${comment.getId()}"
                                         onclick="updateComment(this.id)">
                                     완료
                                 </button>
@@ -115,29 +125,32 @@
                         <form method="post" id="commentEditForm"
                               th:action="'/' + ${voteId} + '/comments/' + ${comment.getId()} + '/edit'">
                             <div class="w-100 pt-2 pr-3">
-                            <textarea class="w-100 rounded focus-none p-2" rows="1" id="editContent" oninput="autoResizeTextarea(this)"
+                            <textarea class="w-100 rounded focus-none p-2" rows="1" id="editContent"
+                                      oninput="autoResizeTextarea(this)"
                                       style="border: 1px solid #dee2e6; resize: none; overflow: hidden;"
                                       th:text="${comment.getContent()}" name="content"></textarea>
                             </div>
                         </form>
                     </div>
-                    <div th:text="${#temporals.format(comment.getModifiedAt(), 'yy/MM/dd HH:mm')}" class="mr-2 mb-2"></div>
+                    <div th:text="${#temporals.format(comment.getModifiedAt(), 'yy/MM/dd HH:mm')}"
+                         class="mr-2 mb-2"></div>
                 </div>
             </div>
         </th:block>
     </div>
 
-    <footer class="d-flex align-items-center py-3 pl-3 w-100 position-absolute bg-white" style="height: 4rem; bottom: 0;">
+    <footer class="d-flex align-items-center py-3 pl-3 w-100 position-absolute bg-white"
+            style="height: 4rem; bottom: 0;">
         <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="40" height="40"
              xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
              preserveAspectRatio="xMidYMid slice" focusable="false">
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#F07F7F"></rect>
         </svg>
-        <form class="custom-form vw-100">
+        <div class="custom-form vw-100">
             <input id="commentInput" type="text" class="custom-form-input" name="content" placeholder="댓글 달기..." required>
             <button class="custom-botton" type="button" onclick="saveComment()">게시</button>
-        </form>
+        </div>
     </footer>
 </div>
 </body>
@@ -151,11 +164,11 @@
         var likeCount = Number(document.querySelector("#comment" + commentId + "likeCount").innerHTML);
 
         var data = {
-            "voteId" : voteId,
+            "voteId": voteId,
             "commentId": commentId
         }
 
-        if(heart.classList.contains('heart-box')) {
+        if (heart.classList.contains('heart-box')) {
             $.ajax({
                 url: '/like',
                 type: "POST",
@@ -167,11 +180,11 @@
                     var token = $("meta[name='_csrf']").attr("content");
                     jqXHR.setRequestHeader(header, token);
                 },
-                success: function(data) {
+                success: function (data) {
                     likeCount++;
-                    $("#comment"+commentId+"likeCount").text(likeCount.toString());
+                    $("#comment" + commentId + "likeCount").text(likeCount.toString());
                 },
-                error: function(data) {
+                error: function (data) {
                     console.log(data);
                 }
             });
@@ -193,9 +206,9 @@
                 success: function (data) {
                     console.log(data);
                     likeCount--;
-                    $("#comment"+commentId+"likeCount").text(likeCount.toString());
+                    $("#comment" + commentId + "likeCount").text(likeCount.toString());
                 },
-                error: function(data) {
+                error: function (data) {
                     console.log(data);
                 }
             });

@@ -48,7 +48,6 @@ $(document).ready(function () {
     $('#commentInput').on('keyup', function (e) {
         if (e.keyCode === 13) {
             saveComment();
-            console.log('hi');
         }
     });
 });
@@ -275,7 +274,7 @@ function updateComment(commentId) {
     });
 }
 
-function deleteComment(voteId, commentId) {
+function deleteComment(commentId) {
     var voteId = $("meta[name='voteId']").attr("content");
 
     $.ajax({
@@ -341,6 +340,10 @@ function commentOrderBy(voteId, orderBy) {
     location.href = "/" + voteId + "/comments?sort=" + orderBy + ",desc";
 }
 
+function commentOrderBy_detail(voteId, orderBy) {
+    location.href = "/" + voteId + "/detail?sort=" + orderBy + ",desc";
+}
+
 function timelineCategory(category) {
     var checkOrder = document.location.href.includes("sort");
     var checkCate = document.location.href.includes("category");
@@ -382,10 +385,6 @@ function timelineOrderBy(orderBy) {
             location.href = "/timeline?sort=" + orderBy + ",asc";
         }
     }
-}
-
-function commentOrderBy_detail(voteId, orderBy) {
-    location.href = "/" + voteId + "/detail?orderBy=" + orderBy;
 }
 
 // 검색창 clear & 기존 검색 결과 clear

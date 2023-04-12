@@ -130,6 +130,7 @@ public class VoteController {
 
         Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
         model.addAttribute("comments", comments);
+        model.addAttribute("user", votePrincipal.toDto());
         return "page/voteDetail";
     }
 
