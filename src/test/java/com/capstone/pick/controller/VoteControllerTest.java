@@ -4,14 +4,13 @@ import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormDto;
+import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.domain.constant.SearchType;
-import com.capstone.pick.dto.HashtagDto;
-import com.capstone.pick.dto.UserDto;
-import com.capstone.pick.dto.VoteDto;
-import com.capstone.pick.dto.VoteOptionDto;
+import com.capstone.pick.dto.*;
 import com.capstone.pick.service.UserService;
+import com.capstone.pick.service.VoteCommentService;
 import com.capstone.pick.service.VoteService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,6 +50,9 @@ class VoteControllerTest {
 
     @MockBean
     private VoteService voteService;
+
+    @MockBean
+    private VoteCommentService voteCommentService;
 
     @MockBean
     private UserService userService;
@@ -403,5 +405,45 @@ class VoteControllerTest {
 
         // then
         then(voteService).should().searchVotes(any(SearchType.class), anyString());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][GET] 투표 상세 페이지 조회 - 정상 호출, 인증된 사용자")
+    @Test
+    void voteDetail() throws Exception {
+        String userId = "user";
+        User user = User.builder()
+                .userId(userId)
+                .nickname("nickname")
+                .build();
+
+        Long voteId = 1L;
+
+        VoteWithOptionDto voteWithOptionDto = VoteWithOptionDto.builder()
+                .userDto(UserDto.from(user))
+                .build();
+
+        given(voteService.getVoteWithOption(eq(voteId))).willReturn(voteWithOptionDto);
+        given(voteCommentService.commentsByVote(eq(voteId), any(Pageable.class))).willReturn(Page.empty());
+
+        // when & then
+        mvc.perform(get("/" + voteId + "/detail"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(model().attributeExists("vote"))
+                .andExpect(model().attributeExists("isBookmark"))
+                .andExpect(model().attributeExists("comments"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(view().name("page/voteDetail"));
+
+        then(voteService).should().findBookmarkVoteId(any());
+        then(voteService).should().getVoteWithOption(any());
+        then(voteCommentService).should().commentsByVote(any(), any());
+    }
+
+    @DisplayName("[view][GET] 투표 상세 페이지 조회 - 인증이 없어도 사용 가능")
+    @Test
+    void voteDetail_noLogin() throws Exception {
+        // TODO : 투표 상세 페이지에는 로그인한 user 정보가 필요. 상의 후 작성할 예정
     }
 }
