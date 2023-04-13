@@ -75,9 +75,6 @@ public class VoteService {
             case CONTENT:
                 votes = voteRepository.findByContentContaining(searchValue);
                 break;
-            case NICKNAME:
-                votes = voteRepository.findByUser_NicknameContaining(searchValue);
-                break;
             case HASHTAG:
                 votes = voteHashtagRepository.findByHashtag_ContentContaining(searchValue).stream()
                         .map(VoteHashtag::getVote).collect(Collectors.toList());

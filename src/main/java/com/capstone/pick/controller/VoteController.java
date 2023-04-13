@@ -44,8 +44,8 @@ public class VoteController {
 
     @PostMapping("/search")
     public String search(@ModelAttribute SearchForm searchForm, ModelMap map) {
-        if (searchForm.getSearchType() == SearchType.USER) {
-            List<UserDto> users = userService.findUsersById(searchForm.getSearchValue());
+        if ((searchForm.getSearchType() == SearchType.USER) || (searchForm.getSearchType() == SearchType.NICKNAME)) {
+            List<UserDto> users = userService.searchUsers(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("users", users);
         } else {
             List<VoteWithOptionDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());

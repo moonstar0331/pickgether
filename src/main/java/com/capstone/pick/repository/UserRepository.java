@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, String> {
 
     List<User> findByUserIdContaining(String userId);
+    List<User> findByNicknameContaining(String nickname);
 
     @Query("SELECT DISTINCT p.user FROM Pick p LEFT JOIN VoteOption vo ON vo.id = p.voteOption.id WHERE vo.vote.id = :voteId")
     List<User> findAllParticipants(@Param("voteId")Long voteId);
