@@ -9,9 +9,11 @@ import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
+import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteCommentService;
 import com.capstone.pick.service.VoteService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -22,12 +24,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,8 +42,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("View 컨트롤러 - 투표 게시글")
@@ -47,6 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class VoteControllerTest {
 
     private final MockMvc mvc;
+    private final ObjectMapper objectMapper;
 
     @MockBean
     private VoteService voteService;
@@ -57,8 +64,9 @@ class VoteControllerTest {
     @MockBean
     private UserService userService;
 
-    public VoteControllerTest(@Autowired MockMvc mvc) {
+    public VoteControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
+        this.objectMapper = objectMapper;
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
@@ -443,7 +451,75 @@ class VoteControllerTest {
 
     @DisplayName("[view][GET] 투표 상세 페이지 조회 - 인증이 없어도 사용 가능")
     @Test
-    void voteDetail_noLogin() throws Exception {
+    void voteDetail_noLogin() {
         // TODO : 투표 상세 페이지에는 로그인한 user 정보가 필요. 상의 후 작성할 예정
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][GET] 저장된 북마크 조회 - 정상 호출, 인증된 사용자")
+    @Test
+    void bookmark() throws Exception {
+        String userId = "user";
+        given(voteService.viewBookmarks(eq(userId), any(Pageable.class))).willReturn(Page.empty());
+
+        // when & then
+        mvc.perform(get("/" + userId + "/bookmark"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(model().attributeExists("votes"))
+                .andExpect(view().name("page/bookmark"));
+
+        then(voteService).should().viewBookmarks(any(), any());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 북마크 저장 - 정상 호출, 인증된 사용자")
+    @Test
+    void saveBookmark() throws Exception {
+        // given
+        long voteId = 1L;
+
+        // when & then
+        mvc.perform(post("/" + voteId + "/saveBookmark")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(null))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+
+        then(voteService).should().saveBookmark(any(), any());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][DELETE] 북마크 삭제 - 정상 호출, 인증된 사용자")
+    @Test
+    void deleteBookmark() throws Exception {
+        // given
+        long voteId = 1L;
+
+        // when & then
+        mvc.perform(delete("/" + voteId + "/deleteBookmark")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(null))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+
+        then(voteService).should().deleteBookmark(any(), any());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][DELETE] 북마크 삭제 - 정상 호출, 인증된 사용자")
+    @Test
+    void deleteAllBookmark() throws Exception {
+        // when & then
+        mvc.perform(delete("/deleteAllBookmark")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(null))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+
+        then(voteService).should().deleteAllBookmark(any());
     }
 }
