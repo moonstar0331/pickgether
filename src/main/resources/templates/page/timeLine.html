@@ -255,11 +255,11 @@
         </div>
         <!--댓글-->
         <!--Todo: onclicked 추가-->
-        <section class="profile" style="margin-left: 10px;">
+        <section class="profile" style="margin-left: 10px; display: flex; height: 100%">
             <div style="float: left;">
                 <img src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>
             </div>
-            <div>
+            <div style="width: 90%">
                 <section style="float: left; padding-left: 10px; font-size: 15px; width:90%;">
                     <div th:text="${vote.getCommentDtos()[0].getUserDto().getUserId()}"
                          style="font-weight: bold; display:inline-block;">picker 3
@@ -275,6 +275,7 @@
 
         <hr/>
     </div>
+    <div style="height: 52px;"></div>
 </div>
 
 <!--bottom navbar-->
