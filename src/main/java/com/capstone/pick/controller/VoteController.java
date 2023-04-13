@@ -144,18 +144,18 @@ public class VoteController {
     @PostMapping("/{voteId}/saveBookmark")
     public String saveBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) {
         voteService.saveBookmark(votePrincipal.getUsername(), voteId);
-        return null;
+        return "redirect:";
     }
 
     @DeleteMapping("/{voteId}/deleteBookmark")
     public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws UserMismatchException {
         voteService.deleteBookmark(votePrincipal.getUsername(), voteId);
-        return null;
+        return "redirect:";
     }
 
     @DeleteMapping("/deleteAllBookmark")
     public String deleteAllBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws UserMismatchException {
         voteService.deleteAllBookmark(votePrincipal.getUsername());
-        return null;
+        return "redirect:";
     }
 }
