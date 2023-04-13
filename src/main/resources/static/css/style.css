@@ -494,9 +494,26 @@
     margin: 1.25rem;
 }
 
-.m-scroll {
+.p-container {
     margin-left: 2.5rem;
     margin-right: 2.5rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: auto;
+    height: 65vh;
+}
+
+.p-box {
+    display:flex!important;
+    color:#6c757d!important;
+    padding: 1rem .25rem!important;
+    border-bottom:1px solid #dee2e6!important
+}
+
+.circle-container {
+    margin-right:1rem!important;
+    display: flex;
+    justify-content: center;
 }
 
 .bg-primary {
