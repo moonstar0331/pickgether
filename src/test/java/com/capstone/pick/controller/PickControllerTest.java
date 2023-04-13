@@ -11,6 +11,8 @@ import com.capstone.pick.service.FollowService;
 import com.capstone.pick.service.PickService;
 import com.capstone.pick.service.VoteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,19 +23,23 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -129,6 +135,57 @@ public class PickControllerTest {
                 .andExpect(model().attribute("followingUserIdList", followingUserIdList))
                 .andExpect(model().attribute("maxCnt", 6))
                 .andExpect(view().name("page/participants"));
+    }
+
+    @Test
+    @DisplayName("[GET][/{voteId}/json-participant] 참여자 리스트 API 엔드포인트 테스트")
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void testParticipantJson() throws Exception {
+        // given
+        String username = "testUser";
+        Long voteId = 5L;
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        List<String> followingUserIdList = Arrays.asList("following1", "following2");
+        List<UserDto> userDtos = Arrays.asList(
+                UserDto.builder().userId("test1").build(),
+                UserDto.builder().userId("test2").build(),
+                UserDto.builder().userId("test3").build());
+        Page<UserDto> participants = new PageImpl<>(userDtos, pageRequest, userDtos.size());
+        Long pickCount = 5L;
+        // when
+        when(followService.getFollowingList(username)).thenReturn(Arrays.asList(new FollowDto()));
+        when(pickService.getParticipants(anyLong(), any(), anyList()))
+                .thenReturn(participants);
+        when(voteService.getPickCount(voteId)).thenReturn(pickCount);
+
+        // then
+        MvcResult result = mvc.perform(get("/" + voteId + "/json-participants")
+                        .principal(new UsernamePasswordAuthenticationToken(username, ""))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("page", "0"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        assertThat(content).isNotNull();
+        assertThat(content).isNotEmpty();
+
+        // response data 검증
+        JSONObject jsonObject = new JSONObject(content);
+        assertThat(jsonObject.has("participants")).isTrue();
+        if (participants.isEmpty()) { // participants가 비어있는 경우
+            assertThat(jsonObject.get("participants")).isNull();
+        } else {
+            assertThat(jsonObject.get("participants")).isInstanceOf(JSONObject.class);
+        }
+        assertThat(jsonObject.has("followingUserIdList")).isTrue();
+        assertThat(jsonObject.get("followingUserIdList")).isInstanceOf(JSONArray.class);
+        assertThat(jsonObject.has("voteId")).isTrue();
+        assertThat(jsonObject.get("voteId")).isEqualTo(voteId.intValue());
+        assertThat(jsonObject.has("maxCnt")).isTrue();
+        assertThat(jsonObject.get("maxCnt")).isEqualTo(6);
+        assertThat(jsonObject.has("size")).isTrue();
+        assertThat(jsonObject.get("size")).isEqualTo(pickCount.intValue());
     }
 
     private static Follow createFollow(Long id, User fromUser, User toUser) {
