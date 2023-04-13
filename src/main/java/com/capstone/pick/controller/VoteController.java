@@ -113,8 +113,7 @@ public class VoteController {
         return "redirect:/timeline";
     }
 
-    @ResponseBody
-    @DeleteMapping("/deleteVote")
+    @PostMapping("/{voteId}/delete")
     public String deleteVote(
             @AuthenticationPrincipal VotePrincipal votePrincipal,
             @PathVariable Long voteId) {
