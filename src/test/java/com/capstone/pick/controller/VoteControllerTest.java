@@ -320,7 +320,32 @@ class VoteControllerTest {
                 .andExpect(model().attributeExists("users"));
 
         // then
-        then(userService).should().findUsersById(anyString());
+        then(userService).should().searchUsers(any(SearchType.class), anyString());
+    }
+
+
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 검색 페이지 - 정상 호출, 닉네임 검색")
+    @Test
+    void search_POST_search_nickname() throws Exception {
+        // given
+        SearchForm searchForm = SearchForm.builder()
+                .searchType(SearchType.NICKNAME)
+                .searchValue("n")
+                .build();
+
+        // when
+        mvc.perform(post("/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("searchForm", searchForm)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("page/search :: #searchResult"))
+                .andExpect(model().attributeExists("users"));
+
+        // then
+        then(userService).should().searchUsers(any(SearchType.class), anyString());
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
@@ -354,29 +379,6 @@ class VoteControllerTest {
         SearchForm searchForm = SearchForm.builder()
                 .searchType(SearchType.CONTENT)
                 .searchValue("c")
-                .build();
-
-        // when
-        mvc.perform(post("/search")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .flashAttr("searchForm", searchForm)
-                        .with(csrf()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("page/search :: #searchResult"))
-                .andExpect(model().attributeExists("votes"));
-
-        // then
-        then(voteService).should().searchVotes(any(SearchType.class), anyString());
-    }
-
-    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @DisplayName("[view][POST] 검색 페이지 - 정상 호출, 닉네임 검색")
-    @Test
-    void search_POST_search_nickname() throws Exception {
-        // given
-        SearchForm searchForm = SearchForm.builder()
-                .searchType(SearchType.NICKNAME)
-                .searchValue("n")
                 .build();
 
         // when
