@@ -251,6 +251,51 @@ insert into pick(pick_id, user_id, vote_option_id) VALUES (40, 'rclayson4', 16);
 
 insert into follow(follow_id, from_user_id, to_user_id) values(1, 'user', 'hcampa2');
 insert into follow(follow_id, from_user_id, to_user_id) values(2, 'user', 'rclayson4');
+
+insert into user (user_id, user_password, email, nickname, memo, birthday, created_at)
+VALUES ('user1', 'password1', 'user1@test.com', 'user1', 'memo1', '1990-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user2', 'password2', 'user2@test.com', 'user2', 'memo2', '1991-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user3', 'password3', 'user3@test.com', 'user3', 'memo3', '1992-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user4', 'password4', 'user4@test.com', 'user4', 'memo4', '1993-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user5', 'password5', 'user5@test.com', 'user5', 'memo5', '1994-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user6', 'password6', 'user6@test.com', 'user6', 'memo6', '1995-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user7', 'password7', 'user7@test.com', 'user7', 'memo7', '1996-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user8', 'password8', 'user8@test.com', 'user8', 'memo8', '1997-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user9', 'password9', 'user9@test.com', 'user9', 'memo9', '1998-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user10', 'password10', 'user10@test.com', 'user10', 'memo10', '1999-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user11', 'password11', 'user11@test.com', 'user11', 'memo11', '2000-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user12', 'password12', 'user12@test.com', 'user12', 'memo12', '2001-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user13', 'password13', 'user13@test.com', 'user13', 'memo13', '2002-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user14', 'password14', 'user14@test.com', 'user14', 'memo14', '2003-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user15', 'password15', 'user15@test.com', 'user15', 'memo15', '2004-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user16', 'password16', 'user16@test.com', 'user16', 'user16', '1999-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user17', 'password17', 'user17@test.com', 'user17', 'user17', '2000-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user18', 'password18', 'user18@test.com', 'user18', 'user18', '2001-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user19', 'password19', 'user19@test.com', 'user19', 'user19', '2002-01-01 00:00:00', '2023-04-12 00:00:00'),
+       ('user20', 'password20', 'user20@test.com', 'user20', 'user20', '2003-01-01 00:00:00', '2023-04-12 00:00:00');
+
+INSERT INTO pick (pick_id, user_id, vote_option_id)
+VALUES (41, 'user1', 9),
+       (42, 'user2', 10),
+       (43, 'user3', 9),
+       (44, 'user4', 10),
+       (45, 'user5', 9),
+       (46, 'user6', 10),
+       (47, 'user7', 9),
+       (48, 'user8', 10),
+       (49, 'user9', 9),
+       (50, 'user10', 10),
+       (51, 'user11', 9),
+       (52, 'user12', 10),
+       (53, 'user13', 9),
+       (54, 'user14', 10),
+       (55, 'user15', 9),
+       (56, 'user16', 10),
+       (57, 'user17', 9),
+       (58, 'user18', 10),
+       (59, 'user19', 9),
+       (60, 'user20', 10);
+
 -- insert into hashtag(content)
 -- values ('is');
 --
