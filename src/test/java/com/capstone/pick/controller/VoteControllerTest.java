@@ -4,15 +4,16 @@ import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormDto;
+import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.domain.constant.SearchType;
-import com.capstone.pick.dto.HashtagDto;
-import com.capstone.pick.dto.UserDto;
-import com.capstone.pick.dto.VoteDto;
-import com.capstone.pick.dto.VoteOptionDto;
+import com.capstone.pick.dto.*;
+import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.service.UserService;
+import com.capstone.pick.service.VoteCommentService;
 import com.capstone.pick.service.VoteService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -23,12 +24,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,8 +42,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("View 컨트롤러 - 투표 게시글")
@@ -48,15 +53,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class VoteControllerTest {
 
     private final MockMvc mvc;
+    private final ObjectMapper objectMapper;
 
     @MockBean
     private VoteService voteService;
 
     @MockBean
+    private VoteCommentService voteCommentService;
+
+    @MockBean
     private UserService userService;
 
-    public VoteControllerTest(@Autowired MockMvc mvc) {
+    public VoteControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
+        this.objectMapper = objectMapper;
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
@@ -310,7 +320,32 @@ class VoteControllerTest {
                 .andExpect(model().attributeExists("users"));
 
         // then
-        then(userService).should().findUsersById(anyString());
+        then(userService).should().searchUsers(any(SearchType.class), anyString());
+    }
+
+
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 검색 페이지 - 정상 호출, 닉네임 검색")
+    @Test
+    void search_POST_search_nickname() throws Exception {
+        // given
+        SearchForm searchForm = SearchForm.builder()
+                .searchType(SearchType.NICKNAME)
+                .searchValue("n")
+                .build();
+
+        // when
+        mvc.perform(post("/search")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("searchForm", searchForm)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("page/search :: #searchResult"))
+                .andExpect(model().attributeExists("users"));
+
+        // then
+        then(userService).should().searchUsers(any(SearchType.class), anyString());
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
@@ -360,29 +395,6 @@ class VoteControllerTest {
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @DisplayName("[view][POST] 검색 페이지 - 정상 호출, 닉네임 검색")
-    @Test
-    void search_POST_search_nickname() throws Exception {
-        // given
-        SearchForm searchForm = SearchForm.builder()
-                .searchType(SearchType.NICKNAME)
-                .searchValue("n")
-                .build();
-
-        // when
-        mvc.perform(post("/search")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .flashAttr("searchForm", searchForm)
-                        .with(csrf()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("page/search :: #searchResult"))
-                .andExpect(model().attributeExists("votes"));
-
-        // then
-        then(voteService).should().searchVotes(any(SearchType.class), anyString());
-    }
-
-    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("[view][POST] 검색 페이지 - 정상 호출, 해시태그 검색")
     @Test
     void search_POST_search_hashtag() throws Exception {
@@ -403,5 +415,113 @@ class VoteControllerTest {
 
         // then
         then(voteService).should().searchVotes(any(SearchType.class), anyString());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][GET] 투표 상세 페이지 조회 - 정상 호출, 인증된 사용자")
+    @Test
+    void voteDetail() throws Exception {
+        String userId = "user";
+        User user = User.builder()
+                .userId(userId)
+                .nickname("nickname")
+                .build();
+
+        Long voteId = 1L;
+
+        VoteWithOptionDto voteWithOptionDto = VoteWithOptionDto.builder()
+                .userDto(UserDto.from(user))
+                .build();
+
+        given(voteService.getVoteWithOption(eq(voteId))).willReturn(voteWithOptionDto);
+        given(voteCommentService.commentsByVote(eq(voteId), any(Pageable.class))).willReturn(Page.empty());
+
+        // when & then
+        mvc.perform(get("/" + voteId + "/detail"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(model().attributeExists("vote"))
+                .andExpect(model().attributeExists("isBookmark"))
+                .andExpect(model().attributeExists("comments"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(view().name("page/voteDetail"));
+
+        then(voteService).should().findBookmarkVoteId(any());
+        then(voteService).should().getVoteWithOption(any());
+        then(voteCommentService).should().commentsByVote(any(), any());
+    }
+
+    @DisplayName("[view][GET] 투표 상세 페이지 조회 - 인증이 없어도 사용 가능")
+    @Test
+    void voteDetail_noLogin() {
+        // TODO : 투표 상세 페이지에는 로그인한 user 정보가 필요. 상의 후 작성할 예정
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][GET] 저장된 북마크 조회 - 정상 호출, 인증된 사용자")
+    @Test
+    void bookmark() throws Exception {
+        String userId = "user";
+        given(voteService.viewBookmarks(eq(userId), any(Pageable.class))).willReturn(Page.empty());
+
+        // when & then
+        mvc.perform(get("/" + userId + "/bookmark"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(model().attributeExists("votes"))
+                .andExpect(view().name("page/bookmark"));
+
+        then(voteService).should().viewBookmarks(any(), any());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][POST] 북마크 저장 - 정상 호출, 인증된 사용자")
+    @Test
+    void saveBookmark() throws Exception {
+        // given
+        long voteId = 1L;
+
+        // when & then
+        mvc.perform(post("/" + voteId + "/saveBookmark")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(null))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+
+        then(voteService).should().saveBookmark(any(), any());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][DELETE] 북마크 삭제 - 정상 호출, 인증된 사용자")
+    @Test
+    void deleteBookmark() throws Exception {
+        // given
+        long voteId = 1L;
+
+        // when & then
+        mvc.perform(delete("/" + voteId + "/deleteBookmark")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(null))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+
+        then(voteService).should().deleteBookmark(any(), any());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][DELETE] 북마크 삭제 - 정상 호출, 인증된 사용자")
+    @Test
+    void deleteAllBookmark() throws Exception {
+        // when & then
+        mvc.perform(delete("/deleteAllBookmark")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(null))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+
+        then(voteService).should().deleteAllBookmark(any());
     }
 }

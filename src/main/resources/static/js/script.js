@@ -44,6 +44,12 @@ $(document).ready(function () {
     $('#searchType').on('change', function () {
         clearSearchValue();
     });
+
+    $('#commentInput').on('keyup', function (e) {
+        if (e.keyCode === 13) {
+            saveComment();
+        }
+    });
 });
 
 function href(path) {
@@ -70,6 +76,119 @@ function search() {
         .done(function (fragment) {
             $('#searchResult').replaceWith(fragment);
         });
+}
+
+function clickBookmark(id) {
+    let voteId = id.substring(8);
+    let bookmarkClass = document.getElementById(id).getElementsByTagName('svg').item(0).classList;
+    if (bookmarkClass.contains('bi-bookmark-fill')) { // bookmark 저장된 상태
+        deleteBookmark(voteId);
+        bookmarkClass.replace('bi-bookmark-fill', 'bi-bookmark');
+        bookmarkClass.replace('bookmark-on', 'bookmark-off');
+    } else {
+        saveBookmark(voteId);
+        bookmarkClass.replace('bi-bookmark', 'bi-bookmark-fill');
+        bookmarkClass.replace('bookmark-off', 'bookmark-on');
+    }
+}
+
+function deleteBookmarkPost(id) {
+    deleteBookmark(id);
+    $('#votePost-' + id).remove();
+}
+
+function saveBookmark(voteId) {
+    $.ajax({
+        url: '/' + voteId + '/saveBookmark',
+        type: "POST",
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        }
+    });
+}
+
+function deleteBookmark(voteId) {
+    $.ajax({
+        url: '/' + voteId + '/deleteBookmark',
+        type: "DELETE",
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        }
+    });
+}
+
+function deleteAllBookmark() {
+    $.ajax({
+        url: '/deleteAllBookmark',
+        type: "DELETE",
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        }
+    });
+    $('#voteArea').remove();
+}
+
+function show(voteId) {
+    var outer = ".vote" + voteId + "outer";
+    var inner = ".vote" + voteId + "inner";
+    $(outer).click(function () {
+        $(inner).css("display", "block");
+        $(outer).css("display", "none");
+    });
+
+    const test = document.getElementsByClassName("test" + voteId);
+
+    $(test).click(function () {
+        $(outer).css("display", "block");
+        $(inner).css("display", "none");
+    });
+
+    var submit = ".vote-submit-btn" + voteId;
+    var analyze = ".vote-analyze-btn" + voteId;
+    var result = ".vote-result" + voteId;
+
+    $(submit).click(function () {
+        $(result).css("display", "inline");
+        $(submit).css("display", "none");
+        $(analyze).css("display", "inline");
+    });
+}
+
+function submitPick(voteId) {
+    const selected = document.querySelector("#vote" + voteId + "options input[type=radio]:checked");
+
+    var data = {
+        "optionId": selected.value
+    }
+
+    $.ajax({
+        url: '/pick',
+        data: JSON.stringify(data),
+        type: "POST",
+        async: true,
+        dataType: 'JSON',
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
 }
 
 // voteOption 태그 생성 및 삭제 count
@@ -103,6 +222,73 @@ function create_voteOption() {
     new_div.appendChild(new_img1);
     new_div.appendChild(new_img2);
     area.appendChild(new_div);
+}
+
+function saveComment() {
+    var voteId = $("meta[name='voteId']").attr("content");
+
+    var data = {
+        content: $("#commentInput").val()
+    }
+    $.ajax({
+        url: '/' + voteId + '/comments',
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    }).done(function (fragment) {
+        $("#commentInput").val('');
+        $("#commentList").replaceWith(fragment);
+    });
+}
+
+function updateComment(commentId) {
+    var voteId = $("meta[name='voteId']").attr("content");
+
+    var data = {
+        content: $("#editContent").val()
+    }
+
+    $.ajax({
+        url: '/' + voteId + '/comments/' + commentId,
+        type: "PUT",
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        }
+    }).done(function (fragment) {
+        $("#commentList").replaceWith(fragment);
+    });
+}
+
+function deleteComment(commentId) {
+    var voteId = $("meta[name='voteId']").attr("content");
+
+    $.ajax({
+        url: '/' + voteId + '/comments/' + commentId,
+        type: "DELETE",
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function (jqXHR, settings) {
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+            jqXHR.setRequestHeader(header, token);
+        }
+    }).done(function (fragment) {
+        $("#commentList").replaceWith(fragment);
+    });
 }
 
 // voteOption 태그 삭제
@@ -153,14 +339,19 @@ function autoResizeTextarea(element) {
 function commentOrderBy(voteId, orderBy) {
     location.href = "/" + voteId + "/comments?sort=" + orderBy + ",desc";
 }
+
+function commentOrderBy_detail(voteId, orderBy) {
+    location.href = "/" + voteId + "/detail?sort=" + orderBy + ",desc";
+}
+
 function timelineCategory(category) {
     var checkOrder = document.location.href.includes("sort");
     var checkCate = document.location.href.includes("category");
 
     var search = location.search;
-    var cate = search.substring(search.indexOf("=")+1, search.indexOf("&"));
+    var cate = search.substring(search.indexOf("=") + 1, search.indexOf("&"));
 
-    if(checkOrder && checkCate) {
+    if (checkOrder && checkCate) {
         location.href = "/timeline" + search.replaceAll(cate, category);
     } else if (checkOrder && !checkCate) {
         location.href = "/timeline?category=" + category + "&" + search.replaceAll("?", "");
@@ -194,10 +385,6 @@ function timelineOrderBy(orderBy) {
             location.href = "/timeline?sort=" + orderBy + ",asc";
         }
     }
-}
-
-function commentOrderBy_detail(voteId, orderBy) {
-    location.href = "/" + voteId + "/detail?orderBy=" + orderBy;
 }
 
 // 검색창 clear & 기존 검색 결과 clear

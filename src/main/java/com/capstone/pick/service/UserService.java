@@ -1,13 +1,15 @@
 package com.capstone.pick.service;
 
-import com.capstone.pick.domain.User;
 import com.capstone.pick.controller.form.AddMoreInfoForm;
+import com.capstone.pick.domain.User;
+import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,8 +21,17 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public List<UserDto> findUsersById(String userId) {
-        return userRepository.findByUserIdContaining(userId).stream()
+    public List<UserDto> searchUsers(SearchType searchType, String searchValue) {
+        List<User> users = new ArrayList<>();
+        switch (searchType) {
+            case USER:
+                users = userRepository.findByUserIdContaining(searchValue);
+                break;
+            case NICKNAME:
+                users = userRepository.findByNicknameContaining(searchValue);
+                break;
+        }
+        return users.stream()
                 .map(UserDto::from)
                 .collect(Collectors.toList());
     }
@@ -33,20 +44,20 @@ public class UserService {
 
 
     // 추가정보를 소셜로그인 종류에 따라 업데이트한다
-    public void updateMoreInfo(OAuth2User oAuth2User, AddMoreInfoForm form){
+    public void updateMoreInfo(OAuth2User oAuth2User, AddMoreInfoForm form) {
 
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String id;
 
-        if(attributes.containsKey("response")){
+        if (attributes.containsKey("response")) {
             Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-            id = "naver_"+(String) response.get("id");
+            id = "naver_" + (String) response.get("id");
 
-        }else if(attributes.containsKey("kakao_account")){
-            id = "kakao_"+String.valueOf(  (Long) attributes.get("id") );
+        } else if (attributes.containsKey("kakao_account")) {
+            id = "kakao_" + String.valueOf((Long) attributes.get("id"));
 
-        }else {
-            id = "google_"+(String)attributes.get("sub");
+        } else {
+            id = "google_" + (String) attributes.get("sub");
         }
 
         Optional<User> user = userRepository.findById(id); // 유저를 찾고
@@ -62,7 +73,7 @@ public class UserService {
 
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
-        if(attributes.containsKey("response")){
+        if (attributes.containsKey("response")) {
             Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
             form.setGender((String) response.get("gender"));
@@ -70,7 +81,7 @@ public class UserService {
 
             return form;
 
-        }else if(attributes.containsKey("kakao_account")){
+        } else if (attributes.containsKey("kakao_account")) {
             Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
 
             form.setGender((String) response.get("gender"));
@@ -84,9 +95,5 @@ public class UserService {
     }
 
 
-
-
-
-
-    }
+}
 

@@ -5,8 +5,10 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
+import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
+import com.capstone.pick.service.VoteCommentService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 public class VoteController {
 
     private final VoteService voteService;
+    private final VoteCommentService voteCommentService;
     private final UserService userService;
 
     @GetMapping("/")
@@ -41,8 +44,8 @@ public class VoteController {
 
     @PostMapping("/search")
     public String search(@ModelAttribute SearchForm searchForm, ModelMap map) {
-        if(searchForm.getSearchType() == SearchType.USER) {
-            List<UserDto> users = userService.findUsersById(searchForm.getSearchValue());
+        if ((searchForm.getSearchType() == SearchType.USER) || (searchForm.getSearchType() == SearchType.NICKNAME)) {
+            List<UserDto> users = userService.searchUsers(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("users", users);
         } else {
             List<VoteWithOptionDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
@@ -52,10 +55,15 @@ public class VoteController {
     }
 
     @GetMapping("/timeline")
-    public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category,
+    public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category, @AuthenticationPrincipal VotePrincipal votePrincipal,
                            Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         model.addAttribute("votes", votes);
+
+        // TODO : 북마크 저장된 게시글은 어떻게 처리할지 논의
+        List<Long> bookmarks = voteService.findBookmarkVoteId(votePrincipal.getUsername());
+        model.addAttribute("bookmarks", bookmarks);
+
         model.addAttribute("category", category);
         return "page/timeLine";
     }
@@ -114,9 +122,39 @@ public class VoteController {
     }
 
     @GetMapping("/{voteId}/detail")
-    public String voteDetail(@PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
-        VoteOptionCommentDto vote = voteService.getVoteOptionComment(voteId);
+    public String voteDetail(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
+        model.addAttribute("isBookmark", voteService.findBookmarkVoteId(votePrincipal.getUsername()).contains(voteId));
+
+        Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
+        model.addAttribute("comments", comments);
+        model.addAttribute("user", votePrincipal.toDto());
         return "page/voteDetail";
+    }
+
+    @GetMapping("/{userId}/bookmark")
+    public String bookmark(@PathVariable String userId, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        Page<VoteOptionCommentDto> votes = voteService.viewBookmarks(userId, pageable);
+        model.addAttribute("votes", votes);
+        return "page/bookmark";
+    }
+
+    @PostMapping("/{voteId}/saveBookmark")
+    public String saveBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) {
+        voteService.saveBookmark(votePrincipal.getUsername(), voteId);
+        return "redirect:";
+    }
+
+    @DeleteMapping("/{voteId}/deleteBookmark")
+    public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws UserMismatchException {
+        voteService.deleteBookmark(votePrincipal.getUsername(), voteId);
+        return "redirect:";
+    }
+
+    @DeleteMapping("/deleteAllBookmark")
+    public String deleteAllBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws UserMismatchException {
+        voteService.deleteAllBookmark(votePrincipal.getUsername());
+        return "redirect:";
     }
 }

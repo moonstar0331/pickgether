@@ -17,6 +17,4 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     List<Vote> findByTitleContaining(String title);
 
     List<Vote> findByContentContaining(String content);
-
-    List<Vote> findByUser_NicknameContaining(String nickname);
 }

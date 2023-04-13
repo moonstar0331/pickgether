@@ -3,7 +3,9 @@ package com.capstone.pick.service;
 import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
+import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,12 +13,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -24,8 +26,11 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.*;
@@ -51,6 +56,8 @@ public class VoteServiceTest {
     private VoteHashtagRepository voteHashtagRepository;
     @Mock
     private VoteRedisRepository voteRedisRepository;
+    @Mock
+    private BookmarkRepository bookmarkRepository;
 
     @DisplayName("타임라인을 조회하면, 모든 투표 게시글을 타임라인에 반환한다.")
     @Test
@@ -86,7 +93,7 @@ public class VoteServiceTest {
 
     @DisplayName("타임라인을 조회하면, 카테고리와 정렬기준에 따른 투표 게시글을 타임라인에 반환한다.")
     @Test
-    void findSortedVotesByCategory() {
+    void viewTimeline() {
         // given
         User user = createUser();
         Vote vote1 = createVote(1L, user, "title1", "content1", Category.FREE, LocalDateTime.now());
@@ -118,6 +125,70 @@ public class VoteServiceTest {
         // then
         then(voteRepository).should().findAll(any(Pageable.class));
         then(voteRepository).should().findAllByCategory(any(Category.class), any(Pageable.class));
+    }
+
+    @DisplayName("제목을 검색하면, 해당하는 투표 게시글을 반환한다.")
+    @Test
+    void searchVotes_TITLE() {
+        // given
+        User user = createUser();
+        Vote vote1 = createVote(1L, user, "title", "content1 #hashtag1", Category.FREE, LocalDateTime.now());
+        Vote vote2 = createVote(2L, user, "title1", "content #hashtag1", Category.FREE, LocalDateTime.now().minusHours(1));
+        Vote vote3 = createVote(3L, user, "title1", "content1 #hashtag", Category.WORRY, LocalDateTime.now().minusHours(2));
+        List<Vote> list = List.of(vote2, vote3);
+        given(voteRepository.findByTitleContaining("title1")).willReturn(list);
+
+        // when
+        List<VoteWithOptionDto> votes = voteService.searchVotes(SearchType.TITLE, "title1");
+
+        // then
+        then(voteRepository).should().findByTitleContaining(anyString());
+        assertThat(votes).hasSize(list.size());
+    }
+
+    @DisplayName("내용을 검색하면, 해당하는 투표 게시글을 반환한다.")
+    @Test
+    void searchVotes_CONTENT() {
+        // given
+        User user = createUser();
+        Vote vote1 = createVote(1L, user, "title", "content1 #hashtag1", Category.FREE, LocalDateTime.now());
+        Vote vote2 = createVote(2L, user, "title1", "content #hashtag1", Category.FREE, LocalDateTime.now().minusHours(1));
+        Vote vote3 = createVote(3L, user, "title1", "content1 #hashtag", Category.WORRY, LocalDateTime.now().minusHours(2));
+        List<Vote> list = List.of(vote1, vote3);
+        given(voteRepository.findByContentContaining("content1")).willReturn(list);
+
+        // when
+        List<VoteWithOptionDto> votes = voteService.searchVotes(SearchType.CONTENT, "content1");
+
+        // then
+        then(voteRepository).should().findByContentContaining(anyString());
+        assertThat(votes).hasSize(list.size());
+    }
+
+    @DisplayName("해시태그를 검색하면, 해당하는 투표 게시글을 반환한다.")
+    @Test
+    void searchVotes_HASHTAG() {
+        // given
+        User user = createUser();
+        Vote vote1 = createVote(1L, user, "title", "content1 #hashtag1", Category.FREE, LocalDateTime.now());
+        Vote vote2 = createVote(2L, user, "title1", "content #hashtag1", Category.FREE, LocalDateTime.now().minusHours(1));
+        Vote vote3 = createVote(3L, user, "title1", "content1 #hashtag", Category.WORRY, LocalDateTime.now().minusHours(2));
+        Hashtag hashtag1 = Hashtag.builder().id(1L).content("hashtag1").build();
+        Hashtag hashtag2 = Hashtag.builder().id(2L).content("hashtag1").build();
+        Hashtag hashtag3 = Hashtag.builder().id(3L).content("hashtag").build();
+        VoteHashtag voteHashtag1 = VoteHashtag.builder().vote(vote1).hashtag(hashtag1).build();
+        VoteHashtag voteHashtag2 = VoteHashtag.builder().vote(vote2).hashtag(hashtag2).build();
+        VoteHashtag voteHashtag3 = VoteHashtag.builder().vote(vote3).hashtag(hashtag3).build();
+        List<VoteHashtag> hashtagList = List.of(voteHashtag2, voteHashtag3);
+        List<Vote> list = List.of(vote1, vote2);
+        given(voteHashtagRepository.findByHashtag_ContentContaining("hashtag1")).willReturn(hashtagList);
+
+        // when
+        List<VoteWithOptionDto> votes = voteService.searchVotes(SearchType.HASHTAG, "hashtag1");
+
+        // then
+        then(voteHashtagRepository).should().findByHashtag_ContentContaining(anyString());
+        assertThat(votes).hasSize(list.size());
     }
 
     @DisplayName("투표 게시글 정보를 입력하면, 투표 게시글을 저장한다.")
@@ -227,6 +298,184 @@ public class VoteServiceTest {
 
         // then
         then(voteRepository).should().deleteByIdAndUser_UserId(voteId, userId);
+    }
+
+    @DisplayName("게시글 ID에 해당하는 게시글(VoteDto)을 반환한다.")
+    @Test
+    void getVote() {
+        // given
+        User user = createUser();
+        Long voteId = 1L;
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+        given(voteRepository.getReferenceById(voteId)).willReturn(vote);
+
+        // when
+        voteService.getVote(voteId);
+
+        // then
+        then(voteRepository).should().getReferenceById(anyLong());
+    }
+
+    @DisplayName("게시글 ID에 해당하는 게시글(VoteWithOptionDto)을 반환한다.")
+    @Test
+    void getVoteWithOption() {
+        // given
+        User user = createUser();
+        Long voteId = 1L;
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+        given(voteRepository.getReferenceById(voteId)).willReturn(vote);
+
+        // when
+        voteService.getVoteWithOption(voteId);
+
+        // then
+        then(voteRepository).should().getReferenceById(anyLong());
+    }
+
+    @DisplayName("게시글 ID에 해당하는 게시글 선택지을 반환한다.")
+    @Test
+    void getOptions() {
+        // given
+        User user = createUser();
+        Long voteId = 1L;
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+        VoteOption option1 = createVoteOption(vote, "option1", "/image/link1");
+        VoteOption option2 = createVoteOption(vote, "option2", "/image/link2");
+        given(voteOptionRepository.findAllByVoteId(voteId)).willReturn(List.of(option1, option2));
+
+        // when
+        voteService.getOptions(voteId);
+
+        // then
+        then(voteOptionRepository).should().findAllByVoteId(anyLong());
+    }
+
+    @DisplayName("userId와 voteId를 입력받았을 때, 저장된 북마크가 존재한다면 저장한다.")
+    @Test
+    void saveBookmark() {
+        // given
+        User user = createUser();
+        Long voteId = 1L;
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+        Bookmark bookmark = Bookmark.builder()
+                .user(user)
+                .vote(vote)
+                .build();
+
+        given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
+        given(voteRepository.getReferenceById(voteId)).willReturn(vote);
+        given(bookmarkRepository.findByUserAndVote(user, vote)).willReturn(Optional.empty());
+
+        // when
+        voteService.saveBookmark(user.getUserId(), voteId);
+
+        // then
+        then(userRepository).should().getReferenceById(anyString());
+        then(voteRepository).should().getReferenceById(anyLong());
+        then(bookmarkRepository).should().findByUserAndVote(any(User.class), any(Vote.class));
+        then(bookmarkRepository).should().save(any(Bookmark.class));
+        assertEquals(user, bookmark.getUser());
+        assertEquals(vote, bookmark.getVote());
+    }
+
+    @DisplayName("userId와 voteId를 입력받았을 때, 저장된 북마크가 존재한다면 예외를 발생한다.")
+    @Test
+    void saveBookmark_whenBookmarkExists() {
+        // given
+        User user = createUser();
+        Long voteId = 1L;
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+        Bookmark bookmark = Bookmark.builder()
+                .user(user)
+                .vote(vote)
+                .build();
+
+        given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
+        given(voteRepository.getReferenceById(voteId)).willReturn(vote);
+        given(bookmarkRepository.findByUserAndVote(user, vote)).willReturn(Optional.of(bookmark));
+
+        // when & then
+        Throwable exception = assertThrows(RuntimeException.class, () -> {
+            voteService.saveBookmark(user.getUserId(), voteId);
+        });
+        assertEquals("이미 저장된 게시글입니다.", exception.getMessage());
+    }
+
+    @DisplayName("userId와 voteId를 입력받았을 때, 북마크의 유저정보와 userId가 일치한다면 삭제한다.")
+    @Test
+    void deleteBookmark() throws UserMismatchException {
+        // given
+        User user = createUser();
+        Long voteId = 1L;
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+        Bookmark bookmark = Bookmark.builder()
+                .user(user)
+                .vote(vote)
+                .build();
+
+        given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
+        given(bookmarkRepository.findByUserAndVoteId(user, voteId)).willReturn(bookmark);
+
+        // when
+        voteService.deleteBookmark(user.getUserId(), voteId);
+
+        // then
+        then(userRepository).should().getReferenceById(anyString());
+        then(bookmarkRepository).should().findByUserAndVoteId(any(User.class), anyLong());
+        then(bookmarkRepository).should().delete(any(Bookmark.class));
+    }
+
+    @DisplayName("userId를 입력받았을 때, 해당 유저가 저장한 북마크를 모두 삭제한다.")
+    @Test
+    void deleteAllBookmark(){
+        // given
+        User user = createUser();
+
+        given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
+        willDoNothing().given(bookmarkRepository).deleteByUser(user);
+
+        // when
+        voteService.deleteAllBookmark(user.getUserId());
+
+        // then
+        then(userRepository).should().getReferenceById(anyString());
+        then(bookmarkRepository).should().deleteByUser(any(User.class));
+    }
+
+    @DisplayName("북마크 페이지를 조회하면, 해당 유저에 대한 북마크를 반환한다.")
+    @Test
+    void viewBookmarks() {
+        // given
+        User user = createUser();
+        Vote vote = createVote(1L, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+
+        Pageable pageable = mock(Pageable.class);
+        Page<Bookmark> bookmarks = mock(Page.class);
+
+        given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
+        given(bookmarkRepository.findByUser(user, pageable)).willReturn(bookmarks);
+
+        // when
+        voteService.viewBookmarks(user.getUserId(), pageable);
+
+        // then
+        then(bookmarkRepository).should().findByUser(any(User.class), any());
+    }
+
+    @DisplayName("userId를 입력받으면, 해당 유저가 저장한 북마크의 투표 게시글 ID(voteId) 리스트를 반환한다.")
+    @Test
+    void findBookmarkVoteId() {
+        // given
+        User user = createUser();
+
+        given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
+        given(bookmarkRepository.findByUser(user)).willReturn(anyList());
+
+        // when
+        voteService.findBookmarkVoteId(user.getUserId());
+
+        // then
+        then(bookmarkRepository).should().findByUser(any(User.class));
     }
 
     private static VoteDto createVoteDto(String title, String content) {

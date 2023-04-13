@@ -29,6 +29,7 @@ public class VoteWithOptionDto {
     private boolean isMultiPick;
     private DisplayRange displayRange;
     private List<VoteOptionDto> voteOptionDtos;
+    private Long pickCount;
 
     public static VoteWithOptionDto from(Vote entity) {
         return VoteWithOptionDto.builder()
@@ -43,6 +44,7 @@ public class VoteWithOptionDto {
                 .isMultiPick(entity.isMultiPick())
                 .voteOptionDtos(entity.getVoteOptions().stream()
                         .map(VoteOptionDto::from).collect(Collectors.toList()))
+                .pickCount(entity.getPickCount())
                 .build();
     }
 }

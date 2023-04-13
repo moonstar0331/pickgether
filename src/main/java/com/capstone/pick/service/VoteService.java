@@ -1,12 +1,10 @@
 package com.capstone.pick.service;
 
-import com.capstone.pick.domain.Hashtag;
-import com.capstone.pick.domain.User;
-import com.capstone.pick.domain.Vote;
-import com.capstone.pick.domain.VoteHashtag;
+import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
+import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +31,7 @@ public class VoteService {
     private final VoteOptionRepository voteOptionRepository;
     private final VoteHashtagRepository voteHashtagRepository;
     private final HashtagRepository hashtagRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     private final VoteRedisRepository voteRedisRepository;
 
@@ -74,9 +74,6 @@ public class VoteService {
                 break;
             case CONTENT:
                 votes = voteRepository.findByContentContaining(searchValue);
-                break;
-            case NICKNAME:
-                votes = voteRepository.findByUser_NicknameContaining(searchValue);
                 break;
             case HASHTAG:
                 votes = voteHashtagRepository.findByHashtag_ContentContaining(searchValue).stream()
@@ -157,13 +154,51 @@ public class VoteService {
         return VoteDto.from(voteRepository.getReferenceById(voteId));
     }
 
-    public VoteOptionCommentDto getVoteOptionComment(Long voteId) {
-        return VoteOptionCommentDto.from(voteRepository.getReferenceById(voteId));
+    public VoteWithOptionDto getVoteWithOption(Long voteId) {
+        return VoteWithOptionDto.from(voteRepository.getReferenceById(voteId));
     }
 
     public List<VoteOptionDto> getOptions(Long voteId) {
         return voteOptionRepository.findAllByVoteId(voteId).stream()
                 .map(VoteOptionDto::from)
                 .collect(Collectors.toList());
+    }
+
+    public void saveBookmark(String userId, Long voteId) {
+        User user = userRepository.getReferenceById(userId);
+        Vote vote = voteRepository.getReferenceById(voteId);
+        bookmarkRepository.findByUserAndVote(user, vote).ifPresent(l -> {
+            throw new IllegalStateException("이미 저장된 게시글입니다.");
+        });
+        bookmarkRepository.save(Bookmark.builder()
+                .user(user)
+                .vote(vote)
+                .createAt(LocalDateTime.now())
+                .build());
+    }
+
+    public void deleteBookmark(String userId, Long voteId) throws UserMismatchException {
+        User user = userRepository.getReferenceById(userId);
+        Bookmark bookmark = bookmarkRepository.findByUserAndVoteId(user, voteId);
+
+        if (bookmark.getUser().equals(user)) {
+            bookmarkRepository.delete(bookmark);
+        } else {
+            throw new UserMismatchException();
+        }
+    }
+
+    public void deleteAllBookmark(String userId) {
+        bookmarkRepository.deleteByUser(userRepository.getReferenceById(userId));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<VoteOptionCommentDto> viewBookmarks(String userId, Pageable pageble) {
+        return bookmarkRepository.findByUser(userRepository.getReferenceById(userId), pageble).map(b -> VoteOptionCommentDto.from(b.getVote()));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Long> findBookmarkVoteId(String userId) {
+        return bookmarkRepository.findByUser(userRepository.getReferenceById(userId)).stream().map(b -> b.getVote().getId()).collect(Collectors.toList());
     }
 }
