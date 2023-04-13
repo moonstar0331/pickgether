@@ -687,21 +687,13 @@
 }
 
 .modal-dialog {
-    max-width: 50vw; /* New width for default modal */
+    max-width: 550px;
+    margin: 2rem auto;
 }
-@media all and (max-width: 768px) {
+
+@media all and (max-width: 600px) {
     .modal-dialog {
-        max-width: 80vw; /*mobile*/
-    }
-}
-@media all and (min-width: 768px) and (max-width: 1024px) {
-    .modal-dialog {
-        max-width: 65vw; /*tablet*/
-    }
-}
-@media all and (min-width: 1024px) {
-    .modal-dialog {
-        max-width: 50vw; /*desktop*/
+        max-width: 90%;
     }
 }
 
