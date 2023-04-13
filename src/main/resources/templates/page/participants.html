@@ -21,10 +21,7 @@
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-        $(document).ready(function () {
-            let container = document.getElementById("p-container");
-            container.scroll(loadMore);
-        });
+        let isLoading = false;
 
         function loadMore() {
             let container = document.getElementById("p-container");
@@ -32,18 +29,12 @@
             const scrollTop = container.scrollTop;
             const clientHeight = container.clientHeight;
             const scrollHeight = container.scrollHeight;
-
             const page = parseInt(container.getAttribute("data-page")) + 1;
-            const voteId = parseInt(container.getAttribute("data-vote-id")) + 1;
-
-            console.log("scrollTop: " + scrollTop);
-            console.log("clientHeight: " + clientHeight);
-            console.log("scrollHeight: " + scrollHeight);
-            console.log("page: " + page);
-            console.log("voteId: " + voteId);
+            const voteId = parseInt(container.getAttribute("data-vote-id"));
 
             // 스크롤이 끝에 닿으면 데이터 추가 로딩
-            if ((scrollHeight * 0.8 - scrollTop) < clientHeight) {
+            if (scrollHeight * 0.9 - scrollTop < clientHeight && !isLoading) {
+                isLoading = true; // AJAX 요청이 시작되었으므로 isLoading을 true로 변경
                 $.ajax({
                     url: `/${voteId}/json-participants?page=${page}`,
                     type: "GET",
@@ -52,8 +43,13 @@
                         console.log("데이터 패치 시도");
                     },
                     success: function (data) {
-                        console.log("데이터 패치 성공");
-                        console.log("*** data: " + JSON.stringify(data));
+                        if ((data.participants.totalPages) == (page + 1)) {
+                            container.onscroll = null;
+                            console.log("마지막 페이지");
+                        }
+                        addList(data);
+                        container.setAttribute("data-page", page.toString());
+                        isLoading = false; // AJAX 요청이 끝났으므로 isLoading을 false로 변경
                     },
                     error: function () {
                         console.log("데이터 패치 중 에러 발생");
@@ -208,52 +204,52 @@
             </div>
         </div>
         <!-- 일반 참여자 리스트 -->
-        <div id="p-container" class="p-container" data-page="0" th:data-vote-id="${voteId}" onscroll="loadMore()">
-                <th:block th:each="p : ${participants.content}">
-                    <div id="p-list" class="p-box wrap">
-                        <div class="fl wrap" style="display: flex">
-                            <div class="fl">
-                                <!-- 프로필 사진 -->
-                                <div class="circle-container"
-                                     th:onclick="'location.href=\'' + '#\''">
-                                    <img src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"
-                                         class="circle-img circle-big cp">
-                                </div>
-                            </div>
-                            <div class="fr ta-l mt-1">
-                                <!-- 닉네임 및 아이디 -->
-                                <div class="mb-0 w-100 small lh-sm">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <div class="text-dark text-bold p-subtitle cp mr-2"
-                                             th:text="${p.getNickname()}"
-                                             th:onclick="'location.href=\'' + '#\''"/>
-                                    </div>
-                                    <div th:id="${'p' + p.getUserId()}" class="mb-2 p-id cp"
-                                         th:text="${p.getUserId()}"
-                                         th:onclick="'location.href=\'' + '#\''"/>
-                                </div>
+        <div id="p-container" class="p-container scrollbar-none" data-page="0" th:data-vote-id="${voteId}" onscroll="loadMore()">
+            <th:block th:each="p : ${participants.content}">
+                <div id="p-list" class="p-box wrap">
+                    <div class="fl wrap" style="display: flex">
+                        <div class="fl">
+                            <!-- 프로필 사진 -->
+                            <div class="circle-container"
+                                 th:onclick="'location.href=\'' + '#\''">
+                                <img src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"
+                                     class="circle-img circle-big cp">
                             </div>
                         </div>
-                        <!--팔로잉 & 팔로우 버튼-->
-                        <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
-                            <div class="vertical-child">
-                                <!--이미 팔로우 중이라면 팔로잉(회색) 버튼-->
-                                <button th:if="${followingUserIdList.contains(p.getUserId())}"
-                                        th:id="${'followBtnOrdinary' + participants.content.indexOf(p)}"
-                                        type="button" class="p-btn p-btn-secondary">팔로잉
-                                </button>
-                                <!--아닌 경우 팔로우(파란색) 버튼-->
-                                <button th:unless="${followingUserIdList.contains(p.getUserId())}"
-                                        th:id="${'followBtnOrdinary' + participants.content.indexOf(p)}"
-                                        type="button" class="p-btn p-btn-primary">팔로우
-                                </button>
-                                <script>
-                                    addListener([[${'followBtnOrdinary' + participants.content.indexOf(p)}]])
-                                </script>
+                        <div class="fr ta-l mt-1">
+                            <!-- 닉네임 및 아이디 -->
+                            <div class="mb-0 w-100 small lh-sm">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <div class="text-dark text-bold p-subtitle cp mr-2"
+                                         th:text="${p.getNickname()}"
+                                         th:onclick="'location.href=\'' + '#\''"/>
+                                </div>
+                                <div th:id="${'p' + p.getUserId()}" class="mb-2 p-id cp"
+                                     th:text="${p.getUserId()}"
+                                     th:onclick="'location.href=\'' + '#\''"/>
                             </div>
                         </div>
                     </div>
-                </th:block>
+                    <!--팔로잉 & 팔로우 버튼-->
+                    <div class="fr ta-r vertical-parent" style="width: 50%; flex: 1;">
+                        <div class="vertical-child">
+                            <!--이미 팔로우 중이라면 팔로잉(회색) 버튼-->
+                            <button th:if="${followingUserIdList.contains(p.getUserId())}"
+                                    th:id="${'followBtnOrdinary' + participants.content.indexOf(p)}"
+                                    type="button" class="p-btn p-btn-secondary">팔로잉
+                            </button>
+                            <!--아닌 경우 팔로우(파란색) 버튼-->
+                            <button th:unless="${followingUserIdList.contains(p.getUserId())}"
+                                    th:id="${'followBtnOrdinary' + participants.content.indexOf(p)}"
+                                    type="button" class="p-btn p-btn-primary">팔로우
+                            </button>
+                            <script>
+                                addListener([[${'followBtnOrdinary' + participants.content.indexOf(p)}]])
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
             </div>
         </div>
     </div>
