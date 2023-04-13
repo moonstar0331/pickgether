@@ -157,10 +157,6 @@ public class VoteService {
         return VoteDto.from(voteRepository.getReferenceById(voteId));
     }
 
-    public VoteOptionCommentDto getVoteOptionComment(Long voteId) {
-        return VoteOptionCommentDto.from(voteRepository.getReferenceById(voteId));
-    }
-
     public VoteWithOptionDto getVoteWithOption(Long voteId) {
         return VoteWithOptionDto.from(voteRepository.getReferenceById(voteId));
     }

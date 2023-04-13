@@ -67,32 +67,6 @@ public class VoteCommentServiceTest {
         then(voteCommentRepository).should().findAllByVote(any(), any());
     }
 
-//    @DisplayName("댓글 상세 보기 페이지를 조회하면, 해당 투표 게시글에 대한 투표 댓글을 정렬하여 반환한다.")
-//    @Test
-//    void readCommentOrderBy() {
-//        // given
-//        User user1 = createUser("user1", "nick1");
-//        User user2 = createUser("user2", "nick2");
-//        Vote vote = createVote(1L, user1);
-//        VoteComment voteComment1 = createVoteComment(1L, user1, vote, "content1", LocalDateTime.now());
-//        VoteComment voteComment2 = createVoteComment(2L, user2, vote, "content2", LocalDateTime.now().minusHours(1));
-//        CommentLike like = createCommentLike(1L, voteComment1, user2);
-//
-//        given(voteCommentRepository.findAllByVoteId(anyLong(), any(Sort.class))).willReturn(List.of(voteComment2, voteComment1));
-//        given(voteCommentRepository.findAllByVoteIdOrderByLikeDesc(anyLong())).willReturn(List.of(voteComment1, voteComment2));
-//
-//        // when
-//        List<CommentDto> LATEST = voteCommentService.readCommentOrderBy(vote.getId(), OrderCriteria.LATEST);
-//        List<CommentDto> POPULAR = voteCommentService.readCommentOrderBy(vote.getId(), OrderCriteria.POPULAR);
-//
-//        // then
-//        assertThat(LATEST.size()).isEqualTo(2);
-//        assertThat(LATEST.get(0)).hasFieldOrPropertyWithValue("content", "content2");
-//        assertThat(POPULAR.size()).isEqualTo(2);
-//        assertThat(POPULAR.get(0)).hasFieldOrPropertyWithValue("content", "content1");
-//        then(voteCommentRepository).should().findAllByVoteId(anyLong(), any(Sort.class));
-//    }
-
     @DisplayName("투표 댓글을 입력하면, 투표 댓글을 저장한다.")
     @Test
     void saveComment() {
