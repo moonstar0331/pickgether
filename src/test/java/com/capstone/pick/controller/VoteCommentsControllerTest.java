@@ -98,7 +98,7 @@ class VoteCommentsControllerTest {
                         .content(objectMapper.writeValueAsBytes(new PostCommentRequest()))
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("page/comments :: #commentList"))
+                .andExpect(view().name("page/voteDetail :: #commentList"))
                 .andExpect(model().attributeExists("comments"))
                 .andExpect(model().attributeExists("user"));
 
@@ -125,7 +125,7 @@ class VoteCommentsControllerTest {
                         .content(objectMapper.writeValueAsBytes(new PostCommentRequest()))
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("page/comments :: #commentList"))
+                .andExpect(view().name("page/voteDetail :: #commentList"))
                 .andExpect(model().attributeExists("comments"))
                 .andExpect(model().attributeExists("user"));
 
@@ -153,7 +153,7 @@ class VoteCommentsControllerTest {
                         .content(objectMapper.writeValueAsBytes(null))
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("page/comments :: #commentList"))
+                .andExpect(view().name("page/voteDetail :: #commentList"))
                 .andExpect(model().attributeExists("comments"))
                 .andExpect(model().attributeExists("user"));
 
