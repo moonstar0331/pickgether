@@ -14,16 +14,20 @@ import com.capstone.pick.service.VoteCommentService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,7 +66,8 @@ public class VoteController {
 
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category, @AuthenticationPrincipal VotePrincipal votePrincipal,
-                           Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+                           @RequestParam(defaultValue = "0") int page, Model model) {
+        Pageable pageable = PageRequest.of(page, 1, Sort.Direction.DESC, "modifiedAt");
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         model.addAttribute("votes", votes);
 
@@ -72,6 +77,23 @@ public class VoteController {
 
         model.addAttribute("category", category);
         return "page/timeLine";
+    }
+
+    @GetMapping(value = "/timeline-update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> timeLineUpdate(@RequestParam(required = false, defaultValue = "ALL") Category category,
+                                              @AuthenticationPrincipal VotePrincipal votePrincipal,
+                                              @RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 2, Sort.Direction.DESC, "modifiedAt");
+        Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
+        List<Long> bookmarks = voteService.findBookmarkVoteId(votePrincipal.getUsername());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("votes", votes);
+        response.put("bookmarks", bookmarks);
+        response.put("category", category);
+
+        return response;
     }
 
     @GetMapping("/form")
