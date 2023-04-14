@@ -55,7 +55,7 @@ public class PickController {
         return "page/participants";
     }
 
-    @GetMapping(path = "/{voteId}/json-participants", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{voteId}/participants-update", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map<String, Object> participantJson(@AuthenticationPrincipal VotePrincipal votePrincipal,
                                                @RequestParam(name = "page", defaultValue = "0") int page,

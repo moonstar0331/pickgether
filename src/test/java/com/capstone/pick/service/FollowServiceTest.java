@@ -4,17 +4,20 @@ import com.capstone.pick.domain.Follow;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.dto.FollowDto;
 import com.capstone.pick.repository.FollowRepository;
+import com.capstone.pick.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @DisplayName("팔로우")
@@ -26,6 +29,8 @@ public class FollowServiceTest {
 
     @Mock
     private FollowRepository followRepository;
+    @Mock
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("유저 아이디를 넘겨주면, 해당 유저의 팔로워 리스트를 찾을 수 있다.")
@@ -41,7 +46,8 @@ public class FollowServiceTest {
         followerList.add(follow1);
         followerList.add(follow2);
 
-        when(followRepository.findAllByToUser(user.getUserId())).thenReturn(followerList);
+        when(userRepository.getReferenceById(user.getUserId())).thenReturn(user);
+        when(followRepository.findAllByToUser(any(User.class))).thenReturn(followerList);
 
         //when
         List<FollowDto> followerDtos = followService.getFollowerList("user");
@@ -66,7 +72,8 @@ public class FollowServiceTest {
         followingList.add(follow1);
         followingList.add(follow2);
 
-        when(followRepository.findAllByFromUser(user.getUserId())).thenReturn(followingList);
+        when(userRepository.getReferenceById(user.getUserId())).thenReturn(user);
+        when(followRepository.findAllByFromUser(any(User.class))).thenReturn(followingList);
 
         //when
         List<FollowDto> followerDtos = followService.getFollowingList("user");

@@ -36,7 +36,7 @@
             if (scrollHeight * 0.9 - scrollTop < clientHeight && !isLoading) {
                 isLoading = true; // AJAX 요청이 시작되었으므로 isLoading을 true로 변경
                 $.ajax({
-                    url: `/${voteId}/json-participants?page=${page}`,
+                    url: `/${voteId}/participants-update?page=${page}`,
                     type: "GET",
                     dataType: "json",
                     beforeSend: function () {
