@@ -36,13 +36,6 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public List<UserDto> getParticipants(Long voteId) {
-        return userRepository.findAllParticipants(voteId).stream()
-                .map(UserDto::from)
-                .collect(Collectors.toList());
-    }
-
-
     // 추가정보를 소셜로그인 종류에 따라 업데이트한다
     public void updateMoreInfo(OAuth2User oAuth2User, AddMoreInfoForm form) {
 
