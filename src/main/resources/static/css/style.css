@@ -20,6 +20,13 @@
     }
 }
 
+.v-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: auto;
+    height: 100vh;
+}
+
 .form-selections-edit-btn {
     color: #65758E;
 }
