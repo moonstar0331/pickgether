@@ -64,7 +64,7 @@ public class VoteCommentsController {
         model.addAttribute("comments", comments);
         model.addAttribute("user", votePrincipal.toDto());
 
-        return "page/comments :: #commentList";
+        return "page/voteDetail :: #commentList";
     }
 
     /**
@@ -91,7 +91,7 @@ public class VoteCommentsController {
         model.addAttribute("comments", comments);
         model.addAttribute("user", votePrincipal.toDto());
 
-        return "page/comments :: #commentList";
+        return "page/voteDetail :: #commentList";
     }
 
     /**
@@ -113,7 +113,7 @@ public class VoteCommentsController {
         model.addAttribute("comments", comments);
         model.addAttribute("user", votePrincipal.toDto());
 
-        return "page/comments :: #commentList";
+        return "page/voteDetail :: #commentList";
     }
 
     /**

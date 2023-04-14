@@ -243,7 +243,7 @@
         </div>
     </div>
 
-    <div class="scrollbar-none" style="overflow: auto; margin-bottom: 4rem;">
+    <div class="scrollbar-none" style="overflow: auto; margin-bottom: 4rem;" id="commentList">
         <th:block th:each="comment : ${comments}">
             <div th:id="${'comment-' + comment.getId()}"  class="d-flex text-muted pl-3 pt-3 border-bottom">
                 <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="32" height="32"
