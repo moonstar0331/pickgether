@@ -12,14 +12,24 @@
 }
 .addMoreInfo-header__text {
     width: 50%;
-    opacity: 0.6;
     font-size: 20px;
+    color: #363636;
 }
 
+.option-job-and-gender {
+    width: 30%;
+}
+
+@media (max-width: 418px) {
+    .option-job-and-gender label{
+        margin-left: 2rem;
+    }
+}
+
+/*
 #addMoreInfo-form {
     display: flex;
     flex-direction: column;
-    margin: 0px 30px;
 }
 
 #addMoreInfo-form input:not([type="submit"]) {
@@ -53,6 +63,7 @@
     padding: 15px 0px;
     color: white;
 }
+*/
 
 
 
@@ -94,3 +105,6 @@
     align-items: center;
 }
 
+.addMoreInfo-height {
+    height: 100% !important;
+}

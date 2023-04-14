@@ -3,6 +3,7 @@
 <head>
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <meta name="voteId" th:content="${voteId}">
     <meta charset="UTF-8">
     <title>Pickgether</title>
@@ -30,6 +31,7 @@
 <div class="timeline-background min-vh-100">
     <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
+             style="margin-left: 5%;"
              viewBox="0 0 16 16" onclick="location.href='/timeline'">
             <path fill-rule="evenodd"
                   d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
@@ -37,7 +39,7 @@
         <div class="my-0 mx-auto">
             <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0;">comments</h4>
         </div>
-        <div id="navbarSupportedContent">
+        <div id="navbarSupportedContent" style="margin-right: 5%;">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" class="h-100">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <title>Pickgether</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min2.css">
     <link rel="stylesheet" type="text/css" href="css/style2.css">
@@ -11,11 +12,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
 </head>
-<body class="bg-linear-gradient py-5" style="min-height: 100%;">
+<body class="bg-linear-gradient py-5" style="min-height: 100%; overflow-x: hidden;">
 <div class="container h-100">
 
     <!-- 본문 -->
-    <div class="position-absolute center-center">
+    <div class="position-absolute"
+         style="left: 50%;
+         top: 50%;
+         transform: translate(-50%, -50%);">
         <!-- 픽게더 타이틀 -->
         <div class="d-flex justify-content-center logo my-4">
             <p class="text-blue text-shadow-white mr-3">Pick</p>
@@ -26,14 +30,15 @@
         <div class="mb-4">
             <form th:action="@{/login}" method="post" class="text-center">
                 <div>
-                    <input class="login-input px-3 py-2 mb-2" type="text" id="username" name="username" placeholder="아이디"
-                           style="width: 80%">
-                    <input class="login-input px-3 py-2 mb-2" type="password" id="password" name="password"
-                           placeholder="비밀번호" style="width: 80%">
-                    <button class="login-submit p-2 mb-2" type="submit" style="width: 80%">로그인</button>
+                    <input class="login-input px-3 py-2 mb-2 login-id-password-input-and-button"
+                           type="text" id="username" name="username" placeholder="아이디">
+                    <input class="login-input px-3 py-2 mb-2 login-id-password-input-and-button"
+                           type="password" id="password" name="password" placeholder="비밀번호">
+                    <button class="login-submit p-2 mb-2 login-id login-id-password-input-and-button"
+                            type="submit">로그인</button>
                 </div>
             </form>
-            <div class="d-flex justify-content-center mt-2 login-etc">
+            <div class="d-flex justify-content-center mt-2 login-etc" style="cursor: pointer;">
                 <a href="#" class="mr-4">아이디 찾기</a>
                 <a href="#" class="mr-4">비밀번호 찾기</a>
                 <a th:onclick="|location.href='@{signup}'|">회원가입</a>
@@ -66,7 +71,7 @@
     </div>
 
     <!-- 푸터 -->
-    <div th:insert="~{fragment/footer :: footerFragment}" class="position-absolute center-bottom"></div>
+    <div th:insert="~{fragment/footer :: footerFragment}" class="position-absolute center-bottom" style="width: 80%;"></div>
 
 </div>
 </body>

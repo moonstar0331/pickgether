@@ -14,6 +14,22 @@
     transform: translateX(-50%);
 }
 
+@media (max-width: 600px) {
+    .timeline-background {
+        width: 100%;
+    }
+}
+
+.form-selections-edit-btn {
+    color: #65758E;
+}
+
+@media (max-width: 418px) {
+    .form-selections-edit-btn {
+        font-size: 0.9rem;
+    }
+}
+
 .profile {
     font-family: 'Noto Sans KR', sans-serif;
     height: 48px;
@@ -51,8 +67,8 @@
 }
 
 .vote-background-1 {
-    height: 250px;
-    width: 570px;
+    height: 100%;
+    width: 93%;
     margin: auto;
 
     background: linear-gradient(254.72deg, rgba(255, 222, 125, 0.5) -23.18%, rgba(122, 87, 246, 0.5) 84.66%);
@@ -63,8 +79,8 @@
 }
 
 .vote-background-2{
-    height: 250px;
-    width: 570px;
+    height: 100%;
+    width: 93%;
     margin: auto;
 
     background: linear-gradient(254.72deg, #FFDE7D -23.18%, #7A57F6 84.66%);
@@ -198,14 +214,55 @@
     background: none;
 }
 
-.login-input {
+.signup-input-memo {
+    width: 80%;
+    display: block;
+    margin: auto;
+}
+
+.signup-input-label {
+    margin-left: 60px;
+}
+
+.signup-input {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     border: none;
+    width: 80%;
 }
 
-.login-input:focus {
+.signup-input:focus {
     outline: none;
+}
+
+@media (max-width: 481px) {
+    .signup-input {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        border: none;
+        width: 80%;
+    }
+
+    .signup-input:focus {
+        outline: none;
+    }
+}
+
+@media (max-width: 418px) {
+    .signup-input-label {
+        margin-left: 75px;
+    }
+    .signup-input {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        border: none;
+        width: 70%;
+    }
+    .signup-input-memo {
+        width: 70%;
+        display: block;
+        margin: auto;
+    }
 }
 
 .login-submit {
@@ -220,13 +277,23 @@
     color: white;
 }
 
-.login-etc a {
-    color: #5E718D;
+.signup-submit {
+    background: none;
+    border-radius: 20px;
+    border: 1px solid #322293;
+    color: #322293;
+    width: 80%;
 }
 
-.login-etc a:hover {
-    text-decoration: none;
-    font-weight: bold;
+.login-submit:hover {
+    background: #322293;
+    color: white;
+}
+
+@media (max-width: 418px) {
+    .signup-submit {
+        width: 70%;
+    }
 }
 
 .hover-cursor-pointer:hover {
@@ -239,7 +306,6 @@
 
 .custom-form {
     position: relative;
-    width: 300px;
 }
 
 .custom-form-input {
@@ -287,6 +353,12 @@
     box-shadow: none !important;
 }
 
+@media (max-width: 600px) {
+    .all-follow-btn {
+        width: 50vw;
+    }
+}
+
 .search-cancel-btn {
     background: white;
     border: none;
@@ -322,7 +394,6 @@
     font-size: 80%;
     color: #3b3b3b;
     text-align: left;
-    margin-left: 60px;
 }
 
 .signup-hr {
@@ -330,6 +401,17 @@
     background-color: darkgray;
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+@media (max-width: 481px) {
+    .signup-hr {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .title-margin-bottom {
+        margin-bottom: 0px !important;
+    }
 }
 
 .signup-height {
@@ -341,9 +423,15 @@
     min-height: 100%;
 }
 
-@media (max-height: 880px) {
+@media (max-height: 600px) {
     .signup-height {
-        height: 180% !important;
+        height: 160% !important;
+    }
+}
+
+@media (max-height: 700px) and (min-height: 601px) {
+    .signup-height {
+        height: 165% !important;
     }
 
     .pickgether-title {
@@ -351,6 +439,19 @@
         min-height: 100%;
     }
 }
+
+@media (max-height: 800px) and (min-height: 701px) {
+    .signup-height {
+        height: 140% !important;
+    }
+}
+
+@media (max-height: 900px) and (min-height: 801px) {
+    .signup-height {
+        height: 120% !important;
+    }
+}
+
 .vote-select-btn {
     display: none;
 }
@@ -367,7 +468,7 @@
     align-items: center;
     justify-content: space-around;
     height: 55px;
-    width: 530px;
+    width: 90%;
     margin-top: 10px;
     font-size: 20px;
     background: rgba(0, 0, 0, 0.5);
@@ -387,16 +488,34 @@
 /*-- participants.html start --*/
 .p-background {
     width: 600px;
-    height: 100vh;
+    /*height: 100vh;*/
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     overflow: hidden;
 }
 
+@media (max-width: 600px) {
+    .p-background {
+        width: 100%;
+    }
+
+    .p-margin {
+        margin: 0.5rem !important;
+    }
+}
+
 .p-font {
     font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem;
 }
+
+@media (max-width: 600px) {
+    .p-font {
+        font-size: 0.8rem;
+    }
+}
+
 .p-title {
     font-size: 18pt;
 }
@@ -574,21 +693,13 @@
 }
 
 .modal-dialog {
-    max-width: 50vw; /* New width for default modal */
+    max-width: 550px;
+    margin: 2rem auto;
 }
-@media all and (max-width: 768px) {
+
+@media all and (max-width: 600px) {
     .modal-dialog {
-        max-width: 80vw; /*mobile*/
-    }
-}
-@media all and (min-width: 768px) and (max-width: 1024px) {
-    .modal-dialog {
-        max-width: 65vw; /*tablet*/
-    }
-}
-@media all and (min-width: 1024px) {
-    .modal-dialog {
-        max-width: 50vw; /*desktop*/
+        max-width: 90%;
     }
 }
 
@@ -702,12 +813,28 @@ h6.user-email {
     width: 15rem;
     height: 15rem;
 }
+.circle-img-edit {
+    width: 70px;
+    height: 70px;
+}
+
+@media (max-width: 600px) {
+    .circle-profile {
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .circle-img-edit {
+        width: 50px;
+        height: 50px;
+    }
+}
 
 .ep-nickname {
-    font-size: 2.35rem;
+    font-size: 1.5rem;
 }
 .ep-email {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: gray;
 }
 

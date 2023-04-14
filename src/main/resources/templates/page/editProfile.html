@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" class="h-100">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <title>Pickgether</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min2.css}">
@@ -30,12 +31,12 @@
 <div class="p-background">
     <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
-             viewBox="0 0 16 16" onclick="location.href='/timeline'">
+             viewBox="0 0 16 16" onclick="location.href='/timeline'" style="margin-left: 1rem;">
             <path fill-rule="evenodd"
                   d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
         </svg>
         <div class="my-0 mx-auto">
-            <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0; font-size: 1.75rem">내 프로필</h4>
+            <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0;">내 프로필</h4>
         </div>
     </header>
     <div class="container scrollbar-none" style="overflow: auto; height: 100vh">
@@ -50,8 +51,8 @@
                                      class="circle-img circle-profile cp">
                             </div>
                             <!-- 사진 업로드 버튼 -->
-                            <svg style="border: .2rem solid white; border-radius:50%; background-color: #7F61E9; position: absolute; top: 85%; left: 65%; transform: translate(-50%, -50%);"
-                                    xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 38 38" fill="none">
+                            <svg class="circle-img-edit" style="border: .2rem solid white; border-radius:50%; background-color: #7F61E9; position: absolute; top: 85%; left: 65%; transform: translate(-50%, -50%);"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 38" fill="none">
                                 <path d="M26.5 26.5H11.5C11.1022 26.5 10.7206 26.342 10.4393 26.0607C10.158 25.7794 10 25.3978 10 25V14.5C10 14.1022 10.158 13.7206 10.4393 13.4393C10.7206 13.158 11.1022 13 11.5 13H14.4995L15.9995 10.75H21.9995L23.4995 13H26.5C26.8978 13 27.2794 13.158 27.5607 13.4393C27.842 13.7206 28 14.1022 28 14.5V25C28 25.3978 27.842 25.7794 27.5607 26.0607C27.2794 26.342 26.8978 26.5 26.5 26.5Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M19 22.75C20.864 22.75 22.375 21.239 22.375 19.375C22.375 17.511 20.864 16 19 16C17.136 16 15.625 17.511 15.625 19.375C15.625 21.239 17.136 22.75 19 22.75Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -113,6 +114,17 @@
                             </select>
                         </div>
                     </div>
+                    <div class="ep-form-group fl">
+                        <label class="p-subtitle fw-bold" for="job" style="display: block;">직업</label>
+                        <select class="border-none focus-none border-bottom p-1 p-subtitle" style="display: block;" id="job">
+                            <option th:value="none" class="p-subtitle" disabled selected hidden>직업 선택 👷</option>
+                            <option th:value="expert" class="p-subtitle">전문가 및 관련 종사자</option>
+                            <option th:value="office" class="p-subtitle">사무 종사자</option>
+                            <option th:value="service" class="p-subtitle">서비스 종사자</option>
+                            <option th:value="sail" class="p-subtitle">판매 종사자</option>
+                        </select>
+                        <div class="icoArrow"><i class="fa-thin fa-caret-down dropdown"></i></div>
+                    </div>
                     <div class="ep-form-group">
                         <!-- 주소 -->
                         <label class="p-subtitle fw-bold" for="address">주소</label>
@@ -136,7 +148,7 @@
                 </div>
             </div>
         </div>
-
     </div>
+</div>
 </body>
 </html>

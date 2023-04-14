@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" class="h-100">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <title>Pickgether</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min2.css}">
@@ -133,7 +134,7 @@
 <div class="p-background">
     <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
-             viewBox="0 0 16 16" onclick="location.href='/timeline'">
+             viewBox="0 0 16 16" onclick="location.href='/timeline'" style="margin-left: 1rem;">
             <path fill-rule="evenodd"
                   d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
         </svg>
@@ -146,7 +147,7 @@
         <!-- TODO : 인플루언서 리스트 받아오기 -->
         <!-- TODO : participants -> influencers 로 리스트 수정-->
         <!-- 인플루언서 참여자 리스트 -->
-        <section class="inf-background m-4">
+        <section class="inf-background m-4 p-margin">
             <div class="p-title-margin mt-3">
                 <div class="p-title wrap">
                     <div class="fl wrap">

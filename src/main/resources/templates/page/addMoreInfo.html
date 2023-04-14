@@ -1,79 +1,112 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="h-100">
+<html xmlns:th="http://www.thymeleaf.org" class="h-100 addMoreInfo-height">
 <head>
-  <meta name="_csrf_header" th:content="${_csrf.headerName}">
-  <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
 
-  <meta charset="UTF-8">
-  <title>Pickgether</title>
-  <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}">
-  <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min2.css}">
-  <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
-  <link rel="stylesheet" type="text/css" th:href="@{css/style2.css}">
-  <link rel="stylesheet" type="text/css" th:href="@{css/addMoreInfo.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
+    <title>Pickgether</title>
+    <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min2.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style2.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/addMoreInfo.css}">
 
-  <!-- 픽게더 폰트 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://kit.fontawesome.com/52921a30db.css" crossorigin="anonymous">
+    <!-- 픽게더 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://kit.fontawesome.com/52921a30db.css" crossorigin="anonymous">
 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-          crossorigin="anonymous"></script>
-  <script type="text/javascript" src="/js/script.js"></script>
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <script>
-    window.onload = function(){
-      document.getElementById("address").addEventListener("click", function(){ //주소입력칸을 클릭하면
-        //카카오 지도 발생
-        new daum.Postcode({
-          oncomplete: function(data) { //선택시 입력값 세팅
-            document.getElementById("address").value = data.address; // 주소 넣기
-          }
-        }).open();
-      });
-    }
-  </script>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        window.onload = function(){
+            document.getElementById("address").addEventListener("click", function(){ //주소입력칸을 클릭하면
+                //카카오 지도 발생
+                new daum.Postcode({
+                    oncomplete: function(data) { //선택시 입력값 세팅
+                        document.getElementById("address").value = data.address; // 주소 넣기
+                    }
+                }).open();
+            });
+        }
+    </script>
 </head>
-<body>
-<div class="timeline-background bg-linear-gradient">
-
-  <header class="addMoreInfo-header">
-    <h1 class="addMoreInfo-header__title">픽게더에 오신것을 환영합니다</h1>
-    <p class="addMoreInfo-header__text">당신에 대해 더 알려주세요!</p>
-  </header>
-
-  <form th:action="@{/addMoreInfo}"  method="POST" id="addMoreInfo-form" th:object="${addMoreInfo}" enctype="application/x-www-form-urlencoded">
-    <label>연령대</label>
-    <input  type="text" placeholder="  20 또는 30과 같이 입력해주세요" th:field="*{age_range}">
-
-    <label>성별</label>
-    <input  type="text" placeholder="  M 또는 F로 입력해주세요" th:field="*{gender}">
-
-    <label>직업</label>
-    <div class="selectBox">
-      <select  type="text" class="select" th:field="*{job}">
-        <option th:value="none" disabled selected>직업 선택 👷</option>
-        <option th:value="expert">전문가 및 관련 종사자</option>
-        <option th:value="office">사무 종사자</option>
-        <option th:value="service">서비스 종사자</option>
-        <option th:value="sail">판매 종사자</option>
-      </select>
-      <div class="icoArrow"><i class="fa-thin fa-caret-down dropdown"></i></div>
+<body class="bg-linear-gradient py-5" style="min-height: 100%; overflow-x: hidden;">
+<!-- 본문 -->
+<div class="position-absolute"
+     style="left: 50%;
+     top: 50%;
+     transform: translate(-50%, -50%);">
+    <!-- 픽게더 타이틀 -->
+    <div class="d-flex justify-content-center logo my-4 title-margin-bottom" style="margin-bottom: 0px;">
+        <p class="text-blue text-shadow-white mr-3">Pick</p>
+        <p class="text-white text-shadow-blue">gether</p>
     </div>
 
-    <label>주소</label>
-    <input  id="address" type="text" placeholder="  주소를 입력해주세요" th:field="*{address}">
+    <div style="text-align: center; color: #4f4f4f">
+        <p>픽게더에 오신것을 환영합니다</p>
+        <p style="margin-bottom: 2rem;">당신에 대해 더 알려주세요!</p>
+    </div>
 
-    <input type="submit" value="시작하기">
+    <!-- 입력 창-->
+    <div class="mb-4" style="width: 500px">
+        <form class="text-center" th:action="@{/addMoreInfo}"  method="POST" id="addMoreInfo-form" th:object="${addMoreInfo}" enctype="application/x-www-form-urlencoded">
+            <div>
+                <!-- 연령대 -->
+                <div class="signup-input-label" style="text-align: left;">
+                    <label>연령대</label>
+                </div>
+                <div>
+                    <input class="signup-input px-3 py-2 mb-2" type="text" placeholder="20 또는 30과 같이 입력해주세요" th:field="*{age_range}">
+                </div>
 
-  </form>
+                <!-- 성별 -->
+                <div class="ep-form-group option-job-and-gender">
+                    <label  for="gender" style="display: block">성별</label>
+                    <select class="signup-input-label border-none focus-none border-bottom p-1" id="gender" style="display: block; width: 100%" required>
+                        <option value="" selected disabled hidden>성별선택</option>
+                        <option value="male">남성</option>
+                        <option value="female">여성</option>
+                        <option value="other-gender">그 외</option>
+                    </select>
+                </div>
 
+
+                <!-- 직업 -->
+                <div class="ep-form-group option-job-and-gender">
+                    <label for="job" style="display: block;">직업</label>
+                    <select class="signup-input-label border-none focus-none border-bottom p-1" style="display: block; width: 100%" id="job">
+                        <option th:value="none" disabled selected hidden>직업 선택 👷</option>
+                        <option th:value="expert">전문가 및 관련 종사자</option>
+                        <option th:value="office">사무 종사자</option>
+                        <option th:value="service">서비스 종사자</option>
+                        <option th:value="sail">판매 종사자</option>
+                    </select>
+                    <div class="icoArrow"><i class="fa-thin fa-caret-down dropdown"></i></div>
+                </div>
+
+                <!-- 주소 -->
+                 <div class="signup-input-label" style="text-align: left;">
+                    <label>주소</label>
+                 </div>
+                 <div>
+                     <input class="signup-input px-3 py-2 mb-2" type="text" id="address" placeholder="주소를 입력해주세요" th:field="*{address}">
+                 </div>
+            </div>
+        </form>
+
+        <div class="d-flex justify-content-center mt-2" style="margin-top: 1px !important;">
+            <button class="signup-submit p-2 mb-2" th:onclick="|location.href='@{timelime}'|">시작하기</button>
+        </div>
+    </div>
 </div>
-
 </body>
 </html>

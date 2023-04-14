@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" class="h-100 signup-height">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <title>Pickgether</title>
 
     <!-- stylesheet -->
@@ -20,11 +21,11 @@
             crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/signup.js"></script>
 </head>
-<body class="bg-linear-gradient py-5">
+<body class="bg-linear-gradient py-5" style="min-height: 100%; overflow-x: hidden;">
     <!-- 본문 -->
     <div class="position-absolute center-center pickgether-title">
         <!-- 픽게더 타이틀 -->
-        <div class="d-flex justify-content-center logo my-4">
+        <div class="d-flex justify-content-center logo my-4 title-margin-bottom">
             <p class="text-blue text-shadow-white mr-3">Pick</p>
             <p class="text-white text-shadow-blue">gether</p>
         </div>
@@ -34,37 +35,36 @@
             <form class="text-center">
                 <div>
                     <!-- 아이디 -->
-                    <div style="text-align: left; margin-left: 60px;">
+                    <div class="signup-input-label" style="text-align: left;">
                         <label>아이디</label>
                     </div>
                     <div>
-                        <input class="login-input px-3 py-2 mb-2" type="text" id="username" name="username"
-                               style="width: 80%">
+                        <input class="signup-input px-3 py-2 mb-2" type="text" id="username" name="username">
                     </div>
 
                     <!-- 비밀번호, 비밀번호 확인 -->
-                    <div style="text-align: left; margin-left: 60px;">
+                    <div class="signup-input-label" style="text-align: left;">
                         <label>비밀번호</label>
                     </div>
                     <div>
-                        <input class="login-input px-3 py-2 mb-2" type="password" id="password" name="password"
-                               onKeyup="pw_validation();" style="width: 80%">
+                        <input class="signup-input px-3 py-2 mb-2" type="password" id="password" name="password"
+                               onKeyup="pw_validation();">
                     </div>
 
                     <!-- Todo: 비밀번호 규칙 부합 여부 확인하는 코드 추가 -->
-                    <div class="password-validate">
+                    <div class="password-validate signup-input-label">
                         <img src="/images/icons/cross-small.svg" id="pw_img"
                              style="width: 15px; height: auto;
                          filter: invert(37%) sepia(21%) saturate(4534%) hue-rotate(334deg) brightness(108%) contrast(73%);">
                         <label id="pwLabel">영문(대소문자), 숫자, 특수문자를 혼합한 8~20자</label>
                     </div>
 
-                    <div style="text-align: left; margin-left: 60px;">
+                    <div class="signup-input-label" style="text-align: left;">
                         <label>비밀번호 확인</label>
                     </div>
                     <div>
-                        <input class="login-input px-3 py-2 mb-2" type="password" id="password_check" name="password_check"
-                               onKeyup="pw_pwcheck_isSame();" style="width: 80%">
+                        <input class="signup-input px-3 py-2 mb-2" type="password" id="password_check" name="password_check"
+                               onKeyup="pw_pwcheck_isSame();">
                     </div>
 
                     <!-- Todo: 비밀번호 동일 여부 판단 -->
@@ -78,12 +78,12 @@
                     <hr class="signup-hr">
 
                     <!-- 이메일 -->
-                    <div style="text-align: left; margin-left: 60px;">
+                    <div class="signup-input-label" style="text-align: left;">
                         <label>이메일</label>
                     </div>
                     <div>
-                        <input class="login-input px-3 py-2 mb-2" type="email" id="email" name="email"
-                               onKeyup="email_validation();" placeholder="email@domain.com" style="width: 80%">
+                        <input class="signup-input px-3 py-2 mb-2" type="email" id="email" name="email"
+                               onKeyup="email_validation();" placeholder="email@domain.com">
                     </div>
 
                     <div class="password-validate">
@@ -94,28 +94,29 @@
                     </div>
 
                     <!-- 출생일 -->
-                    <div style="text-align: left; margin-left: 60px;">
+                    <div class="signup-input-label" style="text-align: left;">
                         <label>출생일</label>
                     </div>
                     <div>
-                        <form class="login-input px-3 py-2 mb-2">
-                            <input type="date" name="birthday">
+                        <form class="signup-input px-3 py-2 mb-2">
+                            <input type="date" id="current" name="birthday">
                         </form>
                     </div>
 
                     <!-- 메모 -->
                     <div>
-                        <label style="display: block; text-align: left; margin-left: 60px;">Memo</label>
+                        <label class="signup-input-label" style="display: block; text-align: left;">Memo</label>
                     </div>
-                    <div class="mb-3" style="width: 80%; display: block; margin: auto;">
+                    <div class="mb-3 signup-input-memo">
                         <textarea placeholder="한 줄 소개" class="form-control" id="exampleFormControlTextarea1" rows="3" style="resize: none;"></textarea>
                     </div>
 
-                    <button class="login-submit p-2 mb-2" type="submit" onclick="signupValidation()" style="width: 80%">회원가입</button>
+                    <button class="signup-submit p-2 mb-2" type="submit" onclick="signupValidation()">회원가입</button>
                 </div>
             </form>
-            <div class="d-flex justify-content-center mt-2 login-etc">
-                <a th:onclick="|location.href='@{login}'|" class="mr-4">이미 계정이 있습니다.</a>
+            <div class="d-flex justify-content-center mt-2" style="margin-top: 1px !important;">
+                <!--<a th:onclick="|location.href='@{login}'|" class="mr-4">이미 계정이 있습니다.</a>-->
+                <button class="signup-submit p-2 mb-2" th:onclick="|location.href='@{login}'|">이미 계정이 있습니다.</button>
             </div>
         </div>
 
@@ -140,3 +141,6 @@
     </div>
 </body>
 </html>
+<script>
+    document.getElementById('current').value= new Date().toISOString().slice(0, 10);
+</script>
