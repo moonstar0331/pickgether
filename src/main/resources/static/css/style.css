@@ -335,7 +335,7 @@
 
 /* 전체,팔로우 버튼*/
 .all-follow-btn {
-    width: 50%;
+    width: 300px;
     background: white;
     border: none;
     color: black;
@@ -351,6 +351,12 @@
     color: black !important;
     background: #fff !important;
     box-shadow: none !important;
+}
+
+@media (max-width: 600px) {
+    .all-follow-btn {
+        width: 50vw;
+    }
 }
 
 .search-cancel-btn {
