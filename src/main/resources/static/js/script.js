@@ -52,6 +52,13 @@ $(document).ready(function () {
     });
 });
 
+function noLogin_beforeCheck() {
+    var answer = confirm('로그인 후 가능합니다');
+    if (answer) {
+        location.href = '/login';
+    }
+}
+
 function href(path) {
     location.href = '/' + path;
 }

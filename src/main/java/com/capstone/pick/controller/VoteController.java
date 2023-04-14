@@ -125,11 +125,17 @@ public class VoteController {
     public String voteDetail(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
         VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
-        model.addAttribute("isBookmark", voteService.findBookmarkVoteId(votePrincipal.getUsername()).contains(voteId));
 
         Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
         model.addAttribute("comments", comments);
-        model.addAttribute("user", votePrincipal.toDto());
+
+        if(votePrincipal == null) {
+            model.addAttribute("isBookmark", false);
+            model.addAttribute("user", null);
+        } else {
+            model.addAttribute("isBookmark", voteService.findBookmarkVoteId(votePrincipal.getUsername()).contains(voteId));
+            model.addAttribute("user", votePrincipal.toDto());
+        }
         return "page/voteDetail";
     }
 

@@ -36,9 +36,17 @@
 </head>
 <body>
 <div class="timeline-background min-vh-100">
-    <div class="d-flex justify-content-center py-2 fixed-top" style="height: 6rem;">
+    <div th:if="${user == null}" class="d-flex justify-content-center py-2 fixed-top" style="height: 6rem;">
         <a class="navbar-brand" href="/timeline"
            style="font-size: 35px; font-family: 'Oleo Script Swash Caps', cursive; color: #2D226E;">Pickgether</a>
+    </div>
+
+    <div th:if="${user != null}" class="d-flex col align-items-center py-2 fixed-top" style="height: 6rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
+             viewBox="0 0 16 16" onclick="history.back()">
+            <path fill-rule="evenodd"
+                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+        </svg>
     </div>
 
     <div style="margin-top: 6rem;">
@@ -189,9 +197,18 @@
             <span th:id="${'vote-commentNum-' + vote.getId()}" th:text="${comments.size}"></span>
         </div>
         <div align="right" style="margin-right: 15px;">
-            <button th:id="${'bookmark' + vote.getId()}" type="button"
+            <button th:if="${user != null}" th:id="${'bookmark' + vote.getId()}" type="button"
                     style="background-color:transparent; border: none;"
                     onclick="clickBookmark(this.id)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     th:class="${isBookmark ? 'bi bi-bookmark-fill bookmark-on' : 'bi bi-bookmark bookmark-off'}"
+                     viewBox="0 0 16 16">
+                    <path/>
+                </svg>
+            </button>
+            <button th:if="${user == null}" th:id="${'bookmark' + vote.getId()}" type="button"
+                    style="background-color:transparent; border: none;"
+                    onclick="noLogin_beforeCheck()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                      th:class="${isBookmark ? 'bi bi-bookmark-fill bookmark-on' : 'bi bi-bookmark bookmark-off'}"
                      viewBox="0 0 16 16">
@@ -260,7 +277,7 @@
                                    th:id="'comment'+${comment.getId()}+'likeCount'">123</p>
                             </div>
                         </div>
-                        <th:block th:if="${comment.getUserDto().getUserId() == user.getUserId()}">
+                        <th:block th:if="${(user != null) && (comment.getUserDto().getUserId() == user.getUserId())}">
                             <div th:id="${'defaultBtns' + comment.getId()}" class="col align-items-center"
                                  style="display: flex; justify-content: flex-end;">
                                 <button th:id="${comment.getId()}"
@@ -313,9 +330,10 @@
             <rect width="100%" height="100%" fill="#F07F7F"></rect>
         </svg>
         <div class="custom-form vw-100">
-            <input id="commentInput" type="text" class="custom-form-input" name="content" placeholder="댓글 달기..."
-                   required>
-            <button class="custom-botton" type="button" onclick="saveComment()">게시</button>
+            <input th:if="${user == null}" type="text" class="custom-form-input" name="content" placeholder="댓글 달기..." required>
+            <input  th:if="${user != null}" id="commentInput" type="text" class="custom-form-input" name="content" placeholder="댓글 달기..." required>
+            <button th:if="${user == null}" class="custom-botton" type="button" onclick="noLogin_beforeCheck()">게시</button>
+            <button th:if="${user != null}" class="custom-botton" type="button" onclick="saveComment()">게시</button>
         </div>
     </footer>
 </div>
