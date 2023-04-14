@@ -56,12 +56,6 @@ public class User {
     private String membership; // 멤버십
     */
 
-    @OneToMany(mappedBy = "fromUser")
-    private List<Follow> following = new ArrayList<>();
-
-    @OneToMany(mappedBy = "toUser")
-    private List<Follow> followers = new ArrayList<>();
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

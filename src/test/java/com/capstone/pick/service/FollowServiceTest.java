@@ -3,20 +3,18 @@ package com.capstone.pick.service;
 import com.capstone.pick.domain.Follow;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.dto.FollowDto;
-import com.capstone.pick.repository.UserRepository;
+import com.capstone.pick.repository.FollowRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @DisplayName("팔로우")
@@ -27,7 +25,7 @@ public class FollowServiceTest {
     private FollowService followService;
 
     @Mock
-    private UserRepository userRepository;
+    private FollowRepository followRepository;
 
     @Test
     @DisplayName("유저 아이디를 넘겨주면, 해당 유저의 팔로워 리스트를 찾을 수 있다.")
@@ -43,9 +41,7 @@ public class FollowServiceTest {
         followerList.add(follow1);
         followerList.add(follow2);
 
-        User mockUser = Mockito.mock(User.class);
-        when(userRepository.getReferenceById(anyString())).thenReturn(mockUser);
-        when(mockUser.getFollowers()).thenReturn(followerList);
+        when(followRepository.findAllByToUser(user.getUserId())).thenReturn(followerList);
 
         //when
         List<FollowDto> followerDtos = followService.getFollowerList("user");
@@ -70,9 +66,7 @@ public class FollowServiceTest {
         followingList.add(follow1);
         followingList.add(follow2);
 
-        User mockUser = Mockito.mock(User.class);
-        when(userRepository.getReferenceById(anyString())).thenReturn(mockUser);
-        when(mockUser.getFollowing()).thenReturn(followingList);
+        when(followRepository.findAllByFromUser(user.getUserId())).thenReturn(followingList);
 
         //when
         List<FollowDto> followerDtos = followService.getFollowingList("user");

@@ -204,7 +204,6 @@ public class PickControllerTest {
         List<Follow> followingList = new ArrayList<>();
         followingList.add(follow1);
         followingList.add(follow2);
-        user.setFollowing(followingList);
         return followingList.stream().map(FollowDto::from).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package com.capstone.pick.service;
 
+import com.capstone.pick.domain.Follow;
 import com.capstone.pick.dto.FollowDto;
 import com.capstone.pick.repository.FollowRepository;
 import com.capstone.pick.repository.UserRepository;
@@ -26,14 +27,16 @@ public class FollowService {
 
     @Transactional(readOnly = true)
     public List<FollowDto> getFollowerList(String userId) {
-        return userRepository.getReferenceById(userId).getFollowers().stream()
+        List<Follow> followerList = followRepository.findAllByToUser(userId);
+        return followerList.stream()
                 .map(FollowDto::from)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<FollowDto> getFollowingList(String userId) {
-        return userRepository.getReferenceById(userId).getFollowing().stream()
+        List<Follow> followingList = followRepository.findAllByFromUser(userId);
+        return followingList.stream()
                 .map(FollowDto::from)
                 .collect(Collectors.toList());
     }
