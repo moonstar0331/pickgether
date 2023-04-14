@@ -19,13 +19,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http.httpBasic().disable()
                 .csrf().and()
                 .rememberMe().and()
                 .authorizeRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .antMatchers("/signup").permitAll()
+                        .antMatchers("/{voteId}/detail").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin()
