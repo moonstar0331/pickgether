@@ -1,14 +1,8 @@
 package com.capstone.pick.dto;
 
-import com.capstone.pick.domain.Follow;
 import com.capstone.pick.domain.User;
 import lombok.*;
-
-import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -31,10 +25,6 @@ public class UserDto {
     private String job;
     private String address;
 
-    private List<FollowDto> following = new ArrayList<>();
-
-    private List<FollowDto> followers = new ArrayList<>();
-
     public static UserDto from(User entity) {
         return UserDto.builder()
                 .userId(entity.getUserId())
@@ -49,8 +39,6 @@ public class UserDto {
                 .provider(entity.getProvider())
                 .address(entity.getAddress())
                 .job(entity.getJob())
-                .following(entity.getFollowing().stream().map(FollowDto::from).collect(Collectors.toList()))
-                .followers(entity.getFollowers().stream().map(FollowDto::from).collect(Collectors.toList()))
                 .build();
     }
 
@@ -67,8 +55,6 @@ public class UserDto {
                 .provider(provider)
                 .address(address)
                 .job(job)
-                .following(following.stream().map(FollowDto::toEntity).collect(Collectors.toList()))
-                .followers(followers.stream().map(FollowDto::toEntity).collect(Collectors.toList()))
                 .build();
     }
 }
