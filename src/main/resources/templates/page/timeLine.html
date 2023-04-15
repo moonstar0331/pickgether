@@ -42,7 +42,7 @@
                     console.log("데이터 패치 시도");
                 },
                 success: function (data) {
-                    console.log(JSON.stringify(data));
+                    createMoreVote(data);
                     container.onscroll = null;
                     isLoading = false;
                 },
@@ -55,6 +55,7 @@
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <script type="text/javascript" th:src="@{/js/share.js}"></script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
+    <script type="text/javascript" th:src="@{/js/timeline.js}"></script>
 </head>
 <body>
 <div class="timeline-background" style="overflow-x: hidden;">
@@ -281,7 +282,6 @@
                     </section>
                 </div>
             </section>
-
             <hr/>
         </div>
     </div>

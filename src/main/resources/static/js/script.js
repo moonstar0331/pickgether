@@ -437,3 +437,23 @@ function clearSearchResult() {
         searchResult.removeChild(searchResult.firstChild);
     }
 }
+
+function createMoreVote(data) {
+    const votes = data.votes;
+    const container = document.getElementById("voteContainer");
+    for(let i=0; i<votes.numberOfElements; i++) {
+        const user = votes.content[i].userDto;
+        const vote = votes.content[i];
+        const option = votes.content[i].voteOptionDtos;
+        const comments = votes.content[i].commentDtos;
+
+        const voteArea = document.createElement('div');
+        voteArea.setAttribute('id', 'voteArea')
+        voteArea.append(createHeader(vote, user));
+        //voteArea.append(createContent(vote, option));
+        voteArea.append(createIcons(vote, comments));
+        voteArea.append(createComment(vote, comments[0]));
+
+        container.append(voteArea);
+    }
+}
