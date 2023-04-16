@@ -1,4 +1,4 @@
-package com.capstone.pick.repository;
+package com.capstone.pick.repository.cache;
 
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.dto.VoteOptionCommentDto;
