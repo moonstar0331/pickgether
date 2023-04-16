@@ -850,3 +850,54 @@ h6.user-email {
     resize: none; border-radius: 0.8rem;
 }
 /*-- editProfile.html end --*/
+
+.timeline-navbar-brand {
+    margin-left: 50%;
+    transform: translateX(-60%);
+}
+
+
+@media (min-width: 450px) and (max-width: 600px) {
+    .timeline-navbar-brand {
+        margin-left: 25%;
+        transform: translateX(0);
+        font-size: 30px;
+    }
+    .timeline-navbar-dropdown {
+        margin-left: 50%;
+    }
+}
+
+@media (min-width: 425px) and (max-width: 450px) {
+    .timeline-navbar-brand {
+        margin-left: 20%;
+        transform: translateX(0);
+        font-size: 30px;
+    }
+    .timeline-navbar-dropdown {
+        margin-left: 30%;
+    }
+}
+
+@media (min-width: 400px) and (max-width: 425px){
+    .timeline-navbar-brand {
+        margin-left: 15%;
+        transform: translateX(0);
+        font-size: 30px;
+    }
+    .timeline-navbar-dropdown {
+        margin-left: 20%;
+    }
+}
+
+@media (max-width: 400px) {
+    .timeline-navbar-brand {
+        margin-left: 10%;
+        transform: translateX(0);
+        font-size: 30px;
+    }
+
+    .timeline-navbar-dropdown {
+        margin-left: 10%;
+    }
+}
