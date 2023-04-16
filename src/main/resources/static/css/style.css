@@ -513,10 +513,10 @@
 }
 
 .vote-submit-btn {
-    border: none;
-    margin-top: 5px;
-    background-color: transparent;
-    filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%);
+    border: none; !important;
+    margin-top: 5px; !important;
+    background-color: transparent; !important;
+    filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%); !important;
 }
 
 
