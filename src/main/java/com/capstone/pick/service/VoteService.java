@@ -34,6 +34,7 @@ public class VoteService {
     private final BookmarkRepository bookmarkRepository;
 
     private final VoteRedisRepository voteRedisRepository;
+    private final BookmarkCacheRepository bookmarkCacheRepository;
 
     @Transactional(readOnly = true)
     public List<VoteDto> findAllVotes() {
@@ -170,11 +171,12 @@ public class VoteService {
         bookmarkRepository.findByUserAndVote(user, vote).ifPresent(l -> {
             throw new IllegalStateException("이미 저장된 게시글입니다.");
         });
-        bookmarkRepository.save(Bookmark.builder()
+        Bookmark savedBookmark = bookmarkRepository.save(Bookmark.builder()
                 .user(user)
                 .vote(vote)
                 .createAt(LocalDateTime.now())
                 .build());
+        bookmarkCacheRepository.setBookmark(BookmarkDto.from(savedBookmark));
     }
 
     public void deleteBookmark(String userId, Long voteId) throws UserMismatchException {
@@ -183,6 +185,7 @@ public class VoteService {
 
         if (bookmark.getUser().equals(user)) {
             bookmarkRepository.delete(bookmark);
+            bookmarkCacheRepository.delete(voteId);
         } else {
             throw new UserMismatchException();
         }
@@ -194,12 +197,12 @@ public class VoteService {
 
     @Transactional(readOnly = true)
     public Page<VoteOptionCommentDto> viewBookmarks(String userId, Pageable pageble) {
-        return bookmarkRepository.findByUser(userRepository.getReferenceById(userId), pageble).map(b -> VoteOptionCommentDto.from(b.getVote()));
+        return bookmarkRepository.findAllByUser(userRepository.getReferenceById(userId), pageble).map(b -> VoteOptionCommentDto.from(b.getVote()));
     }
 
     @Transactional(readOnly = true)
     public List<Long> findBookmarkVoteId(String userId) {
-        return bookmarkRepository.findByUser(userRepository.getReferenceById(userId)).stream().map(b -> b.getVote().getId()).collect(Collectors.toList());
+        return bookmarkRepository.findAllByUser(userRepository.getReferenceById(userId)).stream().map(b -> b.getVote().getId()).collect(Collectors.toList());
     }
 
     public Long getPickCount(Long voteId) {
