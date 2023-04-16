@@ -1,8 +1,12 @@
 package com.capstone.pick.config;
 
+import com.capstone.pick.domain.Bookmark;
 import com.capstone.pick.domain.User;
+import com.capstone.pick.dto.BookmarkDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.DuplicatedUserException;
+import com.capstone.pick.repository.BookmarkCacheRepository;
+import com.capstone.pick.repository.BookmarkRepository;
 import com.capstone.pick.repository.UserCacheRepository;
 import com.capstone.pick.repository.UserRepository;
 import com.capstone.pick.security.VotePrincipal;
@@ -14,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -22,6 +27,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserCacheRepository userCacheRepository;
+
+    private final BookmarkRepository bookmarkRepository;
+    private final BookmarkCacheRepository bookmarkCacheRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,6 +40,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userRepository.findById(username)
                             .map(UserDto::from)
                             .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다 - username: " + username)));
+
+            bookmarkRepository.findAllByUser(user.toEntity()).forEach(bookmark -> {
+                bookmarkCacheRepository.setBookmark(BookmarkDto.from(bookmark));
+            });
+
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
