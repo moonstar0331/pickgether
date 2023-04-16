@@ -453,13 +453,13 @@ public class VoteServiceTest {
         Page<Bookmark> bookmarks = mock(Page.class);
 
         given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
-        given(bookmarkRepository.findByUser(user, pageable)).willReturn(bookmarks);
+        given(bookmarkRepository.findAllByUser(user, pageable)).willReturn(bookmarks);
 
         // when
         voteService.viewBookmarks(user.getUserId(), pageable);
 
         // then
-        then(bookmarkRepository).should().findByUser(any(User.class), any());
+        then(bookmarkRepository).should().findAllByUser(any(User.class), any());
     }
 
     @DisplayName("userId를 입력받으면, 해당 유저가 저장한 북마크의 투표 게시글 ID(voteId) 리스트를 반환한다.")
@@ -469,13 +469,13 @@ public class VoteServiceTest {
         User user = createUser();
 
         given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
-        given(bookmarkRepository.findByUser(user)).willReturn(anyList());
+        given(bookmarkRepository.findAllByUser(user)).willReturn(anyList());
 
         // when
         voteService.findBookmarkVoteId(user.getUserId());
 
         // then
-        then(bookmarkRepository).should().findByUser(any(User.class));
+        then(bookmarkRepository).should().findAllByUser(any(User.class));
     }
 
     private static VoteDto createVoteDto(String title, String content) {
