@@ -450,7 +450,7 @@ function createMoreVote(data) {
         const voteArea = document.createElement('div');
         voteArea.setAttribute('id', 'voteArea')
         voteArea.append(createHeader(vote, user));
-        //voteArea.append(createContent(vote, option));
+        voteArea.append(createContent(vote, option));
         voteArea.append(createIcons(vote, comments));
         voteArea.append(createComment(vote, comments[0]));
 

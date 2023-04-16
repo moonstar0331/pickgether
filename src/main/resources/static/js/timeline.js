@@ -81,7 +81,7 @@ function createHeader(vote, user) {
 }
 
 function createContent(vote, option) {
-    // 본문 생성
+    // 게시글 본문
     const content = document.createElement("div");
     content.classList.add("m-2");
     content.style.paddingTop = "5px";
@@ -93,105 +93,21 @@ function createContent(vote, option) {
 
     content.appendChild(contentTitle);
 
-    // 투표 섹션 생성
-    const voteSection = document.createElement("section");
-    voteSection.classList.add("vote" + vote.id + "outer", "vote-background-1");
-    voteSection.addEventListener("click", function () {
-        show(vote.id);
-    });
+    // 투표 요소
 
-    const voteTitleDiv = document.createElement("div");
+    // 투표 클릭시
 
-    const voteTitleP = document.createElement("p");
-    voteTitleP.classList.add("vote-background-p");
-    voteTitleP.id = "vote-title-" + vote.id;
-    voteTitleP.textContent = "vote.title";
+    // 투표 제출 버튼
 
-    voteTitleDiv.appendChild(voteTitleP);
+    // 투표 통계 버튼
 
-    const voteCardDate = document.createElement("div");
-    voteCardDate.classList.add("vote-card-date");
-    voteCardDate.textContent = vote.createdAt;
+    // 투표 선택지
 
-    voteTitleDiv.appendChild(voteCardDate);
+    const contentDiv = document.createElement("div");
+    contentDiv.appendChild(content);
+    //contentDiv.appendChild(voteSection);
+    //contentDiv.appendChild(voteClicked);
 
-    voteSection.appendChild(voteTitleDiv);
-
-    // 투표 클릭시 섹션 생성
-    const voteClicked = document.createElement("section");
-    voteClicked.classList.add("vote-background-2", "vote" + vote.id + "inner", "vote-background-2");
-    voteClicked.id = "vote-background-section-clicked";
-    voteClicked.style.display = "none";
-    voteClicked.setAttribute("voteId", vote.id);
-
-    const voteClickedDiv1 = document.createElement("div");
-    voteClickedDiv1.classList.add("test" + vote.id);
-    voteClickedDiv1.style.paddingBottom = "30px";
-    voteClickedDiv1.style.width = "85%";
-    voteClickedDiv1.style.float = "left";
-
-    const voteClickedDiv2 = document.createElement("div");
-
-    const voteSubmitBtn = document.createElement("button");
-    voteSubmitBtn.classList.add("vote-submit-btn", "vote-submit-btn" + vote.id);
-    voteSubmitBtn.addEventListener("click", function () {
-        submitPick(vote.id);
-    });
-
-    const voteSubmitBtnImg = document.createElement("img");
-    voteSubmitBtnImg.src = "/images/icons/arrow-right.svg";
-    voteSubmitBtnImg.style.width = "25px";
-    voteSubmitBtnImg.style.height = "30px";
-
-    voteSubmitBtn.appendChild(voteSubmitBtnImg);
-
-    voteClickedDiv2.appendChild(voteSubmitBtn);
-
-    const voteAnalyzeBtn = document.createElement("button");
-    voteAnalyzeBtn.classList.add("vote-analyze-btn" + vote.id);
-    voteAnalyzeBtn.style.border = "none";
-    voteAnalyzeBtn.style.display = "none";
-    voteAnalyzeBtn.style.marginTop = "5px";
-    voteAnalyzeBtn.style.backgroundColor = "transparent";
-
-    const voteAnalyzeBtnImg = document.createElement("img");
-    voteAnalyzeBtnImg.src = "/images/icons/analyze.svg";
-    voteAnalyzeBtnImg.style.width = "25px";
-    voteAnalyzeBtnImg.style.height = "30px";
-    voteAnalyzeBtnImg.style.fill = "#FFFFFF";
-
-    voteAnalyzeBtn.appendChild(voteAnalyzeBtnImg);
-
-    voteClickedDiv2.appendChild(voteAnalyzeBtn);
-
-    const optionDiv = document.createElement("div");
-    optionDiv.style.marginTop = "20px";
-
-    for (let i = 0; i < option.length; i++) {
-        optionDiv.append(
-            $("<div>", {class: "vote-button-check", id: "vote" + vote.id + "options"}).append(
-                $("<input>", {
-                    class: "vote-select-btn",
-                    type: "radio",
-                    id: function () {
-                        return "vote" + vote.id + "option" + option[i].id;
-                    },
-                    name: function () {
-                        return "vote" + vote.id + "option";
-                    },
-                    value: option[i].id,
-                })
-            ).append(
-                $("<label>", {for: "", text: option[i].content})
-            ).append(
-                $("<div>", {class: "vote-result" + vote.id + " vote-option-tl"})
-            )
-        );
-    }
-    voteClicked.append($("<div>", {class: "test" + vote.id, style: "display: block; height:3rem;"}));
-
-    // 최종 결과물
-    const contentDiv = $("<div>").append(content).append(voteSection).append(voteClicked);
     return contentDiv;
 }
 
