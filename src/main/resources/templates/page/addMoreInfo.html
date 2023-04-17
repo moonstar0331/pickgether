@@ -60,12 +60,10 @@
     <div class="mb-4" style="width: 500px">
         <form class="text-center" th:action="@{/addMoreInfo}"  method="POST" id="addMoreInfo-form" th:object="${addMoreInfo}" enctype="application/x-www-form-urlencoded">
             <div>
-                <!-- 연령대 -->
+                <!-- 연령 -->
                 <div class="signup-input-label" style="text-align: left;">
-                    <label>연령대</label>
-                </div>
-                <div>
-                    <input class="signup-input px-3 py-2 mb-2" type="text" placeholder="20 또는 30과 같이 입력해주세요" th:field="*{age_range}">
+                    <label for="current" style="display: block;">출생일</label>
+                    <input type="date" id="current" name="birthday" style="border: none; margin-bottom: 5%;">
                 </div>
 
                 <!-- 성별 -->
@@ -84,7 +82,7 @@
                 <div class="ep-form-group option-job-and-gender">
                     <label for="job" style="display: block;">직업</label>
                     <select class="signup-input-label border-none focus-none border-bottom p-1" style="display: block; width: 100%" id="job">
-                        <option th:value="none" disabled selected hidden>직업 선택 👷</option>
+                        <option th:value="none" disabled selected hidden>직업 선택</option>
                         <option th:value="expert">전문가 및 관련 종사자</option>
                         <option th:value="office">사무 종사자</option>
                         <option th:value="service">서비스 종사자</option>
@@ -110,3 +108,7 @@
 </div>
 </body>
 </html>
+
+<script>
+    document.getElementById('current').value= new Date().toISOString().slice(0, 10);
+</script>
