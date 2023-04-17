@@ -7,14 +7,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
+
+import javax.persistence.Id;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@RedisHash("LIKE")
 public class CommentLikeDto {
 
+    @Id
     private Long id;
+    @Indexed
     private Long voteCommentId;
     private UserDto userDto;
 
