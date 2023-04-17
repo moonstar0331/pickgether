@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Repository
@@ -24,6 +24,7 @@ public class BookmarkCacheRepository {
     public void setBookmark(BookmarkDto bookmark) {
         try {
             redisTemplate.opsForHash().put("BOOKMARK", bookmark.getVoteDto().getId(), serializeBookmark(bookmark));
+            redisTemplate.expire("BOOKMARK", 3, TimeUnit.DAYS);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
