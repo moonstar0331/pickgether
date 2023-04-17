@@ -33,7 +33,7 @@
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </head>
 <body>
-<div class="timeline-background">
+<div class="timeline-background" style="overflow-x: hidden;">
 
     <!--Todo: 백->프론트 댓글 연동-->
     <nav class="navbar sticky-top navbar-light bg-light" style="height: 85px;">
@@ -161,7 +161,7 @@
                      th:class="'vote'+${vote.getId()} + 'inner vote-background-2'" id="vote-background-section-clicked"
                      style="display: none;">
                 <div>
-                    <div th:class="'test'+${vote.getId()}" style="padding-bottom: 30px; width:85%; float: left;">
+                    <div th:class="'test'+${vote.getId()}" id="timeline-vote-empty-blank">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
                              class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="8"/>
@@ -169,6 +169,8 @@
                     </div>
 
                     <div>
+
+                        <!-- Todo: 투표 제출 버튼 & 투표 통계 버튼 margin 사이즈 반응형으로 조절하기 -->
                         <!-- 투표 제출 버튼 -->
                         <button th:class="'vote-submit-btn'+${vote.getId()}" th:Id="${vote.getId()}"
                                 onclick="submitPick(this.id)"
@@ -176,16 +178,14 @@
                                 margin-top: 5px;
                                 background-color: transparent;
                                 filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%);">
-                            <img src="/images/icons/arrow-right.svg"
-                                 style="width: 25px; height: 30px;"/>
+                            <img src="/images/icons/arrow-right.svg" id="timeline-vote-submit-btn"/>
                         </button>
                         <!-- 투표 통계 버튼 -->
                         <button th:class="'vote-analyze-btn'+${vote.getId()}"
                                 style="border: none; display: none;
                                 margin-top: 5px;
                                 background-color: transparent;">
-                            <img src="/images/icons/analyze.svg"
-                                 style="width: 25px; height: 30px; fill: #FFFFFF"/>
+                            <img src="/images/icons/analyze.svg" id="timeline-vote-analyze-btn"/>
                         </button>
                     </div>
 

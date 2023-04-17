@@ -901,3 +901,26 @@ h6.user-email {
         margin-left: 10%;
     }
 }
+
+#timeline-vote-submit-btn {
+    width: 25px;
+    height: 30px;
+}
+
+#timeline-vote-analyze-btn {
+    width: 25px;
+    height: 30px;
+    fill: #FFFFFF;
+}
+
+#timeline-vote-empty-blank {
+    padding-bottom: 30px;
+    width: 90%;
+    float: left;
+}
+
+@media (max-width: 500px) {
+    #timeline-vote-empty-blank {
+        width: 85%;
+    }
+}
