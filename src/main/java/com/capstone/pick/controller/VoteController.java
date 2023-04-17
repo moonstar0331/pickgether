@@ -7,6 +7,7 @@ import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.BookmarkCacheRepository;
+import com.capstone.pick.repository.CommentLikeRedisRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteCommentService;
@@ -23,7 +24,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,6 +36,7 @@ public class VoteController {
     private final UserService userService;
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
+    private final CommentLikeRedisRepository commentLikeRedisRepository;
 
     @GetMapping("/")
     public String home() {
@@ -66,11 +67,7 @@ public class VoteController {
         model.addAttribute("votes", votes);
 
         // TODO : 북마크 저장된 게시글은 어떻게 처리할지 논의
-//        List<Long> bookmarks = voteService.findBookmarkVoteId(votePrincipal.getUsername());
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
-        for(Object m : bookmarks) {
-            System.out.println(m + " " + m.getClass());
-        }
         model.addAttribute("bookmarks", bookmarks);
 
         model.addAttribute("category", category);
@@ -137,6 +134,9 @@ public class VoteController {
 
         Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
         model.addAttribute("comments", comments);
+
+        List<Long> likes = commentLikeRedisRepository.findAll().stream().map(CommentLikeDto::getVoteCommentId).collect(Collectors.toList());
+        model.addAttribute("likes", likes);
 
         if(votePrincipal == null) {
             model.addAttribute("isBookmark", false);

@@ -5,6 +5,7 @@ import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.VoteComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {
@@ -13,4 +14,6 @@ public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> 
     void deleteAllByVoteCommentId(Long voteCommentId);
 
     Optional<CommentLike> findByUserAndVoteComment(User user, VoteComment voteComment);
+
+    List<CommentLike> findAllByUser_UserId(String userId);
 }
