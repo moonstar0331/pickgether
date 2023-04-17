@@ -919,6 +919,12 @@ h6.user-email {
     float: left;
 }
 
+@media (min-width: 500px) and (max-width: 560px) {
+    #timeline-vote-empty-blank {
+        width: 88%;
+    }
+}
+
 @media (max-width: 500px) {
     #timeline-vote-empty-blank {
         width: 85%;
