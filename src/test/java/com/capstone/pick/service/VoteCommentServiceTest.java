@@ -11,6 +11,7 @@ import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.*;
+import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

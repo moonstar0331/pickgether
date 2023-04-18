@@ -7,6 +7,7 @@ import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.*;
+import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.VoteRedisRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
