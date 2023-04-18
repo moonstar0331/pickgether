@@ -1,10 +1,11 @@
 package com.capstone.pick.config;
 
 import com.capstone.pick.domain.User;
+import com.capstone.pick.dto.BookmarkDto;
+import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.DuplicatedUserException;
-import com.capstone.pick.repository.UserCacheRepository;
-import com.capstone.pick.repository.UserRepository;
+import com.capstone.pick.repository.*;
 import com.capstone.pick.security.VotePrincipal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -13,15 +14,21 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-
+import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserCacheRepository userCacheRepository;
+
+    private final BookmarkRepository bookmarkRepository;
+    private final BookmarkCacheRepository bookmarkCacheRepository;
+
+    private final CommentLikeRepository commentLikeRepository;
+    private final CommentLikeRedisRepository commentLikeRedisRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,6 +39,14 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userRepository.findById(username)
                             .map(UserDto::from)
                             .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다 - username: " + username)));
+
+            bookmarkRepository.findAllByUser(user.toEntity()).forEach(bookmark -> {
+                bookmarkCacheRepository.setBookmark(BookmarkDto.from(bookmark));
+            });
+
+            List<CommentLikeDto> likes = commentLikeRepository.findAllByUser_UserId(user.getUserId()).stream().map(CommentLikeDto::from).collect(Collectors.toList());
+            commentLikeRedisRepository.saveAll(likes);
+
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

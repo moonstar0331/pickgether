@@ -8,10 +8,7 @@ import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.CommentWithLikeCountDto;
 import com.capstone.pick.exeption.UserMismatchException;
-import com.capstone.pick.repository.CommentLikeRepository;
-import com.capstone.pick.repository.UserRepository;
-import com.capstone.pick.repository.VoteCommentRepository;
-import com.capstone.pick.repository.VoteRepository;
+import com.capstone.pick.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +24,7 @@ public class VoteCommentService {
     private final VoteRepository voteRepository;
     private final VoteCommentRepository voteCommentRepository;
     private final CommentLikeRepository commentLikeRepository;
+    private final CommentLikeRedisRepository commentLikeRedisRepository;
 
     public Page<CommentWithLikeCountDto> commentsByVote(Long voteId, Pageable pageable) {
         Vote vote = voteRepository.findById(voteId).orElseThrow();
@@ -72,7 +70,8 @@ public class VoteCommentService {
             throw new IllegalStateException("이미 좋아요를 했습니다.");
         });
 
-        commentLikeRepository.save(commentLikeDto.toEntity(user, voteComment));
+        CommentLike savedLike = commentLikeRepository.save(commentLikeDto.toEntity(user, voteComment));
+        commentLikeRedisRepository.save(CommentLikeDto.from(savedLike));
     }
 
     public void deleteCommentLike(Long commentId, String userId) {
@@ -83,6 +82,7 @@ public class VoteCommentService {
                 () -> new IllegalStateException("좋아요를 하지 않았습니다."));
 
         commentLikeRepository.delete(commentLike);
+        commentLikeRedisRepository.delete(CommentLikeDto.from(commentLike));
     }
 
     public Long getLikeCount(Long commentId) {
