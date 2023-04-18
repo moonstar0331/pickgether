@@ -452,6 +452,10 @@
     }
 }
 
+.vote-select-box {
+    position: relative;
+    margin: .5rem; !important
+}
 .vote-select-btn {
     display: none;
 }
@@ -461,6 +465,32 @@
     position: relative;
     display: flex;
     justify-content: space-around;
+}
+
+.pick-percent {
+    display: none; !important;
+    position: absolute; !important;
+    top: 0px;
+    left: 0px;
+    height: 55px;
+    background: #FFF2E9;
+    opacity: 0.4;
+    border-radius: 100px;
+    z-index: 1; !important;
+}
+
+.vote-analyze-btn {
+    border: none;
+    display: none;
+    margin-top: 5px;
+    background-color: transparent;
+}
+
+.vote-submit-btn {
+    border: none;
+    margin-top: 5px;
+    background-color: transparent;
+    filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%);
 }
 
 .vote-select-btn+label {

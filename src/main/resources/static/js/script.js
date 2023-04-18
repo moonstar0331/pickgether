@@ -196,6 +196,36 @@ function submitPick(voteId) {
             console.log(data);
         }
     });
+    setPickPercent(voteId);
+}
+
+function setPickPercent(voteId) {
+    // 1. 각 선택지에 대한 pick 개수 가져오기
+    let sum = 0;
+    $.ajax({
+        url: `/${voteId}/pick-count-list`,
+        type: "GET",
+        dataType: "json",
+        beforeSend: function () {
+            console.log("데이터 패치 시도");
+        },
+        success: function (data) {
+            console.log(JSON.stringify(data));
+            let keys = Object.keys(data.pickCountList); // 선택지 아이디 리스트
+
+            // 2. 각 선택지에 대한 퍼센트 너비를 변경
+            keys.forEach((optionId) => sum += parseInt(data.pickCountList[optionId]));
+            console.log(sum);
+
+            keys.forEach((optionId) => {
+                $('#result' + optionId)
+                    .css("width", Math.floor(parseInt(data.pickCountList[optionId]) / sum * 100) + '%');
+            })
+        },
+        error: function () {
+            console.log("데이터 패치 중 에러 발생");
+        }
+    });
 }
 
 // voteOption 태그 생성 및 삭제 count

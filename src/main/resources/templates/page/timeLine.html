@@ -172,34 +172,26 @@
 
                         <!-- Todo: 투표 제출 버튼 & 투표 통계 버튼 margin 사이즈 반응형으로 조절하기 -->
                         <!-- 투표 제출 버튼 -->
-                        <button th:class="'vote-submit-btn'+${vote.getId()}" th:Id="${vote.getId()}"
-                                onclick="submitPick(this.id)"
-                                style="border: none;
-                                margin-top: 5px;
-                                background-color: transparent;
-                                filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%);">
-                            <img src="/images/icons/arrow-right.svg" id="timeline-vote-submit-btn"/>
+                        <button th:class="'vote-submit-btn vote-submit-btn'+${vote.getId()}"
+                                th:Id="${vote.getId()}" onclick="submitPick(this.id)">
+                            <img src="/images/icons/arrow-right.svg" style="width: 25px; height: 30px;"/>
                         </button>
                         <!-- 투표 통계 버튼 -->
-                        <button th:class="'vote-analyze-btn'+${vote.getId()}"
-                                style="border: none; display: none;
-                                margin-top: 5px;
-                                background-color: transparent;">
-                            <img src="/images/icons/analyze.svg" id="timeline-vote-analyze-btn"/>
+                        <button th:class="'vote-analyze-btn vote-analyze-btn'+${vote.getId()}">
+                            <img src="/images/icons/analyze.svg" style="width: 25px; height: 30px; fill: #FFFFFF"/>
                         </button>
                     </div>
 
                     <div style="margin-top: 20px;">
                         <div th:each="option : ${vote.voteOptionDtos}">
                             <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
-                                <input class="vote-select-btn" type="radio"
-                                       th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                       th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
-                                <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                       th:text="${option.content}"></label>
-                                <div th:class="'vote-result'+${vote.getId()}"
-                                     style="display: none; position: absolute; top: 10px; left: 5%; width: 50%; height: 55px;
-                                        background: #FFF2E9; opacity: 0.4; border-radius: 100px; z-index:1;">
+                                <div class="vote-select-box">
+                                    <input class="vote-select-btn" type="radio"
+                                           th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
+                                           th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
+                                    <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
+                                           th:text="${option.content}" class="m-0 p-0"></label>
+                                    <div th:class="'pick-percent vote-result'+${vote.getId()}" th:id="'result' + ${option.getId()}"/>
                                 </div>
                             </div>
                         </div>
