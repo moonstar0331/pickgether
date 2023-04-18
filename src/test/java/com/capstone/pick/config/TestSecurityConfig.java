@@ -1,8 +1,8 @@
 package com.capstone.pick.config;
 
 import com.capstone.pick.domain.User;
+import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.UserCacheRepository;
-import com.capstone.pick.repository.UserRepository;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.event.annotation.BeforeTestMethod;
@@ -27,6 +27,14 @@ public class TestSecurityConfig {
     private UserRepository userRepository;
     @MockBean
     UserCacheRepository userCacheRepository;
+    @MockBean
+    BookmarkRepository bookmarkRepository;
+    @MockBean
+    BookmarkCacheRepository bookmarkCacheRepository;
+    @MockBean
+    CommentLikeRepository commentLikeRepository;
+    @MockBean
+    CommentLikeRedisRepository commentLikeRedisRepository;
 
     @BeforeTestMethod
     public void securitySetUp() {
