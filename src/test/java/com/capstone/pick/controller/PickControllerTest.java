@@ -34,9 +34,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -159,7 +157,7 @@ public class PickControllerTest {
         when(voteService.getPickCount(voteId)).thenReturn(pickCount);
 
         // then
-        MvcResult result = mvc.perform(get("/" + voteId + "/json-participants")
+        MvcResult result = mvc.perform(get("/" + voteId + "/participants-update")
                         .principal(new UsernamePasswordAuthenticationToken(username, ""))
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("page", "0"))
@@ -186,6 +184,32 @@ public class PickControllerTest {
         assertThat(jsonObject.get("maxCnt")).isEqualTo(6);
         assertThat(jsonObject.has("size")).isTrue();
         assertThat(jsonObject.get("size")).isEqualTo(pickCount.intValue());
+    }
+
+    @Test
+    @DisplayName("[GET][/{voteId}/pick-count-list] 투표 선택지별 득표수 API 엔드포인트 테스트")
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void testGetPickCountList() throws Exception {
+        // given
+        Long voteId = 1L;
+        Map<Long, Long> pickCountList = new HashMap<>();
+        pickCountList.put(1L, 2L);
+        pickCountList.put(2L, 3L);
+
+        // when
+        when(pickService.getPickCountList(anyLong())).thenReturn(pickCountList);
+
+        // then
+        MvcResult result = mvc.perform(get("/" + voteId + "/pick-count-list")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        // response data 검증
+        String content = result.getResponse().getContentAsString();
+        JSONObject jsonObject = new JSONObject(content);
+        assertThat(jsonObject.has("pickCountList")).isTrue();
+        assertThat(jsonObject.get("pickCountList")).isInstanceOf(JSONObject.class);
     }
 
     private static Follow createFollow(Long id, User fromUser, User toUser) {
