@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,5 +51,10 @@ public class PickService {
                 .map(UserDto::from)
                 .collect(Collectors.toList());
         return new PageImpl<>(participants, pageable, participants.size());
+    }
+
+    public Map<Long, Long> getPickCountList(Long voteId) {
+        return voteOptionRepository.findAllByVoteId(voteId).stream()
+                .collect(Collectors.toMap(VoteOption::getId, vo -> pickRepository.getCountListByOptionId(vo.getId())));
     }
 }

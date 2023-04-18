@@ -75,4 +75,13 @@ public class PickController {
 
         return response;
     }
+
+    @GetMapping(path = "/{voteId}/pick-count-list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> getPickCountList(@PathVariable Long voteId) {
+        Map<Long, Long> pickCountList = pickService.getPickCountList(voteId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("pickCountList", pickCountList);
+        return response;
+    }
 }
