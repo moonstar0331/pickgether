@@ -8,7 +8,6 @@ import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
-import com.capstone.pick.repository.cache.VoteRedisRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,8 +55,6 @@ public class VoteServiceTest {
     private HashtagRepository hashtagRepository;
     @Mock
     private VoteHashtagRepository voteHashtagRepository;
-    @Mock
-    private VoteRedisRepository voteRedisRepository;
     @Mock
     private BookmarkRepository bookmarkRepository;
     @Mock
