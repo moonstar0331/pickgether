@@ -545,6 +545,7 @@
     opacity: 0.4;
     border-radius: 100px;
     z-index: 1; !important;
+    pointer-events: none; !important;
 }
 
 .vote-analyze-btn {

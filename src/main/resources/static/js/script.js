@@ -220,6 +220,8 @@ function setPickPercent(voteId) {
             keys.forEach((optionId) => {
                 $('#result' + optionId)
                     .css("width", Math.floor(parseInt(data.pickCountList[optionId]) / sum * 100) + '%');
+                let options = ".option-label" + voteId;
+                $(options).css("pointer-events", "none");
             })
         },
         error: function () {

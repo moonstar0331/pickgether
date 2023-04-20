@@ -223,7 +223,7 @@
                                 </button>
                             </div>
                         </div>
-
+                    </div>
                     <div style="margin-top: 20px;">
                         <div th:each="option : ${vote.voteOptionDtos}">
                             <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
@@ -232,12 +232,11 @@
                                            th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
                                            th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
                                     <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                           th:text="${option.content}" class="option-label" style="width: 28rem;"></label>
+                                           th:text="${option.content}" th:class="'option-label option-label'+${vote.getId()}" style="width: 28rem;"></label>
                                     <div th:class="'pick-percent vote-result'+${vote.getId()}" th:id="'result' + ${option.getId()}"/>
                                 </div>
                             </div>
                         </div>
-
                         <div th:class="'test'+${vote.getId()}" style="display: block; height:3rem;"></div>
                     </div>
                 </section>
