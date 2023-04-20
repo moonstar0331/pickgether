@@ -147,6 +147,7 @@ function deleteAllBookmark() {
 function show(voteId) {
     var outer = ".vote" + voteId + "outer";
     var inner = ".vote" + voteId + "inner";
+
     $(outer).click(function () {
         $(inner).css("display", "block");
         $(outer).css("display", "none");
@@ -173,30 +174,33 @@ function show(voteId) {
 function submitPick(voteId) {
     const selected = document.querySelector("#vote" + voteId + "options input[type=radio]:checked");
 
-    var data = {
-        "optionId": selected.value
+    if (selected !== null) {
+        var data = {
+            "optionId": selected.value
+        };
+        $.ajax({
+            url: '/pick',
+            data: JSON.stringify(data),
+            type: "POST",
+            async: true,
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function (jqXHR, settings) {
+                var header = $("meta[name='_csrf_header']").attr("content");
+                var token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+        setPickPercent(voteId);
+    } else {
+        console.log("vote id[" + voteId + "] : pick data is null");
     }
-
-    $.ajax({
-        url: '/pick',
-        data: JSON.stringify(data),
-        type: "POST",
-        async: true,
-        dataType: 'JSON',
-        contentType: 'application/json; charset=utf-8',
-        beforeSend: function (jqXHR, settings) {
-            var header = $("meta[name='_csrf_header']").attr("content");
-            var token = $("meta[name='_csrf']").attr("content");
-            jqXHR.setRequestHeader(header, token);
-        },
-        success: function (data) {
-            console.log(data);
-        },
-        error: function (data) {
-            console.log(data);
-        }
-    });
-    setPickPercent(voteId);
 }
 
 function setPickPercent(voteId) {
@@ -448,6 +452,8 @@ function createMoreVote(data) {
         const vote = votes.content[i];
         const option = votes.content[i].voteOptionDtos;
         const comments = votes.content[i].commentDtos;
+
+        console.log(JSON.stringify(option));
 
         const voteArea = document.createElement('div');
         voteArea.setAttribute('id', 'voteArea')

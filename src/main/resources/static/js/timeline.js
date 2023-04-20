@@ -94,19 +94,163 @@ function createContent(vote, option) {
     content.appendChild(contentTitle);
 
     // 투표 요소
+    var section = document.createElement("section");
+    section.classList.add("vote-background-1", "vote" + vote.id + "outer");
+    section.setAttribute("id", vote.id);
+    section.addEventListener("click", function() {
+        show(vote.id);
+    });
 
-    // 투표 클릭시
+    var div1 = document.createElement("div");
+    section.appendChild(div1);
 
-    // 투표 제출 버튼
+    var div2 = document.createElement("div");
+    div2.setAttribute("class", "wrap");
+    div1.appendChild(div2);
 
-    // 투표 통계 버튼
+    var div3 = document.createElement("div");
+    div3.setAttribute("class", "m-2 fl");
+    div2.appendChild(div3);
 
-    // 투표 선택지
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "14");
+    svg.setAttribute("height", "14");
+    svg.setAttribute("fill", "white");
+    svg.setAttribute("class", "bi bi-circle-fill vote-background-circle");
+    svg.setAttribute("viewBox", "0 0 16 16");
+    div3.appendChild(svg);
+
+    var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", "8");
+    circle.setAttribute("cy", "8");
+    circle.setAttribute("r", "8");
+    svg.appendChild(circle);
+
+    var p = document.createElement("p");
+    p.setAttribute("class", "vote-background-p");
+    p.setAttribute("id", "vote-title-" + vote.id);
+    p.textContent = vote.title;
+    div1.appendChild(p);
+
+    var div4 = document.createElement("div");
+    div4.setAttribute("align", "right");
+    div4.setAttribute("style", "color: white; margin-right: 15px; font-size: 20px; height: 3rem;");
+    div4.setAttribute("text", vote.createAt);
+    div1.appendChild(div4);
+
+    // -------------- 투표 클릭시 -----------------
+    const voteClicked = document.createElement('section');
+    voteClicked.setAttribute('class', 'vote-background-2');
+    voteClicked.setAttribute('voteId', vote.id);
+    voteClicked.classList.add('vote' + vote.id + 'inner', 'vote-background-2');
+    voteClicked.setAttribute('id', 'vote-background-section-clicked');
+    voteClicked.setAttribute('style', 'display: none;');
+
+    // section의 첫번째 div
+    const div1_clicked = document.createElement('div');
+
+    const wrap1 = document.createElement('div');
+    wrap1.setAttribute('class', 'wrap');
+
+    const div1_2 = document.createElement('div');
+    div1_2.setAttribute('class', 'm-2 fl');
+
+    const div1_3 = document.createElement('div');
+    div1_3.setAttribute('class', 'test' + vote.id);
+    div1_3.setAttribute('id', 'timeline-vote-empty-blank');
+    div1_3.setAttribute('style', 'padding: 0rem;');
+
+    const svg_clicked = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg_clicked.setAttribute('width', '14');
+    svg_clicked.setAttribute('height', '14');
+    svg_clicked.setAttribute('fill', 'white');
+    svg_clicked.setAttribute('class', 'bi bi-circle-fill vote-background-circle');
+    svg_clicked.setAttribute('viewBox', '0 0 16 16');
+
+    const circle_clicked = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle_clicked.setAttribute('cx', '8');
+    circle_clicked.setAttribute('cy', '8');
+    circle_clicked.setAttribute('r', '8');
+
+    svg_clicked.appendChild(circle_clicked);
+    div1_3.appendChild(svg_clicked);
+    div1_2.appendChild(div1_3);
+    wrap1.appendChild(div1_2);
+
+    const div1_4 = document.createElement('div');
+    div1_4.setAttribute('class', 'mr-3 mt-1 fr');
+
+    const button1 = document.createElement('button');
+    button1.classList.add('vote-submit-btn', 'vote-submit-btn' + vote.id);
+    button1.setAttribute('id', vote.id);
+    button1.addEventListener("click", function() {
+        submitPick(vote.id);
+    });
+
+    const img1 = document.createElement('img');
+    img1.setAttribute('src', '/images/icons/arrow-right.svg');
+    img1.setAttribute('style', 'width: 25px; height: 30px;');
+
+    button1.appendChild(img1);
+    div1_4.appendChild(button1);
+
+    const button2 = document.createElement('button');
+    button2.setAttribute('class', 'vote-analyze-btn vote-analyze-btn' + vote.id);
+
+    const img2 = document.createElement('img');
+    img2.setAttribute('src', '/images/icons/analyze.svg');
+    img2.setAttribute('style', 'width: 25px; height: 30px; fill: #FFFFFF');
+
+    button2.appendChild(img2);
+    div1_4.appendChild(button2);
+    wrap1.appendChild(div1_4);
+    div1_clicked.appendChild(wrap1);
+
+    // ------------ 투표 선택지 -------------
+    // section의 두 번째 div
+    const div2_clicked = document.createElement("div");
+    div2_clicked.classList.add("vote-option-mp");
+
+    // optionList for문
+    for (let i = 0; i < option.length; i++) {
+        const voteButtonCheck = document.createElement("div");
+        voteButtonCheck.classList.add("vote-button-check");
+        voteButtonCheck.id = 'vote' + vote.id + 'options';
+
+        const voteSelectBox = document.createElement("div");
+        voteSelectBox.classList.add("vote-select-box");
+
+        const voteSelectBtn = document.createElement("input");
+        voteSelectBtn.classList.add("vote-select-btn");
+        voteSelectBtn.type = 'radio';
+        voteSelectBtn.id = 'vote' + vote.id + 'option' + option[i].id;
+        voteSelectBtn.name = 'vote' + vote.id + 'option' + option[i].id;
+        voteSelectBtn.value = option[i].id;
+
+        const optionLabel = document.createElement("label");
+        optionLabel.setAttribute("for", 'vote' + vote.id + 'option' + option[i].id);
+        optionLabel.textContent = option[i].content;
+        optionLabel.classList.add('option-label', 'option-label' + vote.id);
+        optionLabel.style.width = "28rem";
+
+        const voteResult = document.createElement("div");
+        voteResult.classList.add('pick-percent', 'vote-result' + vote.id);
+        voteResult.id = 'result' + option[i].id;
+
+        voteSelectBox.appendChild(voteSelectBtn);
+        voteSelectBox.appendChild(optionLabel);
+        voteSelectBox.appendChild(voteResult);
+
+        voteButtonCheck.appendChild(voteSelectBox);
+        div2_clicked.appendChild(voteButtonCheck);
+    }
+    voteClicked.appendChild(div1_clicked);
+    voteClicked.appendChild(div2_clicked);
 
     const contentDiv = document.createElement("div");
     contentDiv.appendChild(content);
-    //contentDiv.appendChild(voteSection);
-    //contentDiv.appendChild(voteClicked);
+    contentDiv.appendChild(section);
+    contentDiv.appendChild(voteClicked);
 
     return contentDiv;
 }
@@ -241,6 +385,10 @@ function createComment(vote, comment) {
     cmText.appendChild(commentContent);
 
     const hr = document.createElement("hr");
+    hr.style.borderTop = '1px solid #212529';
+    hr.style.marginTop = "16px";
+    hr.style.marginBottom = "16px";
+
     commentArea.appendChild(hr);
 
     return commentArea;

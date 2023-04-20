@@ -88,19 +88,27 @@
             <div class="navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle timeline-navbar-dropdown" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle timeline-navbar-dropdown" href="#" id="navbarDropdown"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             정렬조건
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="border-radius: 10px; z-index: 999; position: absolute !important;">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
+                            style="border-radius: 10px; z-index: 999; position: absolute !important;">
                             <li><h6 class="dropdown-header">카테고리</h6></li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
 
                             <li th:each="category : ${T(com.capstone.pick.domain.constant.Category).values()}">
-                                <a class="dropdown-item" th:cate="${category}" th:onclick="|timelineCategory(this.getAttribute('cate'))|" th:text="${category.displayValue}"></a>
+                                <a class="dropdown-item" th:cate="${category}"
+                                   th:onclick="|timelineCategory(this.getAttribute('cate'))|"
+                                   th:text="${category.displayValue}"></a>
                             </li>
 
                             <li><h6 class="dropdown-header">정렬기준</h6></li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
 
                             <li>
                                 <a class="dropdown-item" onclick="timelineOrderBy('modifiedAt')">최신순</a>
@@ -147,7 +155,8 @@
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item dropdown">
                                         <a class="nav-link" href="#" role="button"
-                                           data-bs-toggle="dropdown" aria-expanded="false" style="color: black!important;">
+                                           data-bs-toggle="dropdown" aria-expanded="false"
+                                           style="color: black!important;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                  fill="currentColor"
                                                  class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -157,7 +166,8 @@
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
                                             style="border-radius: 10px; z-index: 999;">
                                             <li>
-                                                <a class="dropdown-item hover-cursor-pointer" th:id="${vote.getId()}" onclick="sendLink(this.id)">카카오톡
+                                                <a class="dropdown-item hover-cursor-pointer" th:id="${vote.getId()}"
+                                                   onclick="sendLink(this.id)">카카오톡
                                                     공유</a>
                                             </li>
                                             <!-- redis 적용 후 현재 로그인 유저와 투표 작성자가 일치할 때 display -->
@@ -174,10 +184,9 @@
 
                 <!--글 내용-->
                 <div class="m-2" style="padding-top: 5px;">
-                    <div class="timeline-content-title" th:id="${'vote-content-' + vote.getId()}" th:text="${vote.content}"/>
+                    <div class="timeline-content-title" th:id="${'vote-content-' + vote.getId()}"
+                         th:text="${vote.content}"/>
                 </div>
-            </section>
-
                 <!--투표-->
                 <section class="vote-background-1" th:class="'vote'+${vote.getId()} + 'outer vote-background-1'"
                          th:id="${vote.getId()}"
@@ -199,12 +208,14 @@
 
                 <!-- 투표 클릭시 -->
                 <section class="vote-background-2" th:voteId="${vote.getId()}"
-                         th:class="'vote'+${vote.getId()} + 'inner vote-background-2'" id="vote-background-section-clicked"
+                         th:class="'vote'+${vote.getId()} + 'inner vote-background-2'"
+                         id="vote-background-section-clicked"
                          style="display: none;">
                     <div>
                         <div class="wrap">
                             <div class="m-2 fl">
-                                <div th:class="'test'+${vote.getId()}" id="timeline-vote-empty-blank" style="padding: 0rem;">
+                                <div th:class="'test'+${vote.getId()}" id="timeline-vote-empty-blank"
+                                     style="padding: 0rem;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
                                          class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
                                         <circle cx="8" cy="8" r="8"/>
@@ -214,30 +225,33 @@
                             <div class="mr-3 mt-1 fr">
                                 <!-- 투표 제출 버튼 -->
                                 <button th:class="'vote-submit-btn vote-submit-btn'+${vote.getId()}"
-                                        th:Id="${vote.getId()}" onclick="submitPick(this.id)">
+                                        th:id="${vote.getId()}" onclick="submitPick(this.id)">
                                     <img src="/images/icons/arrow-right.svg" style="width: 25px; height: 30px;"/>
                                 </button>
                                 <!-- 투표 통계 버튼 -->
                                 <button th:class="'vote-analyze-btn vote-analyze-btn'+${vote.getId()}">
-                                    <img src="/images/icons/analyze.svg" style="width: 25px; height: 30px; fill: #FFFFFF"/>
+                                    <img src="/images/icons/analyze.svg"
+                                         style="width: 25px; height: 30px; fill: #FFFFFF"/>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div style="margin-top: 20px;">
+                    <div class="vote-option-mp">
                         <div th:each="option : ${vote.voteOptionDtos}">
                             <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
                                 <div class="vote-select-box">
                                     <input class="vote-select-btn" type="radio"
-                                           th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                           th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
+                                    th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
+                                    th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
                                     <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                           th:text="${option.content}" th:class="'option-label option-label'+${vote.getId()}" style="width: 28rem;"></label>
-                                    <div th:class="'pick-percent vote-result'+${vote.getId()}" th:id="'result' + ${option.getId()}"/>
+                                           th:text="${option.content}"
+                                           th:class="'option-label option-label'+${vote.getId()}"
+                                           style="width: 28rem;"/>
+                                    <div th:class="'pick-percent vote-result'+${vote.getId()}"
+                                         th:id="'result' + ${option.getId()}"/>
                                 </div>
                             </div>
                         </div>
-                        <div th:class="'test'+${vote.getId()}" style="display: block; height:3rem;"></div>
                     </div>
                 </section>
             </div>
@@ -264,10 +278,12 @@
                     <span th:id="${'vote-commentNum-' + vote.getId()}" th:text="${vote.getCommentDtos().size()}"></span>
                 </div>
                 <div align="right" style="margin-right: 15px;">
-                    <button th:id="${'bookmark' + vote.getId()}" type="button" style="background-color:transparent; border: none;"
+                    <button th:id="${'bookmark' + vote.getId()}" type="button"
+                            style="background-color:transparent; border: none;"
                             onclick="clickBookmark(this.id)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                             th:class="${bookmarks.contains(vote.getId()) ? 'bi bi-bookmark-fill bookmark-on' : 'bi bi-bookmark bookmark-off'}" viewBox="0 0 16 16">
+                             th:class="${bookmarks.contains(vote.getId()) ? 'bi bi-bookmark-fill bookmark-on' : 'bi bi-bookmark bookmark-off'}"
+                             viewBox="0 0 16 16">
                             <path/>
                         </svg>
                     </button>
@@ -292,7 +308,7 @@
                     </section>
                 </div>
             </section>
-            <hr/>
+            <hr>
         </div>
     </div>
     <div style="height: 52px;"></div>

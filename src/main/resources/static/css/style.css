@@ -519,6 +519,10 @@
     filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%); !important;
 }
 
+.vote-option-mp {
+    margin-top: 1.5rem;
+    padding-bottom: 2.5rem;
+}
 
 .vote-button-check {
     text-align: center;
