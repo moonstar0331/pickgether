@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min2.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style2.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/voteAnalyze.css}">
 
     <!-- 픽게더 폰트 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +29,7 @@
             integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/share.js}"></script>
+    <script type="text/javascript" th:src="@{/js/voteAnalyze.js}"></script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </head>
 <body>
@@ -76,10 +77,46 @@
                         </svg>
                         <p class="vote-background-p">타이틀</p>
                     </div>
-
                 </section>
             </div>
         </div>
+
+        <hr class="signup-hr" style="margin-left: auto; margin-right: auto;">
+
+        <!-- 연령대 -->
+        <label class="vote-analyze-subtitles">연령대 및 성별</label>
+        <ul class="graph">
+            <li class="graph-bar bar1" graph-val="30" graph-color="#F4CEC3"></li>
+            <li class="graph-bar bar2" graph-val="80" graph-color="#ECE2B1"></li>
+            <li class="graph-bar bar3" graph-val="60" graph-color="#DDECB1"></li>
+            <li class="graph-bar bar4" graph-val="30" graph-color="#CEF3E1"></li>
+            <li class="graph-bar bar4" graph-val="30" graph-color="#B1C5EC"></li>
+        </ul>
+
+        <div class="pie-chart-gender" style="display: block; margin: 20px auto; margin-top: 50px"></div>
+
+        <!-- 직업 -->
+        <label class="vote-analyze-subtitles" style="margin-top: 50px;">직업</label>
+        <div class="pie-chart-job" style="display: block; margin: 20px auto;"></div>
+
+        <section class="vote-analyze-job" style="margin-top: 3rem;">
+            <section>
+                <div id="job-expert"></div>
+                <label>전문가 및 관련 직종 종사자</label>
+            </section>
+            <section>
+                <div id="job-paper"></div>
+                <label>사무 종사자</label>
+            </section>
+            <section>
+                <div id="job-service"></div>
+                <label>서비스 종사자</label>
+            </section>
+            <section>
+                <div id="job-sales"></div>
+                <label>판매 종사자</label>
+            </section>
+        </section>
     </div>
 </body>
 </html>

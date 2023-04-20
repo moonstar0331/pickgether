@@ -1,0 +1,69 @@
+.graph{
+    width:500px;
+    height: 300px;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    margin: 20px auto;
+    position:relative;
+}
+
+@media (max-width: 600px) {
+    .graph{
+        width:90%;
+    }
+}
+
+.graph-bar{
+    display: inline-block;
+    position: absolute;
+    width: 4rem;
+    bottom:0;
+    perspective:200px;
+
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+
+    box-shadow: 3px 0px 10px rgb(189 189 189);
+}
+
+.pie-chart-gender, .pie-chart-job {
+    /*display:inline-block;*/
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.vote-analyze-subtitles {
+    font-size: 1.25rem;
+    margin-left: 20px;
+    font-weight: 700;
+}
+
+.vote-analyze-job div {
+    height: 20px;
+    width: 20px;
+    float: left;
+    margin-right: 1rem;
+}
+
+.vote-analyze-job section {
+    margin-bottom: 0.5rem;
+    margin-left: 3rem;
+}
+
+#job-expert {
+    background-color: #F4CEC3;
+}
+
+#job-paper {
+    background-color: #ECE2B1;
+}
+
+#job-service {
+    background-color: #DDECB1;
+}
+
+#job-sales {
+    background-color: #CEF3E1;
+}
