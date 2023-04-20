@@ -32,24 +32,35 @@
 
         function loadMore() {
             let container = document.getElementById("voteContainer");
-            let page = container.getAttribute("data-page");
-            console.log("스크롤 감지");
-            $.ajax({
-                url: `/timeline-update?page=${page}`,
-                type: "GET",
-                dataType: "json",
-                beforeSend: function () {
-                    console.log("데이터 패치 시도");
-                },
-                success: function (data) {
-                    createMoreVote(data);
-                    container.onscroll = null;
-                    isLoading = false;
-                },
-                error: function () {
-                    console.log("데이터 패치 중 에러 발생");
-                }
-            });
+
+            const scrollTop = container.scrollTop;
+            const clientHeight = container.clientHeight;
+            const scrollHeight = container.scrollHeight;
+            const page = parseInt(container.getAttribute("data-page")) + 1;
+
+            if (scrollHeight * 0.9 - scrollTop < clientHeight && !isLoading) {
+                isLoading = true;
+                $.ajax({
+                    url: `/timeline-update?page=${page}`,
+                    type: "GET",
+                    dataType: "json",
+                    beforeSend: function () {
+                        console.log("데이터 패치 시도");
+                    },
+                    success: function (data) {
+                        if ((data.votes.totalPages) == (page + 1)) {
+                            container.onscroll = null;
+                            console.log("마지막 페이지");
+                        }
+                        createMoreVote(data);
+                        container.setAttribute("data-page", page.toString());
+                        isLoading = false;
+                    },
+                    error: function () {
+                        console.log("데이터 패치 중 에러 발생");
+                    }
+                });
+            }
         }
     </script>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -165,8 +176,6 @@
                 <div class="m-2" style="padding-top: 5px;">
                     <div class="timeline-content-title" th:id="${'vote-content-' + vote.getId()}" th:text="${vote.content}"/>
                 </div>
-                <div th:text="${#temporals.format(vote.createAt, 'yy/MM/dd HH:mm')}" align="right"
-                     style="color: white; margin-right: 15px; font-size: 20px; height: 3rem;"></div>
             </section>
 
                 <!--투표-->
@@ -193,18 +202,27 @@
                          th:class="'vote'+${vote.getId()} + 'inner vote-background-2'" id="vote-background-section-clicked"
                          style="display: none;">
                     <div>
-
-                        <!-- Todo: 투표 제출 버튼 & 투표 통계 버튼 margin 사이즈 반응형으로 조절하기 -->
-                        <!-- 투표 제출 버튼 -->
-                        <button th:class="'vote-submit-btn vote-submit-btn'+${vote.getId()}"
-                                th:Id="${vote.getId()}" onclick="submitPick(this.id)">
-                            <img src="/images/icons/arrow-right.svg" style="width: 25px; height: 30px;"/>
-                        </button>
-                        <!-- 투표 통계 버튼 -->
-                        <button th:class="'vote-analyze-btn vote-analyze-btn'+${vote.getId()}">
-                            <img src="/images/icons/analyze.svg" style="width: 25px; height: 30px; fill: #FFFFFF"/>
-                        </button>
-                    </div>
+                        <div class="wrap">
+                            <div class="m-2 fl">
+                                <div th:class="'test'+${vote.getId()}" id="timeline-vote-empty-blank" style="padding: 0rem;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                         class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="8"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="mr-3 mt-1 fr">
+                                <!-- 투표 제출 버튼 -->
+                                <button th:class="'vote-submit-btn vote-submit-btn'+${vote.getId()}"
+                                        th:Id="${vote.getId()}" onclick="submitPick(this.id)">
+                                    <img src="/images/icons/arrow-right.svg" style="width: 25px; height: 30px;"/>
+                                </button>
+                                <!-- 투표 통계 버튼 -->
+                                <button th:class="'vote-analyze-btn vote-analyze-btn'+${vote.getId()}">
+                                    <img src="/images/icons/analyze.svg" style="width: 25px; height: 30px; fill: #FFFFFF"/>
+                                </button>
+                            </div>
+                        </div>
 
                     <div style="margin-top: 20px;">
                         <div th:each="option : ${vote.voteOptionDtos}">
@@ -214,7 +232,7 @@
                                            th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
                                            th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
                                     <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                           th:text="${option.content}" class="m-0 p-0"></label>
+                                           th:text="${option.content}" class="option-label" style="width: 28rem;"></label>
                                     <div th:class="'pick-percent vote-result'+${vote.getId()}" th:id="'result' + ${option.getId()}"/>
                                 </div>
                             </div>
