@@ -2,22 +2,32 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
+import com.capstone.pick.domain.Pick;
+import com.capstone.pick.domain.VoteOption;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
+import com.capstone.pick.repository.*;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteCommentService;
+import com.capstone.pick.service.VoteResultService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +35,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +53,9 @@ public class VoteController {
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
     private final CommentLikeRedisRepository commentLikeRedisRepository;
+    private final PickRepository pickRepository;
+    private final VoteOptionRepository voteOptionRepository;
+    private final VoteResultService voteResultService;
 
     @GetMapping("/")
     public String home() {
@@ -160,7 +176,7 @@ public class VoteController {
         List<Long> likes = commentLikeRedisRepository.findAll().stream().map(CommentLikeDto::getVoteCommentId).collect(Collectors.toList());
         model.addAttribute("likes", likes);
 
-        if(votePrincipal == null) {
+        if (votePrincipal == null) {
             model.addAttribute("isBookmark", false);
             model.addAttribute("user", null);
         } else {
@@ -194,4 +210,46 @@ public class VoteController {
         voteService.deleteAllBookmark(votePrincipal.getUsername());
         return "redirect:";
     }
+
+    @GetMapping("/{voteId}/analysis")
+    public String voteAnalysis(@PathVariable Long voteId) throws Exception {
+        List<String[]> voteResults = voteResultService.getVoteResults(voteId);
+        for (String[] vr : voteResults) {
+            System.out.println(vr[0] + vr[1]);
+        }
+        return "redirect:/timeline";
+    }
+
+//    @GetMapping("/{voteId}/download")
+//    public ResponseEntity<byte[]> downloadCSV(@PathVariable Long voteId) throws IOException {
+//        String[] cols = {"vote_opion_id", "vote_option_content", "gender", "age_range", "address", "job"};
+//
+//        StringWriter sw = new StringWriter();
+//        CSVPrinter csvPrinter = new CSVPrinter(sw, CSVFormat.DEFAULT.withHeader(cols));
+//
+//        List<VoteOption> voteOptions = voteOptionRepository.findAllByVoteId(voteId);
+//        String filename = voteId + "_" + voteOptions.get(0).getVote().getTitle();
+//        for (VoteOption vo : voteOptions) {
+//            for (Pick p : pickRepository.findAllByVoteOptionId(vo.getId())) {
+//                csvPrinter.printRecord(Arrays.asList(
+//                        String.valueOf(vo.getId()),
+//                        vo.getContent(),
+//                        p.getUser().getGender(),
+//                        p.getUser().getAge_range(),
+//                        p.getUser().getAddress(),
+//                        p.getUser().getJob()
+//                ));
+//            }
+//        }
+//        sw.flush();
+//        byte[] csvFile = sw.toString().getBytes("UTF-8");
+//        csvPrinter.close();
+//
+//        HttpHeaders header = new HttpHeaders();
+//        header.setContentType(MediaType.valueOf("plain/text"));
+//        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename + ".csv");
+//        header.setContentLength(csvFile.length);
+//
+//        return new ResponseEntity<byte[]>(csvFile, header, HttpStatus.OK);
+//    }
 }
