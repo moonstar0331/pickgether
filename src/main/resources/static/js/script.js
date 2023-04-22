@@ -197,10 +197,10 @@ function submitPick(voteId) {
                 console.log(data);
             }
         });
-        setPickPercent(voteId);
     } else {
         console.log("vote id[" + voteId + "] : pick data is null");
     }
+    setPickPercent(voteId);
 }
 
 function setPickPercent(voteId) {
@@ -219,12 +219,12 @@ function setPickPercent(voteId) {
 
             // 2. 각 선택지에 대한 퍼센트 너비를 변경
             keys.forEach((optionId) => sum += parseInt(data.pickCountList[optionId]));
-            console.log(sum);
+            console.log('sum = ' + sum);
 
             keys.forEach((optionId) => {
                 $('#result' + optionId)
                     .css("width", Math.floor(parseInt(data.pickCountList[optionId]) / sum * 100) + '%');
-                let options = ".option-label" + voteId;
+                let options = '.vote-select-box' + voteId;
                 $(options).css("pointer-events", "none");
             })
         },
@@ -447,20 +447,25 @@ function clearSearchResult() {
 function createMoreVote(data) {
     const votes = data.votes;
     const container = document.getElementById("voteContainer");
+
     for(let i=0; i<votes.numberOfElements; i++) {
         const user = votes.content[i].userDto;
         const vote = votes.content[i];
         const option = votes.content[i].voteOptionDtos;
         const comments = votes.content[i].commentDtos;
 
-        console.log(JSON.stringify(option));
-
         const voteArea = document.createElement('div');
         voteArea.setAttribute('id', 'voteArea')
         voteArea.append(createHeader(vote, user));
-        voteArea.append(createContent(vote, option));
-        voteArea.append(createIcons(vote, comments));
-        voteArea.append(createComment(vote, comments[0]));
+        if(option != null)
+            voteArea.append(createContent(vote, option));
+        if(comments != null) {
+            voteArea.append(createIcons(vote, comments));
+            voteArea.append(createComment(vote, comments[0]));
+        }
+
+        const hr = document.createElement("hr");
+        voteArea.appendChild(hr);
 
         container.append(voteArea);
     }

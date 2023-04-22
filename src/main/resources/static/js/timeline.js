@@ -80,6 +80,17 @@ function createHeader(vote, user) {
     return header;
 }
 
+ function onOptionClicked(target, voteId, option) {
+     if(target.checked) {
+         target.checked = false;
+     } else {
+         for(let i=0; i<option.length; i++) {
+             document.getElementById('vote' + voteId + 'option' + option[i].id).checked = false;
+         }
+         target.checked = true;
+     }
+ }
+
 function createContent(vote, option) {
     // 게시글 본문
     const content = document.createElement("div");
@@ -211,6 +222,8 @@ function createContent(vote, option) {
     const div2_clicked = document.createElement("div");
     div2_clicked.classList.add("vote-option-mp");
 
+    const div2_1 = document.createElement("div");
+
     // optionList for문
     for (let i = 0; i < option.length; i++) {
         const voteButtonCheck = document.createElement("div");
@@ -218,19 +231,23 @@ function createContent(vote, option) {
         voteButtonCheck.id = 'vote' + vote.id + 'options';
 
         const voteSelectBox = document.createElement("div");
-        voteSelectBox.classList.add("vote-select-box");
+        voteSelectBox.classList.add('vote-select-box' + vote.id, 'vote-select-box');
 
         const voteSelectBtn = document.createElement("input");
         voteSelectBtn.classList.add("vote-select-btn");
-        voteSelectBtn.type = 'radio';
+        voteSelectBtn.type = "radio";
         voteSelectBtn.id = 'vote' + vote.id + 'option' + option[i].id;
-        voteSelectBtn.name = 'vote' + vote.id + 'option' + option[i].id;
+        voteSelectBtn.name = 'vote' + vote.id + 'option';
         voteSelectBtn.value = option[i].id;
+        voteSelectBtn.checked = false;
+
+        voteSelectBox.addEventListener('click', function () {
+             onOptionClicked(voteSelectBtn, vote.id, option);
+        });
 
         const optionLabel = document.createElement("label");
-        optionLabel.setAttribute("for", 'vote' + vote.id + 'option' + option[i].id);
         optionLabel.textContent = option[i].content;
-        optionLabel.classList.add('option-label', 'option-label' + vote.id);
+        optionLabel.classList.add('option-label');
         optionLabel.style.width = "28rem";
 
         const voteResult = document.createElement("div");
@@ -242,9 +259,10 @@ function createContent(vote, option) {
         voteSelectBox.appendChild(voteResult);
 
         voteButtonCheck.appendChild(voteSelectBox);
-        div2_clicked.appendChild(voteButtonCheck);
+        div2_1.appendChild(voteButtonCheck);
     }
     voteClicked.appendChild(div1_clicked);
+    div2_clicked.appendChild(div2_1);
     voteClicked.appendChild(div2_clicked);
 
     const contentDiv = document.createElement("div");
@@ -383,13 +401,6 @@ function createComment(vote, comment) {
         location.href = vote.id + "/detail";
     });
     cmText.appendChild(commentContent);
-
-    const hr = document.createElement("hr");
-    hr.style.borderTop = '1px solid #212529';
-    hr.style.marginTop = "16px";
-    hr.style.marginBottom = "16px";
-
-    commentArea.appendChild(hr);
 
     return commentArea;
 }

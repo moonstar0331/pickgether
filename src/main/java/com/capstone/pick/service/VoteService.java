@@ -49,21 +49,22 @@ public class VoteService {
         List<VoteOptionCommentDto> votes = new ArrayList<>();
 
         if(category.equals(Category.ALL)) {
-            voteRedisRepository.findAll().forEach(votes::add);
-            if(!votes.isEmpty()) return new PageImpl<>(votes, pageable, votes.size());
-            else {
+
+//            voteRedisRepository.findAll().forEach(votes::add);
+//            if(!votes.isEmpty()) return new PageImpl<>(votes, pageable, votes.size());
+//            else {
                 Page<VoteOptionCommentDto> pages = voteRepository.findAll(pageable).map(VoteOptionCommentDto::from);
                 voteRedisRepository.saveAll(pages);
                 return pages;
-            }
+//            }
         }
-        votes.addAll(voteRedisRepository.findAllByCategory(category));
-        if(!votes.isEmpty()) return new PageImpl<>(votes, pageable, votes.size());
-        else {
+//        votes.addAll(voteRedisRepository.findAllByCategory(category));
+//        if(!votes.isEmpty()) return new PageImpl<>(votes, pageable, votes.size());
+//        else {
             Page<VoteOptionCommentDto> pages = voteRepository.findAllByCategory(category, pageable).map(VoteOptionCommentDto::from);
             voteRedisRepository.saveAll(pages);
             return pages;
-        }
+//        }
     }
 
     @Transactional(readOnly = true)

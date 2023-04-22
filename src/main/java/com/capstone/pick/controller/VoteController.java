@@ -66,7 +66,7 @@ public class VoteController {
 
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category, @AuthenticationPrincipal VotePrincipal votePrincipal,
-                           @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable,
+                           @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size=5) Pageable pageable,
                            Model model) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         model.addAttribute("votes", votes);
@@ -79,11 +79,12 @@ public class VoteController {
         return "page/timeLine";
     }
 
+    //timeline?page=size -> 기존 컨트롤러 사용하기
     @GetMapping(value = "/timeline-update", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map<String, Object> timeLineUpdate(@RequestParam(required = false, defaultValue = "ALL") Category category,
                                               @AuthenticationPrincipal VotePrincipal votePrincipal,
-                                              @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+                                              @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size=5) Pageable pageable) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         List<Long> bookmarks = voteService.findBookmarkVoteId(votePrincipal.getUsername());
 
