@@ -206,6 +206,10 @@ public class VoteService {
         return bookmarkRepository.findAllByUser(userRepository.getReferenceById(userId)).stream().map(b -> b.getVote().getId()).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public Page<VoteOptionCommentDto> findMyVote(String userId, Pageable pageable) {
+        return voteRepository.findAllByUser_UserId(userId, pageable).map(VoteOptionCommentDto::from);
+    }
     public Long getPickCount(Long voteId) {
         return voteRepository.getReferenceById(voteId).getPickCount();
     }

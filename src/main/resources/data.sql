@@ -251,6 +251,10 @@ insert into pick(pick_id, user_id, vote_option_id) VALUES (40, 'rclayson4', 16);
 
 insert into follow(follow_id, from_user_id, to_user_id) values(1, 'user', 'hcampa2');
 insert into follow(follow_id, from_user_id, to_user_id) values(2, 'user', 'rclayson4');
+insert into follow(follow_id, from_user_id, to_user_id) values(3, 'hcampa2', 'rclayson4');
+insert into follow(follow_id, from_user_id, to_user_id) values(4, 'rclayson4', 'hcampa2');
+insert into follow(follow_id, from_user_id, to_user_id) values(5, 'cvaldes0', 'hcampa2');
+insert into follow(follow_id, from_user_id, to_user_id) values(6, 'cvaldes0', 'rclayson4');
 
 insert into user (user_id, user_password, email, nickname, memo, birthday, created_at)
 VALUES ('user1', 'password1', 'user1@test.com', 'user1', 'memo1', '1990-01-01 00:00:00', '2023-04-12 00:00:00'),

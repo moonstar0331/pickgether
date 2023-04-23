@@ -1,3 +1,27 @@
+function createMoreVote(data, votes, container) {
+    for(let i=0; i<votes.numberOfElements; i++) {
+        const user = votes.content[i].userDto;
+        const vote = votes.content[i];
+        const option = votes.content[i].voteOptionDtos;
+        const comments = votes.content[i].commentDtos;
+
+        const voteArea = document.createElement('div');
+        voteArea.setAttribute('id', 'voteArea')
+        voteArea.append(createHeader(vote, user));
+        if(option != null)
+            voteArea.append(createContent(vote, option));
+        if(comments != null) {
+            voteArea.append(createIcons(vote, comments));
+            voteArea.append(createComment(vote, comments[0]));
+        }
+
+        const hr = document.createElement("hr");
+        voteArea.appendChild(hr);
+
+        container.append(voteArea);
+    }
+}
+
 function createHeader(vote, user) {
     const header = document.createElement('header');
     header.classList.add('profile');

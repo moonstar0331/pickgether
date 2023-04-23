@@ -40,12 +40,12 @@
                     console.log("데이터 패치 시도");
                 },
                 success: function (data) {
-                    if(data != null) {
+                    if(data.votes.empty == false) {
                         if (data.votes.last == true) {
                             container.onscroll = null;
                             console.log("마지막 페이지");
                         }
-                        createMoreVote(data);
+                        createMoreVote(data, data.votes, container);
                         container.setAttribute("data-page", page.toString());
                     }
                     isLoading = false;
@@ -74,7 +74,7 @@
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <script type="text/javascript" th:src="@{/js/share.js}"></script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
-    <script type="text/javascript" th:src="@{/js/timeline.js}"></script>
+    <script type="text/javascript" th:src="@{/js/voteCreator.js}"></script>
 </head>
 <body>
 <script>
@@ -157,8 +157,6 @@
     </div>
     <div style="height: 52px;"></div>
 </div>
-
-<!--bottom navbar-->
 
 <!-- 하단바 -->
 <div class="icons">
