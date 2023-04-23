@@ -20,6 +20,13 @@
     }
 }
 
+.v-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: auto;
+    height: 100vh;
+}
+
 .form-selections-edit-btn {
     color: #65758E;
 }
@@ -76,6 +83,32 @@
     box-shadow: 3px 8px 20px rgb(197, 197, 197);
 
     border-radius: 13px;
+}
+
+.vote-card-date {
+    color: white;
+    margin-right: 15px;
+    font-size: 20px;
+    height: 3rem;
+    text-align: right;
+}
+
+.vote-option-tl {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    width: 300px;
+    height: 55px;
+    background: #FFF2E9;
+    opacity: 0.4;
+    border-radius: 100px;
+    z-index: 1;
+}
+
+.vote-bookmark {
+    background-color: transparent;
+    border: none;
 }
 
 .vote-background-2{
@@ -144,6 +177,25 @@
 .vote-best-and-due {
     position: relative;
     bottom: 5px;
+}
+
+.comment-id {
+    font-weight: bold; display:inline-block;
+}
+
+.cm-block {
+    display: inline-block; float: right; width: 80%; height: 20px;
+}
+
+.cm-text {
+    float: left;
+    padding-left: 10px;
+    font-size: 15px;
+    width: 90%;
+}
+
+.comment-area {
+    margin-left: 10px; display: flex; height: 100%
 }
 
 .icons button {
@@ -460,11 +512,31 @@
     display: none;
 }
 
+.vote-submit-btn {
+    border: none; !important;
+    margin-top: 5px; !important;
+    background-color: transparent; !important;
+    filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%); !important;
+}
+
+.vote-option-mp {
+    margin-top: 1.5rem;
+    padding-bottom: 2.5rem;
+}
+
 .vote-button-check {
     text-align: center;
     position: relative;
     display: flex;
     justify-content: space-around;
+}
+
+.option-label {
+    width: 28rem; !important;
+    line-height: 1.25rem; !important;
+    padding-left: 1rem; !important;
+    padding-right: 1rem; !important;
+    margin: 0 !important;
 }
 
 .pick-percent {
@@ -477,6 +549,7 @@
     opacity: 0.4;
     border-radius: 100px;
     z-index: 1; !important;
+    pointer-events: none; !important;
 }
 
 .vote-analyze-btn {
@@ -513,6 +586,10 @@
 .vote-button-check input[type=radio]:checked+label {
     background: #7F8AE5;
     color: #FFF2E9;
+}
+
+comment-circle {
+    height: 42px; width: 42px;
 }
 
 /*-- participants.html start --*/

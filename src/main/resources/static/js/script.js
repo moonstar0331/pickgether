@@ -147,6 +147,7 @@ function deleteAllBookmark() {
 function show(voteId) {
     var outer = ".vote" + voteId + "outer";
     var inner = ".vote" + voteId + "inner";
+
     $(outer).click(function () {
         $(inner).css("display", "block");
         $(outer).css("display", "none");
@@ -173,29 +174,32 @@ function show(voteId) {
 function submitPick(voteId) {
     const selected = document.querySelector("#vote" + voteId + "options input[type=radio]:checked");
 
-    var data = {
-        "optionId": selected.value
+    if (selected !== null) {
+        var data = {
+            "optionId": selected.value
+        };
+        $.ajax({
+            url: '/pick',
+            data: JSON.stringify(data),
+            type: "POST",
+            async: true,
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function (jqXHR, settings) {
+                var header = $("meta[name='_csrf_header']").attr("content");
+                var token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    } else {
+        console.log("vote id[" + voteId + "] : pick data is null");
     }
-
-    $.ajax({
-        url: '/pick',
-        data: JSON.stringify(data),
-        type: "POST",
-        async: true,
-        dataType: 'JSON',
-        contentType: 'application/json; charset=utf-8',
-        beforeSend: function (jqXHR, settings) {
-            var header = $("meta[name='_csrf_header']").attr("content");
-            var token = $("meta[name='_csrf']").attr("content");
-            jqXHR.setRequestHeader(header, token);
-        },
-        success: function (data) {
-            console.log(data);
-        },
-        error: function (data) {
-            console.log(data);
-        }
-    });
     setPickPercent(voteId);
 }
 
@@ -210,16 +214,16 @@ function setPickPercent(voteId) {
             console.log("데이터 패치 시도");
         },
         success: function (data) {
-            console.log(JSON.stringify(data));
             let keys = Object.keys(data.pickCountList); // 선택지 아이디 리스트
 
             // 2. 각 선택지에 대한 퍼센트 너비를 변경
             keys.forEach((optionId) => sum += parseInt(data.pickCountList[optionId]));
-            console.log(sum);
 
             keys.forEach((optionId) => {
                 $('#result' + optionId)
                     .css("width", Math.floor(parseInt(data.pickCountList[optionId]) / sum * 100) + '%');
+                let options = '.vote-select-box' + voteId;
+                $(options).css("pointer-events", "none");
             })
         },
         error: function () {
@@ -435,5 +439,32 @@ function clearSearchResult() {
     let searchResult = document.getElementById('searchResult');
     while (searchResult.hasChildNodes()) {
         searchResult.removeChild(searchResult.firstChild);
+    }
+}
+
+function createMoreVote(data) {
+    const votes = data.votes;
+    const container = document.getElementById("voteContainer");
+
+    for(let i=0; i<votes.numberOfElements; i++) {
+        const user = votes.content[i].userDto;
+        const vote = votes.content[i];
+        const option = votes.content[i].voteOptionDtos;
+        const comments = votes.content[i].commentDtos;
+
+        const voteArea = document.createElement('div');
+        voteArea.setAttribute('id', 'voteArea')
+        voteArea.append(createHeader(vote, user));
+        if(option != null)
+            voteArea.append(createContent(vote, option));
+        if(comments != null) {
+            voteArea.append(createIcons(vote, comments));
+            voteArea.append(createComment(vote, comments[0]));
+        }
+
+        const hr = document.createElement("hr");
+        voteArea.appendChild(hr);
+
+        container.append(voteArea);
     }
 }
