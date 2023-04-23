@@ -9,11 +9,12 @@ import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteCommentService;
 import com.capstone.pick.service.VoteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -22,23 +23,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -523,5 +521,45 @@ class VoteControllerTest {
                 .andExpect(status().is3xxRedirection());
 
         then(voteService).should().deleteAllBookmark(any());
+    }
+
+    @Test
+    @DisplayName("[GET][/timeline-update] 타임라인 업데이트 API 테스트")
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void timeLineUpdate() throws Exception {
+        // given
+        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "modifiedAt");
+        List<VoteOptionCommentDto> votes = Arrays.asList(new VoteOptionCommentDto(), new VoteOptionCommentDto());
+        Page<VoteOptionCommentDto> page = new PageImpl<>(votes, pageable, 10);
+        List<Long> bookmarks = Arrays.asList(1L, 2L);
+
+        // when
+        when(voteService.viewTimeLine(any(Category.class), any(Pageable.class))).thenReturn(page);
+        when(voteService.findBookmarkVoteId(anyString())).thenReturn(bookmarks);
+
+        // then
+        MvcResult result = mvc.perform(get("/timeline-update")
+                        .param("category", "ALL")
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        assertThat(content).isNotNull();
+        assertThat(content).isNotEmpty();
+
+        // response data 검증
+        JSONObject jsonObject = new JSONObject(content);
+        assertThat(jsonObject.has("bookmarks")).isTrue();
+        if (bookmarks.isEmpty()) {
+            assertThat(jsonObject.get("bookmarks")).isNull();
+        } else {
+            assertThat(jsonObject.get("bookmarks")).isInstanceOf(JSONArray.class);
+        }
+        assertThat(jsonObject.has("votes")).isTrue();
+        assertThat(jsonObject.get("votes")).isInstanceOf(JSONObject.class);
+
+        assertThat(jsonObject.has("category")).isTrue();
+        assertThat(jsonObject.get("category")).isEqualTo("ALL");
     }
 }

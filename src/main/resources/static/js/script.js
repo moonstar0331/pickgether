@@ -214,12 +214,10 @@ function setPickPercent(voteId) {
             console.log("데이터 패치 시도");
         },
         success: function (data) {
-            console.log(JSON.stringify(data));
             let keys = Object.keys(data.pickCountList); // 선택지 아이디 리스트
 
             // 2. 각 선택지에 대한 퍼센트 너비를 변경
             keys.forEach((optionId) => sum += parseInt(data.pickCountList[optionId]));
-            console.log('sum = ' + sum);
 
             keys.forEach((optionId) => {
                 $('#result' + optionId)
