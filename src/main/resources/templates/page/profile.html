@@ -46,6 +46,7 @@
                         createMoreVote(data, data.myVote, container);
                         container.setAttribute("data-page", page.toString());
                     } else {
+                        showEmptyState(container);
                         container.onscroll = null;
                         console.log("작성된 게시글 없음");
                     }
@@ -74,6 +75,7 @@
     </script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
     <script type="text/javascript" th:src="@{/js/voteCreator.js}"></script>
+    <script type="text/javascript" th:src="@{/js/status.js}"></script>
 </head>
 <body style="overflow-x: hidden;">
 <script>

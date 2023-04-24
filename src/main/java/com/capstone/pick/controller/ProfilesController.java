@@ -1,6 +1,5 @@
 package com.capstone.pick.controller;
 
-import com.capstone.pick.domain.User;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteOptionCommentDto;
 import com.capstone.pick.security.VotePrincipal;
@@ -21,11 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-import static com.capstone.pick.domain.constant.SearchType.USER;
 
 @RequiredArgsConstructor
 @Controller
