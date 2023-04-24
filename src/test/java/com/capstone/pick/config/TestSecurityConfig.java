@@ -16,27 +16,16 @@ import static org.mockito.BDDMockito.given;
 public class TestSecurityConfig {
     @MockBean
     private BookmarkRepository bookmarkRepository;
-
     @MockBean
     private BookmarkCacheRepository bookmarkCacheRepository;
-
     @MockBean
     private CommentLikeRepository commentLikeRepository;
-
     @MockBean
     private CommentLikeRedisRepository commentLikeRedisRepository;
     @MockBean
     private UserRepository userRepository;
     @MockBean
     UserCacheRepository userCacheRepository;
-    @MockBean
-    BookmarkRepository bookmarkRepository;
-    @MockBean
-    BookmarkCacheRepository bookmarkCacheRepository;
-    @MockBean
-    CommentLikeRepository commentLikeRepository;
-    @MockBean
-    CommentLikeRedisRepository commentLikeRedisRepository;
 
     @BeforeTestMethod
     public void securitySetUp() {
