@@ -6,10 +6,10 @@ import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.*;
+import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +33,6 @@ public class VoteService {
     private final HashtagRepository hashtagRepository;
     private final BookmarkRepository bookmarkRepository;
 
-    private final VoteRedisRepository voteRedisRepository;
     private final BookmarkCacheRepository bookmarkCacheRepository;
 
     @Transactional(readOnly = true)
@@ -46,25 +45,10 @@ public class VoteService {
 
     @Transactional(readOnly = true)
     public Page<VoteOptionCommentDto> viewTimeLine(Category category, Pageable pageable) {
-        List<VoteOptionCommentDto> votes = new ArrayList<>();
-
         if(category.equals(Category.ALL)) {
-
-//            voteRedisRepository.findAll().forEach(votes::add);
-//            if(!votes.isEmpty()) return new PageImpl<>(votes, pageable, votes.size());
-//            else {
-                Page<VoteOptionCommentDto> pages = voteRepository.findAll(pageable).map(VoteOptionCommentDto::from);
-                voteRedisRepository.saveAll(pages);
-                return pages;
-//            }
+            return voteRepository.findAll(pageable).map(VoteOptionCommentDto::from);
         }
-//        votes.addAll(voteRedisRepository.findAllByCategory(category));
-//        if(!votes.isEmpty()) return new PageImpl<>(votes, pageable, votes.size());
-//        else {
-            Page<VoteOptionCommentDto> pages = voteRepository.findAllByCategory(category, pageable).map(VoteOptionCommentDto::from);
-            voteRedisRepository.saveAll(pages);
-            return pages;
-//        }
+        return voteRepository.findAllByCategory(category, pageable).map(VoteOptionCommentDto::from);
     }
 
     @Transactional(readOnly = true)

@@ -10,10 +10,8 @@ import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.UserMismatchException;
-import com.capstone.pick.repository.CommentLikeRepository;
-import com.capstone.pick.repository.UserRepository;
-import com.capstone.pick.repository.VoteCommentRepository;
-import com.capstone.pick.repository.VoteRepository;
+import com.capstone.pick.repository.*;
+import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,6 +44,7 @@ public class VoteCommentServiceTest {
     private VoteCommentRepository voteCommentRepository;
     @Mock
     private CommentLikeRepository commentLikeRepository;
+    @Mock private CommentLikeRedisRepository commentLikeRedisRepository;
 
     @DisplayName("댓글 상세 보기 페이지를 조회하면, 해당 투표 게시글에 대한 투표 댓글을 반환한다.")
     @Test
@@ -134,18 +133,20 @@ public class VoteCommentServiceTest {
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
         VoteComment voteComment = createVoteComment(1L, user1, vote, "content", LocalDateTime.now());
-        CommentLikeDto likeDto = createLikeDto(1L, UserDto.from(user1));
+        CommentLike commentLike = createCommentLike(1L, voteComment, user1);
 
         given(userRepository.getReferenceById(anyString())).willReturn(user1);
         given(voteCommentRepository.getReferenceById(anyLong())).willReturn(voteComment);
+        given(commentLikeRepository.save(any(CommentLike.class))).willReturn(commentLike);
 
         // when
-        voteCommentService.saveCommentLike(likeDto);
+        voteCommentService.saveCommentLike(CommentLikeDto.from(commentLike));
 
         // then
         then(userRepository).should().getReferenceById(anyString());
         then(voteCommentRepository).should().getReferenceById(anyLong());
         then(commentLikeRepository).should().save(any(CommentLike.class));
+        then(commentLikeRedisRepository).should().save(any(CommentLikeDto.class));
     }
 
     @DisplayName("댓글 좋아요를 삭제한다.")

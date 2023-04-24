@@ -9,6 +9,7 @@ import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.CommentWithLikeCountDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.*;
+import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

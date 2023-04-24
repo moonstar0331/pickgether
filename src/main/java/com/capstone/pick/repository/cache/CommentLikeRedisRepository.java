@@ -1,4 +1,4 @@
-package com.capstone.pick.repository;
+package com.capstone.pick.repository.cache;
 
 import com.capstone.pick.dto.CommentLikeDto;
 import org.springframework.data.repository.CrudRepository;

@@ -7,6 +7,7 @@ import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.*;
+import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,9 +56,9 @@ public class VoteServiceTest {
     @Mock
     private VoteHashtagRepository voteHashtagRepository;
     @Mock
-    private VoteRedisRepository voteRedisRepository;
-    @Mock
     private BookmarkRepository bookmarkRepository;
+    @Mock
+    private BookmarkCacheRepository bookmarkCacheRepository;
 
     @DisplayName("타임라인을 조회하면, 모든 투표 게시글을 타임라인에 반환한다.")
     @Test
@@ -365,6 +366,7 @@ public class VoteServiceTest {
         given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
         given(voteRepository.getReferenceById(voteId)).willReturn(vote);
         given(bookmarkRepository.findByUserAndVote(user, vote)).willReturn(Optional.empty());
+        given(bookmarkRepository.save(any(Bookmark.class))).willReturn(bookmark);
 
         // when
         voteService.saveBookmark(user.getUserId(), voteId);
@@ -374,6 +376,7 @@ public class VoteServiceTest {
         then(voteRepository).should().getReferenceById(anyLong());
         then(bookmarkRepository).should().findByUserAndVote(any(User.class), any(Vote.class));
         then(bookmarkRepository).should().save(any(Bookmark.class));
+        then(bookmarkCacheRepository).should().setBookmark(any(BookmarkDto.class));
         assertEquals(user, bookmark.getUser());
         assertEquals(vote, bookmark.getVote());
     }
