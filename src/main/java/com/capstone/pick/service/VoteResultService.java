@@ -7,6 +7,8 @@ import com.capstone.pick.repository.PickRepository;
 import com.capstone.pick.repository.VoteOptionRepository;
 import com.opencsv.CSVWriter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -32,11 +34,11 @@ public class VoteResultService {
     private final PickRepository pickRepository;
     private final VoteOptionRepository voteOptionRepository;
 
-    public List<String[]> getVoteResults(Long voteId) throws Exception {
+    public List<List<String>> getVoteResults(Long voteId) throws Exception {
         List<VoteOption> voteOptions = voteOptionRepository.findAllByVoteId(voteId);
         String filename = voteId + "_" + voteOptions.get(0).getVote().getTitle();
-        List<String[]> result = new ArrayList<>();
-        result.add(new String[]{"vote_opion_id", "vote_option_content"});
+        List<List<String>> result = new ArrayList<>();
+        result.add(List.of(String.valueOf(voteId), voteOptions.get(0).getVote().getTitle()));
 
         Configuration conf = new Configuration();
         for (VoteOption vo : voteOptions) {
@@ -63,15 +65,15 @@ public class VoteResultService {
             fs.delete(new Path(inputPath), true);
         }
 
-        String csvOutputPath = "/tmp/" + filename + "_analysis.csv";
-        CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(csvOutputPath), "euc-kr"));
-        csvWriter.writeAll(result);
-        csvWriter.close();
+//        String csvOutputPath = "/tmp/" + filename + "_analysis.csv";
+//        CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(csvOutputPath), "euc-kr"));
+//        csvWriter.writeAll(result);
+//        csvWriter.close();
 
         return result;
     }
 
-    public List<String[]> runMapreduce(Configuration conf, String inputPath, Long optionId , String optionContent, String column, Class mapper) throws Exception {
+    public List<List<String>> runMapreduce(Configuration conf, String inputPath, Long optionId , String optionContent, String column, Class mapper) throws Exception {
         // 하둡 설정을 로드
         Job job = Job.getInstance(conf, "vote analysis");
 
@@ -100,12 +102,12 @@ public class VoteResultService {
         // 맵리듀스 결과를 CSV 파일로 저장
         String outputPathStr = "/tmp/result/part-r-00000";
 
-        List<String[]> result = new ArrayList<>();
+        List<List<String>> result = new ArrayList<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(outputPathStr), "euc-kr"));
         String line;
         while ((line = br.readLine()) != null) {
             String[] split = line.split("\t");
-            result.add(new String[]{String.valueOf(optionId), optionContent, column, split[0], split[1]});
+            result.add(List.of(String.valueOf(optionId), optionContent, column, split[0], split[1]));
         }
         br.close();
 

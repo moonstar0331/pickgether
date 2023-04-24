@@ -211,45 +211,23 @@ public class VoteController {
         return "redirect:";
     }
 
-    @GetMapping("/{voteId}/analysis")
-    public String voteAnalysis(@PathVariable Long voteId) throws Exception {
-        List<String[]> voteResults = voteResultService.getVoteResults(voteId);
-        for (String[] vr : voteResults) {
-            System.out.println(vr[0] + vr[1]);
-        }
-        return "redirect:/timeline";
-    }
+    @GetMapping("/{voteId}/analysis/csv")
+    public ResponseEntity<byte[]> voteAnalysis(@PathVariable Long voteId) throws Exception {
+        List<List<String>> analysis = voteResultService.getVoteResults(voteId);
 
-//    @GetMapping("/{voteId}/download")
-//    public ResponseEntity<byte[]> downloadCSV(@PathVariable Long voteId) throws IOException {
-//        String[] cols = {"vote_opion_id", "vote_option_content", "gender", "age_range", "address", "job"};
-//
-//        StringWriter sw = new StringWriter();
-//        CSVPrinter csvPrinter = new CSVPrinter(sw, CSVFormat.DEFAULT.withHeader(cols));
-//
-//        List<VoteOption> voteOptions = voteOptionRepository.findAllByVoteId(voteId);
-//        String filename = voteId + "_" + voteOptions.get(0).getVote().getTitle();
-//        for (VoteOption vo : voteOptions) {
-//            for (Pick p : pickRepository.findAllByVoteOptionId(vo.getId())) {
-//                csvPrinter.printRecord(Arrays.asList(
-//                        String.valueOf(vo.getId()),
-//                        vo.getContent(),
-//                        p.getUser().getGender(),
-//                        p.getUser().getAge_range(),
-//                        p.getUser().getAddress(),
-//                        p.getUser().getJob()
-//                ));
-//            }
-//        }
-//        sw.flush();
-//        byte[] csvFile = sw.toString().getBytes("UTF-8");
-//        csvPrinter.close();
-//
-//        HttpHeaders header = new HttpHeaders();
-//        header.setContentType(MediaType.valueOf("plain/text"));
-//        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename + ".csv");
-//        header.setContentLength(csvFile.length);
-//
-//        return new ResponseEntity<byte[]>(csvFile, header, HttpStatus.OK);
-//    }
+        String filename = "analysis_" + voteId;
+        StringWriter sw = new StringWriter();
+        CSVPrinter csvPrinter = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        csvPrinter.printRecords(analysis);
+        sw.flush();
+        byte[] csvFile = sw.toString().getBytes("UTF-8");
+        csvPrinter.close();
+
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.valueOf("plain/text"));
+        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename + ".csv");
+        header.setContentLength(csvFile.length);
+
+        return new ResponseEntity<byte[]>(csvFile, header, HttpStatus.OK);
+    }
 }
