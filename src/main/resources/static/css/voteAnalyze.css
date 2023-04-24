@@ -2,7 +2,6 @@
     width:500px;
     height: 300px;
     border-bottom: 1px solid #ccc;
-    border-left: 1px solid #ccc;
     margin: 20px auto;
     position:relative;
 }
@@ -24,6 +23,12 @@
     border-top-right-radius: 30px;
 
     box-shadow: 3px 0px 10px rgb(189 189 189);
+}
+
+.graph-bar-tag {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
 }
 
 .pie-chart-gender, .pie-chart-job {

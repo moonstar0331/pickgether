@@ -22,6 +22,8 @@ function bar_graph_age() {
         }).animate({
             "height":val+"%"
         },800);
+
+        $(".graph-bar-tag").eq(i).text(val + "%");
     }
 }
 
@@ -35,9 +37,6 @@ function pie_graph_gender() {
         } else if(i<70){
             color2_gender(i);
             i++;
-        } else if(i<101){
-            color3_gender(i);
-            i++;
         } else {
             clearInterval(func1);
         }
@@ -46,17 +45,12 @@ function pie_graph_gender() {
 
 function color1_gender(i){
     $(".pie-chart-gender").css({
-        "background":"conic-gradient(#8b22ff 0% "+i+"%, #ffffff "+i+"% 100%)"
+        "background":"conic-gradient(#CEF3E1 0% "+i+"%, #ffffff "+i+"% 100%)"
     });
 }
 function color2_gender(i){
     $(".pie-chart-gender").css({
-        "background":"conic-gradient(#8b22ff 0% 25%, #ffc33b 25% "+i+"%, #ffffff "+i+"% 100%)"
-    });
-}
-function color3_gender(i){
-    $(".pie-chart-gender").css({
-        "background":"conic-gradient(#8b22ff 0% 25%, #ffc33b 25% 70%, #21f3d6 70% "+i+"%, #ffffff "+i+"% 100%)"
+        "background":"conic-gradient(#CEF3E1 0% 25%, #F4CEC3 25% "+i+"%, #ECE2B1 "+i+"% 100%)"
     });
 }
 
@@ -95,6 +89,6 @@ function color2_job(i){
 }
 function color3_job(i){
     $(".pie-chart-job").css({
-        "background":"conic-gradient(#F4CEC3 0% 25%, #ECE2B1 25% 70%, #DDECB1 70% "+i+"%, #ffffff "+i+"% 100%)"
+        "background":"conic-gradient(#F4CEC3 0% 25%, #ECE2B1 25% 70%, #DDECB1 70% "+i+"%, #CEF3E1 "+i+"% 100%)"
     });
 }
