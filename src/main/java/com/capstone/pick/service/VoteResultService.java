@@ -62,11 +62,6 @@ public class VoteResultService {
             fs.delete(new Path(inputPath), true);
         }
 
-//        String csvOutputPath = "/tmp/" + filename + "_analysis.csv";
-//        CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(csvOutputPath), "euc-kr"));
-//        csvWriter.writeAll(result);
-//        csvWriter.close();
-
         return result;
     }
 

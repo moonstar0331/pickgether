@@ -2,8 +2,6 @@ package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
-import com.capstone.pick.domain.Pick;
-import com.capstone.pick.domain.VoteOption;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
@@ -11,6 +9,8 @@ import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
 import com.capstone.pick.repository.*;
+import com.capstone.pick.repository.BookmarkCacheRepository;
+import com.capstone.pick.repository.CommentLikeRedisRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteCommentService;
@@ -23,7 +23,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,10 +33,8 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,8 +50,6 @@ public class VoteController {
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
     private final CommentLikeRedisRepository commentLikeRedisRepository;
-    private final PickRepository pickRepository;
-    private final VoteOptionRepository voteOptionRepository;
     private final VoteResultService voteResultService;
 
     @GetMapping("/")
