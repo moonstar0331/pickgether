@@ -1,14 +1,11 @@
 package com.capstone.pick.service;
 
-import com.capstone.pick.util.VoteAnalysisParser;
 import com.capstone.pick.domain.Pick;
 import com.capstone.pick.domain.VoteOption;
 import com.capstone.pick.repository.PickRepository;
 import com.capstone.pick.repository.VoteOptionRepository;
-import com.opencsv.CSVWriter;
+import com.capstone.pick.util.VoteAnalysisParser;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
