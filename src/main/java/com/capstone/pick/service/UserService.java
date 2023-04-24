@@ -23,9 +23,7 @@ public class UserService {
 
     public UserDto findUserById(String userId) {
         Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent())
-            return UserDto.from(user.get());
-        return new UserDto();
+        return UserDto.from(user.get());
     }
     public List<UserDto> searchUsers(SearchType searchType, String searchValue) {
         List<User> users = new ArrayList<>();

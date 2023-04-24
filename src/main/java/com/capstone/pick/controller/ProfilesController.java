@@ -30,30 +30,29 @@ public class ProfilesController {
     private final FollowService followService;
 
     @GetMapping("/profile")
-    public String profiles(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestParam(required = false) String userId, Model model) {
+    public String profiles(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestParam(required = true) String userId, Model model) {
         UserDto user = userService.findUserById(userId);
-        if (!user.getUserId().isEmpty()) {
-            model.addAttribute("user", user);
-            model.addAttribute("followingCnt", followService.getFollowingList(userId).size());
-            model.addAttribute("followerCnt", followService.getFollowerList(userId).size());
-            return "page/profile";
-        }
-        return "redirect:/timeline";
+        model.addAttribute("user", user);
+        model.addAttribute("accountId", votePrincipal.getUsername());
+        model.addAttribute("followingCnt", followService.getFollowingList(userId).size());
+        model.addAttribute("followerCnt", followService.getFollowerList(userId).size());
+        return "page/profile";
     }
 
     // 유저가 작성한 투표 게시글을 반환하는 API
     @GetMapping(value = "/get-my-vote", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, Object> findMyVote(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestParam(required = false) String userId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
+    public Map<String, Object> findMyVote(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestParam(required = true) String userId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
         Page<VoteOptionCommentDto> myVote = voteService.findMyVote(userId, pageable);
         Map<String, Object> response = new HashMap<>();
         response.put("myVote", myVote);
-
         return response;
     }
 
     @GetMapping("/edit-profile")
-    public String editProfile(@AuthenticationPrincipal VotePrincipal votePrincipal) {
+    public String editProfile(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestParam(required = true) String userId, Model model) {
+        UserDto user = userService.findUserById(userId);
+        model.addAttribute("user", user);
         return "page/editProfile";
     }
 }

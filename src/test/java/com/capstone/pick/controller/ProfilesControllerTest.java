@@ -87,6 +87,7 @@ class ProfilesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(model().attribute("user", userDto))
+                .andExpect(model().attribute("accountId", userDto))
                 .andExpect(model().attribute("followingCnt", followingList.size()))
                 .andExpect(model().attribute("followerCnt", followerList.size()))
                 .andExpect(view().name("page/profile"));
@@ -96,7 +97,14 @@ class ProfilesControllerTest {
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
     public void 프로필_편집_뷰_엔드포인트_테스트() throws Exception {
-        mvc.perform(get("/edit-profile"))
+        //given
+        UserDto userDto = UserDto.from(User.builder().userId("testUser").build());
+
+        //when
+        when(userService.findUserById(anyString())).thenReturn(userDto);
+
+        //then
+        mvc.perform(get("/edit-profile?userId=" + userDto.getUserId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("page/editProfile"));
