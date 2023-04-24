@@ -22,7 +22,9 @@ function bar_graph_age() {
         }).animate({
             "height":val+"%"
         },800);
-
+        $(".graph-bar-label").eq(i).css({
+            "left": (i+1)*80+"px"
+        }).text((i+1)*10+"대");
         $(".graph-bar-tag").eq(i).text(val + "%");
     }
 }

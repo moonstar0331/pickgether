@@ -4,6 +4,7 @@
     border-bottom: 1px solid #ccc;
     margin: 20px auto;
     position:relative;
+    margin-bottom: 0px;
 }
 
 @media (max-width: 600px) {
@@ -29,6 +30,20 @@
     display: block;
     text-align: center;
     margin-top: 1rem;
+}
+
+.label-width {
+    width: 500px;
+    height: 3rem;
+    margin: 20px auto;
+    position: relative;
+    margin-top: 5px;
+}
+
+.graph-bar-label {
+    text-align: center;
+    position: absolute;
+    width: 4rem;
 }
 
 .pie-chart-gender, .pie-chart-job {
