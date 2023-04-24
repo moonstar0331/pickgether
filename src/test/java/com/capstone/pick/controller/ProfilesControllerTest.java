@@ -4,6 +4,8 @@ import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteOption;
+import com.capstone.pick.dto.FollowDto;
+import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteOptionCommentDto;
 import com.capstone.pick.repository.VoteRepository;
 import com.capstone.pick.service.FollowService;
@@ -70,10 +72,23 @@ class ProfilesControllerTest {
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
     public void 프로필_뷰_엔드포인트_테스트() throws Exception {
+        //given
+        UserDto userDto = UserDto.from(User.builder().userId("testUser").build());
+        List<FollowDto> followingList = new ArrayList<>();
+        List<FollowDto> followerList = new ArrayList<>();
 
-        mvc.perform(get("/profile"))
+        //when
+        when(userService.findUserById(anyString())).thenReturn(userDto);
+        when(followService.getFollowingList(anyString())).thenReturn(followingList);
+        when(followService.getFollowerList(anyString())).thenReturn(followerList);
+
+        //then
+        mvc.perform(get("/profile?userId=" + userDto.getUserId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(model().attribute("user", userDto))
+                .andExpect(model().attribute("followingCnt", followingList.size()))
+                .andExpect(model().attribute("followerCnt", followerList.size()))
                 .andExpect(view().name("page/profile"));
     }
 
@@ -81,8 +96,7 @@ class ProfilesControllerTest {
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
     public void 프로필_편집_뷰_엔드포인트_테스트() throws Exception {
-
-        mvc.perform(get("/editProfile"))
+        mvc.perform(get("/edit-profile"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("page/editProfile"));
