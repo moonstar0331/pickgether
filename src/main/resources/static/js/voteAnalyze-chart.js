@@ -108,7 +108,7 @@ function onMouseOver_gender(d, i) {
         .select("path")
         .transition()
         .duration(200)
-        .style("fill", "#7A57F6");
+        .style("fill", "#BCB5D2");
     d3.select(this).select("text").attr("display", "block");
 }
 
@@ -126,6 +126,6 @@ function onMouseOver_job(d, i) {
         .select("path")
         .transition()
         .duration(200)
-        .style("fill", "#7A57F6");
+        .style("fill", "#BCB5D2");
     d3.select(this).select("text").attr("display", "block");
 }
