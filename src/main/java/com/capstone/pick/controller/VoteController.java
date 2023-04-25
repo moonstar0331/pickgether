@@ -8,7 +8,6 @@ import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
-import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.BookmarkCacheRepository;
 import com.capstone.pick.repository.CommentLikeRedisRepository;
 import com.capstone.pick.security.VotePrincipal;
@@ -215,7 +214,7 @@ public class VoteController {
         CSVPrinter csvPrinter = new CSVPrinter(sw, CSVFormat.DEFAULT);
         csvPrinter.printRecords(analysis);
         sw.flush();
-        byte[] csvFile = sw.toString().getBytes("UTF-8");
+        byte[] csvFile = sw.toString().getBytes("euc-kr");
         csvPrinter.close();
 
         HttpHeaders header = new HttpHeaders();

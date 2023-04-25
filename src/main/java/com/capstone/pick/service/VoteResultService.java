@@ -46,7 +46,7 @@ public class VoteResultService {
                         vo.getContent() + "," +
                         p.getUser().getGender() + "," +
                         p.getUser().getAge_range() + "," +
-                        p.getUser().getAddress() + "," +
+                        (p.getUser().getAddress().split(" "))[0] + "," +
                         p.getUser().getJob() + "\n"
                 );
             }
@@ -95,7 +95,7 @@ public class VoteResultService {
         String outputPathStr = "/tmp/result/part-r-00000";
 
         List<List<String>> result = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(outputPathStr), "euc-kr"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(outputPathStr), "utf-8"));
         String line;
         while ((line = br.readLine()) != null) {
             String[] split = line.split("\t");
