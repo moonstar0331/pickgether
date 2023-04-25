@@ -57,7 +57,7 @@
     <div id="searchResult">
         <th:block th:each="user : ${users}">
             <section class="mx-3 my-1">
-                <header class="profile">
+                <header class="profile hover-cursor-pointer" th:id="${user.userId}" onclick="href('profile?userId=' + this.id)">
                     <div class="float-left">
                         <img src="/images/avatar.jpg" style="height: 48px"/>
                     </div>
