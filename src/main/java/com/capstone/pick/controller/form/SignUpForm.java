@@ -3,13 +3,14 @@ package com.capstone.pick.controller.form;
 import com.capstone.pick.dto.UserDto;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpForm {
-
     private String userId;
     private String userPassword;
     private String email;
@@ -18,7 +19,6 @@ public class SignUpForm {
     private String birthday;
     private String gender;
     private String age_range;
-
 
     public UserDto toDto() {
         return UserDto.builder()
@@ -29,8 +29,7 @@ public class SignUpForm {
                 .memo(memo)
                 .birthday(birthday)
                 .gender(gender)
-                .age_range(age_range)
+                .age_range(String.valueOf(((LocalDate.now().getYear() - Integer.parseInt((birthday.split("-"))[0])) / 10) * 10))
                 .build();
-
     }
 }
