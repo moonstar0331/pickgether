@@ -30,12 +30,23 @@ const arcs = g
     .data(pie(data_gender))
     .enter()
     .append("g")
-    .attr("class", "arc");
+    .attr("class", "arc")
+    .on("mouseover", onMouseOver_gender)
+    .on("mouseout", onMouseOut_gender);
 arcs
     .append("path")
     .attr("fill", (d, i) => color_gender(i))
     .attr("d", arc);
-
+arcs
+    .append("text")
+    .attr("transform", (d) => `translate(${arc.centroid(d)})`)
+    .text((d) => d.value +"%")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "18px")
+    .attr("font-weight", "bold")
+    .attr("fill", "#fff")
+    .attr("text-anchor", "middle")
+    .attr("display", "none");
 
 
 
@@ -64,8 +75,57 @@ const arcs_job = g_job
     .data(pie_job(data_job))
     .enter()
     .append("g")
-    .attr("class", "arc");
+    .attr("class", "arc")
+    .on("mouseover", onMouseOver_job)
+    .on("mouseout", onMouseOut_job);
 arcs_job
     .append("path")
     .attr("fill", (d, i) => color_job(i))
     .attr("d", arc_job);
+arcs_job
+    .append("text")
+    .attr("transform", (d) => `translate(${arc.centroid(d)})`)
+    .text((d) => d.value +"%")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "18px")
+    .attr("font-weight", "bold")
+    .attr("fill", "#fff")
+    .attr("text-anchor", "middle")
+    .attr("display", "none");
+
+
+function onMouseOut_gender(d, i) {
+    d3.select(this)
+        .select("path")
+        .transition()
+        .duration(200)
+        .style("fill", color_gender(i));
+    d3.select(this).select("text").attr("display", "none");
+}
+
+function onMouseOver_gender(d, i) {
+    d3.select(this)
+        .select("path")
+        .transition()
+        .duration(200)
+        .style("fill", "#7A57F6");
+    d3.select(this).select("text").attr("display", "block");
+}
+
+function onMouseOut_job(d, i) {
+    d3.select(this)
+        .select("path")
+        .transition()
+        .duration(200)
+        .style("fill", color_job(i));
+    d3.select(this).select("text").attr("display", "none");
+}
+
+function onMouseOver_job(d, i) {
+    d3.select(this)
+        .select("path")
+        .transition()
+        .duration(200)
+        .style("fill", "#7A57F6");
+    d3.select(this).select("text").attr("display", "block");
+}
