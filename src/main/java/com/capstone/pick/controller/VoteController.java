@@ -75,6 +75,7 @@ public class VoteController {
         model.addAttribute("bookmarks", bookmarks);
 
         model.addAttribute("category", category);
+        model.addAttribute("userId", votePrincipal.getUsername());
         return "page/timeLine";
     }
 
