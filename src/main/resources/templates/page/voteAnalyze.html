@@ -31,6 +31,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/js/voteAnalyze.js}"></script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- pie chart(job) -->
 </head>
 <body>
     <div class="timeline-background min-vh-100">
@@ -100,12 +102,15 @@
             <label class="graph-bar-label"></label>
         </div>
 
-
-        <div class="pie-chart-gender" style="display: block; margin: 20px auto; margin-top: 50px"></div>
+        <!-- pie chart(gender)  -->
+        <div id="pie-chart-gender"></div>
 
         <!-- 직업 -->
         <label class="vote-analyze-subtitles" style="margin-top: 50px;">직업</label>
-        <div class="pie-chart-job" style="display: block; margin: 20px auto;"></div>
+
+        <!-- pie chart(job) -->
+        <div id="pie-chart-job"></div>
+        <script type="text/javascript" th:src="@{/js/voteAnalyze-chart.js}"></script>
 
         <section class="vote-analyze-job" style="margin-top: 3rem;">
             <section>
