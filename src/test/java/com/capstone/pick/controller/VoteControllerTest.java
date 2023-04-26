@@ -11,6 +11,7 @@ import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteCommentService;
+import com.capstone.pick.service.VoteResultService;
 import com.capstone.pick.service.VoteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
@@ -25,13 +26,19 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -61,6 +68,9 @@ class VoteControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private VoteResultService voteResultService;
 
     public VoteControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
@@ -561,5 +571,23 @@ class VoteControllerTest {
 
         assertThat(jsonObject.has("category")).isTrue();
         assertThat(jsonObject.get("category")).isEqualTo("ALL");
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][GET] 투표 분석 결과 csv 다운로드 - 정상 호출, 인증된 사용자")
+    @Test
+    void voteAnalysis() throws Exception {
+        // given
+        long voteId = 1L;
+
+        // when & then
+        mvc.perform(get("/" + voteId + "/analysis/csv")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(null))
+                        .with(csrf()))
+                .andExpect(status().isOk());
+
+        then(voteResultService).should().getVoteResults(any());
     }
 }
