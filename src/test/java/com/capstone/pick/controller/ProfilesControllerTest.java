@@ -87,7 +87,7 @@ class ProfilesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(model().attribute("user", userDto))
-                .andExpect(model().attribute("accountId", userDto))
+                .andExpect(model().attribute("accountId", "user"))
                 .andExpect(model().attribute("followingCnt", followingList.size()))
                 .andExpect(model().attribute("followerCnt", followerList.size()))
                 .andExpect(view().name("page/profile"));
