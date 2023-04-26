@@ -13,8 +13,9 @@
 <body>
 <div class="timeline-background">
     <div>
-        <form name="vote-form" th:action th:object="${voteForm}" method="post">
-
+        <form name="vote-form" action="/form" th:object="${voteForm}" method="post">
+            <!-- CSRF 히든 필드 -->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <!-- 투표 상단 -->
             <div class="border-bottom">
                 <!-- 다이얼로그 끄기 버튼, 투표 업로드 버튼-->

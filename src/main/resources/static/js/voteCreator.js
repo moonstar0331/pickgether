@@ -10,8 +10,9 @@ function createMoreVote(data, votes, container) {
         voteArea.append(createHeader(vote, user));
         if(option != null)
             voteArea.append(createContent(vote, option));
-        if(comments != null) {
-            voteArea.append(createIcons(vote, comments));
+        voteArea.append(createIcons(vote, comments));
+
+        if(comments != null && comments.length > 0) {
             voteArea.append(createComment(vote, comments[0]));
         }
 
@@ -147,6 +148,7 @@ function createContent(vote, option) {
     var section = document.createElement("section");
     section.classList.add("vote-background-1", "vote" + vote.id + "outer");
     section.setAttribute("id", vote.id);
+    section.style.cursor = 'pointer';
     section.addEventListener("click", function() {
         show(vote.id);
     });
@@ -279,6 +281,7 @@ function createContent(vote, option) {
         voteSelectBtn.name = 'vote' + vote.id + 'option';
         voteSelectBtn.value = option[i].id;
         voteSelectBtn.checked = false;
+        voteSelectBtn.style.cursor = 'pointer';
 
         voteSelectBox.addEventListener('click', function () {
              onOptionClicked(voteSelectBtn, vote.id, option);
@@ -288,6 +291,7 @@ function createContent(vote, option) {
         optionLabel.textContent = option[i].content;
         optionLabel.classList.add('option-label');
         optionLabel.style.width = "28rem";
+        optionLabel.style.cursor = 'pointer';
 
         const voteResult = document.createElement("div");
         voteResult.classList.add('pick-percent', 'vote-result' + vote.id);
