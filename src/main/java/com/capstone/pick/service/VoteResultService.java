@@ -4,7 +4,6 @@ import com.capstone.pick.domain.Pick;
 import com.capstone.pick.domain.VoteOption;
 import com.capstone.pick.repository.PickRepository;
 import com.capstone.pick.repository.VoteOptionRepository;
-import com.capstone.pick.util.VoteAnalysisParser;
 import lombok.RequiredArgsConstructor;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -23,67 +22,48 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @Service
 @RequiredArgsConstructor
 public class VoteResultService {
-
     private final PickRepository pickRepository;
     private final VoteOptionRepository voteOptionRepository;
 
     public List<List<String>> getVoteResults(Long voteId) throws Exception {
+        // 투표 선택지 불러오기
         List<VoteOption> voteOptions = voteOptionRepository.findAllByVoteId(voteId);
-        String filename = voteId + "_" + voteOptions.get(0).getVote().getTitle();
-        List<List<String>> result = new ArrayList<>();
-        result.add(List.of(String.valueOf(voteId), voteOptions.get(0).getVote().getTitle()));
 
-        Configuration conf = new Configuration();
+        // 하둡 입력(csv) 생성 - 투표 선택지 아이디_유저 정보 유형_유저 정보 값 (ex. 1_gender_female)
+        String inputPath = "/tmp/input.csv";
+        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputPath), "UTF-8"));
         for (VoteOption vo : voteOptions) {
-            String inputPath = "/tmp/" + filename + ".csv";
-            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputPath), "UTF-8"));
             for (Pick p : pickRepository.findAllByVoteOptionId(vo.getId())) {
-                writer.write(vo.getId() + "," +
-                        vo.getContent() + "," +
-                        p.getUser().getGender() + "," +
-                        p.getUser().getAge_range() + "," +
-                        (p.getUser().getAddress().split(" "))[0] + "," +
-                        p.getUser().getJob() + "\n"
+                writer.write(vo.getId() + "_Gender_" + p.getUser().getGender() + "\n" +
+                        vo.getId() + "_AgeRange_" + p.getUser().getAge_range() + "\n" +
+                        vo.getId() + "_Address_" + (p.getUser().getAddress().split(" "))[0] + "\n" +
+                        vo.getId() + "_Job_" + p.getUser().getJob() + "\n"
                 );
             }
-            writer.close();
-
-            result.addAll(runMapreduce(conf, inputPath, vo.getId(), vo.getContent(), "gender", TokenizerMapper_gender.class));
-            result.addAll(runMapreduce(conf, inputPath, vo.getId(), vo.getContent(), "age_range", TokenizerMapper_ageRange.class));
-            result.addAll(runMapreduce(conf, inputPath, vo.getId(), vo.getContent(), "address", TokenizerMapper_address.class));
-            result.addAll(runMapreduce(conf, inputPath, vo.getId(), vo.getContent(), "job", TokenizerMapper_job.class));
-
-            // 임시 파일 삭제
-            FileSystem fs = FileSystem.get(conf);
-            fs.delete(new Path(inputPath), true);
         }
+        writer.close();
 
-        return result;
-    }
-
-    public List<List<String>> runMapreduce(Configuration conf, String inputPath, Long optionId , String optionContent, String column, Class mapper) throws Exception {
-        // 하둡 설정을 로드
+        // 하둡 설정
+        Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "vote analysis");
 
-        // 입력 데이터를 분할하여 맵 태스크에서 병렬 처리할 수 있도록 함
+        // MapReduce 작업을 위한 설정
         FileInputFormat.addInputPath(job, new Path(inputPath));
         job.setInputFormatClass(TextInputFormat.class);
-
-        // MapReduce 작업을 위한 설정
-        job.setMapperClass(mapper);
+        job.setMapperClass(TokenizerMapper.class);
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(IntWritable.class);
-
         job.setCombinerClass(IntSumReducer.class);
         job.setReducerClass(IntSumReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
-        // 출력 경로 설정
+        // MapReduce 결과 출력 경로 설정
         Path outputPath = new Path("/tmp/result");
         FileOutputFormat.setOutputPath(job, outputPath);
         job.setOutputFormatClass(TextOutputFormat.class);
@@ -91,72 +71,35 @@ public class VoteResultService {
         // MapReduce 작업 실행
         job.waitForCompletion(true);
 
-        // 맵리듀스 결과를 CSV 파일로 저장
+        // MapReduce 결과를 다시 CSV 파일로 저장
         String outputPathStr = "/tmp/result/part-r-00000";
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(outputPathStr), "utf-8"));
 
         List<List<String>> result = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(outputPathStr), "utf-8"));
         String line;
         while ((line = br.readLine()) != null) {
-            String[] split = line.split("\t");
-            result.add(List.of(String.valueOf(optionId), optionContent, column, split[0], split[1]));
+            String[] mr = line.split("\t");
+            String[] col = mr[0].split("_");
+            result.add(List.of(col[0], col[1], col[2],  mr[1]));
         }
         br.close();
 
-        // 임시 파일 삭제
+        // 파일 삭제
         FileSystem fs = FileSystem.get(conf);
+        fs.delete(new Path(inputPath), true);
         fs.delete(outputPath, true);
 
         return result;
     }
 
-    public static class TokenizerMapper_gender extends Mapper<Object, Text, Text, IntWritable> {
+    public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
         private final static IntWritable one = new IntWritable(1);
         private Text word = new Text();
 
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            VoteAnalysisParser parser = new VoteAnalysisParser(value);
-            if (!parser.getGender().isEmpty()) {
-                word.set(parser.getGender());
-                context.write(word, one);
-            }
-        }
-    }
-
-    public static class TokenizerMapper_ageRange extends Mapper<Object, Text, Text, IntWritable> {
-        private final static IntWritable one = new IntWritable(1);
-        private Text word = new Text();
-
-        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            VoteAnalysisParser parser = new VoteAnalysisParser(value);
-            if (!parser.getAge_range().isEmpty()) {
-                word.set(parser.getAge_range());
-                context.write(word, one);
-            }
-        }
-    }
-
-    public static class TokenizerMapper_address extends Mapper<Object, Text, Text, IntWritable> {
-        private final static IntWritable one = new IntWritable(1);
-        private Text word = new Text();
-
-        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            VoteAnalysisParser parser = new VoteAnalysisParser(value);
-            if (!parser.getAddress().isEmpty()) {
-                word.set(parser.getAddress());
-                context.write(word, one);
-            }
-        }
-    }
-
-    public static class TokenizerMapper_job extends Mapper<Object, Text, Text, IntWritable> {
-        private final static IntWritable one = new IntWritable(1);
-        private Text word = new Text();
-
-        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            VoteAnalysisParser parser = new VoteAnalysisParser(value);
-            if (!parser.getJob().isEmpty()) {
-                word.set(parser.getJob());
+            StringTokenizer itr = new StringTokenizer(value.toString());
+            if (itr.hasMoreTokens()) {
+                word.set(itr.nextToken());
                 context.write(word, one);
             }
         }
