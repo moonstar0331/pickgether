@@ -135,6 +135,25 @@
         <!-- map chart -->
         <div id="map-chart"></div>
 
+        <script>
+            let total = 0;
+            let mapData = new Map([
+                ["KR-11", 11],  /*Seoul*/       ["KR-43", 2],  /*North Chungcheong*/
+                ["KR-26", 70],  /*Busan*/       ["KR-44", 0],  /*South Chungcheong*/
+                ["KR-27", 40],  /*Daegu*/       ["KR-45", 40],  /*North Jeolla*/
+                ["KR-28", 20],  /*Incheon*/     ["KR-46", 55],  /*South Jeolla*/
+                ["KR-29", 10],  /*Gwangju*/     ["KR-47", 33],  /*North Gyeongsang*/
+                ["KR-30", 60],  /*Daejeon*/     ["KR-48", 22],  /*South Gyeongsang*/
+                ["KR-31", 50],  /*Ulsan*/       ["KR-49", 65],  /*Jeju*/
+                ["KR-41", 90],  /*Gyeonggi*/    ["KR-50", 89],  /*Sejong*/
+                ["KR-42", 1],  /*Gangwon*/
+            ]);
+
+            for (const value of mapData.values()){
+                total += value;
+            }
+        </script>
+
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                 style="display: block; margin: 0 auto; width: 100vw; height: 100vh;">
@@ -178,3 +197,9 @@
 </body>
 </html>
 <script type="text/javascript" th:src="@{/js/voteAnalyze-chart.js}"></script>
+<script>
+    for (const [key, value] of mapData){
+        document.getElementById(key).style.fill = '#7A57F6';
+        document.getElementById(key).style.fillOpacity = String((value%total) + 20) + "%";
+    };
+</script>
