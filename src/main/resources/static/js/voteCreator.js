@@ -30,22 +30,37 @@ function createHeader(vote, user) {
     const leftDiv = document.createElement('div');
     leftDiv.style.float = 'left';
 
+    <!-- 프로필 사진 -->
     const img = document.createElement('img');
     img.setAttribute('src', '/images/avatar.jpg');
     img.style.height = '48px';
+    img.style.cursor = 'pointer';
+    img.addEventListener("click", function() {
+        location.href = 'profile?userId=' + user.userId;
+    });
     leftDiv.appendChild(img);
 
     const section = document.createElement('section');
     section.style.float = 'left';
     section.style.paddingLeft = '10px';
 
+    <!-- 닉네임 -->
     const nickname = document.createElement('div');
     nickname.style.fontWeight = 'bold';
     nickname.textContent = user.nickname;
+    nickname.style.cursor = 'pointer';
+    nickname.addEventListener("click", function() {
+        location.href = 'profile?userId=' + user.userId;
+    });
 
+    <!-- 아이디 -->
     const userId = document.createElement('div');
     userId.style.fontWeight = 'bold';
     userId.textContent = user.userId;
+    userId.style.cursor = 'pointer';
+    userId.addEventListener("click", function() {
+        location.href = 'profile?userId=' + user.userId;
+    });
 
     section.appendChild(nickname);
     section.appendChild(userId);
@@ -394,9 +409,14 @@ function createComment(vote, comment) {
     flDiv.className = "fl";
     commentArea.appendChild(flDiv);
 
+    <!-- 프로필 사진 -->
     const img = document.createElement("img");
     img.src = "/images/avatar.jpg";
     img.className = "comment-circle";
+    img.style.cursor = 'pointer';
+    img.addEventListener("click", function() {
+        location.href = 'profile?userId=' + comment.userDto.userId;
+    });
     flDiv.appendChild(img);
 
     const div90 = document.createElement("div");
@@ -407,9 +427,14 @@ function createComment(vote, comment) {
     cmText.className = "cm-text";
     div90.appendChild(cmText);
 
+    <!-- 아이디 -->
     const commentId = document.createElement("div");
     commentId.className = "comment-id";
     commentId.textContent = comment.userDto.userId;
+    commentId.style.cursor = 'pointer';
+    commentId.addEventListener("click", function() {
+        location.href = 'profile?userId=' + comment.userDto.userId;
+    });
     cmText.appendChild(commentId);
 
     const cmBlock = document.createElement("div");
@@ -419,8 +444,10 @@ function createComment(vote, comment) {
     });
     cmText.appendChild(cmBlock);
 
+    <!-- 댓글내용 -->
     const commentContent = document.createElement("div");
     commentContent.textContent = comment.content;
+    commentContent.style.cursor = 'pointer';
     commentContent.addEventListener("click", function() {
         location.href = vote.id + "/detail";
     });
