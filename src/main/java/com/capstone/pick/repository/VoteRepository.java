@@ -17,4 +17,6 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     List<Vote> findByTitleContaining(String title);
 
     List<Vote> findByContentContaining(String content);
+
+    Page<Vote> findAllByUser_UserId(String userId, Pageable pageable);
 }

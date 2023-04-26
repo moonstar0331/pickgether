@@ -52,11 +52,11 @@
 
     <div style="margin-top: 6rem;">
         <header class="profile" style="margin-bottom: 10px;">
-            <div style="float: left;">
+            <div class="hover-cursor-pointer" style="float: left;" th:id="${vote.userDto.userId}" onclick="href('profile?userId=' + this.id)">
                 <img src="/images/avatar.jpg" style="height: 48px"/>
             </div>
             <div>
-                <section style="float: left; padding-left: 10px;">
+                <section class="hover-cursor-pointer" style="float: left; padding-left: 10px;" th:id="${vote.userDto.userId}" onclick="href('profile?userId=' + this.id)">
                     <div th:text="${vote.userDto.nickname}" style="font-weight: bold"/>
                     <div th:text="${vote.userDto.userId}" style="font-weight: bold"/>
                 </section>
@@ -235,7 +235,7 @@
     <div class="scrollbar-none" style="overflow: auto; margin-bottom: 4rem;" id="commentList">
         <th:block th:each="comment : ${comments}">
             <div th:id="${'comment-' + comment.getId()}"  class="d-flex text-muted pl-3 pt-3 border-bottom">
-                <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="32" height="32"
+                <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle hover-cursor-pointer" width="32" height="32" th:id="${comment.getUserDto().getUserId()}" onclick="href('profile?userId=' + this.id)"
                      xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
                      preserveAspectRatio="xMidYMid slice" focusable="false">
                     <title>Placeholder</title>
@@ -244,7 +244,7 @@
                 <div class="pb-1 mb-0 w-100 small lh-sm" id="commentResult">
                     <div class="d-flex justify-content-between mb-1">
                         <div class="d-flex">
-                            <div class="text-dark text-bold mr-3" th:text="${comment.getUserDto().getNickname()}"></div>
+                            <div class="text-dark text-bold mr-3 hover-cursor-pointer" th:text="${comment.getUserDto().getNickname()}" th:id="${comment.getUserDto().getUserId()}" onclick="href('profile?userId=' + this.id)"></div>
                             <div class="d-flex">
                                 <div class="heart-box" th:id="'comment'+${comment.getId()}+'heart'"
                                      th:voteId="${voteId}" th:commentId="${comment.getId()}"

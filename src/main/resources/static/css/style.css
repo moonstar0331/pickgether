@@ -1037,3 +1037,10 @@ h6.user-email {
         width: 85%;
     }
 }
+
+#statusContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

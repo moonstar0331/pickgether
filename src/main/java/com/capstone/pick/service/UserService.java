@@ -21,6 +21,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public UserDto findUserById(String userId) {
+        Optional<User> user = userRepository.findById(userId);
+        return UserDto.from(user.get());
+    }
     public List<UserDto> searchUsers(SearchType searchType, String searchValue) {
         List<User> users = new ArrayList<>();
         switch (searchType) {
