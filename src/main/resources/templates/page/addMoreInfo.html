@@ -99,11 +99,12 @@
                      <input class="signup-input px-3 py-2 mb-2" type="text" id="address" placeholder="주소를 입력해주세요" th:field="*{address}">
                  </div>
             </div>
+            <div class="d-flex justify-content-center mt-2" style="margin-top: 1px !important;">
+                <button class="signup-submit p-2 mb-2" type="submit" >시작하기</button>
+            </div>
         </form>
 
-        <div class="d-flex justify-content-center mt-2" style="margin-top: 1px !important;">
-            <button class="signup-submit p-2 mb-2" th:onclick="|location.href='@{timelime}'|">시작하기</button>
-        </div>
+
     </div>
 </div>
 </body>
