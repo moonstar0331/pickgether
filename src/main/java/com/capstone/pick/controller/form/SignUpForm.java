@@ -29,7 +29,7 @@ public class SignUpForm {
                 .memo(memo)
                 .birthday(birthday)
                 .gender(gender)
-                .age_range(String.valueOf(((LocalDate.now().getYear() - Integer.parseInt((birthday.split("-"))[0])) / 10) * 10))
+                .age_range(age_range)
                 .build();
     }
 }
