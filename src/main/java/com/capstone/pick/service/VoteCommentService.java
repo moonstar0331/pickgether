@@ -9,7 +9,7 @@ import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.CommentWithLikeCountDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.*;
-import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
+import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +25,7 @@ public class VoteCommentService {
     private final VoteRepository voteRepository;
     private final VoteCommentRepository voteCommentRepository;
     private final CommentLikeRepository commentLikeRepository;
-    private final CommentLikeRedisRepository commentLikeRedisRepository;
+    private final CommentLikeCacheRepository commentLikeRedisRepository;
 
     public Page<CommentWithLikeCountDto> commentsByVote(Long voteId, Pageable pageable) {
         Vote vote = voteRepository.findById(voteId).orElseThrow();

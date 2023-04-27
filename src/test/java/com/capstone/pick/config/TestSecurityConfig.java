@@ -3,7 +3,7 @@ package com.capstone.pick.config;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
-import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
+import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.repository.cache.UserCacheRepository;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -21,7 +21,7 @@ public class TestSecurityConfig {
     @MockBean
     private CommentLikeRepository commentLikeRepository;
     @MockBean
-    private CommentLikeRedisRepository commentLikeRedisRepository;
+    private CommentLikeCacheRepository commentLikeRedisRepository;
     @MockBean
     private UserRepository userRepository;
     @MockBean

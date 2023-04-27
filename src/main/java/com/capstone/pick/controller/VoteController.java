@@ -7,7 +7,7 @@ import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
-import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
+import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteCommentService;
@@ -39,7 +39,7 @@ public class VoteController {
     private final UserService userService;
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
-    private final CommentLikeRedisRepository commentLikeRedisRepository;
+    private final CommentLikeCacheRepository commentLikeRedisRepository;
 
     @GetMapping("/")
     public String home() {
@@ -68,11 +68,10 @@ public class VoteController {
                            @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size=5) Pageable pageable,
                            Model model) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
-        model.addAttribute("votes", votes);
-        
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
-        model.addAttribute("bookmarks", bookmarks);
 
+        model.addAttribute("votes", votes);
+        model.addAttribute("bookmarks", bookmarks);
         model.addAttribute("category", category);
         model.addAttribute("userId", votePrincipal.getUsername());
         return "page/timeLine";
