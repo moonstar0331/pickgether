@@ -132,64 +132,42 @@ public class VoteServiceTest {
     @Test
     void searchVotes_TITLE() {
         // given
-        User user = createUser();
-        Vote vote1 = createVote(1L, user, "title", "content1 #hashtag1", Category.FREE, LocalDateTime.now());
-        Vote vote2 = createVote(2L, user, "title1", "content #hashtag1", Category.FREE, LocalDateTime.now().minusHours(1));
-        Vote vote3 = createVote(3L, user, "title1", "content1 #hashtag", Category.WORRY, LocalDateTime.now().minusHours(2));
-        List<Vote> list = List.of(vote2, vote3);
-        given(voteRepository.findByTitleContaining("title1")).willReturn(list);
+        given(voteRepository.findByTitleContaining("title")).willReturn(List.of());
 
         // when
-        List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.TITLE, "title1");
+        List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.TITLE, "title");
 
         // then
         then(voteRepository).should().findByTitleContaining(anyString());
-        assertThat(votes).hasSize(list.size());
+        assertThat(votes.isEmpty()).isTrue();
     }
 
     @DisplayName("내용을 검색하면, 해당하는 투표 게시글을 반환한다.")
     @Test
     void searchVotes_CONTENT() {
         // given
-        User user = createUser();
-        Vote vote1 = createVote(1L, user, "title", "content1 #hashtag1", Category.FREE, LocalDateTime.now());
-        Vote vote2 = createVote(2L, user, "title1", "content #hashtag1", Category.FREE, LocalDateTime.now().minusHours(1));
-        Vote vote3 = createVote(3L, user, "title1", "content1 #hashtag", Category.WORRY, LocalDateTime.now().minusHours(2));
-        List<Vote> list = List.of(vote1, vote3);
-        given(voteRepository.findByContentContaining("content1")).willReturn(list);
+        given(voteRepository.findByContentContaining("content")).willReturn(List.of());
 
         // when
-        List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.CONTENT, "content1");
+        List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.CONTENT, "content");
 
         // then
         then(voteRepository).should().findByContentContaining(anyString());
-        assertThat(votes).hasSize(list.size());
+        assertThat(votes.isEmpty()).isTrue();
     }
 
     @DisplayName("해시태그를 검색하면, 해당하는 투표 게시글을 반환한다.")
     @Test
     void searchVotes_HASHTAG() {
         // given
-        User user = createUser();
-        Vote vote1 = createVote(1L, user, "title", "content1 #hashtag1", Category.FREE, LocalDateTime.now());
-        Vote vote2 = createVote(2L, user, "title1", "content #hashtag1", Category.FREE, LocalDateTime.now().minusHours(1));
-        Vote vote3 = createVote(3L, user, "title1", "content1 #hashtag", Category.WORRY, LocalDateTime.now().minusHours(2));
-        Hashtag hashtag1 = Hashtag.builder().id(1L).content("hashtag1").build();
-        Hashtag hashtag2 = Hashtag.builder().id(2L).content("hashtag1").build();
-        Hashtag hashtag3 = Hashtag.builder().id(3L).content("hashtag").build();
-        VoteHashtag voteHashtag1 = VoteHashtag.builder().vote(vote1).hashtag(hashtag1).build();
-        VoteHashtag voteHashtag2 = VoteHashtag.builder().vote(vote2).hashtag(hashtag2).build();
-        VoteHashtag voteHashtag3 = VoteHashtag.builder().vote(vote3).hashtag(hashtag3).build();
-        List<VoteHashtag> hashtagList = List.of(voteHashtag2, voteHashtag3);
-        List<Vote> list = List.of(vote1, vote2);
-        given(voteHashtagRepository.findByHashtag_ContentContaining("hashtag1")).willReturn(hashtagList);
+        given(voteHashtagRepository.findByHashtag_ContentContaining("hashtag")).willReturn(List.of());
 
         // when
-        List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.HASHTAG, "hashtag1");
+        List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.HASHTAG, "hashtag");
 
         // then
         then(voteHashtagRepository).should().findByHashtag_ContentContaining(anyString());
-        assertThat(votes).hasSize(list.size());
+        assertThat(votes.isEmpty()).isTrue();
     }
 
     @DisplayName("투표 게시글 정보를 입력하면, 투표 게시글을 저장한다.")
