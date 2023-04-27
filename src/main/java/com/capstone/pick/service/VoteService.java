@@ -52,7 +52,7 @@ public class VoteService {
     }
 
     @Transactional(readOnly = true)
-    public List<VoteWithOptionDto> searchVotes(SearchType searchType, String searchValue) {
+    public List<VoteOptionCommentDto> searchVotes(SearchType searchType, String searchValue) {
         List<Vote> votes = new ArrayList<>();
         switch (searchType) {
             case TITLE:
@@ -66,7 +66,7 @@ public class VoteService {
                         .map(VoteHashtag::getVote).collect(Collectors.toList());
                 break;
         }
-        return votes.stream().map(VoteWithOptionDto::from).collect(Collectors.toList());
+        return votes.stream().map(VoteOptionCommentDto::from).collect(Collectors.toList());
     }
 
     public void saveVote(VoteDto dto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) {
@@ -84,7 +84,6 @@ public class VoteService {
                             .hashtag(hashtag)
                             .build());
         });
-//        voteRedisRepository.save(VoteOptionCommentDto.from(voteRepository.getReferenceById(savedVote.getId())));
     }
 
     public void updateVote(Long voteId, VoteDto voteDto, List<VoteOptionDto> voteOptionDtos, List<HashtagDto> hashtagDtos) {

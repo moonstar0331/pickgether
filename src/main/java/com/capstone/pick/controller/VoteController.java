@@ -57,7 +57,7 @@ public class VoteController {
             List<UserDto> users = userService.searchUsers(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("users", users);
         } else {
-            List<VoteWithOptionDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
+            List<VoteOptionCommentDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("votes", votes);
         }
         return "page/search :: #searchResult";
