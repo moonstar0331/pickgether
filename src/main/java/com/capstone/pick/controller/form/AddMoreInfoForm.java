@@ -14,4 +14,5 @@ public class AddMoreInfoForm {
     private String age_range;
     private String job;
     private String address;
+    private String birthday;
 }
