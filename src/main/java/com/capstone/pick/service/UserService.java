@@ -60,8 +60,7 @@ public class UserService {
 
         Optional<User> user = userRepository.findById(id); // 유저를 찾고
 
-        int range = ((LocalDate.now().getYear() - Integer.parseInt((form.getBirthday().split("-"))[0])) / 10) * 10;
-        String age_range = range + "-" + (range + 9);
+        String age_range = ((LocalDate.now().getYear() - Integer.parseInt((form.getBirthday().split("-"))[0])) / 10) * 10 + "대";
 
         user.get().updateInfo(form.getGender(), form.getBirthday(), age_range, form.getJob(), form.getAddress()); // 추가로 받은 정보를 업데이트 하고
         userRepository.save(user.get()); // 정보를 저장
