@@ -3,6 +3,7 @@ package com.capstone.pick.controller;
 import com.capstone.pick.controller.request.PickRequest;
 import com.capstone.pick.dto.FollowDto;
 import com.capstone.pick.dto.UserDto;
+import com.capstone.pick.exeption.DateExpiredException;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.FollowService;
 import com.capstone.pick.service.PickService;
@@ -32,7 +33,7 @@ public class PickController {
 
     @ResponseBody
     @PostMapping("/pick")
-    public String pick(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody PickRequest request) {
+    public String pick(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody PickRequest request) throws DateExpiredException {
         pickService.pick(votePrincipal.getUsername(), request.getOptionId());
         return "ok";
     }

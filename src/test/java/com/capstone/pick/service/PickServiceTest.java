@@ -2,7 +2,9 @@ package com.capstone.pick.service;
 
 import com.capstone.pick.domain.Pick;
 import com.capstone.pick.domain.User;
+import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.VoteOption;
+import com.capstone.pick.exeption.DateExpiredException;
 import com.capstone.pick.repository.PickRepository;
 import com.capstone.pick.repository.UserRepository;
 import com.capstone.pick.repository.VoteOptionRepository;
@@ -18,6 +20,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -40,12 +43,18 @@ public class PickServiceTest {
 
     @DisplayName("투표 참여 - 정상 호출")
     @Test
-    void pick() {
+    void pick() throws DateExpiredException {
         String userId = "user";
         Long optionId = 1L;
 
+        Vote vote = Vote.builder()
+                .expiredAt(LocalDateTime.of(9999, 1, 1, 0, 0, 0))
+                .build();
+        VoteOption voteOption = VoteOption.builder().vote(vote).build();
+
         given(userRepository.findById(userId)).willReturn(Optional.of(mock(User.class)));
-        given(voteOptionRepository.findById(optionId)).willReturn(Optional.of(mock(VoteOption.class)));
+        given(voteOptionRepository.findById(optionId)).willReturn(Optional.of(voteOption));
+
 
         pickService.pick(userId, optionId);
 
@@ -54,13 +63,29 @@ public class PickServiceTest {
         verify(pickRepository, atLeastOnce()).save(any(Pick.class));
     }
 
+    @DisplayName("투표 참여 - 날짜가 만료된 경우 - 에러 발생")
+    @Test
+    void pick_DateExpired() {
+        String userId = "user";
+        Long optionId = 1L;
+
+        Vote vote = Vote.builder()
+                .expiredAt(LocalDateTime.of(2000, 1, 1, 0, 0, 0))
+                .build();
+        VoteOption voteOption = VoteOption.builder().vote(vote).build();
+
+        given(voteOptionRepository.findById(optionId)).willReturn(Optional.of(voteOption));
+
+        Assertions.assertThrows(DateExpiredException.class, () -> pickService.pick(userId, optionId));
+    }
+
     @DisplayName("투표 참여 - 참여한 유저가 존재하지 않는 경우 - 에러 발생")
     @Test
     void pick_NoUser() {
         String userId = "user";
         Long optionId = 1L;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        //when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(EntityNotFoundException.class, () -> pickService.pick(userId, optionId));
     }
@@ -71,7 +96,7 @@ public class PickServiceTest {
         String userId = "user";
         Long optionId = 1L;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(mock(User.class)));
+        //when(userRepository.findById(userId)).thenReturn(Optional.of(mock(User.class)));
         when(voteOptionRepository.findById(optionId)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(EntityNotFoundException.class, () -> pickService.pick(userId, optionId));
