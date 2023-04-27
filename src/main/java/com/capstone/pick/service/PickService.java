@@ -3,7 +3,9 @@ package com.capstone.pick.service;
 import com.capstone.pick.domain.Pick;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.VoteOption;
+import com.capstone.pick.dto.FollowDto;
 import com.capstone.pick.dto.UserDto;
+import com.capstone.pick.exeption.DateExpiredException;
 import com.capstone.pick.repository.PickRepository;
 import com.capstone.pick.repository.UserRepository;
 import com.capstone.pick.repository.VoteOptionRepository;
@@ -15,8 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,10 +29,17 @@ public class PickService {
     private final UserRepository userRepository;
     private final VoteOptionRepository voteOptionRepository;
 
-    public void pick(String userId, Long optionId) {
-        User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
-        VoteOption voteOption = voteOptionRepository.findById(optionId).orElseThrow(EntityNotFoundException::new);
-        pickRepository.save(Pick.builder().user(user).voteOption(voteOption).build());
+    public void pick(String userId, Long optionId) throws DateExpiredException {
+        VoteOption option = voteOptionRepository.findById(optionId).orElseThrow(EntityNotFoundException::new);
+        LocalDateTime expiredAt = option.getVote().getExpiredAt();
+
+        if (expiredAt.isBefore(LocalDateTime.now())){
+            throw new DateExpiredException();
+        }else{
+            User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+            //VoteOption voteOption = option;
+            pickRepository.save(Pick.builder().user(user).voteOption(option).build());
+        }
     }
 
     @Transactional(readOnly = true)
