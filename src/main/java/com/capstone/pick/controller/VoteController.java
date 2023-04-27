@@ -203,6 +203,13 @@ public class VoteController {
         return "redirect:";
     }
 
+    @GetMapping("/{voteId}/voteAnalyze")
+    public String voteAnalyze(@PathVariable long voteId, Model model) {
+        VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
+        model.addAttribute("vote", vote);
+        return "page/voteAnalyze";
+    }
+
     @GetMapping("/{voteId}/analysis/csv")
     public ResponseEntity<byte[]> voteAnalysis(@PathVariable Long voteId) throws Exception {
         List<List<String>> analysis = voteResultService.getVoteResults(voteId);
