@@ -82,11 +82,10 @@ class LoginControllerTest {
     @DisplayName("[POST][/addMoreInfo] 추가정보 저장")
     @Test
     public void 추가정보_저장_테스트() throws Exception {
-
         //Given
         AddMoreInfoForm form = AddMoreInfoForm.builder()
-                .age_range("20~29")
-                .gender("M")
+                .birthday("2001-01-01")
+                .gender("male")
                 .job("office")
                 .address("서울시 동작구")
                 .build();
