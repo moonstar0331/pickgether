@@ -7,7 +7,7 @@ import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.DuplicatedUserException;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
-import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
+import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.repository.cache.UserCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final BookmarkCacheRepository bookmarkCacheRepository;
 
     private final CommentLikeRepository commentLikeRepository;
-    private final CommentLikeRedisRepository commentLikeRedisRepository;
+    private final CommentLikeCacheRepository commentLikeRedisRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

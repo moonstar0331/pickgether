@@ -7,7 +7,7 @@ import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
-import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
+import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteCommentService;
@@ -46,7 +46,7 @@ public class VoteController {
     private final UserService userService;
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
-    private final CommentLikeRedisRepository commentLikeRedisRepository;
+    private final CommentLikeCacheRepository commentLikeRedisRepository;
     private final VoteResultService voteResultService;
 
     @GetMapping("/")
@@ -65,7 +65,7 @@ public class VoteController {
             List<UserDto> users = userService.searchUsers(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("users", users);
         } else {
-            List<VoteWithOptionDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
+            List<VoteOptionCommentDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("votes", votes);
         }
         return "page/search :: #searchResult";
@@ -76,12 +76,10 @@ public class VoteController {
                            @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size=5) Pageable pageable,
                            Model model) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
-        model.addAttribute("votes", votes);
-
-        // TODO : 북마크 저장된 게시글은 어떻게 처리할지 논의
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
-        model.addAttribute("bookmarks", bookmarks);
 
+        model.addAttribute("votes", votes);
+        model.addAttribute("bookmarks", bookmarks);
         model.addAttribute("category", category);
         model.addAttribute("userId", votePrincipal.getUsername());
         return "page/timeLine";
@@ -178,9 +176,9 @@ public class VoteController {
         return "page/voteDetail";
     }
 
-    @GetMapping("/{userId}/bookmark")
-    public String bookmark(@PathVariable String userId, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
-        Page<VoteOptionCommentDto> votes = voteService.viewBookmarks(userId, pageable);
+    @GetMapping("/myBookmark")
+    public String bookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        Page<VoteOptionCommentDto> votes = voteService.viewBookmarks(votePrincipal.getUsername(), pageable);
         model.addAttribute("votes", votes);
         return "page/bookmark";
     }
