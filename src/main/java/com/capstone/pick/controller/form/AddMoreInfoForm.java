@@ -10,6 +10,7 @@ import lombok.*;
 public class AddMoreInfoForm {
 
     private String gender;
+    private String birthday;
     private String age_range;
     private String job;
     private String address;

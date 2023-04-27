@@ -63,25 +63,23 @@
                 <!-- 연령 -->
                 <div class="signup-input-label" style="text-align: left;">
                     <label for="current" style="display: block;">출생일</label>
-                    <input type="date" id="current" name="birthday" style="border: none; margin-bottom: 5%;">
+                    <input type="date" id="current" th:field="*{birthday}" style="border: none; margin-bottom: 5%;">
                 </div>
 
                 <!-- 성별 -->
                 <div class="ep-form-group option-job-and-gender">
-                    <label  for="gender" style="display: block">성별</label>
-                    <select class="signup-input-label border-none focus-none border-bottom p-1" id="gender" style="display: block; width: 100%" required>
+                    <label for="gender" style="display: block">성별</label>
+                    <select name="gender" class="signup-input-label border-none focus-none border-bottom p-1" id="gender" style="display: block; width: 100%" required>
                         <option value="" selected disabled hidden>성별선택</option>
                         <option value="male">남성</option>
                         <option value="female">여성</option>
-                        <option value="other-gender">그 외</option>
                     </select>
                 </div>
-
 
                 <!-- 직업 -->
                 <div class="ep-form-group option-job-and-gender">
                     <label for="job" style="display: block;">직업</label>
-                    <select class="signup-input-label border-none focus-none border-bottom p-1" style="display: block; width: 100%" id="job">
+                    <select name="job" class="signup-input-label border-none focus-none border-bottom p-1" style="display: block; width: 100%" id="job">
                         <option th:value="none" disabled selected hidden>직업 선택</option>
                         <option th:value="expert">전문가 및 관련 종사자</option>
                         <option th:value="office">사무 종사자</option>

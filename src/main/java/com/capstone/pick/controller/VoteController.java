@@ -8,22 +8,31 @@ import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeRedisRepository;
+import com.capstone.pick.repository.BookmarkCacheRepository;
+import com.capstone.pick.repository.CommentLikeRedisRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.UserService;
 import com.capstone.pick.service.VoteCommentService;
+import com.capstone.pick.service.VoteResultService;
 import com.capstone.pick.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +49,7 @@ public class VoteController {
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
     private final CommentLikeRedisRepository commentLikeRedisRepository;
+    private final VoteResultService voteResultService;
 
     @GetMapping("/")
     public String home() {
@@ -160,7 +170,7 @@ public class VoteController {
         List<Long> likes = commentLikeRedisRepository.findAll().stream().map(CommentLikeDto::getVoteCommentId).collect(Collectors.toList());
         model.addAttribute("likes", likes);
 
-        if(votePrincipal == null) {
+        if (votePrincipal == null) {
             model.addAttribute("isBookmark", false);
             model.addAttribute("user", null);
         } else {
@@ -193,5 +203,25 @@ public class VoteController {
     public String deleteAllBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws UserMismatchException {
         voteService.deleteAllBookmark(votePrincipal.getUsername());
         return "redirect:";
+    }
+
+    @GetMapping("/{voteId}/analysis/csv")
+    public ResponseEntity<byte[]> voteAnalysis(@PathVariable Long voteId) throws Exception {
+        List<List<String>> analysis = voteResultService.getVoteResults(voteId);
+
+        String filename = "analysis_" + voteId;
+        StringWriter sw = new StringWriter();
+        CSVPrinter csvPrinter = new CSVPrinter(sw, CSVFormat.DEFAULT);
+        csvPrinter.printRecords(analysis);
+        sw.flush();
+        byte[] csvFile = sw.toString().getBytes("euc-kr");
+        csvPrinter.close();
+
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.valueOf("plain/text"));
+        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename + ".csv");
+        header.setContentLength(csvFile.length);
+
+        return new ResponseEntity<byte[]>(csvFile, header, HttpStatus.OK);
     }
 }

@@ -21,8 +21,8 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 public class User {
-
-    @Id @Column(length = 50, name = "user_id")
+    @Id
+    @Column(length = 50, name = "user_id")
     private String userId; // 유저 Id
 
     @Column(nullable = false)
@@ -69,8 +69,9 @@ public class User {
         return Objects.hash(getUserId());
     }
 
-    public void updateInfo(String gender,String age_range,String job,String address){
+    public void updateInfo(String gender, String birthday, String age_range, String job, String address) {
         this.gender = gender;
+        this.birthday = birthday;
         this.age_range = age_range;
         this.job = job;
         this.address = address;
