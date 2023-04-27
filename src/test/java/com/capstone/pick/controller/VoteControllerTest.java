@@ -463,7 +463,7 @@ class VoteControllerTest {
         given(voteService.viewBookmarks(eq(userId), any(Pageable.class))).willReturn(Page.empty());
 
         // when & then
-        mvc.perform(get("/" + userId + "/bookmark"))
+        mvc.perform(get("/myBookmark"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(model().attributeExists("votes"))
