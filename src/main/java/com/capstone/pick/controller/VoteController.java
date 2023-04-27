@@ -69,8 +69,7 @@ public class VoteController {
                            Model model) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         model.addAttribute("votes", votes);
-
-        // TODO : 북마크 저장된 게시글은 어떻게 처리할지 논의
+        
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
         model.addAttribute("bookmarks", bookmarks);
 
