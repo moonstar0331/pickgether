@@ -170,9 +170,9 @@ public class VoteController {
         return "page/voteDetail";
     }
 
-    @GetMapping("/{userId}/bookmark")
-    public String bookmark(@PathVariable String userId, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
-        Page<VoteOptionCommentDto> votes = voteService.viewBookmarks(userId, pageable);
+    @GetMapping("/myBookmark")
+    public String bookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        Page<VoteOptionCommentDto> votes = voteService.viewBookmarks(votePrincipal.getUsername(), pageable);
         model.addAttribute("votes", votes);
         return "page/bookmark";
     }
