@@ -78,7 +78,8 @@ class SignupControllerTest {
         mvc.perform(post("/signup")
                 .flashAttr("signUpForm",failForm)
                 .with(csrf()))
-                .andExpect(status().is4xxClientError()); // 핸들러에서 409 에러로 처리
+                .andExpect(model().attributeExists("errorResponse"))
+                .andExpect(view().name("page/signup"));
 
     }
 

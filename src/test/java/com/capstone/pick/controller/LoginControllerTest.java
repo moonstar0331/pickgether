@@ -82,6 +82,7 @@ class LoginControllerTest {
     @DisplayName("[POST][/addMoreInfo] 추가정보 저장")
     @Test
     public void 추가정보_저장_테스트() throws Exception {
+
         //Given
         AddMoreInfoForm form = AddMoreInfoForm.builder()
                 .birthday("2001-01-01")
@@ -106,6 +107,36 @@ class LoginControllerTest {
         )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/timeline"));
+    }
+
+    @DisplayName("[POST][/addMoreInfo] 추가정보 누락으로 인한 저장실패")
+    @Test
+    public void 추가정보_저장실패_테스트() throws Exception {
+
+        //Given
+        AddMoreInfoForm form = AddMoreInfoForm.builder()
+                .age_range("20~29")
+                .gender("M")
+                .job("office")
+                .address("서울시 동작구")
+                .build();
+
+        // When & Then
+        mvc.perform(post("/addMoreInfo")
+                .with(oauth2Login()
+                        .authorities(new SimpleGrantedAuthority("ROLE_USER"))
+                        .attributes(attributes -> {
+                            attributes.put("username", "testUserName");
+                            attributes.put("name", "test");
+                            attributes.put("email", "test@email");
+                        })
+                )
+
+                .flashAttr("addMoreInfoForm", form)
+                .with(csrf())
+        )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/addMoreInfo"));
     }
 
 }
