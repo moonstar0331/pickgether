@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class UserService {
         Optional<User> user = userRepository.findById(userId);
         return UserDto.from(user.get());
     }
+
     public List<UserDto> searchUsers(SearchType searchType, String searchValue) {
         List<User> users = new ArrayList<>();
         switch (searchType) {
@@ -42,7 +44,6 @@ public class UserService {
 
     // 추가정보를 소셜로그인 종류에 따라 업데이트한다
     public void updateMoreInfo(OAuth2User oAuth2User, AddMoreInfoForm form) {
-
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String id;
 
@@ -58,16 +59,18 @@ public class UserService {
         }
 
         Optional<User> user = userRepository.findById(id); // 유저를 찾고
-        user.get().updateInfo(form.getGender(), form.getAge_range(), form.getJob(), form.getAddress()); // 추가로 받은 정보를 업데이트 하고
+
+        int range = ((LocalDate.now().getYear() - Integer.parseInt((form.getBirthday().split("-"))[0])) / 10) * 10;
+        String age_range = range + "-" + (range + 9);
+
+        user.get().updateInfo(form.getGender(), form.getBirthday(), age_range, form.getJob(), form.getAddress()); // 추가로 받은 정보를 업데이트 하고
         userRepository.save(user.get()); // 정보를 저장
 
     }
 
     // 소셜로그인 종류에 따라 성별, 연령대를 받아와 추가정보 입력 폼에 넣어준다.
     public AddMoreInfoForm findAttribute(OAuth2User oAuth2User) {
-
         AddMoreInfoForm form = new AddMoreInfoForm();
-
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         if (attributes.containsKey("response")) {
@@ -77,7 +80,6 @@ public class UserService {
             form.setAge_range((String) response.get("age"));
 
             return form;
-
         } else if (attributes.containsKey("kakao_account")) {
             Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
 
@@ -88,9 +90,7 @@ public class UserService {
         }
 
         return form;
-
     }
-
 
 }
 
