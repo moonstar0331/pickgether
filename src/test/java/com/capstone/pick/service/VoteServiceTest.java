@@ -140,7 +140,7 @@ public class VoteServiceTest {
         given(voteRepository.findByTitleContaining("title1")).willReturn(list);
 
         // when
-        List<VoteWithOptionDto> votes = voteService.searchVotes(SearchType.TITLE, "title1");
+        List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.TITLE, "title1");
 
         // then
         then(voteRepository).should().findByTitleContaining(anyString());
@@ -159,7 +159,7 @@ public class VoteServiceTest {
         given(voteRepository.findByContentContaining("content1")).willReturn(list);
 
         // when
-        List<VoteWithOptionDto> votes = voteService.searchVotes(SearchType.CONTENT, "content1");
+        List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.CONTENT, "content1");
 
         // then
         then(voteRepository).should().findByContentContaining(anyString());
@@ -185,7 +185,7 @@ public class VoteServiceTest {
         given(voteHashtagRepository.findByHashtag_ContentContaining("hashtag1")).willReturn(hashtagList);
 
         // when
-        List<VoteWithOptionDto> votes = voteService.searchVotes(SearchType.HASHTAG, "hashtag1");
+        List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.HASHTAG, "hashtag1");
 
         // then
         then(voteHashtagRepository).should().findByHashtag_ContentContaining(anyString());
