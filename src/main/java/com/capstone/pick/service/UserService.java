@@ -43,7 +43,7 @@ public class UserService {
     }
 
     // 추가정보를 소셜로그인 종류에 따라 업데이트한다
-    public void updateMoreInfo(OAuth2User oAuth2User, AddMoreInfoForm form) {
+    public void updateMoreInfo(OAuth2User oAuth2User, AddMoreInfoForm form) throws EmptySpaceException {
 
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String id;
