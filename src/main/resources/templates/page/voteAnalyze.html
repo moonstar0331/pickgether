@@ -34,7 +34,7 @@
     <!-- pie chart(job) -->
 </head>
 <body>
-    <div class="timeline-background min-vh-100">
+    <div class="timeline-background" style="overflow-x: hidden;">
         <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
                  style="margin-left: 5%;"
@@ -54,30 +54,70 @@
                     </div>
                     <div>
                         <section style="float: left; padding-left: 10px;">
-                            <div>닉네임</div>
-                            <div>유저 아이디</div>
+                            <div th:text="${vote.userDto.nickname}"></div>
+                            <div th:text="${vote.userDto.userId}"></div>
                         </section>
                         <div align="right" style="margin-right: 15px">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                 class="bi bi-three-dots" viewBox="0 0 16 16">
-                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                            </svg>
+                            <div>
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link" href="#" role="button"
+                                           data-bs-toggle="dropdown" aria-expanded="false" style="color: black!important;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                 fill="currentColor"
+                                                 class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                            </svg>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
+                                            style="border-radius: 10px; z-index: 999;">
+                                            <li>
+                                                <a class="dropdown-item hover-cursor-pointer" th:id="${vote.getId()}"
+                                                   onclick="sendLink(this.id)">카카오톡
+                                                    공유</a>
+                                            </li>
+                                            <!-- redis 적용 후 현재 로그인 유저와 투표 작성자가 일치할 때 display -->
+                                            <li>
+                                                <a class="dropdown-item hover-cursor-pointer">게시글 삭제</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </header>
                 <!--글 내용-->
-                <div class="m-2" style="padding-top: 5px;">
-                    <div class="timeline-content-title">내용</div>
+                <div class="m-2" style="padding-top: 5px;" th:onclick="'location.href=\'' + ${vote.getId()} + '/detail\''">
+                    <div class="timeline-content-title" th:id="${'vote-content-' + vote.getId()}" th:text="${vote.content}"/>
                 </div>
-
-                <section class="vote-background-1">
+                <section class="vote-background-1" th:class="'vote'+${vote.getId()} + 'outer vote-background-1'"
+                         th:id="${vote.getId()}">
+                         <!--onclick="show(this.id)">-->
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
                              class="bi bi-circle-fill vote-background-circle" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="8"/>
                         </svg>
-                        <p class="vote-background-p">타이틀</p>
+                        <p class="vote-background-p" th:id="${'vote-title-' + vote.getId()}" th:text="${vote.title}"/>
                     </div>
+                    <div style="margin-bottom: 2rem;">
+                        <div th:each="option : ${vote.voteOptionDtos}">
+                            <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
+                                <input class="vote-select-btn" type="radio"
+                                       th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
+                                       th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
+                                <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
+                                       th:text="${option.content}"></label>
+                                <div th:class="'vote-result'+${vote.getId()}"
+                                     style="display: block; position: absolute; top: 10px; left: 20px; width: 300px; height: 55px;
+                                        background: #FFF2E9; opacity: 0.4; border-radius: 100px; z-index:1;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:text="${#temporals.format(vote.createAt, 'yy/MM/dd HH:mm')}" align="right"
+                         style="color: white; margin-right: 15px; font-size: 20px; height: 3rem;"></div>
                 </section>
             </div>
         </div>
