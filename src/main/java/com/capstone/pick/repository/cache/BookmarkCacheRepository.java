@@ -39,7 +39,7 @@ public class BookmarkCacheRepository {
     }
 
     public void delete(Long voteId) {
-        redisTemplate.opsForHash().delete("BOOKMARK", voteId.toString());
+        redisTemplate.opsForHash().delete("BOOKMARK", voteId);
     }
 
     private String serializeBookmark(BookmarkDto bookmark) throws JsonProcessingException {
