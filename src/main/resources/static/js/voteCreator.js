@@ -4,13 +4,14 @@ function createMoreVote(data, votes, container) {
         const vote = votes.content[i];
         const option = votes.content[i].voteOptionDtos;
         const comments = votes.content[i].commentDtos;
+        const bookmarks = data.bookmarks;
 
         const voteArea = document.createElement('div');
         voteArea.setAttribute('id', 'voteArea')
         voteArea.append(createHeader(vote, user));
         if(option != null)
             voteArea.append(createContent(vote, option));
-        voteArea.append(createIcons(vote, comments));
+        voteArea.append(createIcons(vote, comments, bookmarks));
 
         if(comments != null && comments.length > 0) {
             voteArea.append(createComment(vote, comments[0]));
@@ -316,7 +317,7 @@ function createContent(vote, option) {
     return contentDiv;
 }
 
-function createIcons(vote, comments) {
+function createIcons(vote, comments, bookmarks) {
     const iconArea = document.createElement('div');
     iconArea.setAttribute('id', 'icon-area');
     iconArea.classList.add('icons');
@@ -395,8 +396,14 @@ function createIcons(vote, comments) {
     bmkSvg.setAttribute('width', '20');
     bmkSvg.setAttribute('height', '20');
     bmkSvg.setAttribute('fill', 'currentColor');
-    bmkSvg.classList.add('bi', 'bi-bookmark', 'bookmark-off');
+
+     if(bookmarks.includes(vote.id)) {
+         bmkSvg.classList.add('bi', 'bi-bookmark', 'bookmark-on');
+     } else {
+         bmkSvg.classList.add('bi', 'bi-bookmark', 'bookmark-off');
+     }
     bmkSvg.setAttribute('viewBox', '0 0 16 16');
+
     bmkIcon.appendChild(bmkSvg);
     const rightPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     bmkSvg.appendChild(rightPath);

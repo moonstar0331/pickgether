@@ -94,7 +94,7 @@ public class VoteController {
                                               @AuthenticationPrincipal VotePrincipal votePrincipal,
                                               @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
-        List<Long> bookmarks = voteService.findBookmarkVoteId(votePrincipal.getUsername());
+        Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
 
         Map<String, Object> response = new HashMap<>();
         response.put("votes", votes);
