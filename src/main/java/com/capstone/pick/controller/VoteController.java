@@ -68,12 +68,14 @@ public class VoteController {
             List<VoteOptionCommentDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("votes", votes);
         }
+        Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
+        map.addAttribute("bookmarks", bookmarks);
         return "page/search :: #searchResult";
     }
 
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category, @AuthenticationPrincipal VotePrincipal votePrincipal,
-                           @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size=5) Pageable pageable,
+                           @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable,
                            Model model) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
@@ -90,7 +92,7 @@ public class VoteController {
     @ResponseBody
     public Map<String, Object> timeLineUpdate(@RequestParam(required = false, defaultValue = "ALL") Category category,
                                               @AuthenticationPrincipal VotePrincipal votePrincipal,
-                                              @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size=5) Pageable pageable) {
+                                              @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         List<Long> bookmarks = voteService.findBookmarkVoteId(votePrincipal.getUsername());
 
