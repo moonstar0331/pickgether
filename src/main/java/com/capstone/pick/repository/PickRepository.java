@@ -2,7 +2,6 @@ package com.capstone.pick.repository;
 
 import com.capstone.pick.domain.Pick;
 import com.capstone.pick.domain.User;
-import com.capstone.pick.domain.VoteOption;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

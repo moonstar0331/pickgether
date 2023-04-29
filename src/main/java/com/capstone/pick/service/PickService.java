@@ -3,7 +3,6 @@ package com.capstone.pick.service;
 import com.capstone.pick.domain.Pick;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.VoteOption;
-import com.capstone.pick.dto.FollowDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.repository.PickRepository;
 import com.capstone.pick.repository.UserRepository;
@@ -16,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
