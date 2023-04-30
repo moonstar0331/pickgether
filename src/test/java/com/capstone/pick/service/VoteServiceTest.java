@@ -5,10 +5,7 @@ import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.exeption.BookmarkNotFoundException;
-import com.capstone.pick.exeption.DateExpiredException;
-import com.capstone.pick.exeption.UserMismatchException;
-import com.capstone.pick.exeption.UserNotFoundException;
+import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import org.junit.jupiter.api.Assertions;
@@ -269,18 +266,50 @@ public class VoteServiceTest {
 
     @DisplayName("게시글의 ID를 입력하면, 게시글을 삭제한다.")
     @Test
-    void deleteVote() {
+    void deleteVote() throws VoteIsNotExistException, PermissionDeniedException {
         // given
         Long voteId = 1L;
         String userId = "user";
 
         willDoNothing().given(voteRepository).deleteByIdAndUser_UserId(voteId, userId);
+        User user = createUser();
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+
+        given(voteRepository.getReferenceById(voteId)).willReturn(vote);
 
         // when
         voteService.deleteVote(voteId, userId);
 
         // then
         then(voteRepository).should().deleteByIdAndUser_UserId(voteId, userId);
+    }
+
+    @DisplayName("게시글이 없어 삭제되지 않음")
+    @Test
+    void deleteVote_VoteIsNotExist()  {
+        // given
+        Long voteId = 1L;
+        String userId = "user";
+
+        given(voteRepository.getReferenceById(voteId)).willReturn(null);
+
+        Assertions.assertThrows(VoteIsNotExistException.class, () -> voteService.deleteVote(voteId, userId));
+
+    }
+
+    @DisplayName("권한이 없어 삭제되지 않음")
+    @Test
+    void deleteVote_PermissionDenied()  {
+        // given
+        Long voteId = 1L;
+        String userId = "user2";
+        User user = createUser();
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+
+        given(voteRepository.getReferenceById(voteId)).willReturn(vote);
+
+        Assertions.assertThrows(PermissionDeniedException.class, () -> voteService.deleteVote(voteId, userId));
+
     }
 
     @DisplayName("게시글 ID에 해당하는 게시글(VoteDto)을 반환한다.")

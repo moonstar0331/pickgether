@@ -4,13 +4,12 @@ import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.exeption.BookmarkNotFoundException;
-import com.capstone.pick.exeption.UserMismatchException;
-import com.capstone.pick.exeption.UserNotFoundException;
+import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,6 +35,10 @@ public class VoteService {
     private final BookmarkRepository bookmarkRepository;
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
+    private final PickRepository pickRepository;
+    private final CommentLikeRepository commentLikeRepository;
+    private final VoteCommentRepository voteCommentRepository;
+
 
     @Transactional(readOnly = true)
     public List<VoteDto> findAllVotes() {
@@ -133,8 +136,17 @@ public class VoteService {
         }
     }
 
-    public void deleteVote(Long voteId, String userId) {
-        voteRepository.deleteByIdAndUser_UserId(voteId, userId);
+    public void deleteVote(Long voteId, String userId) throws VoteIsNotExistException, PermissionDeniedException {
+        Vote vote = voteRepository.getReferenceById(voteId);
+        if (vote==null ){
+            throw new VoteIsNotExistException();
+        }else if(!vote.getUser().getUserId().equals(userId)){
+            throw new PermissionDeniedException();
+
+        }else{
+            voteRepository.deleteByIdAndUser_UserId(voteId, userId);
+        }
+
     }
 
     public VoteDto getVote(Long voteId) {
