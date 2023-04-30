@@ -47,7 +47,7 @@ public class VoteCommentService {
                 comment.changeContent(commentDto.getContent());
             }
         } else {
-            throw new UserMismatchException();
+            throw new UserMismatchException(comment.getVote().getId());
         }
     }
 
@@ -59,7 +59,7 @@ public class VoteCommentService {
             commentLikeRepository.deleteAllByVoteCommentId(voteComment.getId());
             voteCommentRepository.delete(voteComment);
         } else {
-            throw new UserMismatchException();
+            throw new UserMismatchException(voteComment.getVote().getId());
         }
     }
 
@@ -75,15 +75,20 @@ public class VoteCommentService {
         commentLikeRedisRepository.save(CommentLikeDto.from(savedLike));
     }
 
-    public void deleteCommentLike(Long commentId, String userId) {
+    public void deleteCommentLike(Long commentId, String userId) throws UserMismatchException {
         User user = userRepository.getReferenceById(userId);
         VoteComment voteComment = voteCommentRepository.getReferenceById(commentId);
-
         CommentLike commentLike = commentLikeRepository.findByUserAndVoteComment(user, voteComment).orElseThrow(
                 () -> new IllegalStateException("좋아요를 하지 않았습니다."));
 
-        commentLikeRepository.delete(commentLike);
-        commentLikeRedisRepository.delete(CommentLikeDto.from(commentLike));
+        if(commentLike.getUser().getUserId().equals(userId)){
+            commentLikeRepository.delete(commentLike);
+            commentLikeRedisRepository.delete(CommentLikeDto.from(commentLike));
+        }else{
+            throw new UserMismatchException(voteComment.getVote().getId());
+        }
+
+
     }
 
     public Long getLikeCount(Long commentId) {

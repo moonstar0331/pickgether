@@ -9,9 +9,11 @@ import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.UserDto;
+import com.capstone.pick.exeption.BookmarkNotFoundException;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -151,7 +153,7 @@ public class VoteCommentServiceTest {
 
     @DisplayName("댓글 좋아요를 삭제한다.")
     @Test
-    void deleteCommentLike() {
+    void deleteCommentLike() throws UserMismatchException {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
@@ -171,6 +173,7 @@ public class VoteCommentServiceTest {
         then(commentLikeRepository).should().findByUserAndVoteComment(any(User.class), any(VoteComment.class));
         then(commentLikeRepository).should().delete(any(CommentLike.class));
     }
+
 
     @DisplayName("댓글에 눌린 좋아요 개수를 반환한다.")
     @Test

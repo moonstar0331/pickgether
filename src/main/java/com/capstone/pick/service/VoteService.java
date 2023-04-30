@@ -165,7 +165,7 @@ public class VoteService {
         bookmarkCacheRepository.setBookmark(BookmarkDto.from(savedBookmark));
     }
 
-    public void deleteBookmark(String userId, Long voteId) throws UserMismatchException, BookmarkNotFoundException {
+    public void deleteBookmark(String userId, Long voteId) throws BookmarkNotFoundException, UserNotFoundException {
         User user = userRepository.getReferenceById(userId);
         Bookmark bookmark = bookmarkRepository.findByUserAndVoteId(user, voteId);
 
@@ -176,7 +176,7 @@ public class VoteService {
                 bookmarkRepository.delete(bookmark);
                 bookmarkCacheRepository.delete(voteId);
             } else {
-                throw new UserMismatchException();
+                throw new UserNotFoundException();
             }
         }
 

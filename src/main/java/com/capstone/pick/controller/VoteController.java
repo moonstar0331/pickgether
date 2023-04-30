@@ -194,7 +194,7 @@ public class VoteController {
     }
 
     @DeleteMapping("/{voteId}/deleteBookmark")
-    public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws UserMismatchException, BookmarkNotFoundException {
+    public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws BookmarkNotFoundException, UserNotFoundException {
         voteService.deleteBookmark(votePrincipal.getUsername(), voteId);
         return "redirect:";
     }
