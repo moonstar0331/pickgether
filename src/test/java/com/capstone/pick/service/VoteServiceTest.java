@@ -5,9 +5,13 @@ import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
+import com.capstone.pick.exeption.BookmarkNotFoundException;
+import com.capstone.pick.exeption.DateExpiredException;
 import com.capstone.pick.exeption.UserMismatchException;
+import com.capstone.pick.exeption.UserNotFoundException;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -384,7 +388,7 @@ public class VoteServiceTest {
 
     @DisplayName("userId와 voteId를 입력받았을 때, 북마크의 유저정보와 userId가 일치한다면 삭제한다.")
     @Test
-    void deleteBookmark() throws UserMismatchException {
+    void deleteBookmark() throws UserMismatchException, BookmarkNotFoundException {
         // given
         User user = createUser();
         Long voteId = 1L;
@@ -406,6 +410,23 @@ public class VoteServiceTest {
         then(bookmarkRepository).should().delete(any(Bookmark.class));
     }
 
+    @DisplayName("북마크가 없을 때 삭제하지 못함")
+    @Test
+    void deleteBookmark_fail(){
+        // given
+        User user = createUser();
+        Long voteId = 1L;
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+
+
+        given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
+        given(bookmarkRepository.findByUserAndVoteId(user, voteId)).willReturn(null);
+
+
+        // then
+        Assertions.assertThrows(BookmarkNotFoundException.class, () -> voteService.deleteBookmark(user.getUserId(), voteId));
+    }
+
     @DisplayName("userId를 입력받았을 때, 해당 유저가 저장한 북마크를 모두 삭제한다.")
     @Test
     void deleteAllBookmark(){
@@ -425,7 +446,7 @@ public class VoteServiceTest {
 
     @DisplayName("북마크 페이지를 조회하면, 해당 유저에 대한 북마크를 반환한다.")
     @Test
-    void viewBookmarks() {
+    void viewBookmarks() throws UserNotFoundException {
         // given
         User user = createUser();
         Vote vote = createVote(1L, user, "title1", "content1", Category.FREE, LocalDateTime.now());

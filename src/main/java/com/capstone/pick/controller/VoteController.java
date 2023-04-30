@@ -5,7 +5,9 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
+import com.capstone.pick.exeption.BookmarkNotFoundException;
 import com.capstone.pick.exeption.UserMismatchException;
+import com.capstone.pick.exeption.UserNotFoundException;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
@@ -179,7 +181,7 @@ public class VoteController {
     }
 
     @GetMapping("/myBookmark")
-    public String bookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+    public String bookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws UserNotFoundException {
         Page<VoteOptionCommentDto> votes = voteService.viewBookmarks(votePrincipal.getUsername(), pageable);
         model.addAttribute("votes", votes);
         return "page/bookmark";
@@ -192,7 +194,7 @@ public class VoteController {
     }
 
     @DeleteMapping("/{voteId}/deleteBookmark")
-    public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws UserMismatchException {
+    public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws UserMismatchException, BookmarkNotFoundException {
         voteService.deleteBookmark(votePrincipal.getUsername(), voteId);
         return "redirect:";
     }

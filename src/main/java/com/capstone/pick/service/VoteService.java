@@ -4,7 +4,9 @@ import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
+import com.capstone.pick.exeption.BookmarkNotFoundException;
 import com.capstone.pick.exeption.UserMismatchException;
+import com.capstone.pick.exeption.UserNotFoundException;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import lombok.RequiredArgsConstructor;
@@ -163,16 +165,21 @@ public class VoteService {
         bookmarkCacheRepository.setBookmark(BookmarkDto.from(savedBookmark));
     }
 
-    public void deleteBookmark(String userId, Long voteId) throws UserMismatchException {
+    public void deleteBookmark(String userId, Long voteId) throws UserMismatchException, BookmarkNotFoundException {
         User user = userRepository.getReferenceById(userId);
         Bookmark bookmark = bookmarkRepository.findByUserAndVoteId(user, voteId);
 
-        if (bookmark.getUser().equals(user)) {
-            bookmarkRepository.delete(bookmark);
-            bookmarkCacheRepository.delete(voteId);
-        } else {
-            throw new UserMismatchException();
+        if(bookmark ==null){
+            throw new BookmarkNotFoundException();
+        }else{
+            if (bookmark.getUser().equals(user)) {
+                bookmarkRepository.delete(bookmark);
+                bookmarkCacheRepository.delete(voteId);
+            } else {
+                throw new UserMismatchException();
+            }
         }
+
     }
 
     public void deleteAllBookmark(String userId) {
@@ -180,8 +187,13 @@ public class VoteService {
     }
 
     @Transactional(readOnly = true)
-    public Page<VoteOptionCommentDto> viewBookmarks(String userId, Pageable pageble) {
-        return bookmarkRepository.findAllByUser(userRepository.getReferenceById(userId), pageble).map(b -> VoteOptionCommentDto.from(b.getVote()));
+    public Page<VoteOptionCommentDto> viewBookmarks(String userId, Pageable pageble) throws UserNotFoundException {
+        if(userRepository.getReferenceById(userId)!=null){
+            return bookmarkRepository.findAllByUser(userRepository.getReferenceById(userId), pageble).map(b -> VoteOptionCommentDto.from(b.getVote()));
+        }else{
+            throw new UserNotFoundException();
+        }
+
     }
 
     @Transactional(readOnly = true)
