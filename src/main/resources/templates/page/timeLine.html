@@ -245,14 +245,12 @@
                     <div style="margin-top: 20px;">
                         <div th:each="option : ${vote.voteOptionDtos}">
                             <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
-                                <div class="vote-select-box">
-                                    <input class="vote-select-btn" type="radio"
-                                           th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                           th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
-                                    <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                           th:text="${option.content}" class="m-0 p-0"></label>
-                                    <div th:class="'pick-percent vote-result'+${vote.getId()}" th:id="'result' + ${option.getId()}"/>
-                                </div>
+                                <input class="vote-select-btn" type="radio"
+                                       th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
+                                       th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
+                                <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
+                                       th:text="${option.content}" class="m-0 p-0"></label>
+                                <div th:class="'pick-percent vote-result'+${vote.getId()}" th:id="'result' + ${option.getId()}"/>
                             </div>
                         </div>
                     </div>
