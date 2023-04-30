@@ -86,7 +86,7 @@ public class VoteCommentServiceTest {
 
     @DisplayName("투표 댓글을 입력하면, 투표 댓글을 저장한다.")
     @Test
-    void saveComment() {
+    void saveComment() throws VoteIsNotExistException {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
@@ -102,6 +102,22 @@ public class VoteCommentServiceTest {
         then(userRepository).should().getReferenceById(anyString());
         then(voteRepository).should().getReferenceById(anyLong());
         then(voteCommentRepository).should().save(any(VoteComment.class));
+    }
+
+    @DisplayName("투표 게시글이 사라져 투표 댓글이 저장되지 않는다.")
+    @Test
+    void saveComment_fail() {
+        // given
+        User user1 = createUser("user1", "nick1");
+        Vote vote = createVote(1L, user1);
+        CommentDto commentDto = createCommentDto(vote.getId(), UserDto.from(user1), "content1");
+
+        given(userRepository.getReferenceById(anyString())).willReturn(user1);
+        given(voteRepository.getReferenceById(anyLong())).willReturn(null);
+
+        //then
+        Assertions.assertThrows(VoteIsNotExistException.class, () -> voteCommentService.saveComment(commentDto));
+
     }
 
     @DisplayName("댓글 수정 정보를 입력하면, 투표 댓글을 수정한다.")

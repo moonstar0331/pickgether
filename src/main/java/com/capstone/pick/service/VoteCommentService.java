@@ -35,9 +35,12 @@ public class VoteCommentService {
         return voteCommentRepository.findAllByVote(vote, pageable).map(CommentWithLikeCountDto::from);
     }
 
-    public void saveComment(CommentDto commentDto) {
+    public void saveComment(CommentDto commentDto) throws VoteIsNotExistException {
         User user = userRepository.getReferenceById(commentDto.getUserDto().getUserId());
         Vote vote = voteRepository.getReferenceById(commentDto.getVoteId());
+        if(vote == null){
+            throw new VoteIsNotExistException();
+        }
         voteCommentRepository.save(commentDto.toEntity(user, vote));
     }
 
