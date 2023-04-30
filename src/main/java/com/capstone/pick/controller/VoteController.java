@@ -5,9 +5,7 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.exeption.BookmarkNotFoundException;
-import com.capstone.pick.exeption.UserMismatchException;
-import com.capstone.pick.exeption.UserNotFoundException;
+import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
@@ -154,7 +152,7 @@ public class VoteController {
     @PostMapping("/{voteId}/delete")
     public String deleteVote(
             @AuthenticationPrincipal VotePrincipal votePrincipal,
-            @PathVariable Long voteId) {
+            @PathVariable Long voteId) throws VoteIsNotExistException, PermissionDeniedException {
         voteService.deleteVote(voteId, votePrincipal.getUsername());
         return "redirect:/timeline";
     }
