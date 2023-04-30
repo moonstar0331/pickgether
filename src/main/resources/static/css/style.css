@@ -504,10 +504,6 @@
     }
 }
 
-.vote-select-box {
-    position: relative;
-    margin: .5rem; !important
-}
 .vote-select-btn {
     display: none;
 }
@@ -540,16 +536,16 @@
 }
 
 .pick-percent {
-    display: none; !important;
-    position: absolute; !important;
-    top: 0px;
-    left: 0px;
+    display: none;
+    position: absolute !important;
+    top: 10px;
+    left: 5%;
     height: 55px;
     background: #FFF2E9;
-    opacity: 0.4;
+    opacity: 0.6;
     border-radius: 100px;
-    z-index: 1; !important;
-    pointer-events: none; !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
 }
 
 .vote-analyze-btn {
@@ -572,7 +568,7 @@
     justify-content: space-around;
     height: 55px;
     width: 90%;
-    margin-top: 10px;
+    margin-top: 10px !important;
     font-size: 20px;
     background: rgba(0, 0, 0, 0.5);
     color: #FFFFFF;
