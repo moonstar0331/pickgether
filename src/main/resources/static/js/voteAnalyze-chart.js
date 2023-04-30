@@ -9,14 +9,11 @@ function bar_graph_age() {
         var val = $(".graph-bar").eq(i).attr('graph-val');
         var color = $(".graph-bar").eq(i).attr('graph-color');
         $(".graph-bar").eq(i).css({
-            "left": (i+1)*80+"px",
             "background":color
         }).animate({
             "height":val+"%"
         },800);
-        $(".graph-bar-label").eq(i).css({
-            "left": (i+1)*80+"px"
-        }).text((i+1)*10+"대");
+        $(".graph-bar-label").eq(i).text((i+1)*10+"대");
         $(".graph-bar-tag").eq(i).text(val + "%");
     }
 }
