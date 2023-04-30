@@ -82,15 +82,15 @@
     margin-left: 3rem;
 }
 
-#job-expert {
+#job-expert, #gender-M {
     background-color: #F4CEC3;
 }
 
-#job-paper {
+#job-paper, #gender-F {
     background-color: #ECE2B1;
 }
 
-#job-service {
+#job-service, #gender-N {
     background-color: #DDECB1;
 }
 

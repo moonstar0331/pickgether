@@ -13,8 +13,8 @@ function bar_graph_age() {
         }).animate({
             "height":val+"%"
         },800);
-        $(".graph-bar-label").eq(i).text((i+1)*10+"대");
-        $(".graph-bar-tag").eq(i).text(val + "%");
+        $(".graph-bar-label").eq(i).text((i+1)*10+"대").css("font-weight", "bold");
+        $(".graph-bar-tag").eq(i).text(val + "%").css("font-weight", "bold");
     }
 }
 
