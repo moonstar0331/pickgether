@@ -86,7 +86,7 @@ public class VoteCommentServiceTest {
 
     @DisplayName("투표 댓글을 입력하면, 투표 댓글을 저장한다.")
     @Test
-    void saveComment() {
+    void saveComment() throws VoteIsNotExistException {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
@@ -104,9 +104,25 @@ public class VoteCommentServiceTest {
         then(voteCommentRepository).should().save(any(VoteComment.class));
     }
 
+    @DisplayName("투표 게시글이 사라져 투표 댓글이 저장되지 않는다.")
+    @Test
+    void saveComment_fail() {
+        // given
+        User user1 = createUser("user1", "nick1");
+        Vote vote = createVote(1L, user1);
+        CommentDto commentDto = createCommentDto(vote.getId(), UserDto.from(user1), "content1");
+
+        given(userRepository.getReferenceById(anyString())).willReturn(user1);
+        given(voteRepository.getReferenceById(anyLong())).willReturn(null);
+
+        //then
+        Assertions.assertThrows(VoteIsNotExistException.class, () -> voteCommentService.saveComment(commentDto));
+
+    }
+
     @DisplayName("댓글 수정 정보를 입력하면, 투표 댓글을 수정한다.")
     @Test
-    void updateComment() throws UserMismatchException {
+    void updateComment() throws UserMismatchException, VoteIsNotExistException {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
@@ -116,6 +132,7 @@ public class VoteCommentServiceTest {
 
         given(voteCommentRepository.getReferenceById(anyLong())).willReturn(voteComment);
         given(userRepository.getReferenceById(anyString())).willReturn(user1);
+        given(voteRepository.getReferenceById(anyLong())).willReturn(vote);
 
         // when
         voteCommentService.updateComment(voteComment.getId(), commentDto);
@@ -124,6 +141,22 @@ public class VoteCommentServiceTest {
         assertThat(voteComment).hasFieldOrPropertyWithValue("content", commentDto.getContent());
         then(voteCommentRepository).should().getReferenceById(anyLong());
         then(userRepository).should().getReferenceById(anyString());
+    }
+
+    @DisplayName("투표 게시글이 사라져 투표 댓글이 수정되지 않는다.")
+    @Test
+    void updateComment_fail()  {
+        // given
+        User user1 = createUser("user1", "nick1");
+        Vote vote = createVote(1L, user1);
+        VoteComment voteComment = createVoteComment(1L, user1, vote, "content1", LocalDateTime.now());
+
+        CommentDto commentDto = createCommentDto(vote.getId(), UserDto.from(user1), "content2");
+
+        given(voteRepository.getReferenceById(anyLong())).willReturn(null);
+
+        //then
+        Assertions.assertThrows(VoteIsNotExistException.class, () -> voteCommentService.updateComment(voteComment.getId(), commentDto));
     }
 
     @DisplayName("댓글 id를 입력하면, 투표 댓글을 삭제한다.")
