@@ -388,7 +388,7 @@ public class VoteServiceTest {
 
     @DisplayName("userId와 voteId를 입력받았을 때, 북마크의 유저정보와 userId가 일치한다면 삭제한다.")
     @Test
-    void deleteBookmark() throws UserMismatchException, BookmarkNotFoundException {
+    void deleteBookmark() throws UserMismatchException, BookmarkNotFoundException, UserNotFoundException {
         // given
         User user = createUser();
         Long voteId = 1L;

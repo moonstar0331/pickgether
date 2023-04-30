@@ -140,7 +140,7 @@ public class VoteCommentsController {
      */
     @ResponseBody
     @DeleteMapping("/like")
-    public String deleteLike(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody LikeRequest request) {
+    public String deleteLike(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody LikeRequest request) throws UserMismatchException {
         voteCommentService.deleteCommentLike(request.getCommentId(), votePrincipal.toDto().getUserId());
         return null;
     }
