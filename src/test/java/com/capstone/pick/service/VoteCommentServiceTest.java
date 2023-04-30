@@ -11,6 +11,7 @@ import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.BookmarkNotFoundException;
 import com.capstone.pick.exeption.UserMismatchException;
+import com.capstone.pick.exeption.VoteIsNotExistException;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import org.junit.jupiter.api.Assertions;
@@ -50,7 +51,7 @@ public class VoteCommentServiceTest {
 
     @DisplayName("댓글 상세 보기 페이지를 조회하면, 해당 투표 게시글에 대한 투표 댓글을 반환한다.")
     @Test
-    void readComment() {
+    void readComment() throws VoteIsNotExistException {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
@@ -66,6 +67,21 @@ public class VoteCommentServiceTest {
 
         // then
         then(voteCommentRepository).should().findAllByVote(any(), any());
+    }
+
+    @DisplayName("댓글 상세 보기 페이지를 조회했을 때, 투표가 없어 조회가 불가능 ")
+    @Test
+    void readComment_fail() {
+        // given
+        User user1 = createUser("user1", "nick1");
+        Vote vote = createVote(1L, user1);
+        Pageable pageable = mock(Pageable.class);
+        given(voteRepository.findById(any())).willReturn(Optional.ofNullable(null));
+
+
+        //then
+        Assertions.assertThrows(VoteIsNotExistException.class, () -> voteCommentService.commentsByVote(vote.getId(), pageable));
+
     }
 
     @DisplayName("투표 댓글을 입력하면, 투표 댓글을 저장한다.")
