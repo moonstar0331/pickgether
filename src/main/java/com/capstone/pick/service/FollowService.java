@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,9 @@ public class FollowService {
     @Transactional(readOnly = true)
     public List<FollowDto> getFollowerList(String userId) {
         List<Follow> followerList = followRepository.findAllByToUser(userRepository.getReferenceById(userId));
+        if(followerList == null){
+            return new ArrayList<FollowDto>();
+        }
         return followerList.stream()
                 .map(FollowDto::from)
                 .collect(Collectors.toList());

@@ -56,6 +56,10 @@ public class PickService {
                 })
                 .map(UserDto::from)
                 .collect(Collectors.toList());
+        if(participants ==null){
+            ArrayList<UserDto> list = new ArrayList<>();
+            return new PageImpl<>(list, pageable, participants.size());
+        }
         return new PageImpl<>(participants, pageable, participants.size());
     }
 
