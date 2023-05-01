@@ -9,7 +9,6 @@ import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.UserDto;
-import com.capstone.pick.exeption.BookmarkNotFoundException;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.exeption.VoteIsNotExistException;
 import com.capstone.pick.repository.*;
