@@ -94,7 +94,7 @@
                 <img src="/images/avatar.jpg" style="height: 48px; border-radius: 70%"/>
             </div>
 
-            <a class="navbar-brand timeline-navbar-brand" href="#"
+            <a class="navbar-brand timeline-navbar-brand" href="/timeline"
                style="font-size: 35px;
                 font-family: 'Oleo Script Swash Caps', cursive;
                 color: #2D226E;">
@@ -228,8 +228,6 @@
                     </div>
 
                     <div>
-
-                        <!-- Todo: 투표 제출 버튼 & 투표 통계 버튼 margin 사이즈 반응형으로 조절하기 -->
                         <!-- 투표 제출 버튼 -->
                         <button th:class="'vote-submit-btn vote-submit-btn'+${vote.getId()}"
                                 th:Id="${vote.getId()}" onclick="submitPick(this.id)">
@@ -292,7 +290,6 @@
             </div>
         </div>
         <!--댓글-->
-        <!--Todo: onclicked 추가-->
         <section class="profile" style="margin-left: 10px; display: flex; height: 100%">
             <div style="float: left;">
                 <img src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>
@@ -313,6 +310,7 @@
 
         <hr/>
     </div>
+    <button class="loadBtn">View More</button>
     <div style="height: 52px;"></div>
 </div>
 
