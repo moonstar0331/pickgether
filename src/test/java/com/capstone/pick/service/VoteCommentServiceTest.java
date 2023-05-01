@@ -161,7 +161,7 @@ public class VoteCommentServiceTest {
 
     @DisplayName("댓글 id를 입력하면, 투표 댓글을 삭제한다.")
     @Test
-    void deleteComment() throws UserMismatchException {
+    void deleteComment() throws UserMismatchException, VoteIsNotExistException {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
@@ -175,6 +175,23 @@ public class VoteCommentServiceTest {
 
         // then
         then(voteCommentRepository).should().delete(any(VoteComment.class));
+    }
+
+    @DisplayName("투표 게시글이 사라져 투표 댓글이 삭제되지 않는다.")
+    @Test
+    void deleteComment_fail() {
+        // given
+        User user1 = createUser("user1", "nick1");
+        Vote vote = null;
+        VoteComment voteComment = createVoteComment(1L, user1, vote, "content1", LocalDateTime.now());
+
+        given(userRepository.getReferenceById(anyString())).willReturn(user1);
+        given(voteCommentRepository.getReferenceById(anyLong())).willReturn(voteComment);
+
+
+        //then
+        Assertions.assertThrows(VoteIsNotExistException.class, () -> voteCommentService.deleteComment(voteComment.getId(), user1.getUserId()));
+
     }
 
     @DisplayName("댓글 좋아요를 저장한다.")

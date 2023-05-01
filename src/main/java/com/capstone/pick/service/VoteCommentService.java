@@ -62,9 +62,14 @@ public class VoteCommentService {
         }
     }
 
-    public void deleteComment(Long commentId, String userId) throws UserMismatchException {
+    public void deleteComment(Long commentId, String userId) throws UserMismatchException, VoteIsNotExistException {
+
         User user = userRepository.getReferenceById(userId);
         VoteComment voteComment = voteCommentRepository.getReferenceById(commentId);
+
+        if(voteComment.getVote()== null){
+            throw new VoteIsNotExistException();
+        }
 
         if (voteComment.getUser().equals(user)) {
             commentLikeRepository.deleteAllByVoteCommentId(voteComment.getId());
