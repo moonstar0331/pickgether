@@ -5,7 +5,7 @@ import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.exeption.UserMismatchException;
+import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
@@ -152,13 +152,13 @@ public class VoteController {
     @PostMapping("/{voteId}/delete")
     public String deleteVote(
             @AuthenticationPrincipal VotePrincipal votePrincipal,
-            @PathVariable Long voteId) {
+            @PathVariable Long voteId) throws VoteIsNotExistException, PermissionDeniedException {
         voteService.deleteVote(voteId, votePrincipal.getUsername());
         return "redirect:/timeline";
     }
 
     @GetMapping("/{voteId}/detail")
-    public String voteDetail(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+    public String voteDetail(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws VoteIsNotExistException {
         VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
 
@@ -179,7 +179,7 @@ public class VoteController {
     }
 
     @GetMapping("/myBookmark")
-    public String bookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+    public String bookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws UserNotFoundException {
         Page<VoteOptionCommentDto> votes = voteService.viewBookmarks(votePrincipal.getUsername(), pageable);
         model.addAttribute("votes", votes);
         return "page/bookmark";
@@ -192,7 +192,7 @@ public class VoteController {
     }
 
     @DeleteMapping("/{voteId}/deleteBookmark")
-    public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws UserMismatchException {
+    public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws BookmarkNotFoundException, UserNotFoundException {
         voteService.deleteBookmark(votePrincipal.getUsername(), voteId);
         return "redirect:";
     }

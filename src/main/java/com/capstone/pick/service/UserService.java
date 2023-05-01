@@ -4,6 +4,7 @@ import com.capstone.pick.controller.form.AddMoreInfoForm;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.UserDto;
+import com.capstone.pick.exeption.EmptySpaceException;
 import com.capstone.pick.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -26,7 +27,6 @@ public class UserService {
         Optional<User> user = userRepository.findById(userId);
         return UserDto.from(user.get());
     }
-
     public List<UserDto> searchUsers(SearchType searchType, String searchValue) {
         List<User> users = new ArrayList<>();
         switch (searchType) {
@@ -43,7 +43,8 @@ public class UserService {
     }
 
     // 추가정보를 소셜로그인 종류에 따라 업데이트한다
-    public void updateMoreInfo(OAuth2User oAuth2User, AddMoreInfoForm form) {
+    public void updateMoreInfo(OAuth2User oAuth2User, AddMoreInfoForm form) throws EmptySpaceException {
+
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String id;
 
@@ -58,6 +59,10 @@ public class UserService {
             id = "google_" + (String) attributes.get("sub");
         }
 
+        if(form.getGender()==null || form.getBirthday()==null ||form.getJob()==null ||form.getAddress()==null ){
+            throw new EmptySpaceException();
+        }
+
         Optional<User> user = userRepository.findById(id); // 유저를 찾고
 
         String age_range = ((LocalDate.now().getYear() - Integer.parseInt((form.getBirthday().split("-"))[0])) / 10) * 10 + "대";
@@ -69,7 +74,9 @@ public class UserService {
 
     // 소셜로그인 종류에 따라 성별, 연령대를 받아와 추가정보 입력 폼에 넣어준다.
     public AddMoreInfoForm findAttribute(OAuth2User oAuth2User) {
+
         AddMoreInfoForm form = new AddMoreInfoForm();
+
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         if (attributes.containsKey("response")) {
@@ -79,6 +86,7 @@ public class UserService {
             form.setAge_range((String) response.get("age"));
 
             return form;
+
         } else if (attributes.containsKey("kakao_account")) {
             Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
 
@@ -89,7 +97,9 @@ public class UserService {
         }
 
         return form;
+
     }
+
 
 }
 

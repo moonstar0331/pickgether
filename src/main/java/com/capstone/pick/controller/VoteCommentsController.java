@@ -6,6 +6,7 @@ import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.CommentWithLikeCountDto;
 import com.capstone.pick.exeption.UserMismatchException;
+import com.capstone.pick.exeption.VoteIsNotExistException;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.VoteCommentService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class VoteCommentsController {
      */
     @GetMapping("/{voteId}/comments")
     public String comments(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId,
-                           @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+                           @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws VoteIsNotExistException {
         Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
         model.addAttribute("user", votePrincipal.toDto());
         model.addAttribute("comments", comments);
@@ -53,7 +54,7 @@ public class VoteCommentsController {
      */
     @PostMapping("/{voteId}/comments")
     public String saveComment(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId,
-                              @RequestBody PostCommentRequest request, Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+                              @RequestBody PostCommentRequest request, Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) throws VoteIsNotExistException {
         CommentDto commentDto = CommentDto.builder()
                 .voteId(voteId)
                 .content(request.getContent())
@@ -80,7 +81,7 @@ public class VoteCommentsController {
      */
     @PutMapping("/{voteId}/comments/{commentId}")
     public String updateComment(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable,
-                                @PathVariable Long voteId, @PathVariable Long commentId, @RequestBody PostCommentRequest request) throws UserMismatchException {
+                                @PathVariable Long voteId, @PathVariable Long commentId, @RequestBody PostCommentRequest request) throws UserMismatchException, VoteIsNotExistException {
         CommentDto commentDto = CommentDto.builder()
                 .voteId(voteId)
                 .content(request.getContent())
@@ -106,7 +107,7 @@ public class VoteCommentsController {
      */
     @DeleteMapping("/{voteId}/comments/{commentId}")
     public String deleteComment(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable,
-                                @PathVariable Long voteId, @PathVariable Long commentId) throws UserMismatchException {
+                                @PathVariable Long voteId, @PathVariable Long commentId) throws UserMismatchException, VoteIsNotExistException {
 
         voteCommentService.deleteComment(commentId, votePrincipal.toDto().getUserId());
         Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
@@ -140,7 +141,7 @@ public class VoteCommentsController {
      */
     @ResponseBody
     @DeleteMapping("/like")
-    public String deleteLike(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody LikeRequest request) {
+    public String deleteLike(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody LikeRequest request) throws UserMismatchException {
         voteCommentService.deleteCommentLike(request.getCommentId(), votePrincipal.toDto().getUserId());
         return null;
     }

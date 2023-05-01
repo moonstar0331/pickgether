@@ -1,6 +1,7 @@
 package com.capstone.pick.controller;
 
 import com.capstone.pick.controller.form.AddMoreInfoForm;
+import com.capstone.pick.exeption.EmptySpaceException;
 import com.capstone.pick.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,7 +44,7 @@ public class LoginController {
      * @return 타임라인 화면으로 이동
      */
     @PostMapping("/addMoreInfo")
-    public String saveMoreInfo(@ModelAttribute AddMoreInfoForm addMoreInfoForm, @AuthenticationPrincipal OAuth2User oAuth2User) {
+    public String saveMoreInfo(@ModelAttribute AddMoreInfoForm addMoreInfoForm, @AuthenticationPrincipal OAuth2User oAuth2User) throws EmptySpaceException {
         userService.updateMoreInfo(oAuth2User,addMoreInfoForm);
         return  "redirect:/timeline";
 

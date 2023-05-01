@@ -5,9 +5,10 @@ import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.exeption.UserMismatchException;
+import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -265,18 +266,50 @@ public class VoteServiceTest {
 
     @DisplayName("게시글의 ID를 입력하면, 게시글을 삭제한다.")
     @Test
-    void deleteVote() {
+    void deleteVote() throws VoteIsNotExistException, PermissionDeniedException {
         // given
         Long voteId = 1L;
         String userId = "user";
 
         willDoNothing().given(voteRepository).deleteByIdAndUser_UserId(voteId, userId);
+        User user = createUser();
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+
+        given(voteRepository.getReferenceById(voteId)).willReturn(vote);
 
         // when
         voteService.deleteVote(voteId, userId);
 
         // then
         then(voteRepository).should().deleteByIdAndUser_UserId(voteId, userId);
+    }
+
+    @DisplayName("게시글이 없어 삭제되지 않음")
+    @Test
+    void deleteVote_VoteIsNotExist()  {
+        // given
+        Long voteId = 1L;
+        String userId = "user";
+
+        given(voteRepository.getReferenceById(voteId)).willReturn(null);
+
+        Assertions.assertThrows(VoteIsNotExistException.class, () -> voteService.deleteVote(voteId, userId));
+
+    }
+
+    @DisplayName("권한이 없어 삭제되지 않음")
+    @Test
+    void deleteVote_PermissionDenied()  {
+        // given
+        Long voteId = 1L;
+        String userId = "user2";
+        User user = createUser();
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+
+        given(voteRepository.getReferenceById(voteId)).willReturn(vote);
+
+        Assertions.assertThrows(PermissionDeniedException.class, () -> voteService.deleteVote(voteId, userId));
+
     }
 
     @DisplayName("게시글 ID에 해당하는 게시글(VoteDto)을 반환한다.")
@@ -384,7 +417,7 @@ public class VoteServiceTest {
 
     @DisplayName("userId와 voteId를 입력받았을 때, 북마크의 유저정보와 userId가 일치한다면 삭제한다.")
     @Test
-    void deleteBookmark() throws UserMismatchException {
+    void deleteBookmark() throws UserMismatchException, BookmarkNotFoundException, UserNotFoundException {
         // given
         User user = createUser();
         Long voteId = 1L;
@@ -406,6 +439,23 @@ public class VoteServiceTest {
         then(bookmarkRepository).should().delete(any(Bookmark.class));
     }
 
+    @DisplayName("북마크가 없을 때 삭제하지 못함")
+    @Test
+    void deleteBookmark_fail(){
+        // given
+        User user = createUser();
+        Long voteId = 1L;
+        Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
+
+
+        given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
+        given(bookmarkRepository.findByUserAndVoteId(user, voteId)).willReturn(null);
+
+
+        // then
+        Assertions.assertThrows(BookmarkNotFoundException.class, () -> voteService.deleteBookmark(user.getUserId(), voteId));
+    }
+
     @DisplayName("userId를 입력받았을 때, 해당 유저가 저장한 북마크를 모두 삭제한다.")
     @Test
     void deleteAllBookmark(){
@@ -425,7 +475,7 @@ public class VoteServiceTest {
 
     @DisplayName("북마크 페이지를 조회하면, 해당 유저에 대한 북마크를 반환한다.")
     @Test
-    void viewBookmarks() {
+    void viewBookmarks() throws UserNotFoundException {
         // given
         User user = createUser();
         Vote vote = createVote(1L, user, "title1", "content1", Category.FREE, LocalDateTime.now());

@@ -7,7 +7,9 @@ import com.capstone.pick.domain.VoteComment;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.CommentWithLikeCountDto;
+import com.capstone.pick.exeption.PermissionDeniedException;
 import com.capstone.pick.exeption.UserMismatchException;
+import com.capstone.pick.exeption.VoteIsNotExistException;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,39 +29,53 @@ public class VoteCommentService {
     private final CommentLikeRepository commentLikeRepository;
     private final CommentLikeCacheRepository commentLikeRedisRepository;
 
-    public Page<CommentWithLikeCountDto> commentsByVote(Long voteId, Pageable pageable) {
-        Vote vote = voteRepository.findById(voteId).orElseThrow();
+    public Page<CommentWithLikeCountDto> commentsByVote(Long voteId, Pageable pageable) throws VoteIsNotExistException {
+        Vote vote = voteRepository.findById(voteId).orElseThrow(()->new VoteIsNotExistException());
+
         return voteCommentRepository.findAllByVote(vote, pageable).map(CommentWithLikeCountDto::from);
     }
 
-    public void saveComment(CommentDto commentDto) {
+    public void saveComment(CommentDto commentDto) throws VoteIsNotExistException {
         User user = userRepository.getReferenceById(commentDto.getUserDto().getUserId());
         Vote vote = voteRepository.getReferenceById(commentDto.getVoteId());
+        if(vote == null){
+            throw new VoteIsNotExistException();
+        }
         voteCommentRepository.save(commentDto.toEntity(user, vote));
     }
 
-    public void updateComment(Long commentId, CommentDto commentDto) throws UserMismatchException {
+    public void updateComment(Long commentId, CommentDto commentDto) throws UserMismatchException, VoteIsNotExistException {
+        Vote vote = voteRepository.getReferenceById(commentDto.getVoteId());
+        if(vote == null){
+            throw new VoteIsNotExistException();
+        }
         VoteComment comment = voteCommentRepository.getReferenceById(commentId);
         User user = userRepository.getReferenceById(commentDto.getUserDto().getUserId());
+
 
         if (comment.getUser().equals(user)) {
             if (commentDto.getContent() != null) {
                 comment.changeContent(commentDto.getContent());
             }
         } else {
-            throw new UserMismatchException();
+            throw new UserMismatchException(comment.getVote().getId());
         }
     }
 
-    public void deleteComment(Long commentId, String userId) throws UserMismatchException {
+    public void deleteComment(Long commentId, String userId) throws UserMismatchException, VoteIsNotExistException {
+
         User user = userRepository.getReferenceById(userId);
         VoteComment voteComment = voteCommentRepository.getReferenceById(commentId);
+
+        if(voteComment.getVote()== null){
+            throw new VoteIsNotExistException();
+        }
 
         if (voteComment.getUser().equals(user)) {
             commentLikeRepository.deleteAllByVoteCommentId(voteComment.getId());
             voteCommentRepository.delete(voteComment);
         } else {
-            throw new UserMismatchException();
+            throw new UserMismatchException(voteComment.getVote().getId());
         }
     }
 
@@ -75,15 +91,20 @@ public class VoteCommentService {
         commentLikeRedisRepository.save(CommentLikeDto.from(savedLike));
     }
 
-    public void deleteCommentLike(Long commentId, String userId) {
+    public void deleteCommentLike(Long commentId, String userId) throws UserMismatchException {
         User user = userRepository.getReferenceById(userId);
         VoteComment voteComment = voteCommentRepository.getReferenceById(commentId);
-
         CommentLike commentLike = commentLikeRepository.findByUserAndVoteComment(user, voteComment).orElseThrow(
                 () -> new IllegalStateException("좋아요를 하지 않았습니다."));
 
-        commentLikeRepository.delete(commentLike);
-        commentLikeRedisRepository.delete(CommentLikeDto.from(commentLike));
+        if(commentLike.getUser().getUserId().equals(userId)){
+            commentLikeRepository.delete(commentLike);
+            commentLikeRedisRepository.delete(CommentLikeDto.from(commentLike));
+        }else{
+            throw new UserMismatchException(voteComment.getVote().getId());
+        }
+
+
     }
 
     public Long getLikeCount(Long commentId) {

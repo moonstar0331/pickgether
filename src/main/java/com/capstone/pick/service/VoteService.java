@@ -4,11 +4,12 @@ import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.exeption.UserMismatchException;
+import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,10 @@ public class VoteService {
     private final BookmarkRepository bookmarkRepository;
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
+    private final PickRepository pickRepository;
+    private final CommentLikeRepository commentLikeRepository;
+    private final VoteCommentRepository voteCommentRepository;
+
 
     @Transactional(readOnly = true)
     public List<VoteDto> findAllVotes() {
@@ -131,8 +136,17 @@ public class VoteService {
         }
     }
 
-    public void deleteVote(Long voteId, String userId) {
-        voteRepository.deleteByIdAndUser_UserId(voteId, userId);
+    public void deleteVote(Long voteId, String userId) throws VoteIsNotExistException, PermissionDeniedException {
+        Vote vote = voteRepository.getReferenceById(voteId);
+        if (vote==null ){
+            throw new VoteIsNotExistException();
+        }else if(!vote.getUser().getUserId().equals(userId)){
+            throw new PermissionDeniedException();
+
+        }else{
+            voteRepository.deleteByIdAndUser_UserId(voteId, userId);
+        }
+
     }
 
     public VoteDto getVote(Long voteId) {
@@ -163,16 +177,21 @@ public class VoteService {
         bookmarkCacheRepository.setBookmark(BookmarkDto.from(savedBookmark));
     }
 
-    public void deleteBookmark(String userId, Long voteId) throws UserMismatchException {
+    public void deleteBookmark(String userId, Long voteId) throws BookmarkNotFoundException, UserNotFoundException {
         User user = userRepository.getReferenceById(userId);
         Bookmark bookmark = bookmarkRepository.findByUserAndVoteId(user, voteId);
 
-        if (bookmark.getUser().equals(user)) {
-            bookmarkRepository.delete(bookmark);
-            bookmarkCacheRepository.delete(voteId);
-        } else {
-            throw new UserMismatchException();
+        if(bookmark ==null){
+            throw new BookmarkNotFoundException();
+        }else{
+            if (bookmark.getUser().equals(user)) {
+                bookmarkRepository.delete(bookmark);
+                bookmarkCacheRepository.delete(voteId);
+            } else {
+                throw new UserNotFoundException();
+            }
         }
+
     }
 
     public void deleteAllBookmark(String userId) {
@@ -180,8 +199,13 @@ public class VoteService {
     }
 
     @Transactional(readOnly = true)
-    public Page<VoteOptionCommentDto> viewBookmarks(String userId, Pageable pageble) {
-        return bookmarkRepository.findAllByUser(userRepository.getReferenceById(userId), pageble).map(b -> VoteOptionCommentDto.from(b.getVote()));
+    public Page<VoteOptionCommentDto> viewBookmarks(String userId, Pageable pageble) throws UserNotFoundException {
+        if(userRepository.getReferenceById(userId)!=null){
+            return bookmarkRepository.findAllByUser(userRepository.getReferenceById(userId), pageble).map(b -> VoteOptionCommentDto.from(b.getVote()));
+        }else{
+            throw new UserNotFoundException();
+        }
+
     }
 
     @Transactional(readOnly = true)
