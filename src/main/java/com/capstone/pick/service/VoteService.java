@@ -9,7 +9,6 @@ import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,10 +34,6 @@ public class VoteService {
     private final BookmarkRepository bookmarkRepository;
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
-    private final PickRepository pickRepository;
-    private final CommentLikeRepository commentLikeRepository;
-    private final VoteCommentRepository voteCommentRepository;
-
 
     @Transactional(readOnly = true)
     public List<VoteDto> findAllVotes() {
