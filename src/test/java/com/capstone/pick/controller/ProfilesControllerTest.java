@@ -104,7 +104,7 @@ class ProfilesControllerTest {
         when(userService.findUserById(anyString())).thenReturn(userDto);
 
         //then
-        mvc.perform(get("/edit-profile?userId=" + userDto.getUserId()))
+        mvc.perform(get("/edit-profile"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("page/editProfile"));
