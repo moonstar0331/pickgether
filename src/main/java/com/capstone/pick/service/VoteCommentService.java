@@ -7,7 +7,6 @@ import com.capstone.pick.domain.VoteComment;
 import com.capstone.pick.dto.CommentDto;
 import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.CommentWithLikeCountDto;
-import com.capstone.pick.exeption.PermissionDeniedException;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.exeption.VoteIsNotExistException;
 import com.capstone.pick.repository.*;

@@ -1,6 +1,5 @@
 package com.capstone.pick.handler;
 
-import com.capstone.pick.controller.PickController;
 import com.capstone.pick.controller.VoteController;
 import com.capstone.pick.exeption.*;
 import lombok.extern.slf4j.Slf4j;

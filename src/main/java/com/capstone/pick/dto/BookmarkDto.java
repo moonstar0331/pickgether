@@ -1,8 +1,6 @@
 package com.capstone.pick.dto;
 
 import com.capstone.pick.domain.Bookmark;
-import com.capstone.pick.domain.Vote;
-import com.capstone.pick.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
