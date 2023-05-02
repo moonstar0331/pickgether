@@ -417,13 +417,13 @@ function timelineOrderBy(orderBy) {
         if (orderBy === 'modifiedAt') {
             location.href = "/timeline" + search.split("&")[0] + "&sort=" + orderBy + ",desc";
         } else {
-            location.href = "/timeline" + search.split("&")[0] + "&sort=" + orderBy + ",asc";
+            location.href = "/timeline" + search.split("&")[0] + "&sort=" + orderBy + ",desc";
         }
     } else {
         if (orderBy === 'modifiedAt') {
             location.href = "/timeline?sort=" + orderBy + ",desc";
         } else {
-            location.href = "/timeline?sort=" + orderBy + ",asc";
+            location.href = "/timeline?sort=" + orderBy + ",desc";
         }
     }
 }
