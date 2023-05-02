@@ -15,7 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -45,9 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan(basePackages = "com.capstone.pick.config")
 @MockBean(JpaMetamodelMappingContext.class)
 class ProfilesControllerTest {
-
-    @InjectMocks
-    private ProfilesController profilesController;
 
     @MockBean
     private VoteService voteService;
