@@ -34,10 +34,6 @@ public class VoteService {
     private final BookmarkRepository bookmarkRepository;
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
-    private final PickRepository pickRepository;
-    private final CommentLikeRepository commentLikeRepository;
-    private final VoteCommentRepository voteCommentRepository;
-
 
     @Transactional(readOnly = true)
     public List<VoteDto> findAllVotes() {
