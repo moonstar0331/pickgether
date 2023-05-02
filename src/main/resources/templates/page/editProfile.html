@@ -76,11 +76,11 @@
                     <div class="p-title mb-3 color-primary fw-bold">개인정보 수정</div>
                     <div class="ep-form-group">
                         <label class="p-subtitle fw-bold" for="userId">아이디</label>
-                        <input type="email" class="form-control ep-form" style="font-size: 1.25rem" id="userId" placeholder="유저 아이디" disabled>
+                        <input type="email" class="form-control ep-form" style="font-size: 1.25rem" id="userId" th:value="${user.getUserId()}" placeholder="유저 아이디" disabled>
                     </div>
                     <div class="ep-form-group">
                         <label class="p-subtitle fw-bold" for="email">이메일</label>
-                        <input type="email" class="form-control ep-form" style="font-size: 1.25rem" id="email" placeholder="유저 이메일" disabled>
+                        <input type="email" class="form-control ep-form" style="font-size: 1.25rem" id="email" placeholder="유저 이메일" th:value="${user.getEmail()}" disabled>
                     </div>
                     <div>
                         <div class="ep-form-group">
@@ -93,7 +93,7 @@
                     </div>
                     <div class="ep-form-group">
                         <label class="p-subtitle fw-bold" for="nickname">닉네임</label>
-                        <input type="text" class="form-control ep-form" style="font-size: 1.25rem" id="nickname" placeholder="유저 닉네임">
+                        <input type="text" class="form-control ep-form" style="font-size: 1.25rem" id="nickname" th:value="${user.getNickname()}" placeholder="유저 닉네임">
                     </div>
                     <div class="wrap">
                         <div class="ep-form-group fl" style="width: 70%">
@@ -107,9 +107,9 @@
                             <!-- 성별 -->
                             <label class="p-subtitle fw-bold" for="gender" style="display: block">성별</label>
                             <select class="border-none focus-none border-bottom p-1 p-subtitle" id="gender" style="display: block; width: 100%" required>
-                                <option value="" class="p-subtitle" selected disabled hidden>성별선택</option>
-                                <option value="male" class="p-subtitle">남성</option>
-                                <option value="female" class="p-subtitle">여성</option>
+                                <option value="" class="p-subtitle" disabled hidden>성별선택</option>
+                                <option value="male" class="p-subtitle" th:selected="${user.getGender() == 'male'}">남성</option>
+                                <option value="female" class="p-subtitle" th:selected="${user.getGender() == 'female'}">여성</option>
                                 <option value="other-gender" class="p-subtitle">그 외</option>
                             </select>
                         </div>
@@ -117,11 +117,11 @@
                     <div class="ep-form-group fl">
                         <label class="p-subtitle fw-bold" for="job" style="display: block;">직업</label>
                         <select class="border-none focus-none border-bottom p-1 p-subtitle" style="display: block;" id="job">
-                            <option th:value="none" class="p-subtitle" disabled selected hidden>직업 선택 👷</option>
-                            <option th:value="expert" class="p-subtitle">전문가 및 관련 종사자</option>
-                            <option th:value="office" class="p-subtitle">사무 종사자</option>
-                            <option th:value="service" class="p-subtitle">서비스 종사자</option>
-                            <option th:value="sail" class="p-subtitle">판매 종사자</option>
+                            <option th:value="none" class="p-subtitle" disabled hidden>직업 선택 👷</option>
+                            <option th:value="expert" class="p-subtitle" th:selected="${user.getJob() == 'expert'}">전문가 및 관련 종사자</option>
+                            <option th:value="office" class="p-subtitle" th:selected="${user.getJob() == 'office'}">사무 종사자</option>
+                            <option th:value="service" class="p-subtitle" th:selected="${user.getJob() == 'service'}">서비스 종사자</option>
+                            <option th:value="sail" class="p-subtitle" th:selected="${user.getJob() == 'sail'}">판매 종사자</option>
                         </select>
                         <div class="icoArrow"><i class="fa-thin fa-caret-down dropdown"></i></div>
                     </div>
@@ -134,7 +134,7 @@
                     <div class="ep-form-group">
                         <label class="p-subtitle fw-bold" for="memo">한줄소개</label>
                         <div class="mb-3" style="display: block; margin: auto;">
-                            <textarea placeholder="한 줄 소개" class="form-control ep-textarea" style="font-size: 1.25rem;" id="memo" rows="3"></textarea>
+                            <textarea placeholder="한 줄 소개" th:text="${user.getMemo()}" class="form-control ep-textarea" style="font-size: 1.25rem;" id="memo" rows="3"></textarea>
                         </div>
                     </div>
                 </div>

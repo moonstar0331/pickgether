@@ -75,7 +75,7 @@
 
         function editProfile() {
             const userId = document.getElementById("myVoteContainer").getAttribute("userId");
-            location.href = '/edit-profile?userId=' + userId;
+            location.href = '/edit-profile';
         }
     </script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
@@ -119,10 +119,6 @@
                 <div><span>팔로워</span></div>
                 <div><span th:text="${followerCnt}"/></div>
             </div>
-<!--            <div class="status d-flex align-items-center flex-column justify-content-center">-->
-<!--                <div><span>기타</span></div>-->
-<!--                <div><span>xxx</span></div>-->
-<!--            </div>-->
         </div>
 
         <div class="mt-4" style="margin-left: 1rem;" th:text="${user.memo}"/>
@@ -130,7 +126,8 @@
         <div class="mt-4" style="margin-left: 1rem; margin-right: 1rem;">
             <button class="btn btn-outline-purple btn-sm px-2">팔로우</button>
             <span th:if="${user.userId == accountId}">
-                <button class="btn btn-outline-purple btn-sm" onclick="editProfile()">프로필 편집</button>
+<!--                <button class="btn btn-outline-purple btn-sm" onclick="editProfile()">프로필 편집</button>-->
+                <button class="btn btn-outline-purple btn-sm" onclick="location.href='/edit-profile'">프로필 편집</button>
             </span>
             <span th:unless="${user.userId == accountId}">
                 <button class="btn btn-outline-purple btn-sm">메시지</button>

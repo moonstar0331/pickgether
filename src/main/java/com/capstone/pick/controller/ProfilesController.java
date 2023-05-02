@@ -50,8 +50,8 @@ public class ProfilesController {
     }
 
     @GetMapping("/edit-profile")
-    public String editProfile(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestParam(required = true) String userId, Model model) {
-        UserDto user = userService.findUserById(userId);
+    public String editProfile(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
+        UserDto user = userService.findUserById(votePrincipal.getUsername());
         model.addAttribute("user", user);
         return "page/editProfile";
     }
