@@ -310,7 +310,7 @@
 
         <hr/>
     </div>
-    <button class="loadBtn">View More</button>
+    <button class="loadBtn" onclick="load()">View More</button>
     <div style="height: 52px;"></div>
 </div>
 
@@ -375,4 +375,38 @@
     </nav>
 </div>
 </body>
+<script th:inline="javascript">
+    function load() {
+        var url = new URL(window.location.href);
+
+        if(url.searchParams.has('page')) {
+            const pageNum = parseInt(url.searchParams.get('page')) + 1;
+            url.searchParams.set('page', pageNum.toString());
+        } else {
+            url.searchParams.set('page', '1');
+        }
+
+        $.ajax({
+            url: url.pathname + url.search,
+            type: 'GET',
+            async: true,
+            dataType: 'text',
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function(jqXHR, settings) {
+                var header= $("meta[name='_csrf_header']").attr("content");
+                var token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            },
+            success: function(data) {
+                console.log(data);
+                console.log("success: " + url);
+                window.location.replace(url);
+            },
+            error: function (data) {
+                console.log(data);
+                console.log("error: " + url);
+            }
+        });
+    }
+</script>
 </html>
