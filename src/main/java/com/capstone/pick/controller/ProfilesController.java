@@ -32,9 +32,9 @@ public class ProfilesController {
     public String profiles(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
         UserDto user = userService.findUserById(votePrincipal.getUsername());
         model.addAttribute("user", user);
-        model.addAttribute("accountId", votePrincipal.getUsername());
-        model.addAttribute("followingCnt", followService.getFollowingList(votePrincipal.getUsername()).size());
-        model.addAttribute("followerCnt", followService.getFollowerList(votePrincipal.getUsername()).size());
+        model.addAttribute("accountId", user.getUserId());
+        model.addAttribute("followingCnt", followService.getFollowingList(user.getUserId()).size());
+        model.addAttribute("followerCnt", followService.getFollowerList(user.getUserId()).size());
         return "page/profile";
     }
 
