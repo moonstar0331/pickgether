@@ -9,6 +9,7 @@ import com.capstone.pick.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -100,6 +101,11 @@ public class UserService {
 
     }
 
-
+    @Transactional
+    public void editProfile(UserDto userDto, String nickname, String birthday, String gender,
+                            String job, String memo) {
+        userDto.updateInfo(nickname, birthday, gender, job, memo);
+        userRepository.save(userDto.toEntity());
+    }
 }
 
