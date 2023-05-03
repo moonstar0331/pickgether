@@ -57,4 +57,12 @@ public class UserDto {
                 .job(job)
                 .build();
     }
+
+    public void updateInfo(String nickname, String birthday, String gender, String job, String memo) {
+        this.nickname = nickname;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.job = job;
+        this.memo = memo;
+    }
 }

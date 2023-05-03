@@ -1,5 +1,6 @@
 package com.capstone.pick.controller;
 
+import com.capstone.pick.controller.request.EditProfileRequest;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteOptionCommentDto;
 import com.capstone.pick.security.VotePrincipal;
@@ -15,9 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,12 +29,12 @@ public class ProfilesController {
     private final FollowService followService;
 
     @GetMapping("/profile")
-    public String profiles(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestParam(required = true) String userId, Model model) {
-        UserDto user = userService.findUserById(userId);
+    public String profiles(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
+        UserDto user = userService.findUserById(votePrincipal.getUsername());
         model.addAttribute("user", user);
-        model.addAttribute("accountId", votePrincipal.getUsername());
-        model.addAttribute("followingCnt", followService.getFollowingList(userId).size());
-        model.addAttribute("followerCnt", followService.getFollowerList(userId).size());
+        model.addAttribute("accountId", user.getUserId());
+        model.addAttribute("followingCnt", followService.getFollowingList(user.getUserId()).size());
+        model.addAttribute("followerCnt", followService.getFollowerList(user.getUserId()).size());
         return "page/profile";
     }
 
@@ -50,9 +49,19 @@ public class ProfilesController {
     }
 
     @GetMapping("/edit-profile")
-    public String editProfile(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestParam(required = true) String userId, Model model) {
-        UserDto user = userService.findUserById(userId);
+    public String editProfile(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
+        UserDto user = userService.findUserById(votePrincipal.getUsername());
         model.addAttribute("user", user);
         return "page/editProfile";
+    }
+
+    @PostMapping("/edit-profile")
+    public String editProfile(@AuthenticationPrincipal VotePrincipal votePrincipal,
+                              @RequestBody EditProfileRequest request) {
+        UserDto userDto = votePrincipal.toDto();
+        userService.editProfile(userDto, request.getNickname(), request.getBirthday(),
+                request.getGender(), request.getJob(), request.getMemo());
+
+        return "redirect:/profile";
     }
 }
