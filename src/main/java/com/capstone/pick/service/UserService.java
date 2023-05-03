@@ -7,6 +7,7 @@ import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.EmptySpaceException;
 import com.capstone.pick.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +26,10 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserDto findUserById(String userId) {
-        Optional<User> user = userRepository.findById(userId);
-        return UserDto.from(user.get());
+        return userRepository.findById(userId).map(UserDto::from).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("%s not founded", userId)));
     }
+
     public List<UserDto> searchUsers(SearchType searchType, String searchValue) {
         List<User> users = new ArrayList<>();
         switch (searchType) {
