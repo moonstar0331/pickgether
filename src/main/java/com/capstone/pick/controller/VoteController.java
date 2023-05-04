@@ -31,10 +31,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -203,10 +200,14 @@ public class VoteController {
         return "redirect:";
     }
 
-    @GetMapping("/{voteId}/voteAnalyze")
-    public String voteAnalyze(@PathVariable long voteId, Model model) {
+    @GetMapping("/{voteId}/analysis")
+    public String voteAnalyze(@PathVariable long voteId, Model model) throws Exception {
         VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
+
+        VoteAnalysisDto analysis = VoteAnalysisDto.from(voteId, voteResultService.getVoteResults(voteId));
+        model.addAttribute("analysis", analysis);
+
         return "page/voteAnalyze";
     }
 
