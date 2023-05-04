@@ -568,9 +568,37 @@ class VoteControllerTest {
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @DisplayName("[view][GET] 투표 분석 결과 csv 다운로드 - 정상 호출, 인증된 사용자")
+    @DisplayName("[view][GET] 투표 분석 결과 - 정상 호출, 인증된 사용자")
     @Test
     void voteAnalysis() throws Exception {
+        // given
+        String userId = "user";
+        User user = User.builder()
+                .userId(userId)
+                .nickname("nickname")
+                .build();
+
+        long voteId = 1L;
+        VoteWithOptionDto voteWithOptionDto = VoteWithOptionDto.builder()
+                .userDto(UserDto.from(user))
+                .build();
+
+        given(voteService.getVoteWithOption(eq(voteId))).willReturn(voteWithOptionDto);
+
+        // when & then
+        mvc.perform(get("/" + voteId + "/analysis"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(model().attributeExists("vote"))
+                .andExpect(view().name("page/voteAnalyze"));
+
+        then(voteResultService).should().getVoteResults(any());
+    }
+
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][GET] 투표 분석 결과 csv 다운로드 - 정상 호출, 인증된 사용자")
+    @Test
+    void voteAnalysisCSV() throws Exception {
         // given
         long voteId = 1L;
 
