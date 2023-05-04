@@ -97,8 +97,8 @@
         </header>
 
         <!--글 내용-->
-        <div class="m-2" style="padding-top: 5px;" th:onclick="'location.href=\'' + ${vote.getId()} + '/detail\''">
-            <div class="timeline-content-title" th:id="${'vote-content-' + vote.getId()}" th:text="${vote.content}"/>
+        <div class="m-2" style="padding-top: 5px;">
+            <div class="vote-content-none" style="display: none;" th:id="${'vote-content-' + vote.getId()}" th:text="${vote.content}"/>
         </div>
 
         <!--투표-->
