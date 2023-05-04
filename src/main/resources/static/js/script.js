@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    hashtaging();
+
     // 투표 작성 버튼리스트 open
     $("#vote_btn_open").click(function () {
         $("#vote_btn_list").css("display", "inline");
@@ -23,7 +25,7 @@ $(document).ready(function () {
     });
 });
 
-$(document).ready(function () {
+function hashtaging() {
     // 투표 내용에서 해시태그 추출해서 색 변경
     for (let i = 0; i < $(".vote-content-none").length; i++) {
         let split_content = $(".vote-content-none").eq(i).text().split(/(#[^\s#]+)/g);
@@ -51,7 +53,7 @@ $(document).ready(function () {
             $(".vote-content-none").eq(i).after(p);
         }
     }
-});
+}
 
 $(document).ready(function () {
     $('#searchValue').on('keyup', function () {
@@ -102,6 +104,7 @@ function search() {
     })
         .done(function (fragment) {
             $('#searchResult').replaceWith(fragment);
+            hashtaging();
         });
 }
 
