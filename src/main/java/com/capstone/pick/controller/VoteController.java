@@ -31,10 +31,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -55,7 +52,13 @@ public class VoteController {
     }
 
     @GetMapping("/search")
-    public String search() {
+    public String search(@RequestParam(required = false) String hashtag, Model map) {
+        if (hashtag != null) {
+            List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.HASHTAG, hashtag);
+            map.addAttribute("votes", votes);
+            Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
+            map.addAttribute("bookmarks", bookmarks);
+        }
         return "page/search";
     }
 
@@ -203,15 +206,19 @@ public class VoteController {
         return "redirect:";
     }
 
-    @GetMapping("/{voteId}/voteAnalyze")
-    public String voteAnalyze(@PathVariable long voteId, Model model) {
+    @GetMapping("/{voteId}/analysis")
+    public String voteAnalysis(@PathVariable long voteId, Model model) throws Exception {
         VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
+
+        VoteAnalysisDto analysis = VoteAnalysisDto.from(voteId, voteResultService.getVoteResults(voteId));
+        model.addAttribute("analysis", analysis);
+
         return "page/voteAnalyze";
     }
 
     @GetMapping("/{voteId}/analysis/csv")
-    public ResponseEntity<byte[]> voteAnalysis(@PathVariable Long voteId) throws Exception {
+    public ResponseEntity<byte[]> voteAnalysisCSV(@PathVariable Long voteId) throws Exception {
         List<List<String>> analysis = voteResultService.getVoteResults(voteId);
 
         String filename = "analysis_" + voteId;

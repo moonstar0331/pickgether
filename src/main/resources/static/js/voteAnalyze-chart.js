@@ -1,20 +1,23 @@
-$(document).ready(function(){
+$(document).ready(function () {
     bar_graph_age();
 });
 
 function bar_graph_age() {
     var maxIndex = $(".graph-bar").length;
 
-    for(var i=0; i<maxIndex; i++){
-        var val = $(".graph-bar").eq(i).attr('graph-val');
+    for (var i = 0; i < maxIndex; i++) {
+        var val = !!$(".graph-bar").eq(i).attr('value') ? $(".graph-bar").eq(i).attr('value') : 0;
         var color = $(".graph-bar").eq(i).attr('graph-color');
         $(".graph-bar").eq(i).css({
-            "background":color
+            "background": color
         }).animate({
-            "height":val+"%"
-        },800);
-        $(".graph-bar-label").eq(i).text((i+1)*10+"대").css("font-weight", "bold");
+            "height": val + "%"
+        }, 800);
+        $(".graph-bar-label").eq(i).text((i + 1) * 10 + "대").css("font-weight", "bold");
         $(".graph-bar-tag").eq(i).text(val + "%").css("font-weight", "bold");
+        $(".graph-bar-tag").eq(i).css("position", "absolute");
+        $(".graph-bar-tag").eq(i).css("bottom", val);
+        $(".graph-bar-tag").eq(i).css("left", "1rem");
     }
 }
 
@@ -26,7 +29,7 @@ const radius = Math.min(svgDimension.width, svgDimension.height) / 2;
 
 
 /* pie graph (gender) */
-const data_gender = [10, 20, 70];
+const data_gender = [$("#gender-M").attr('value'), $("#gender-F").attr('value')];
 
 const svg = d3
     .select("#pie-chart-gender")
@@ -60,7 +63,7 @@ arcs
 arcs
     .append("text")
     .attr("transform", (d) => `translate(${arc.centroid(d)})`)
-    .text((d) => d.value +"%")
+    .text((d) => d.value + "%")
     .attr("font-family", "sans-serif")
     .attr("font-size", "18px")
     .attr("font-weight", "bold")
@@ -69,9 +72,11 @@ arcs
     .attr("display", "none");
 
 
-
 /* pie graph (job) */
-const data_job = [10, 20, 50, 30];
+const data_job = [!!$("#job-expert").attr('value') ? $("#job-expert").attr('value') : 0,
+    !!$("#job-office").attr('value') ? $("#job-office").attr('value') : 0,
+    !!$("#job-service").attr('value') ? $("#job-service").attr('value') : 0,
+    !!$("#job-sail").attr('value') ? $("#job-sail").attr('value') : 0];
 
 const svg_job = d3
     .select("#pie-chart-job")
@@ -105,7 +110,7 @@ arcs_job
 arcs_job
     .append("text")
     .attr("transform", (d) => `translate(${arc.centroid(d)})`)
-    .text((d) => d.value +"%")
+    .text((d) => d.value + "%")
     .attr("font-family", "sans-serif")
     .attr("font-size", "18px")
     .attr("font-weight", "bold")

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    hashtaging();
+
     // 투표 작성 버튼리스트 open
     $("#vote_btn_open").click(function () {
         $("#vote_btn_list").css("display", "inline");
@@ -20,18 +22,38 @@ $(document).ready(function () {
             $(this).val($(this).val().substring(0, 500));
             $('#vote_content_cnt').html("500/500");
         }
-
-        // 투표 내용에서 해시태그 추출해서 색 변경
-        let split_content = $('#vote_content').val().split(/(#[^\s#]+)/g);
-        let hashtag = [];
-        for (let i = 0; i < split_content.length; i++) {
-            if (split_content[i].includes('#')) {
-                hashtag[hashtag.length] = split_content[i];
-            }
-        }
-        // TODO : hashtag 색 변경하기
     });
 });
+
+function hashtaging() {
+    // 투표 내용에서 해시태그 추출해서 색 변경
+    for (let i = 0; i < $(".vote-content-none").length; i++) {
+        let split_content = $(".vote-content-none").eq(i).text().split(/(#[^\s#]+)/g);
+        let p = $('<div>');
+        p.addClass('timeline-content-title');
+        for (let j = 0; j < split_content.length; j++) {
+            if (split_content[j].includes('#')) {
+                // 해시태그를 가진 div를 생성하고, onclick 메서드를 추가합니다.
+                let hashtagDiv = $('<div>');
+                hashtagDiv.text(split_content[j]);
+                hashtagDiv.css('color', '#7A57F6');
+                hashtagDiv.css('display', 'inline');
+                hashtagDiv.addClass('hover-cursor-pointer');
+                hashtagDiv.click(function () {
+                    window.location.href = '/search?hashtag=' + split_content[j].substring(1);
+                });
+                p.append(hashtagDiv);
+            } else {
+                // 해시태그가 없는 div를 생성합니다.
+                let div = $('<div>');
+                div.text(split_content[j]);
+                div.css('display', 'inline');
+                p.append(div);
+            }
+            $(".vote-content-none").eq(i).after(p);
+        }
+    }
+}
 
 $(document).ready(function () {
     $('#searchValue').on('keyup', function () {
@@ -82,6 +104,7 @@ function search() {
     })
         .done(function (fragment) {
             $('#searchResult').replaceWith(fragment);
+            hashtaging();
         });
 }
 
