@@ -32,6 +32,7 @@
             integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <script type="text/javascript" th:src="@{/js/share.js}"></script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </head>
@@ -78,6 +79,10 @@
                                         <a class="dropdown-item hover-cursor-pointer" th:id="${vote.getId()}"
                                            onclick="sendLink(this.id)">카카오톡
                                             공유</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item hover-cursor-pointer" th:id="${vote.getId()}"
+                                           onclick="location.href='/' + this.id + '/analysis'">투표 결과 보기</a>
                                     </li>
                                     <!-- redis 적용 후 현재 로그인 유저와 투표 작성자가 일치할 때 display -->
                                     <li>
