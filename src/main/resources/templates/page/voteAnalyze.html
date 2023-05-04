@@ -73,8 +73,7 @@
                                         style="border-radius: 10px; z-index: 999;">
                                         <li>
                                             <a class="dropdown-item hover-cursor-pointer" th:id="${vote.getId()}"
-                                               onclick="sendLink(this.id)">카카오톡
-                                                공유</a>
+                                               onclick="location.href='/' + this.id + '/analysis/csv'">CSV 다운로드</a>
                                         </li>
                                         <!-- redis 적용 후 현재 로그인 유저와 투표 작성자가 일치할 때 display -->
                                         <li>
