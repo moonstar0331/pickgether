@@ -40,7 +40,7 @@ function hashtaging() {
                 hashtagDiv.css('display', 'inline');
                 hashtagDiv.addClass('hover-cursor-pointer');
                 hashtagDiv.click(function () {
-                    window.location.href = '/search';
+                    window.location.href = '/search?hashtag=' + split_content[j].substring(1);
                 });
                 p.append(hashtagDiv);
             } else {

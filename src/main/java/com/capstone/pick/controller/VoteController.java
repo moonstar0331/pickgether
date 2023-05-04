@@ -52,7 +52,13 @@ public class VoteController {
     }
 
     @GetMapping("/search")
-    public String search() {
+    public String search(@RequestParam(required = false) String hashtag, Model map) {
+        if (hashtag != null) {
+            List<VoteOptionCommentDto> votes = voteService.searchVotes(SearchType.HASHTAG, hashtag);
+            map.addAttribute("votes", votes);
+            Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
+            map.addAttribute("bookmarks", bookmarks);
+        }
         return "page/search";
     }
 
