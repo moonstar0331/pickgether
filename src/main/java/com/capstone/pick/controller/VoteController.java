@@ -201,7 +201,7 @@ public class VoteController {
     }
 
     @GetMapping("/{voteId}/analysis")
-    public String voteAnalyze(@PathVariable long voteId, Model model) throws Exception {
+    public String voteAnalysis(@PathVariable long voteId, Model model) throws Exception {
         VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
 
@@ -212,7 +212,7 @@ public class VoteController {
     }
 
     @GetMapping("/{voteId}/analysis/csv")
-    public ResponseEntity<byte[]> voteAnalysis(@PathVariable Long voteId) throws Exception {
+    public ResponseEntity<byte[]> voteAnalysisCSV(@PathVariable Long voteId) throws Exception {
         List<List<String>> analysis = voteResultService.getVoteResults(voteId);
 
         String filename = "analysis_" + voteId;
