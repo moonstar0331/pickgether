@@ -1,14 +1,32 @@
-insert into user(user_Id, user_password, email, nickname, memo, birthday, created_at)
-values ('user', '{noop}password', 'email@email.com', 'nick', 'memo', now(), '2023-03-13T00:00:00');
-
--- 5 users
+-- users
+insert into user (user_Id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user', '{noop}password', 'email@email.com', 'nick', 'memo', '1971-03-13T00:00:00', 'male', now(), '50대', 'expert', '경기 성남시 분당구 금곡로 39 (화이트빌)');
 insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('cvaldes0', '{noop}11tMPQ4', 'bscrivenor0@bluehost.com', 'Skiles and Sons', 'Optimized tangible customer loyalty', '2022-05-13 02:43:28', 'male', '2001-01-01', '20대', 'expert', '경기 수원시 장안구 경수대로 769 (청송빌딩)');
 insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('lness1', '{noop}aA7tIdKQAL5', 'vkilcullen1@etsy.com', 'Nikolaus-Feest', 'Enhanced secondary website', '2021-06-08 06:05:49', 'male', '1991-02-02', '30대', 'office', '충북 음성군 음성읍 가섭길 568');
 insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('hcampa2', '{noop}UCaygi', 'lretchless2@wordpress.org', 'Bins, Baumbach and Russel', 'Multi-tiered interactive access', '2022-02-15 18:57:26', 'male', '1999-04-01', '20대', 'service', '서울 송파구 동남로 99 (용현빌딩)');
-insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('tjackalin3', '{noop}gLmKrEwLUO', 'chedling3@i2i.jp', 'Hand-Stamm', 'Adaptive intermediate task-force', '2022-02-02 11:37:00', 'female', '2011-10-10', '10대', 'sales', '경기 성남시 분당구 서판교로 32');
-insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('rclayson4', '{noop}IVKw1XpapbzR', 'bbevis4@ehow.com', 'Strosin-O''Kon', 'Universal modular website', '2021-01-04 00:54:05', 'female', '1971-08-22', '50대', 'expert', '경기 수원시 영통구 광교산로 154-42 (경기대학교)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('tjackalin3', '{noop}gLmKrEwLUO', 'chedling3@i2i.jp', 'Hand-Stamm', 'Adaptive intermediate task-force', '2022-02-02 11:37:00', 'female', '2011-10-10', '10대', 'student', '경기 성남시 분당구 서판교로 32');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('rclayson4', '{noop}IVKw1XpapbzR', 'bbevis4@ehow.com', 'Strosin-O''Kon', 'Universal modular website', '2021-01-04 00:54:05', 'female', '1971-08-22', '50대', 'sales', '경기 수원시 영통구 광교산로 154-42 (경기대학교)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user1', 'password1', 'user1@test.com', 'user1', 'memo1', '2023-04-12 00:00:00', 'male', '1990-01-01 00:00:00', '30대', 'office', '울산 북구 가대서길 25');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user2', 'password2', 'user2@test.com', 'user2', 'memo2', '2023-04-12 00:00:00', 'male', '1991-01-01 00:00:00', '30대', 'sales', '대구 남구 경상길 1');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user3', 'password3', 'user3@test.com', 'user3', 'memo3', '2023-04-12 00:00:00', 'female', '1992-01-01 00:00:00', '30대', 'sales', '부산 강서구 가달1로 7');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user4', 'password4', 'user4@test.com', 'user4', 'memo4', '2023-04-12 00:00:00', 'female', '1993-01-01 00:00:00', '30대', 'office', '인천 남동구 간석로 1');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user5', 'password5', 'user5@test.com', 'user5', 'memo5', '2023-04-12 00:00:00', 'male', '1994-01-01 00:00:00', '30대', 'expert', '광주 동구 경양로 211');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user6', 'password6', 'user6@test.com', 'user6', 'memo6', '2023-04-12 00:00:00', 'female', '1995-01-01 00:00:00', '20대', 'office', '광주 북구 가사문학로 954-38');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user7', 'password7', 'user7@test.com', 'user7', 'memo7', '2023-04-12 00:00:00', 'male', '1996-01-01 00:00:00', '20대', 'expert', '광주 남구 대지상촌길 1');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user8', 'password8', 'user8@test.com', 'user8', 'memo8', '2023-04-12 00:00:00', 'female', '1997-01-01 00:00:00', '20대', 'service', '대전 대덕구 대화로50번길 76 (행복아파트)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user9', 'password9', 'user9@test.com', 'user9', 'memo9', '2023-04-12 00:00:00', 'male', '1998-01-01 00:00:00', '20대', 'service', '울산 남구 거마로 5');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user10', 'password10', 'user10@test.com', 'user10', 'memo10', '2023-04-12 00:00:00', 'male', '1999-01-01 00:00:00', '20대', 'service', '강원 삼척시 강원남부로 4330 (영진산업개발)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user11', 'password11', 'user11@test.com', 'user11', 'memo11', '2023-04-12 00:00:00', 'female', '2000-01-01 00:00:00', '20대', 'service', '충북 영동군 양강면 유점지촌길 372 (충남대학교학술림)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user12', 'password12', 'user12@test.com', 'user12', 'memo12', '2023-04-12 00:00:00', 'female','2001-01-01 00:00:00', '20대', 'expert', '충북 음성군 음성읍 가섭길 578');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user13', 'password13', 'user13@test.com', 'user13', 'memo13', '2023-04-12 00:00:00', 'female', '2002-01-01 00:00:00', '20대', 'service', '충남 금산군 진산면 실학로 520-25 (대한불교조계종금강불교대학부설원적선원)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user14', 'password14', 'user14@test.com', 'user14', 'memo14', '2023-04-12 00:00:00', 'female', '2003-01-01 00:00:00', '20대', 'office', '전남 광양시 광양읍 대학로 85 (광양보건대학)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user15', 'password15', 'user15@test.com', 'user15', 'memo15', '2023-04-12 00:00:00', 'male', '2004-01-01 00:00:00', '20대', 'sales', '전북 군산시 대학로 588 (군산대학교)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user16', 'password16', 'user16@test.com', 'user16', 'user16', '2023-04-12 00:00:00', 'female', '2005-01-01 00:00:00', '10대', 'student', '경남 거제시 마전1길 91 (거제대학)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user17', 'password17', 'user17@test.com', 'user17', 'user17', '2023-04-12 00:00:00', 'female', '2006-01-01 00:00:00', '10대', 'student', '경북 경산시 경청로222길 33 (대신대학교)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user18', 'password18', 'user18@test.com', 'user18', 'user18', '2023-04-12 00:00:00', 'male', '2007-01-01 00:00:00', '10대', 'student', '세종특별자치시 전의면 가나물길 13');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user19', 'password19', 'user19@test.com', 'user19', 'user19', '2023-04-12 00:00:00', 'female', '2008-01-01 00:00:00', '10대', 'student', '서울 동대문구 서울시립대로 7');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('user20', 'password20', 'user20@test.com', 'user20', 'user20', '2023-04-12 00:00:00', 'female', '2009-01-01 00:00:00', '10대', 'student', '서울 영등포구 당산로 123 (영등포구청)');
 
--- 10 votes
+-- votes
 insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (1, 'cvaldes0', 'Monsturd', 'Integrated #intermediate functionalities', 'ENTERPRISE', '2023-01-02 17:18:40', '2023-02-10 11:33:14', '2021-04-11 07:35:55', 'PUBLIC', true);
 insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (2, 'cvaldes0', 'Raincoat', 'Switchable fresh-thinking #secured line', 'SURVEY', '2022-03-28 16:01:59', '2022-06-09 02:20:49', '2021-04-07 01:20:52', 'PUBLIC', true);
 insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (3, 'lness1', 'Expelled', 'Inverse user-facing #interface', 'FREE', '2022-07-31 21:42:57', '2021-05-24 05:16:01', '2021-12-31 15:59:36', 'PUBLIC', false);
@@ -20,8 +38,7 @@ insert into vote (vote_id, user_id, title, content, category, expired_at, create
 insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (9, 'rclayson4', 'Lucky Night', '#Innovative mission-critical artificial intelligence', 'FREE', '2022-07-05 12:07:09', '2021-02-15 18:33:55', '2020-12-07 09:52:28', 'FRIEND', false);
 insert into vote (vote_id, user_id, title, content, category, expired_at, create_at, modified_at, display_range, is_multi_pick) values (10, 'rclayson4', 'Scalphunters, The', 'Centralized fault-tolerant #structure', 'WORRY', '2023-03-13 11:00:24', '2021-06-19 20:38:28', '2021-04-04 15:15:26', 'PUBLIC', false);
 
-
--- 20 vote options
+-- vote options
 insert into vote_option (vote_option_id, vote_id, content, image_link) values (1, 1, 'Expanded needs-based standardization', '/images/image1.png');
 insert into vote_option (vote_option_id, vote_id, content, image_link) values (2, 1, 'Intuitive 3rd generation open system', '/images/image2.png');
 insert into vote_option (vote_option_id, vote_id, content, image_link) values (3, 2, 'Advanced user-facing system engine', '/images/image3.png');
@@ -43,7 +60,7 @@ insert into vote_option (vote_option_id, vote_id, content, image_link) values (1
 insert into vote_option (vote_option_id, vote_id, content, image_link) values (19, 10, 'Customizable modular orchestration', '/images/image19.png');
 insert into vote_option (vote_option_id, vote_id, content, image_link) values (20, 10, 'Total explicit conglomeration', '/images/image20.png');
 
--- 30 vote comments
+-- vote comments
 insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at, modified_at) values (1, 1, 'tjackalin3', 'Inverse methodical solution', '2022-01-30 13:59:17', '2022-11-18 14:10:01');
 insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at, modified_at) values (2, 1, 'lness1', 'Cloned radical parallelism', '2023-01-31 15:50:25', '2020-10-09 01:20:27');
 insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at, modified_at) values (3, 1, 'hcampa2', 'Multi-tiered reciprocal adapter', '2023-01-18 18:52:03', '2023-02-24 06:47:36');
@@ -75,183 +92,103 @@ insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at,
 insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at, modified_at) values (29, 10, 'lness1', 'Visionary user-facing frame', '2023-03-05 06:27:21', '2022-09-16 08:06:21');
 insert into vote_comment (vote_comment_id, vote_id, user_id, content, create_at, modified_at) values (30, 10, 'rclayson4', 'Operative mobile Graphical User Interface', '2023-02-11 02:06:27', '2021-07-22 08:31:44');
 
--- 5 comment likes
+-- comment likes
 insert into comment_like(vote_comment_id, user_id) values (1, 'lness1');
 insert into comment_like(vote_comment_id, user_id) values (1, 'hcampa2');
 insert into comment_like(vote_comment_id, user_id) values (2, 'tjackalin3');
 insert into comment_like(vote_comment_id, user_id) values (2, 'hcampa2');
 insert into comment_like(vote_comment_id, user_id) values (3, 'lness1');
 
--- 10 hashtags
-insert into hashtag(hashtag_id, content) VALUES (1, 'intermediate');
-insert into hashtag(hashtag_id, content) VALUES (2, 'secured');
-insert into hashtag(hashtag_id, content) VALUES (3, 'interface');
-insert into hashtag(hashtag_id, content) VALUES (4, 'national');
-insert into hashtag(hashtag_id, content) VALUES (5, 'hub');
-insert into hashtag(hashtag_id, content) VALUES (6, 'data-warehouse');
-insert into hashtag(hashtag_id, content) VALUES (7, 'protocol');
-insert into hashtag(hashtag_id, content) VALUES (8, 'interface');
-insert into hashtag(hashtag_id, content) VALUES (9, 'Innovative');
-insert into hashtag(hashtag_id, content) VALUES (10, 'structure');
+-- hashtags
+insert into hashtag(hashtag_id, content) values (1, 'intermediate');
+insert into hashtag(hashtag_id, content) values (2, 'secured');
+insert into hashtag(hashtag_id, content) values (3, 'interface');
+insert into hashtag(hashtag_id, content) values (4, 'national');
+insert into hashtag(hashtag_id, content) values (5, 'hub');
+insert into hashtag(hashtag_id, content) values (6, 'data-warehouse');
+insert into hashtag(hashtag_id, content) values (7, 'protocol');
+insert into hashtag(hashtag_id, content) values (8, 'interface');
+insert into hashtag(hashtag_id, content) values (9, 'Innovative');
+insert into hashtag(hashtag_id, content) values (10, 'structure');
 
--- 10 vote_hashtags
-insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (1, 1, 1);
-insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (2, 2, 2);
-insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (3, 3, 3);
-insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (4, 4, 4);
-insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (5, 5, 5);
-insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (6, 6, 6);
-insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (7, 7, 7);
-insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (8, 8, 8);
-insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (9, 9, 9);
-insert into vote_hashtag(id, hashtag_id, vote_id) VALUES (10, 10, 10);
+-- vote_hashtags
+insert into vote_hashtag(id, hashtag_id, vote_id) values (1, 1, 1);
+insert into vote_hashtag(id, hashtag_id, vote_id) values (2, 2, 2);
+insert into vote_hashtag(id, hashtag_id, vote_id) values (3, 3, 3);
+insert into vote_hashtag(id, hashtag_id, vote_id) values (4, 4, 4);
+insert into vote_hashtag(id, hashtag_id, vote_id) values (5, 5, 5);
+insert into vote_hashtag(id, hashtag_id, vote_id) values (6, 6, 6);
+insert into vote_hashtag(id, hashtag_id, vote_id) values (7, 7, 7);
+insert into vote_hashtag(id, hashtag_id, vote_id) values (8, 8, 8);
+insert into vote_hashtag(id, hashtag_id, vote_id) values (9, 9, 9);
+insert into vote_hashtag(id, hashtag_id, vote_id) values (10, 10, 10);
 
+-- picks
+insert into pick(pick_id, user_id, vote_option_id) values (1, 'cvaldes0', 1);
+insert into pick(pick_id, user_id, vote_option_id) values (2, 'cvaldes0', 3);
+insert into pick(pick_id, user_id, vote_option_id) values (3, 'cvaldes0', 5);
+insert into pick(pick_id, user_id, vote_option_id) values (4, 'cvaldes0', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (5, 'cvaldes0', 11);
+insert into pick(pick_id, user_id, vote_option_id) values (6, 'cvaldes0', 13);
+insert into pick(pick_id, user_id, vote_option_id) values (7, 'cvaldes0', 15);
+insert into pick(pick_id, user_id, vote_option_id) values (8, 'cvaldes0', 17);
+insert into pick(pick_id, user_id, vote_option_id) values (9, 'cvaldes0', 20);
+insert into pick(pick_id, user_id, vote_option_id) values (10, 'lness1', 1);
+insert into pick(pick_id, user_id, vote_option_id) values (11, 'lness1', 4);
+insert into pick(pick_id, user_id, vote_option_id) values (12, 'lness1', 5);
+insert into pick(pick_id, user_id, vote_option_id) values (13, 'lness1', 11);
+insert into pick(pick_id, user_id, vote_option_id) values (14, 'lness1', 13);
+insert into pick(pick_id, user_id, vote_option_id) values (15, 'lness1', 17);
+insert into pick(pick_id, user_id, vote_option_id) values (16, 'lness1', 20);
+insert into pick(pick_id, user_id, vote_option_id) values (17, 'hcampa2', 2);
+insert into pick(pick_id, user_id, vote_option_id) values (18, 'hcampa2', 4);
+insert into pick(pick_id, user_id, vote_option_id) values (19, 'hcampa2', 6);
+insert into pick(pick_id, user_id, vote_option_id) values (20, 'hcampa2', 8);
+insert into pick(pick_id, user_id, vote_option_id) values (21, 'hcampa2', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (22, 'hcampa2', 15);
+insert into pick(pick_id, user_id, vote_option_id) values (23, 'hcampa2', 19);
+insert into pick(pick_id, user_id, vote_option_id) values (24, 'tjackalin3', 1);
+insert into pick(pick_id, user_id, vote_option_id) values (25, 'tjackalin3', 3);
+insert into pick(pick_id, user_id, vote_option_id) values (26, 'tjackalin3', 5);
+insert into pick(pick_id, user_id, vote_option_id) values (27, 'tjackalin3', 7);
+insert into pick(pick_id, user_id, vote_option_id) values (28, 'tjackalin3', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (29, 'tjackalin3', 11);
+insert into pick(pick_id, user_id, vote_option_id) values (30, 'tjackalin3', 13);
+insert into pick(pick_id, user_id, vote_option_id) values (31, 'tjackalin3', 17);
+insert into pick(pick_id, user_id, vote_option_id) values (32, 'tjackalin3', 19);
+insert into pick(pick_id, user_id, vote_option_id) values (33, 'rclayson4', 2);
+insert into pick(pick_id, user_id, vote_option_id) values (34, 'rclayson4', 4);
+insert into pick(pick_id, user_id, vote_option_id) values (35, 'rclayson4', 6);
+insert into pick(pick_id, user_id, vote_option_id) values (36, 'rclayson4', 8);
+insert into pick(pick_id, user_id, vote_option_id) values (37, 'rclayson4', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (38, 'rclayson4', 12);
+insert into pick(pick_id, user_id, vote_option_id) values (39, 'rclayson4', 14);
+insert into pick(pick_id, user_id, vote_option_id) values (40, 'rclayson4', 16);
+insert into pick(pick_id, user_id, vote_option_id) values (41, 'user1', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (42, 'user2', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (43, 'user3', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (44, 'user4', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (45, 'user5', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (46, 'user6', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (47, 'user7', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (48, 'user8', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (49, 'user9', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (50, 'user10', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (51, 'user11', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (52, 'user12', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (53, 'user13', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (54, 'user14', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (55, 'user15', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (56, 'user16', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (57, 'user17', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (58, 'user18', 10);
+insert into pick(pick_id, user_id, vote_option_id) values (59, 'user19', 9);
+insert into pick(pick_id, user_id, vote_option_id) values (60, 'user20', 10);
 
--- 40 picks
-insert into pick(pick_id, user_id, vote_option_id) VALUES (1, 'cvaldes0', 1);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (2, 'cvaldes0', 3);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (3, 'cvaldes0', 5);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (4, 'cvaldes0', 9);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (5, 'cvaldes0', 11);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (6, 'cvaldes0', 13);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (7, 'cvaldes0', 15);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (8, 'cvaldes0', 17);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (9, 'cvaldes0', 20);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (10, 'lness1', 1);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (11, 'lness1', 4);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (12, 'lness1', 5);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (13, 'lness1', 11);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (14, 'lness1', 13);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (15, 'lness1', 17);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (16, 'lness1', 20);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (17, 'hcampa2', 2);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (18, 'hcampa2', 4);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (19, 'hcampa2', 6);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (20, 'hcampa2', 8);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (21, 'hcampa2', 10);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (22, 'hcampa2', 15);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (23, 'hcampa2', 19);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (24, 'tjackalin3', 1);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (25, 'tjackalin3', 3);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (26, 'tjackalin3', 5);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (27, 'tjackalin3', 7);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (28, 'tjackalin3', 9);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (29, 'tjackalin3', 11);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (30, 'tjackalin3', 13);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (31, 'tjackalin3', 17);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (32, 'tjackalin3', 19);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (33, 'rclayson4', 2);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (34, 'rclayson4', 4);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (35, 'rclayson4', 6);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (36, 'rclayson4', 8);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (37, 'rclayson4', 10);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (38, 'rclayson4', 12);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (39, 'rclayson4', 14);
-insert into pick(pick_id, user_id, vote_option_id) VALUES (40, 'rclayson4', 16);
-
+-- follows
 insert into follow(follow_id, from_user_id, to_user_id) values(1, 'user', 'hcampa2');
 insert into follow(follow_id, from_user_id, to_user_id) values(2, 'user', 'rclayson4');
 insert into follow(follow_id, from_user_id, to_user_id) values(3, 'hcampa2', 'rclayson4');
 insert into follow(follow_id, from_user_id, to_user_id) values(4, 'rclayson4', 'hcampa2');
 insert into follow(follow_id, from_user_id, to_user_id) values(5, 'cvaldes0', 'hcampa2');
 insert into follow(follow_id, from_user_id, to_user_id) values(6, 'cvaldes0', 'rclayson4');
-
-insert into user (user_id, user_password, email, nickname, memo, birthday, created_at)
-VALUES ('user1', 'password1', 'user1@test.com', 'user1', 'memo1', '1990-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user2', 'password2', 'user2@test.com', 'user2', 'memo2', '1991-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user3', 'password3', 'user3@test.com', 'user3', 'memo3', '1992-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user4', 'password4', 'user4@test.com', 'user4', 'memo4', '1993-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user5', 'password5', 'user5@test.com', 'user5', 'memo5', '1994-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user6', 'password6', 'user6@test.com', 'user6', 'memo6', '1995-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user7', 'password7', 'user7@test.com', 'user7', 'memo7', '1996-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user8', 'password8', 'user8@test.com', 'user8', 'memo8', '1997-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user9', 'password9', 'user9@test.com', 'user9', 'memo9', '1998-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user10', 'password10', 'user10@test.com', 'user10', 'memo10', '1999-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user11', 'password11', 'user11@test.com', 'user11', 'memo11', '2000-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user12', 'password12', 'user12@test.com', 'user12', 'memo12', '2001-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user13', 'password13', 'user13@test.com', 'user13', 'memo13', '2002-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user14', 'password14', 'user14@test.com', 'user14', 'memo14', '2003-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user15', 'password15', 'user15@test.com', 'user15', 'memo15', '2004-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user16', 'password16', 'user16@test.com', 'user16', 'user16', '1999-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user17', 'password17', 'user17@test.com', 'user17', 'user17', '2000-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user18', 'password18', 'user18@test.com', 'user18', 'user18', '2001-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user19', 'password19', 'user19@test.com', 'user19', 'user19', '2002-01-01 00:00:00', '2023-04-12 00:00:00'),
-       ('user20', 'password20', 'user20@test.com', 'user20', 'user20', '2003-01-01 00:00:00', '2023-04-12 00:00:00');
-
-INSERT INTO pick (pick_id, user_id, vote_option_id)
-VALUES (41, 'user1', 9),
-       (42, 'user2', 10),
-       (43, 'user3', 9),
-       (44, 'user4', 10),
-       (45, 'user5', 9),
-       (46, 'user6', 10),
-       (47, 'user7', 9),
-       (48, 'user8', 10),
-       (49, 'user9', 9),
-       (50, 'user10', 10),
-       (51, 'user11', 9),
-       (52, 'user12', 10),
-       (53, 'user13', 9),
-       (54, 'user14', 10),
-       (55, 'user15', 9),
-       (56, 'user16', 10),
-       (57, 'user17', 9),
-       (58, 'user18', 10),
-       (59, 'user19', 9),
-       (60, 'user20', 10);
-
--- insert into hashtag(content)
--- values ('is');
---
--- insert into hashtag(content)
--- values ('hashtag');
---
--- insert into vote_hashtag(hashtag_id, vote_id)
--- values (3, 3);
---
--- insert into vote_hashtag(hashtag_id, vote_id)
--- values (4, 3);
---
--- insert into vote(category, content, create_at, display_range, expired_at, is_multi_pick, modified_at, title, user_id)
--- values ('ENTERPRISE', '#This is ENTERPRISE', '2023-03-14T03:00:00', 'FRIEND', now(), false, '2023-03-14T03:00:00',
---         'ENTERPRISE', 'user2');
---
--- insert into hashtag(content)
--- values ('This');
---
--- insert into vote_hashtag(hashtag_id, vote_id)
--- values (5, 4);
---
--- insert into vote_option(content, image_link, vote_id)
--- values ('new option1', '/link/image1.png', 4);
---
--- insert into vote_option(content, image_link, vote_id)
--- values ('new option2', '/link/image2.png', 4);
---
--- insert into pick(user_id, vote_option_id)
--- values ('user2', 3);
---
--- insert into vote(category, content, create_at, display_range, expired_at, is_multi_pick, modified_at, title, user_id)
--- values ('WORRY', '#ThisIsWORRY', '2023-03-14T04:00:00', 'FRIEND', now(), false, '2023-03-14T04:00:00', 'WORRY',
---         'user2');
---
--- insert into hashtag(content)
--- values ('ThisIsWORRY');
---
--- insert into vote_hashtag(hashtag_id, vote_id)
--- values (6, 5);
---
--- insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
--- values (1, 'user', '재밌다', '2023-03-14T03:00:00', '2023-03-14T03:00:00');
---
--- insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
--- values (1, 'user2', '재밌냐?', '2023-03-14T04:00:00', '2023-03-14T04:00:00');
---
--- insert into vote_comment(vote_id, user_id, content, create_at, modified_at)
--- values (1, 'user3', '재미없어', '2023-03-14T05:00:00', '2023-03-14T05:00:00');
---
--- insert into comment_like(vote_comment_id, user_id)
--- values (1, 'user2');
---
--- insert into comment_like(vote_comment_id, user_id)
--- values (2, 'user3');
