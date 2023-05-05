@@ -2,6 +2,7 @@ package com.capstone.pick.domain;
 
 import com.capstone.pick.domain.constant.Category;
 
+import com.capstone.pick.domain.constant.RegionRestriction;
 import lombok.*;
 
 import com.capstone.pick.domain.constant.DisplayRange;
@@ -64,6 +65,10 @@ public class Vote {
 
     @Enumerated(EnumType.STRING)
     private DisplayRange displayRange; // 공개범위
+
+    @Enumerated(EnumType.STRING)
+    private RegionRestriction regionRestriction; // 지역제한
+
 
     @ToString.Exclude
     @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)

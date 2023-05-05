@@ -80,10 +80,12 @@ public class VoteController {
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category, @AuthenticationPrincipal VotePrincipal votePrincipal,
                            @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable,
                            Model model) {
+
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
+        List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, votePrincipal);
 
-        model.addAttribute("votes", votes);
+        model.addAttribute("votes", filteredVotes);
         model.addAttribute("bookmarks", bookmarks);
         model.addAttribute("category", category);
         model.addAttribute("userId", votePrincipal.getUsername());
@@ -98,9 +100,10 @@ public class VoteController {
                                               @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
         Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
+        List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, votePrincipal);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("votes", votes);
+        response.put("votes", filteredVotes);
         response.put("bookmarks", bookmarks);
         response.put("category", category);
 
