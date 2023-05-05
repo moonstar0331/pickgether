@@ -16,7 +16,7 @@ function bar_graph_age() {
         $(".graph-bar-label").eq(i).text((i + 1) * 10 + "대").css("font-weight", "bold");
         $(".graph-bar-tag").eq(i).text(val + "%").css("font-weight", "bold");
         $(".graph-bar-tag").eq(i).css("position", "absolute");
-        $(".graph-bar-tag").eq(i).css("bottom", val);
+        $(".graph-bar-tag").eq(i).css("top", -48);
         $(".graph-bar-tag").eq(i).css("left", "1rem");
     }
 }
@@ -43,7 +43,7 @@ const g = svg
     .append("g")
     .attr("transform", `translate(${svgDimension.width / 2}, ${svgDimension.height / 2})`);
 const color_gender = d3.scaleOrdinal([
-    "#F4CEC3", "#ECE2B1", "#DDECB1"
+    "#F4CEC3", "#ECE2B1"
 ]);
 
 const pie = d3.pie();
@@ -76,7 +76,8 @@ arcs
 const data_job = [!!$("#job-expert").attr('value') ? $("#job-expert").attr('value') : 0,
     !!$("#job-office").attr('value') ? $("#job-office").attr('value') : 0,
     !!$("#job-service").attr('value') ? $("#job-service").attr('value') : 0,
-    !!$("#job-sail").attr('value') ? $("#job-sail").attr('value') : 0];
+    !!$("#job-sales").attr('value') ? $("#job-sales").attr('value') : 0,
+    !!$("#job-student").attr('value') ? $("#job-student").attr('value') : 0];
 
 const svg_job = d3
     .select("#pie-chart-job")
@@ -90,7 +91,7 @@ const g_job = svg_job
     .append("g")
     .attr("transform", `translate(${svgDimension.width / 2}, ${svgDimension.height / 2})`);
 const color_job = d3.scaleOrdinal([
-    "#F4CEC3", "#ECE2B1", "#DDECB1", "#CEF3E1"
+    "#F4CEC3", "#ECE2B1", "#DDECB1", "#CEF3E1", "#B1C5EC"
 ]);
 
 const pie_job = d3.pie();
