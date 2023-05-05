@@ -36,6 +36,7 @@ public class TestSecurityConfig {
                         .email("test@email.com")
                         .nickname("user-test")
                         .memo("test memo")
+                        .address("서울")
                         .build()
                 )
         );
@@ -50,6 +51,17 @@ public class TestSecurityConfig {
                         .memo("test memo")
                         .build()
                 )
+        );
+
+        given(userRepository.getReferenceById("test")).willReturn(
+                User.builder()
+                        .userId("user")
+                        .userPassword("password")
+                        .email("test@email.com")
+                        .nickname("user-test")
+                        .memo("test memo")
+                        .address("서울")
+                        .build()
         );
     }
 }

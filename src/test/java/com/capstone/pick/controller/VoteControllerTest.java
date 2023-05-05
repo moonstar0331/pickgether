@@ -561,8 +561,8 @@ class VoteControllerTest {
             assertThat(jsonObject.get("bookmarks")).isInstanceOf(JSONArray.class);
         }
         assertThat(jsonObject.has("votes")).isTrue();
-        assertThat(jsonObject.get("votes")).isInstanceOf(JSONObject.class);
-
+        //assertThat(jsonObject.get("votes")).isInstanceOf(JSONObject.class);
+        assertThat(jsonObject.get("votes")).isInstanceOf(JSONArray.class);
         assertThat(jsonObject.has("category")).isTrue();
         assertThat(jsonObject.get("category")).isEqualTo("ALL");
     }

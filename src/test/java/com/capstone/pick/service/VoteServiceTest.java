@@ -3,30 +3,31 @@ package com.capstone.pick.service;
 import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.domain.constant.RegionRestriction;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
+import com.capstone.pick.security.VotePrincipal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,7 @@ import static org.mockito.BDDMockito.*;
 @MockBean(JpaMetamodelMappingContext.class)
 public class VoteServiceTest {
 
+    @Spy
     @InjectMocks
     private VoteService voteService;
 
@@ -127,6 +129,30 @@ public class VoteServiceTest {
         // then
         then(voteRepository).should().findAll(any(Pageable.class));
         then(voteRepository).should().findAllByCategory(any(Category.class), any(Pageable.class));
+    }
+
+    @DisplayName("투표 참여가 제한된 게시물을 필터링한다.")
+    @Test
+    void participantsRestriction() {
+
+        // given
+        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "modifiedAt");
+        VoteOptionCommentDto voteOptionCommentDto1 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.All).build();
+        VoteOptionCommentDto voteOptionCommentDto2 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.Seoul).build();
+        VoteOptionCommentDto voteOptionCommentDto3 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.Incheon).build();
+        List<VoteOptionCommentDto> votes = Arrays.asList(voteOptionCommentDto1,voteOptionCommentDto2,voteOptionCommentDto3);
+        Page<VoteOptionCommentDto> page = new PageImpl<>(votes, pageable, 10);
+        VotePrincipal principal = VotePrincipal.builder().username("test").build();
+        User user = User.builder().userId("test").address("서울").build();
+
+        given(userRepository.getReferenceById("test")).willReturn(user);
+
+        // when
+        List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(page, principal);
+
+        // then
+        then(voteService).should(only()).participantsRestriction(any(Page.class), any(VotePrincipal.class));
+        Assertions.assertEquals(filteredVotes.size(),2);
     }
 
     @DisplayName("제목을 검색하면, 해당하는 투표 게시글을 반환한다.")

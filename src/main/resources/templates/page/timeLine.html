@@ -290,23 +290,23 @@
             </div>
         </div>
         <!--댓글-->
-        <section class="profile" style="margin-left: 10px; display: flex; height: 100%">
-            <div style="float: left;">
-                <img src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>
-            </div>
-            <div style="width: 90%">
-                <section style="float: left; padding-left: 10px; font-size: 15px; width:90%;">
-                    <div th:text="${vote.getCommentDtos()[0].getUserDto().getUserId()}"
-                         style="font-weight: bold; display:inline-block;">picker 3
-                    </div>
-                    <div style="display: inline-block; float: right; width: 80%; height: 20px;"
-                         th:onclick="'location.href=\'' + ${vote.getId()} + '/detail' + '\''"></div>
-                    <div th:text="${vote.getCommentDtos()[0].getContent()}"
-                         th:onclick="'location.href=\'' + ${vote.getId()} + '/detail' + '\''">행궁동 ㅇㅇ 예쁘던데 가보세요
-                    </div>
-                </section>
-            </div>
-        </section>
+<!--        <section class="profile" style="margin-left: 10px; display: flex; height: 100%">-->
+<!--            <div style="float: left;">-->
+<!--                <img src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>-->
+<!--            </div>-->
+<!--            <div style="width: 90%">-->
+<!--                <section style="float: left; padding-left: 10px; font-size: 15px; width:90%;">-->
+<!--                    <div th:text="${vote.getCommentDtos()[0].getUserDto().getUserId()}"-->
+<!--                         style="font-weight: bold; display:inline-block;">picker 3-->
+<!--                    </div>-->
+<!--                    <div style="display: inline-block; float: right; width: 80%; height: 20px;"-->
+<!--                         th:onclick="'location.href=\'' + ${vote.getId()} + '/detail' + '\''"></div>-->
+<!--                    <div th:text="${vote.getCommentDtos()[0].getContent()}"-->
+<!--                         th:onclick="'location.href=\'' + ${vote.getId()} + '/detail' + '\''">행궁동 ㅇㅇ 예쁘던데 가보세요-->
+<!--                    </div>-->
+<!--                </section>-->
+<!--            </div>-->
+<!--        </section>-->
 
         <hr/>
     </div>

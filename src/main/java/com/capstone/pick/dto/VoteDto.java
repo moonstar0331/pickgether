@@ -4,6 +4,7 @@ import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.domain.constant.RegionRestriction;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class VoteDto {
     private LocalDateTime modifiedAt;
     private boolean isMultiPick;
     private DisplayRange displayRange;
+    private RegionRestriction regionRestriction;
 
     public static VoteDto from(Vote entity) {
         return VoteDto.builder()
@@ -35,6 +37,7 @@ public class VoteDto {
                 .createAt(entity.getCreateAt())
                 .modifiedAt(entity.getModifiedAt())
                 .isMultiPick(entity.isMultiPick())
+                .regionRestriction(entity.getRegionRestriction())
                 .build();
     }
 
@@ -47,6 +50,7 @@ public class VoteDto {
                 .expiredAt(expiredAt)
                 .isMultiPick(isMultiPick)
                 .displayRange(displayRange)
+                .regionRestriction(regionRestriction)
                 .build();
     }
 }

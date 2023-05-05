@@ -3,6 +3,7 @@ package com.capstone.pick.dto;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.domain.constant.RegionRestriction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class VoteOptionCommentDto {
     private LocalDateTime modifiedAt;
     private boolean isMultiPick;
     private DisplayRange displayRange;
+    private RegionRestriction regionRestriction;
     private List<VoteOptionDto> voteOptionDtos;
     private List<CommentDto> commentDtos;
     private Long pickCount;
@@ -47,6 +49,7 @@ public class VoteOptionCommentDto {
                 .commentDtos(entity.getVoteComments().stream()
                         .map(CommentDto::from).collect(Collectors.toList()))
                 .pickCount(entity.getPickCount())
+                .regionRestriction(entity.getRegionRestriction())
                 .build();
     }
 }
