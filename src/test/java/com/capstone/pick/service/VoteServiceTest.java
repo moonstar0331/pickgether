@@ -1,10 +1,7 @@
 package com.capstone.pick.service;
 
 import com.capstone.pick.domain.*;
-import com.capstone.pick.domain.constant.Category;
-import com.capstone.pick.domain.constant.DisplayRange;
-import com.capstone.pick.domain.constant.RegionRestriction;
-import com.capstone.pick.domain.constant.SearchType;
+import com.capstone.pick.domain.constant.*;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.*;
@@ -137,13 +134,13 @@ public class VoteServiceTest {
 
         // given
         Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "modifiedAt");
-        VoteOptionCommentDto voteOptionCommentDto1 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.All).build();
-        VoteOptionCommentDto voteOptionCommentDto2 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.Seoul).build();
-        VoteOptionCommentDto voteOptionCommentDto3 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.Incheon).build();
+        VoteOptionCommentDto voteOptionCommentDto1 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.All).genderRestriction(GenderRestriction.All).build();
+        VoteOptionCommentDto voteOptionCommentDto2 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.Seoul).genderRestriction(GenderRestriction.Male).build();
+        VoteOptionCommentDto voteOptionCommentDto3 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.Incheon).genderRestriction(GenderRestriction.Female).build();
         List<VoteOptionCommentDto> votes = Arrays.asList(voteOptionCommentDto1,voteOptionCommentDto2,voteOptionCommentDto3);
         Page<VoteOptionCommentDto> page = new PageImpl<>(votes, pageable, 10);
         VotePrincipal principal = VotePrincipal.builder().username("test").build();
-        User user = User.builder().userId("test").address("서울").build();
+        User user = User.builder().userId("test").address("서울").gender("남성").build();
 
         given(userRepository.getReferenceById("test")).willReturn(user);
 
