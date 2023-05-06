@@ -2,6 +2,7 @@ package com.capstone.pick.service;
 
 import com.capstone.pick.domain.*;
 import com.capstone.pick.domain.constant.Category;
+import com.capstone.pick.domain.constant.GenderRestriction;
 import com.capstone.pick.domain.constant.RegionRestriction;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
@@ -60,9 +61,11 @@ public class VoteService {
 
         User user = userRepository.getReferenceById(votePrincipal.getUsername());
         String region = user.getAddress();
+        String gender = user.getGender();
 
         return votes.stream()
-                .filter(Reg -> Reg.getRegionRestriction().getDisplayValue().equals(region) || Reg.getRegionRestriction().equals(RegionRestriction.All))
+                .filter(Region -> Region.getRegionRestriction().getDisplayValue().equals(region) || Region.getRegionRestriction().equals(RegionRestriction.All))
+                .filter(Gender -> Gender.getGenderRestriction().getDisplayValue().equals(gender) || Gender.getGenderRestriction().equals(GenderRestriction.All))
                 .collect(Collectors.toList());
     }
 
