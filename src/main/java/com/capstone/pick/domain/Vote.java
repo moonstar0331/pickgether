@@ -2,6 +2,7 @@ package com.capstone.pick.domain;
 
 import com.capstone.pick.domain.constant.Category;
 
+import com.capstone.pick.domain.constant.GenderRestriction;
 import com.capstone.pick.domain.constant.RegionRestriction;
 import lombok.*;
 
@@ -68,6 +69,9 @@ public class Vote {
 
     @Enumerated(EnumType.STRING)
     private RegionRestriction regionRestriction; // 지역제한
+
+    @Enumerated(EnumType.STRING)
+    private GenderRestriction genderRestriction; // 성별 제한
 
 
     @ToString.Exclude

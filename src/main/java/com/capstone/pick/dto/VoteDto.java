@@ -4,6 +4,7 @@ import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.domain.constant.GenderRestriction;
 import com.capstone.pick.domain.constant.RegionRestriction;
 import lombok.*;
 
@@ -25,6 +26,7 @@ public class VoteDto {
     private boolean isMultiPick;
     private DisplayRange displayRange;
     private RegionRestriction regionRestriction;
+    private GenderRestriction genderRestriction; // 성별 제한
 
     public static VoteDto from(Vote entity) {
         return VoteDto.builder()
@@ -38,6 +40,7 @@ public class VoteDto {
                 .modifiedAt(entity.getModifiedAt())
                 .isMultiPick(entity.isMultiPick())
                 .regionRestriction(entity.getRegionRestriction())
+                .genderRestriction(entity.getGenderRestriction())
                 .build();
     }
 
@@ -51,6 +54,7 @@ public class VoteDto {
                 .isMultiPick(isMultiPick)
                 .displayRange(displayRange)
                 .regionRestriction(regionRestriction)
+                .genderRestriction(genderRestriction)
                 .build();
     }
 }
