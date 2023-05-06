@@ -133,22 +133,22 @@ public class VoteServiceTest {
     void participantsRestriction() {
 
         // given
-        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "modifiedAt");
+        //Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "modifiedAt");
         VoteOptionCommentDto voteOptionCommentDto1 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.All).genderRestriction(GenderRestriction.All).build();
         VoteOptionCommentDto voteOptionCommentDto2 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.Seoul).genderRestriction(GenderRestriction.Male).build();
         VoteOptionCommentDto voteOptionCommentDto3 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.Incheon).genderRestriction(GenderRestriction.Female).build();
         List<VoteOptionCommentDto> votes = Arrays.asList(voteOptionCommentDto1,voteOptionCommentDto2,voteOptionCommentDto3);
-        Page<VoteOptionCommentDto> page = new PageImpl<>(votes, pageable, 10);
+        //Page<VoteOptionCommentDto> page = new PageImpl<>(votes, pageable, 10);
         VotePrincipal principal = VotePrincipal.builder().username("test").build();
         User user = User.builder().userId("test").address("서울").gender("남성").build();
 
         given(userRepository.getReferenceById("test")).willReturn(user);
 
         // when
-        List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(page, principal);
+        List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, principal);
 
         // then
-        then(voteService).should(only()).participantsRestriction(any(Page.class), any(VotePrincipal.class));
+        then(voteService).should(only()).participantsRestriction(anyList(), any(VotePrincipal.class));
         Assertions.assertEquals(filteredVotes.size(),2);
     }
 

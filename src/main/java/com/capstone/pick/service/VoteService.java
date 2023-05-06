@@ -57,7 +57,7 @@ public class VoteService {
     }
 
     @Transactional(readOnly = true)
-    public List<VoteOptionCommentDto> participantsRestriction(Page<VoteOptionCommentDto> votes, VotePrincipal votePrincipal) {
+    public List<VoteOptionCommentDto> participantsRestriction(List<VoteOptionCommentDto> votes, VotePrincipal votePrincipal) {
 
         User user = userRepository.getReferenceById(votePrincipal.getUsername());
         String region = user.getAddress();
