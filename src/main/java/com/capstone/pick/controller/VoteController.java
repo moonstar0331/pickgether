@@ -60,13 +60,14 @@ public class VoteController {
     }
 
     @PostMapping("/search")
-    public String search(@ModelAttribute SearchForm searchForm, ModelMap map) {
+    public String search(@ModelAttribute SearchForm searchForm, ModelMap map, @AuthenticationPrincipal VotePrincipal votePrincipal) {
         if ((searchForm.getSearchType() == SearchType.USER) || (searchForm.getSearchType() == SearchType.NICKNAME)) {
             List<UserDto> users = userService.searchUsers(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("users", users);
         } else {
             List<VoteOptionCommentDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
-            map.addAttribute("votes", votes);
+            List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, votePrincipal);
+            map.addAttribute("votes", filteredVotes);
         }
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
         map.addAttribute("bookmarks", bookmarks);
