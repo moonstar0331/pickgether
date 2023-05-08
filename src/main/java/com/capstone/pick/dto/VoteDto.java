@@ -40,6 +40,7 @@ public class VoteDto {
                 .regionRestriction(entity.getRegionRestriction())
                 .genderRestriction(entity.getGenderRestriction())
                 .ageRestriction(entity.getAgeRestriction())
+                .displayRange(entity.getDisplayRange())
                 .build();
     }
 
