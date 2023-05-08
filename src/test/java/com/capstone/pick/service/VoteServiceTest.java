@@ -59,6 +59,8 @@ public class VoteServiceTest {
     private BookmarkRepository bookmarkRepository;
     @Mock
     private BookmarkCacheRepository bookmarkCacheRepository;
+    @Mock
+    private FollowRepository followRepository;
 
     @DisplayName("타임라인을 조회하면, 모든 투표 게시글을 타임라인에 반환한다.")
     @Test
@@ -133,16 +135,35 @@ public class VoteServiceTest {
     void participantsRestriction() {
 
         // given
-        //Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "modifiedAt");
-        VoteOptionCommentDto voteOptionCommentDto1 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.All).genderRestriction(GenderRestriction.All).build();
-        VoteOptionCommentDto voteOptionCommentDto2 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.Seoul).genderRestriction(GenderRestriction.Male).build();
-        VoteOptionCommentDto voteOptionCommentDto3 = VoteOptionCommentDto.builder().regionRestriction(RegionRestriction.Incheon).genderRestriction(GenderRestriction.Female).build();
-        List<VoteOptionCommentDto> votes = Arrays.asList(voteOptionCommentDto1,voteOptionCommentDto2,voteOptionCommentDto3);
-        //Page<VoteOptionCommentDto> page = new PageImpl<>(votes, pageable, 10);
         VotePrincipal principal = VotePrincipal.builder().username("test").build();
         User user = User.builder().userId("test").address("서울").gender("남성").build();
+        User friend = User.builder().userId("friend").build();
+        Follow follow = Follow.builder().fromUser(user).toUser(friend).isFriend(true).build();
+
+        VoteOptionCommentDto voteOptionCommentDto1 = VoteOptionCommentDto.builder()
+                .userDto(UserDto.from(friend))
+                .regionRestriction(RegionRestriction.All)
+                .genderRestriction(GenderRestriction.All)
+                .displayRange(DisplayRange.FRIEND)
+                .build();
+        VoteOptionCommentDto voteOptionCommentDto2 = VoteOptionCommentDto.builder()
+                .userDto(UserDto.from(friend))
+                .regionRestriction(RegionRestriction.Seoul)
+                .genderRestriction(GenderRestriction.Male)
+                .displayRange(DisplayRange.FRIEND)
+                .build();
+        VoteOptionCommentDto voteOptionCommentDto3 = VoteOptionCommentDto.builder()
+                .userDto(UserDto.from(friend))
+                .regionRestriction(RegionRestriction.Incheon)
+                .genderRestriction(GenderRestriction.Female)
+                .displayRange(DisplayRange.PUBLIC)
+                .build();
+        List<VoteOptionCommentDto> votes = Arrays.asList(voteOptionCommentDto1,voteOptionCommentDto2,voteOptionCommentDto3);
+
+
 
         given(userRepository.getReferenceById("test")).willReturn(user);
+        given(followRepository.findByFromUserAndToUser(user,friend)).willReturn(follow);
 
         // when
         List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, principal);

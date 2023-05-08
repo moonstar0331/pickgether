@@ -2,7 +2,7 @@ insert into user(user_Id, user_password, email, nickname, memo, birthday, create
 values ('user', '{noop}password', 'email@email.com', 'nick', 'memo', now(), '2023-03-13T00:00:00');
 
 -- 5 users
-insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('cvaldes0', '{noop}11tMPQ4', 'bscrivenor0@bluehost.com', 'Skiles and Sons', 'Optimized tangible customer loyalty', '2022-05-13 02:43:28', '남성', '2001-01-01', '20대', 'expert', '경기 수원시 장안구 경수대로 769 (청송빌딩)');
+insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('cvaldes0', '{noop}11tMPQ4', 'bscrivenor0@bluehost.com', 'Skiles and Sons', 'Optimized tangible customer loyalty', '2022-05-13 02:43:28', '남성', '2001-01-01', '20대', 'expert', '경기');
 insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('lness1', '{noop}aA7tIdKQAL5', 'vkilcullen1@etsy.com', 'Nikolaus-Feest', 'Enhanced secondary website', '2021-06-08 06:05:49', '남성', '1991-02-02', '30대', 'office', '충북 음성군 음성읍 가섭길 568');
 insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('hcampa2', '{noop}UCaygi', 'lretchless2@wordpress.org', 'Bins, Baumbach and Russel', 'Multi-tiered interactive access', '2022-02-15 18:57:26', '남성', '1999-04-01', '20대', 'service', '서울 송파구 동남로 99 (용현빌딩)');
 insert into user (user_id, user_password, email, nickname, memo, created_at, gender, birthday, age_range, job, address) values ('tjackalin3', '{noop}gLmKrEwLUO', 'chedling3@i2i.jp', 'Hand-Stamm', 'Adaptive intermediate task-force', '2022-02-02 11:37:00', '여성', '2011-10-10', '10대', 'sail', '경기 성남시 분당구 서판교로 32');
@@ -149,12 +149,14 @@ insert into pick(pick_id, user_id, vote_option_id) VALUES (38, 'rclayson4', 12);
 insert into pick(pick_id, user_id, vote_option_id) VALUES (39, 'rclayson4', 14);
 insert into pick(pick_id, user_id, vote_option_id) VALUES (40, 'rclayson4', 16);
 
-insert into follow(follow_id, from_user_id, to_user_id) values(1, 'user', 'hcampa2');
-insert into follow(follow_id, from_user_id, to_user_id) values(2, 'user', 'rclayson4');
-insert into follow(follow_id, from_user_id, to_user_id) values(3, 'hcampa2', 'rclayson4');
-insert into follow(follow_id, from_user_id, to_user_id) values(4, 'rclayson4', 'hcampa2');
-insert into follow(follow_id, from_user_id, to_user_id) values(5, 'cvaldes0', 'hcampa2');
-insert into follow(follow_id, from_user_id, to_user_id) values(6, 'cvaldes0', 'rclayson4');
+insert into follow(follow_id, from_user_id, to_user_id, is_friend) values(1, 'user', 'hcampa2', false);
+insert into follow(follow_id, from_user_id, to_user_id, is_friend) values(2, 'user', 'rclayson4', false);
+insert into follow(follow_id, from_user_id, to_user_id, is_friend) values(3, 'hcampa2', 'rclayson4', true);
+insert into follow(follow_id, from_user_id, to_user_id, is_friend) values(4, 'hcampa2', 'cvaldes0', true);
+insert into follow(follow_id, from_user_id, to_user_id, is_friend) values(5, 'rclayson4', 'hcampa2', true);
+insert into follow(follow_id, from_user_id, to_user_id, is_friend) values(6, 'rclayson4', 'cvaldes0', true);
+insert into follow(follow_id, from_user_id, to_user_id, is_friend) values(7, 'cvaldes0', 'hcampa2', true);
+insert into follow(follow_id, from_user_id, to_user_id, is_friend) values(8, 'cvaldes0', 'rclayson4', true);
 
 insert into user (user_id, user_password, email, nickname, memo, birthday, created_at)
 VALUES ('user1', 'password1', 'user1@test.com', 'user1', 'memo1', '1990-01-01 00:00:00', '2023-04-12 00:00:00'),
