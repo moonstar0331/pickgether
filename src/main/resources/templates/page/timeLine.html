@@ -89,11 +89,12 @@
 
 <!-- 카테고리 -->
 <section style="position: fixed; width: 20rem; height: 100vh;">
-    <div>
-        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')">
+    <div style="margin: 1rem;">
+        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')"
+             style="display: flex;">
             <!--<div class="profile-circle"></div>-->
             <img src="/images/avatar.jpg" style="height: 48px; border-radius: 70%; float: left;"/>
-            <p class="p-title">User</p>
+            <p class="p-title" style="margin-left: 0.5rem;" th:text="${userId}"></p>
         </div>
         <div>
             <div>
@@ -105,22 +106,18 @@
             </div>
         </div>
     </div>
-    <div>
+    <div style="margin-left: 1rem; margin-top: 2rem;">
         <div>
-            <img src="/images/icons/user.svg" style="height: 35px"/>
-            <button class="category-btn p-title">프로필</button>
+            <button class="category-btn"><img src="/images/icons/user.svg" style="height: 35px; margin-right: 1rem;"/>프로필</button>
         </div>
         <div style="margin-top: 1rem;">
-            <img src="/images/icons/bookmark.svg" style="height: 35px"/>
-            <button class="category-btn p-title">북마크</button>
+            <button class="category-btn"><img src="/images/icons/bookmark.svg" style="height: 35px; margin-right: 1rem;"/>북마크</button>
         </div>
         <div style="margin-top: 1rem;">
-            <img src="/images/icons/message.svg" style="height: 35px"/>
-            <button class="category-btn p-title">메세지</button>
+            <button class="category-btn"><img src="/images/icons/message.svg" style="height: 35px; margin-right: 1rem;"/>메세지</button>
         </div>
         <div style="margin-top: 1rem;">
-            <img src="/images/icons/star.svg" style="height: 35px"/>
-            <button class="category-btn p-title">Pickgether Premium</button>
+            <button class="category-btn"><img src="/images/icons/star.svg" style="height: 35px; margin-right: 1rem;"/>Pickgether Premium</button>
         </div>
     </div>
 </section>
