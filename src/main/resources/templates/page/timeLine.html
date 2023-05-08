@@ -86,6 +86,45 @@
         }
     }
 </script>
+
+<!-- 카테고리 -->
+<section style="position: fixed; width: 20rem; height: 100vh;">
+    <div>
+        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')">
+            <!--<div class="profile-circle"></div>-->
+            <img src="/images/avatar.jpg" style="height: 48px; border-radius: 70%; float: left;"/>
+            <p class="p-title">User</p>
+        </div>
+        <div>
+            <div>
+                <span>팔로잉</span>
+                <span th:text="${followingCnt}"/>
+
+                <span>팔로워</span>
+                <span th:text="${followerCnt}"/>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div>
+            <img src="/images/icons/user.svg" style="height: 35px"/>
+            <button class="category-btn p-title">프로필</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <img src="/images/icons/bookmark.svg" style="height: 35px"/>
+            <button class="category-btn p-title">북마크</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <img src="/images/icons/message.svg" style="height: 35px"/>
+            <button class="category-btn p-title">메세지</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <img src="/images/icons/star.svg" style="height: 35px"/>
+            <button class="category-btn p-title">Pickgether Premium</button>
+        </div>
+    </div>
+</section>
+
 <div class="timeline-background" style="overflow-x: hidden;">
     <!--Todo: 백->프론트 댓글 연동-->
     <nav class="navbar sticky-top navbar-light bg-light" style="height: 85px;">

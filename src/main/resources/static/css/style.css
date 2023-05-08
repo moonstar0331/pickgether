@@ -1052,3 +1052,9 @@ h6.user-email {
     align-items: center;
     flex-direction: column;
 }
+
+/*timeline category*/
+.category-btn {
+    border: none;
+    background-color: #FFFFFF;
+}

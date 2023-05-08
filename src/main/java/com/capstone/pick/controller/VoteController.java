@@ -13,6 +13,7 @@ import com.capstone.pick.repository.cache.UserCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.capstone.pick.service.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -47,6 +48,7 @@ public class VoteController {
     private final VoteResultService voteResultService;
     private final PickCacheRepository pickCacheRepository;
     private final FileUploadService fileUploadService;
+    private final FollowService followService;
 
     private final UserCacheRepository userCacheRepository;
 
@@ -100,9 +102,14 @@ public class VoteController {
         model.addAttribute("picks", picks);
 
         model.addAttribute("votes", filteredVotes);
+        UserDto user = userService.findUserById(votePrincipal.getUsername());
+
+        model.addAttribute("votes", votes);
         model.addAttribute("bookmarks", bookmarks);
         model.addAttribute("category", category);
         model.addAttribute("userId", votePrincipal.getUsername());
+        model.addAttribute("followingCnt", followService.getFollowingList(user.getUserId()).size());
+        model.addAttribute("followerCnt", followService.getFollowerList(user.getUserId()).size());
         return "page/timeLine";
     }
 
