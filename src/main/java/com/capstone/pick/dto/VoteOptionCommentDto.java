@@ -53,6 +53,7 @@ public class VoteOptionCommentDto {
                 .pickCount(entity.getPickCount())
                 .regionRestriction(entity.getRegionRestriction())
                 .genderRestriction(entity.getGenderRestriction())
+                .displayRange(entity.getDisplayRange())
                 .build();
     }
 }

@@ -1,10 +1,7 @@
 package com.capstone.pick.service;
 
 import com.capstone.pick.domain.*;
-import com.capstone.pick.domain.constant.Category;
-import com.capstone.pick.domain.constant.GenderRestriction;
-import com.capstone.pick.domain.constant.RegionRestriction;
-import com.capstone.pick.domain.constant.SearchType;
+import com.capstone.pick.domain.constant.*;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.*;
@@ -38,6 +35,7 @@ public class VoteService {
     private final BookmarkRepository bookmarkRepository;
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
+    private final FollowRepository followRepository;
 
     @Transactional(readOnly = true)
     public List<VoteDto> findAllVotes() {
@@ -60,13 +58,17 @@ public class VoteService {
     public List<VoteOptionCommentDto> participantsRestriction(List<VoteOptionCommentDto> votes, VotePrincipal votePrincipal) {
 
         User user = userRepository.getReferenceById(votePrincipal.getUsername());
+
         String region = user.getAddress();
         String gender = user.getGender();
 
+        // .getUserDto().getUserId().equals(user.getUserId()) 나중에 추가하기
         return votes.stream()
-                .filter(Region -> Region.getRegionRestriction().getDisplayValue().equals(region) || Region.getRegionRestriction().equals(RegionRestriction.All))
+                .filter(Region -> Region.getRegionRestriction().getDisplayValue().equals(region) || Region.getRegionRestriction().equals(RegionRestriction.All) )
                 .filter(Gender -> Gender.getGenderRestriction().getDisplayValue().equals(gender) || Gender.getGenderRestriction().equals(GenderRestriction.All))
+                .filter(Friends ->  Friends.getUserDto().getUserId().equals(user.getUserId()) || Friends.getDisplayRange().equals(DisplayRange.PUBLIC) || followRepository.findByFromUserAndToUser(user, Friends.getUserDto().toEntity()) !=null && followRepository.findByFromUserAndToUser(user, Friends.getUserDto().toEntity()).isFriend() )
                 .collect(Collectors.toList());
+
     }
 
     @Transactional(readOnly = true)
