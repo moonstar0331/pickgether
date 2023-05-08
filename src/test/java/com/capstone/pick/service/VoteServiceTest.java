@@ -136,7 +136,7 @@ public class VoteServiceTest {
 
         // given
         VotePrincipal principal = VotePrincipal.builder().username("test").build();
-        User user = User.builder().userId("test").address("서울").gender("남성").build();
+        User user = User.builder().userId("test").address("서울").gender("남성").age_range("20대").build();
         User friend = User.builder().userId("friend").build();
         Follow follow = Follow.builder().fromUser(user).toUser(friend).isFriend(true).build();
 
@@ -145,18 +145,21 @@ public class VoteServiceTest {
                 .regionRestriction(RegionRestriction.All)
                 .genderRestriction(GenderRestriction.All)
                 .displayRange(DisplayRange.FRIEND)
+                .ageRestriction(AgeRestriction.All)
                 .build();
         VoteOptionCommentDto voteOptionCommentDto2 = VoteOptionCommentDto.builder()
                 .userDto(UserDto.from(friend))
                 .regionRestriction(RegionRestriction.Seoul)
                 .genderRestriction(GenderRestriction.Male)
                 .displayRange(DisplayRange.FRIEND)
+                .ageRestriction(AgeRestriction.Twenty)
                 .build();
         VoteOptionCommentDto voteOptionCommentDto3 = VoteOptionCommentDto.builder()
                 .userDto(UserDto.from(friend))
                 .regionRestriction(RegionRestriction.Incheon)
                 .genderRestriction(GenderRestriction.Female)
                 .displayRange(DisplayRange.PUBLIC)
+                .ageRestriction(AgeRestriction.Twenty)
                 .build();
         List<VoteOptionCommentDto> votes = Arrays.asList(voteOptionCommentDto1,voteOptionCommentDto2,voteOptionCommentDto3);
 

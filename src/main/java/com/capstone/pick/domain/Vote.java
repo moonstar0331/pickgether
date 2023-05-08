@@ -1,12 +1,9 @@
 package com.capstone.pick.domain;
 
-import com.capstone.pick.domain.constant.Category;
+import com.capstone.pick.domain.constant.*;
 
-import com.capstone.pick.domain.constant.GenderRestriction;
-import com.capstone.pick.domain.constant.RegionRestriction;
 import lombok.*;
 
-import com.capstone.pick.domain.constant.DisplayRange;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -73,6 +70,8 @@ public class Vote {
     @Enumerated(EnumType.STRING)
     private GenderRestriction genderRestriction; // 성별 제한
 
+    @Enumerated(EnumType.STRING)
+    private AgeRestriction ageRestriction; // 나이 제한
 
     @ToString.Exclude
     @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)

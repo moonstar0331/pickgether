@@ -1,9 +1,6 @@
 package com.capstone.pick.controller.form;
 
-import com.capstone.pick.domain.constant.Category;
-import com.capstone.pick.domain.constant.DisplayRange;
-import com.capstone.pick.domain.constant.GenderRestriction;
-import com.capstone.pick.domain.constant.RegionRestriction;
+import com.capstone.pick.domain.constant.*;
 import com.capstone.pick.dto.HashtagDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteDto;
@@ -36,6 +33,7 @@ public class VoteForm {
     private DisplayRange displayRange; //공개범위
     private RegionRestriction regionRestriction; // 지역 제한
     private GenderRestriction genderRestriction; // 성별 제한
+    private AgeRestriction ageRestriction; // 나이 제한
 
     public VoteDto toDto(UserDto userDto) {
         return VoteDto.builder()
@@ -48,6 +46,7 @@ public class VoteForm {
                 .displayRange(displayRange)
                 .regionRestriction(regionRestriction)
                 .genderRestriction(genderRestriction)
+                .ageRestriction(ageRestriction)
                 .build();
     }
 
@@ -65,6 +64,7 @@ public class VoteForm {
                 ", displayRange=" + displayRange +
                 ", regionRestriction=" + regionRestriction +
                 ", genderRestriction=" + genderRestriction +
+                ", ageRestriction=" + ageRestriction +
                 '}';
     }
 

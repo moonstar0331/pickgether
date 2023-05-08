@@ -61,12 +61,13 @@ public class VoteService {
 
         String region = user.getAddress();
         String gender = user.getGender();
+        String age_range = user.getAge_range();
 
-        // .getUserDto().getUserId().equals(user.getUserId()) 나중에 추가하기
         return votes.stream()
-                .filter(Region -> Region.getRegionRestriction().getDisplayValue().equals(region) || Region.getRegionRestriction().equals(RegionRestriction.All) )
-                .filter(Gender -> Gender.getGenderRestriction().getDisplayValue().equals(gender) || Gender.getGenderRestriction().equals(GenderRestriction.All))
+                .filter(Region -> Region.getUserDto().getUserId().equals(user.getUserId()) ||Region.getRegionRestriction().getDisplayValue().equals(region) || Region.getRegionRestriction().equals(RegionRestriction.All) )
+                .filter(Gender -> Gender.getUserDto().getUserId().equals(user.getUserId()) ||Gender.getGenderRestriction().getDisplayValue().equals(gender) || Gender.getGenderRestriction().equals(GenderRestriction.All))
                 .filter(Friends ->  Friends.getUserDto().getUserId().equals(user.getUserId()) || Friends.getDisplayRange().equals(DisplayRange.PUBLIC) || followRepository.findByFromUserAndToUser(user, Friends.getUserDto().toEntity()) !=null && followRepository.findByFromUserAndToUser(user, Friends.getUserDto().toEntity()).isFriend() )
+                .filter(Age -> Age.getUserDto().getUserId().equals(user.getUserId()) || Age.getAgeRestriction().getDisplayValue().equals(age_range) || Age.getAgeRestriction().equals(AgeRestriction.All))
                 .collect(Collectors.toList());
 
     }
