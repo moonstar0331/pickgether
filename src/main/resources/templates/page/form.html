@@ -164,6 +164,20 @@
                     </th:block>
                 </div>
             </div>
+
+            <!-- 나이 제한 -->
+            <div class="border-top p-4">
+                <div class="col-12 mb-3">나이 제한</div>
+                <div class="col-12 mx-1 my-2">
+                    <th:block
+                            th:each="AgeRestriction : ${T(com.capstone.pick.domain.constant.AgeRestriction).values()}">
+                        <label class="mr-3">
+                            <input th:field="*{AgeRestriction}" type="radio"
+                                   th:value="${AgeRestriction}" th:text="' ' + ${AgeRestriction.displayValue}">
+                        </label>
+                    </th:block>
+                </div>
+            </div>
         </form>
     </div>
 </div>
