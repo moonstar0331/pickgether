@@ -2,8 +2,7 @@ package com.capstone.pick.dto;
 
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.Vote;
-import com.capstone.pick.domain.constant.Category;
-import com.capstone.pick.domain.constant.DisplayRange;
+import com.capstone.pick.domain.constant.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -22,7 +21,10 @@ public class VoteDto {
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
     private boolean isMultiPick;
-    private DisplayRange displayRange;
+    private DisplayRange displayRange; // 공개 범위
+    private RegionRestriction regionRestriction; // 지역 제한
+    private GenderRestriction genderRestriction; // 성별 제한
+    private AgeRestriction ageRestriction; // 나이 제한
 
     public static VoteDto from(Vote entity) {
         return VoteDto.builder()
@@ -35,6 +37,10 @@ public class VoteDto {
                 .createAt(entity.getCreateAt())
                 .modifiedAt(entity.getModifiedAt())
                 .isMultiPick(entity.isMultiPick())
+                .regionRestriction(entity.getRegionRestriction())
+                .genderRestriction(entity.getGenderRestriction())
+                .ageRestriction(entity.getAgeRestriction())
+                .displayRange(entity.getDisplayRange())
                 .build();
     }
 
@@ -47,6 +53,9 @@ public class VoteDto {
                 .expiredAt(expiredAt)
                 .isMultiPick(isMultiPick)
                 .displayRange(displayRange)
+                .regionRestriction(regionRestriction)
+                .genderRestriction(genderRestriction)
+                .ageRestriction(ageRestriction)
                 .build();
     }
 }

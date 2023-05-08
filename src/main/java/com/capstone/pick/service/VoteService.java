@@ -1,16 +1,17 @@
 package com.capstone.pick.service;
 
 import com.capstone.pick.domain.*;
-import com.capstone.pick.domain.constant.Category;
-import com.capstone.pick.domain.constant.SearchType;
+import com.capstone.pick.domain.constant.*;
 import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
+import com.capstone.pick.security.VotePrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,7 @@ public class VoteService {
     private final BookmarkRepository bookmarkRepository;
 
     private final BookmarkCacheRepository bookmarkCacheRepository;
+    private final FollowRepository followRepository;
 
     @Transactional(readOnly = true)
     public List<VoteDto> findAllVotes() {
@@ -45,10 +47,29 @@ public class VoteService {
 
     @Transactional(readOnly = true)
     public Page<VoteOptionCommentDto> viewTimeLine(Category category, Pageable pageable) {
+
         if(category.equals(Category.ALL)) {
             return voteRepository.findAll(pageable).map(VoteOptionCommentDto::from);
         }
         return voteRepository.findAllByCategory(category, pageable).map(VoteOptionCommentDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public List<VoteOptionCommentDto> participantsRestriction(List<VoteOptionCommentDto> votes, VotePrincipal votePrincipal) {
+
+        User user = userRepository.getReferenceById(votePrincipal.getUsername());
+
+        String region = user.getAddress();
+        String gender = user.getGender();
+        String age_range = user.getAge_range();
+
+        return votes.stream()
+                .filter(Region -> Region.getUserDto().getUserId().equals(user.getUserId()) ||Region.getRegionRestriction().getDisplayValue().equals(region) || Region.getRegionRestriction().equals(RegionRestriction.All) )
+                .filter(Gender -> Gender.getUserDto().getUserId().equals(user.getUserId()) ||Gender.getGenderRestriction().getDisplayValue().equals(gender) || Gender.getGenderRestriction().equals(GenderRestriction.All))
+                .filter(Friends ->  Friends.getUserDto().getUserId().equals(user.getUserId()) || Friends.getDisplayRange().equals(DisplayRange.PUBLIC) || followRepository.findByFromUserAndToUser(user, Friends.getUserDto().toEntity()) !=null && followRepository.findByFromUserAndToUser(user, Friends.getUserDto().toEntity()).isFriend() )
+                .filter(Age -> Age.getUserDto().getUserId().equals(user.getUserId()) || Age.getAgeRestriction().getDisplayValue().equals(age_range) || Age.getAgeRestriction().equals(AgeRestriction.All))
+                .collect(Collectors.toList());
+
     }
 
     @Transactional(readOnly = true)

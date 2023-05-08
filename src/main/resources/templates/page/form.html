@@ -136,6 +136,48 @@
                     </th:block>
                 </div>
             </div>
+
+            <!-- 지역 제한 -->
+            <div class="border-top p-4">
+                <div class="col-12 mb-3">지역 제한</div>
+                <div class="col-12 mx-1 my-2">
+                    <th:block
+                            th:each="RegionRestriction : ${T(com.capstone.pick.domain.constant.RegionRestriction).values()}">
+                        <label class="mr-3">
+                            <input th:field="*{RegionRestriction}" type="radio"
+                                   th:value="${RegionRestriction}" th:text="' ' + ${RegionRestriction.displayValue}">
+                        </label>
+                    </th:block>
+                </div>
+            </div>
+
+            <!-- 성별 제한 -->
+            <div class="border-top p-4">
+                <div class="col-12 mb-3">성별 제한</div>
+                <div class="col-12 mx-1 my-2">
+                    <th:block
+                            th:each="GenderRestriction : ${T(com.capstone.pick.domain.constant.GenderRestriction).values()}">
+                        <label class="mr-3">
+                            <input th:field="*{GenderRestriction}" type="radio"
+                                   th:value="${GenderRestriction}" th:text="' ' + ${GenderRestriction.displayValue}">
+                        </label>
+                    </th:block>
+                </div>
+            </div>
+
+            <!-- 나이 제한 -->
+            <div class="border-top p-4">
+                <div class="col-12 mb-3">나이 제한</div>
+                <div class="col-12 mx-1 my-2">
+                    <th:block
+                            th:each="AgeRestriction : ${T(com.capstone.pick.domain.constant.AgeRestriction).values()}">
+                        <label class="mr-3">
+                            <input th:field="*{AgeRestriction}" type="radio"
+                                   th:value="${AgeRestriction}" th:text="' ' + ${AgeRestriction.displayValue}">
+                        </label>
+                    </th:block>
+                </div>
+            </div>
         </form>
     </div>
 </div>

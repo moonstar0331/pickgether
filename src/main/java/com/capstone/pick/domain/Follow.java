@@ -22,4 +22,15 @@ public class Follow {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_user_id")
     private User toUser;
+
+    @Column(name = "is_friend")
+    private boolean isFriend=false;
+
+    public void beFriends() {
+        this.isFriend = true;
+    }
+
+    public void notFriends() {
+        this.isFriend = false;
+    }
 }

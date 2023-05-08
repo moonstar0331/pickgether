@@ -1,6 +1,7 @@
 package com.capstone.pick.service;
 
 import com.capstone.pick.domain.Follow;
+import com.capstone.pick.domain.User;
 import com.capstone.pick.dto.FollowDto;
 import com.capstone.pick.repository.FollowRepository;
 import com.capstone.pick.repository.UserRepository;
@@ -19,11 +20,39 @@ public class FollowService {
     private final UserRepository userRepository;
 
     public void follow(FollowDto followDto) {
-        followRepository.save(followDto.toEntity());
+
+        Follow follow = followDto.toEntity();
+        User fromUser = follow.getFromUser(); // 내 정보
+        User toUser = follow.getToUser(); // 친구 정보
+
+        Follow myFollowInfo = followRepository.findByFromUserAndToUser(fromUser, toUser);
+        Follow friendFollowInfo = followRepository.findByFromUserAndToUser( toUser,fromUser);
+
+        if (friendFollowInfo == null){ // 친구가 나를 팔로우 하지 않았다면
+            followRepository.save(myFollowInfo); // 내 팔로우 정보만 저장
+
+        }else{ // 맞팔상태 라면
+            myFollowInfo.beFriends(); // 서로 친구임을 표시하도록 상태정보 업데이트
+            friendFollowInfo.beFriends();
+            followRepository.save(myFollowInfo);
+            followRepository.save(friendFollowInfo);
+        }
+
     }
 
-    public void unfollow(String fromUser, String toUser) {
-        followRepository.delete(followRepository.findByFromUserAndToUser(fromUser, toUser));
+    public void unfollow(User fromUser, User toUser) {
+
+        Follow myFollowInfo = followRepository.findByFromUserAndToUser(fromUser, toUser); // 내 정보
+        Follow friendFollowInfo = followRepository.findByFromUserAndToUser( toUser,fromUser); // 친구 정보
+
+        if (friendFollowInfo == null){ // 친구가 나를 팔로우 하지 않았다면
+            followRepository.delete(myFollowInfo); // 내 팔로우 정보만 삭제
+        }else{ // 맞팔상태 라면
+            followRepository.delete(myFollowInfo); // 내 정보는 삭제
+
+            friendFollowInfo.notFriends(); // 서로 친구가 아님을 표시하도록 상태정보 업데이트
+            followRepository.save(friendFollowInfo);
+        }
     }
 
     @Transactional(readOnly = true)

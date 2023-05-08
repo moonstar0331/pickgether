@@ -63,13 +63,14 @@ public class VoteController {
     }
 
     @PostMapping("/search")
-    public String search(@ModelAttribute SearchForm searchForm, ModelMap map) {
+    public String search(@ModelAttribute SearchForm searchForm, ModelMap map, @AuthenticationPrincipal VotePrincipal votePrincipal) {
         if ((searchForm.getSearchType() == SearchType.USER) || (searchForm.getSearchType() == SearchType.NICKNAME)) {
             List<UserDto> users = userService.searchUsers(searchForm.getSearchType(), searchForm.getSearchValue());
             map.addAttribute("users", users);
         } else {
             List<VoteOptionCommentDto> votes = voteService.searchVotes(searchForm.getSearchType(), searchForm.getSearchValue());
-            map.addAttribute("votes", votes);
+            List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, votePrincipal);
+            map.addAttribute("votes", filteredVotes);
         }
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
         map.addAttribute("bookmarks", bookmarks);
@@ -80,10 +81,14 @@ public class VoteController {
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category, @AuthenticationPrincipal VotePrincipal votePrincipal,
                            @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable,
                            Model model) {
-        Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
-        Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
 
-        model.addAttribute("votes", votes);
+        List<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable)
+                .stream()
+                .collect(Collectors.toList());
+        Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
+        List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, votePrincipal);
+
+        model.addAttribute("votes", filteredVotes);
         model.addAttribute("bookmarks", bookmarks);
         model.addAttribute("category", category);
         model.addAttribute("userId", votePrincipal.getUsername());
@@ -96,11 +101,14 @@ public class VoteController {
     public Map<String, Object> timeLineUpdate(@RequestParam(required = false, defaultValue = "ALL") Category category,
                                               @AuthenticationPrincipal VotePrincipal votePrincipal,
                                               @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
-        Page<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable);
+        List<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable)
+                .stream()
+                .collect(Collectors.toList());
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
+        List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, votePrincipal);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("votes", votes);
+        response.put("votes", filteredVotes);
         response.put("bookmarks", bookmarks);
         response.put("category", category);
 
