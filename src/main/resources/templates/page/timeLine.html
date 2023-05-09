@@ -91,13 +91,13 @@
 <section style="position: fixed; width: 20rem; height: 100vh;">
     <div style="margin: 1rem;">
         <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')"
-             style="display: flex;">
+             style="display: flex; height: 50px;">
             <!--<div class="profile-circle"></div>-->
-            <img src="/images/avatar.jpg" style="height: 48px; border-radius: 70%; float: left;"/>
-            <p class="p-title" style="margin-left: 0.5rem;" th:text="${userId}"></p>
+            <img class="timeline-category-user-image" src="/images/avatar.jpg" style="height: 48px; border-radius: 70%; float: left;"/>
+            <p class="p-title timeline-category-user-name" style="margin-left: 0.5rem;" th:text="${userId}"></p>
         </div>
-        <div>
-            <div>
+        <div style="height: 30px;">
+            <div class="timeline-follow-following">
                 <span>팔로잉</span>
                 <span th:text="${followingCnt}"/>
 
@@ -108,16 +108,20 @@
     </div>
     <div style="margin-left: 1rem; margin-top: 2rem;">
         <div>
-            <button class="category-btn"><img src="/images/icons/user.svg" style="height: 35px; margin-right: 1rem;"/>프로필</button>
+            <button class="category-btn" ><img src="/images/icons/user.svg" style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label">프로필</button>
         </div>
         <div style="margin-top: 1rem;">
-            <button class="category-btn"><img src="/images/icons/bookmark.svg" style="height: 35px; margin-right: 1rem;"/>북마크</button>
+            <button class="category-btn"><img src="/images/icons/bookmark.svg" style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label">북마크</button>
         </div>
         <div style="margin-top: 1rem;">
-            <button class="category-btn"><img src="/images/icons/message.svg" style="height: 35px; margin-right: 1rem;"/>메세지</button>
+            <button class="category-btn"><img src="/images/icons/message.svg" style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label">메세지</button>
         </div>
         <div style="margin-top: 1rem;">
-            <button class="category-btn"><img src="/images/icons/star.svg" style="height: 35px; margin-right: 1rem;"/>Pickgether Premium</button>
+            <button class="category-btn"><img src="/images/icons/star.svg" style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label">Pickgether Premium</button>
         </div>
     </div>
 </section>
@@ -126,7 +130,7 @@
     <!--Todo: 백->프론트 댓글 연동-->
     <nav class="navbar sticky-top navbar-light bg-light" style="height: 85px;">
         <div class="container-fluid" style="flex-wrap: nowrap !important; ">
-            <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')">
+            <!--<div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')">
                 <div class="profile-circle"></div>
                 <img th:if="${loginUser.getImageUrl() == null || loginUser.getImageUrl() == ''}" src="/images/avatar.jpg" style="height: 48px; border-radius: 70%"/>
                 <img th:unless="${loginUser.getImageUrl() == null || loginUser.getImageUrl() == ''}" th:src="${loginUser.getImageUrl()}" style="height: 48px; border-radius: 70%"/>

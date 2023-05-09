@@ -1054,12 +1054,50 @@ h6.user-email {
 }
 
 /*timeline category*/
-.category-btn {
+.category-btn, .category-btn-label {
     font-weight: 600;
     border: none;
     background-color: #FFFFFF;
 }
 
-@media (max-width: 1000px) {
-    
+@media (min-width: 1050px) {
+    .timeline-follow-following {
+        display: block;
+    }
+    .timeline-category-user-name {
+        display: block;
+    }
+    .category-btn-label {
+        display: inline;
+    }
+}
+
+@media (min-width: 750px) and (max-width: 1050px) {
+    .timeline-follow-following {
+        display: none;
+    }
+    .timeline-category-user-name {
+        display: none;
+    }
+    .category-btn-label {
+        display: none;
+    }
+}
+
+@media (max-width: 750px) {
+    .timeline-category-user-image {
+        display: none;
+    }
+    .timeline-category-user-name {
+        display: none;
+    }
+    .timeline-follow-following {
+        display: none;
+    }
+    .category-btn {
+        display: none;
+    }
+    .category-btn-label {
+        display: none;
+    }
 }
