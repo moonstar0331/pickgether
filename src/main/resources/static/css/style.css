@@ -1054,7 +1054,7 @@ h6.user-email {
 }
 
 /*timeline category*/
-.category-btn, .category-btn-label {
+.category-btn, .category-btn-label, .category-btn-pop-up, .category-btn-label-pop-up {
     font-weight: 600;
     border: none;
     background-color: #FFFFFF;
@@ -1082,6 +1082,9 @@ h6.user-email {
     .category-pop-up-btn {
         display: none;
     }
+    .category-pop-up {
+        display: none !important;
+    }
 }
 
 @media (min-width: 750px) and (max-width: 1050px) {
@@ -1096,6 +1099,9 @@ h6.user-email {
     }
     .category-pop-up-btn {
         display: none;
+    }
+    .category-pop-up {
+        display: none !important;
     }
 }
 

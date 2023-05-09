@@ -163,9 +163,9 @@
             <button class="category-btn-label-pop-up">Pickgether Premium</button>
         </div>
     </div>
-    <div>
-        <button onclick="exitCategoryPopup()">
-            <img src="/images/icons/exit.svg" />
+    <div style="display: flex; justify-content: flex-end; margin-top: 1rem; margin-right: 1rem;">
+        <button onclick="exitCategoryPopup()" style="border: none; background-color: #ffffff;">
+            <img src="/images/icons/exit.svg"/>
         </button>
     </div>
 </section>
@@ -505,12 +505,10 @@
 <!-- 카테고리 팝업 -->
 <script>
     function categoryPopUp() {
-        console.log("카테고리 팝업 버튼 클릭");
         $(".category-pop-up").css("display", "block");
     }
 
     function exitCategoryPopup() {
-        console.log("카테고리 팝업 exit 버튼 클릭");
         $(".category-pop-up").css("display", "none");
     }
 </script>
