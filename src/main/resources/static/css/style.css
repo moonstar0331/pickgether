@@ -1060,6 +1060,15 @@ h6.user-email {
     background-color: #FFFFFF;
 }
 
+.category-pop-up {
+    display: none;
+    position: fixed;
+    height: 100vh;
+    width: 70vw;
+    z-index: 999;
+    background-color: #FFFFFF;
+}
+
 @media (min-width: 1050px) {
     .timeline-follow-following {
         display: block;
@@ -1069,6 +1078,9 @@ h6.user-email {
     }
     .category-btn-label {
         display: inline;
+    }
+    .category-pop-up-btn {
+        display: none;
     }
 }
 
@@ -1080,6 +1092,9 @@ h6.user-email {
         display: none;
     }
     .category-btn-label {
+        display: none;
+    }
+    .category-pop-up-btn {
         display: none;
     }
 }
@@ -1099,5 +1114,8 @@ h6.user-email {
     }
     .category-btn-label {
         display: none;
+    }
+    .category-pop-up-btn {
+        display: block;
     }
 }

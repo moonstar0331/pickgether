@@ -126,6 +126,50 @@
     </div>
 </section>
 
+<!-- 카테고리 반응형 팝업 -->
+<section class="category-pop-up">
+    <div style="margin: 1rem;">
+        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')"
+             style="display: flex; height: 50px;">
+            <!--<div class="profile-circle"></div>-->
+            <img class="timeline-category-user-image-pop-up" src="/images/avatar.jpg" style="height: 48px; border-radius: 70%; float: left;"/>
+            <p class="p-title timeline-category-user-name-pop-up" style="margin-left: 0.5rem;" th:text="${userId}"></p>
+        </div>
+        <div style="height: 30px;">
+            <div class="timeline-follow-following-pop-up">
+                <span>팔로잉</span>
+                <span th:text="${followingCnt}"/>
+
+                <span>팔로워</span>
+                <span th:text="${followerCnt}"/>
+            </div>
+        </div>
+    </div>
+    <div style="margin-left: 1rem; margin-top: 2rem;">
+        <div>
+            <button class="category-btn-pop-up" ><img src="/images/icons/user.svg" style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label-pop-up">프로필</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <button class="category-btn-pop-up"><img src="/images/icons/bookmark.svg" style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label-pop-up">북마크</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <button class="category-btn-pop-up"><img src="/images/icons/message.svg" style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label-pop-up">메세지</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <button class="category-btn-pop-up"><img src="/images/icons/star.svg" style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label-pop-up">Pickgether Premium</button>
+        </div>
+    </div>
+    <div>
+        <button onclick="exitCategoryPopup()">
+            <img src="/images/icons/exit.svg" />
+        </button>
+    </div>
+</section>
+
 <div class="timeline-background" style="overflow-x: hidden;">
     <!--Todo: 백->프론트 댓글 연동-->
     <nav class="navbar sticky-top navbar-light bg-light" style="height: 85px;">
@@ -134,6 +178,13 @@
                 <div class="profile-circle"></div>
                 <img th:if="${loginUser.getImageUrl() == null || loginUser.getImageUrl() == ''}" src="/images/avatar.jpg" style="height: 48px; border-radius: 70%"/>
                 <img th:unless="${loginUser.getImageUrl() == null || loginUser.getImageUrl() == ''}" th:src="${loginUser.getImageUrl()}" style="height: 48px; border-radius: 70%"/>
+            </div>
+
+            <!-- 카테고리 버튼 -->
+            <div class="category-pop-up-btn">
+                <button onclick="categoryPopUp()" style="border: none; background-color: #FFFFFF;">
+                    <img src="/images/icons/category-pop-up.svg" style="height: 30px; width: auto;"/>
+                </button>
             </div>
 
             <a class="navbar-brand timeline-navbar-brand" href="/timeline"
@@ -449,6 +500,18 @@
                 console.log("error: " + url);
             }
         });
+    }
+</script>
+<!-- 카테고리 팝업 -->
+<script>
+    function categoryPopUp() {
+        console.log("카테고리 팝업 버튼 클릭");
+        $(".category-pop-up").css("display", "block");
+    }
+
+    function exitCategoryPopup() {
+        console.log("카테고리 팝업 exit 버튼 클릭");
+        $(".category-pop-up").css("display", "none");
     }
 </script>
 </html>
