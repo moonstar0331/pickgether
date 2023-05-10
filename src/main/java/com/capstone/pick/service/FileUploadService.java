@@ -18,7 +18,11 @@ public class FileUploadService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return uploadPath + "/" + file.getOriginalFilename();
+
+        if (file.isEmpty())
+            return "";
+        else
+            return uploadPath + "/" + file.getOriginalFilename();
     }
 }
 
