@@ -63,8 +63,8 @@
                                class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
                                type="text" placeholder="항목을 입력하세요" required>
                         <img id="file0" class="position-absolute vote-option-img1"
-                             onclick="onclick=document.getElementById('inputfile0').click();">
-                        <img id="fileimg0" class="col-12 my-2" style="display: none;">
+                             onclick="document.getElementById('inputfile0').click();">
+                        <img id="fileimg0" class="col-12 my-2" style="display: none;" onclick="deleteFile(this.id)">
                         <input type="file" accept="image/*" name="voteOptions[0].file" id="inputfile0"
                                style="display: none;" onchange="changePreview(this.id)"/>
                     </div>
@@ -73,9 +73,9 @@
                                class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
                                type="text" placeholder="항목을 입력하세요" required>
                         <img id="file1" class="position-absolute vote-option-img1"
-                             onclick="onclick=document.getElementById('inputfile1').click();">
+                             onclick="document.getElementById('inputfile1').click();">
                         <img id="fileimg1" class="col-12 my-2" style="display: none;">
-                        <input type="file" accept="image/*" name="voteOptions[1].file" id="inputfile1" enctype
+                        <input type="file" accept="image/*" name="voteOptions[1].file" id="inputfile1"
                                style="display: none;" onchange="changePreview(this.id)"/>
                     </div>
                 </div>
