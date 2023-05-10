@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class LoginExceptionHandler {
 
+    /** 추가정보가 입력되지 않았을때 발생하는 예외를 처리 */
     @ExceptionHandler(EmptySpaceException.class)
     public String EmptySpaceException(Model model, Exception e) {
         log.error(e.getMessage());

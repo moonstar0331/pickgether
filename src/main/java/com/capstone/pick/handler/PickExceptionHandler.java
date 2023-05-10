@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class PickExceptionHandler {
 
+    /** 참여기한이 지난 투표에 참여할 때 발생하는 예외를 처리 */
     @ExceptionHandler(DateExpiredException.class)
     public String DateExpiredException(Model model, Exception e) {
         log.error(e.getMessage());

@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .loginPage("/login")
                 .successHandler(authenticationSuccessHandler) // 인증에 성공하면 핸들러로 이동하여 처리한다
                 .userInfoEndpoint() // 사용자 정보를 가져올 때
-                .userService(customOAuth2UserService); // 서비스에서 정보를 처리한다
+                .userService(customOAuth2UserService); // 해당 서비스에서 정보를 처리한다
 
         return http.build();
     }

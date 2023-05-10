@@ -54,6 +54,12 @@ public class VoteService {
         return voteRepository.findAllByCategory(category, pageable).map(VoteOptionCommentDto::from);
     }
 
+    /**
+     * @brief  게시글 별 제한 조건을 확인해 사용자에게 필터링 된 투표 정보를 제공
+     * @param  votes 투표 게시글 목록
+     * @param  votePrincipal 유저정보
+     * @return 제한조건에 따라 필터링 된 게시글 목록
+     */
     @Transactional(readOnly = true)
     public List<VoteOptionCommentDto> participantsRestriction(List<VoteOptionCommentDto> votes, VotePrincipal votePrincipal) {
 
@@ -152,6 +158,13 @@ public class VoteService {
         }
     }
 
+    /**
+     * @brief 투표 게시글을 삭제한다
+     * @param  voteId 게시글 정보
+     * @param  userId 유저정보
+     * @exception VoteIsNotExistException 투표 게시글이 이미 존재하지 않을 때 발생
+     * @exception PermissionDeniedException 삭제 권한이 없을 때 발생
+     */
     public void deleteVote(Long voteId, String userId) throws VoteIsNotExistException, PermissionDeniedException {
         Vote vote = voteRepository.getReferenceById(voteId);
         if (vote==null ){

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class VoteExceptionHandler {
 
+    /** 사용자가 없을 때 발생하는 예외를 처리 */
     @ExceptionHandler(UserNotFoundException.class)
     public String UserNotFoundException(Model model, Exception e) {
         log.error(e.getMessage());
@@ -19,6 +20,7 @@ public class VoteExceptionHandler {
         return "redirect:/login";
     }
 
+    /** 존재하지 않는 북마크를 삭제하려고 할 때 발생하는 예외를 처리 */
     @ExceptionHandler(BookmarkNotFoundException.class)
     public String BookmarkNotFoundException(Model model, Exception e) {
         log.error(e.getMessage());
@@ -27,6 +29,7 @@ public class VoteExceptionHandler {
         return "redirect:/timeLine";
     }
 
+    /** 투표 게시글에 대한 수정 권한이 없는 유저가 이를 수정하려고 할 때 발생하는 예외를 처리 */
     @ExceptionHandler(PermissionDeniedException.class)
     public String PermissionDeniedException(Model model, Exception e) {
         log.error(e.getMessage());
@@ -35,6 +38,7 @@ public class VoteExceptionHandler {
         return "redirect:/timeLine";
     }
 
+    /** 투표 게시글이 이미 존재하지 않을 경우 발생하는 예외를 처리 */
     @ExceptionHandler(VoteIsNotExistException.class)
     public String VoteIsNotExistException(Model model, Exception e) {
         log.error(e.getMessage());

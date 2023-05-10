@@ -17,7 +17,8 @@ public class SignupController {
     private final CustomUserDetailsService customUserDetailsService;
 
     /**
-     * 회원가입 양식을 불러온다
+     * @brief 회원가입 양식을 불러온다
+     * @param  model 회원가입 폼 저장
      * @return 회원가입 뷰
      */
     @GetMapping("/signup")
@@ -27,9 +28,9 @@ public class SignupController {
     }
 
     /**
-     * 회원가입을 진행한다
-     * @param signUpForm 회원가입 요청 데이터 폼
-     * @return 홈 화면으로 이동
+     * @brief 사용자 정보를 저장한다
+     * @param signUpForm 신규 회원 데이터
+     * @return 로그인 화면으로 이동
      */
     @PostMapping("/signup")
     public String signup(@ModelAttribute SignUpForm signUpForm) throws DuplicatedUserException {
