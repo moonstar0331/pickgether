@@ -464,3 +464,18 @@ function clearSearchResult() {
         searchResult.removeChild(searchResult.firstChild);
     }
 }
+
+function changePreview(id) {
+    if (document.getElementById(id).files && document.getElementById(id).files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            console.log(document.getElementById(id).id.substring(9));
+            document.getElementById('fileimg' + id.substring(9)).style.display = 'block';
+            document.getElementById('fileimg' + id.substring(9)).src = e.target.result;
+        };
+        reader.readAsDataURL(document.getElementById(id).files[0]);
+    } else {
+        document.getElementById('fileimg' + id.substring(9)).style.display = 'none';
+        document.getElementById('fileimg' + id.substring(9)).src = "";
+    }
+}
