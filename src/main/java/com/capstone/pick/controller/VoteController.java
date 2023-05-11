@@ -127,7 +127,13 @@ public class VoteController {
         VoteDto voteDto = voteForm.toDto(votePrincipal.toDto());
         List<HashtagDto> hashtagDtos = voteForm.getHashtagDtos();
 
-        voteForm.getVoteOptions().forEach(o -> o.setImageLink(fileUploadService.saveFile(o.getFile())));
+        voteForm.getVoteOptions().forEach(o -> {
+            try {
+                o.setImageLink(fileUploadService.saveFile(o.getFile()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         List<VoteOptionDto> voteOptionDtos = voteForm.getVoteOptions()
                 .stream()
                 .map(o -> o.toDto(voteDto))
