@@ -13,9 +13,9 @@
 <body>
 <div class="timeline-background">
     <div>
-        <form name="vote-form" action="/form" th:object="${voteForm}" method="post">
+        <form name="vote-form" action="/form" th:object="${voteForm}" method="post" enctype="multipart/form-data">
             <!-- CSRF 히든 필드 -->
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <!-- 투표 상단 -->
             <div class="border-bottom">
                 <!-- 다이얼로그 끄기 버튼, 투표 업로드 버튼-->
@@ -57,41 +57,41 @@
                 </div>
 
                 <!-- 투표 항목(선택지) -->
-                <!-- TODO : 이미지 업로드 기능 구현하기 -->
                 <div id="voteOptionArea">
                     <div class="col-12 mb-3">
                         <input name="voteOptions[0].content" id="voteOptions[0].content"
                                class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
                                type="text" placeholder="항목을 입력하세요" required>
-                        <img class="position-absolute vote-option-img1">
-                        <img class="position-absolute vote-option-img2">
+                        <img id="file0" class="position-absolute vote-option-img1"
+                             onclick="document.getElementById('inputfile0').click();">
+                        <img id="fileimg0" class="col-12 my-2" style="display: none;" onclick="deleteFile(this.id)">
+                        <input type="file" accept="image/*" name="voteOptions[0].file" id="inputfile0"
+                               style="display: none;" onchange="changePreview(this.id)"/>
                     </div>
                     <div class="col-12 mb-3">
                         <input name="voteOptions[1].content" id="voteOptions[1].content"
                                class="w-100 h-100 border-none rounded focus-none p-2 vote-option"
                                type="text" placeholder="항목을 입력하세요" required>
-                        <img class="position-absolute vote-option-img1">
-                        <img class="position-absolute vote-option-img2">
+                        <img id="file1" class="position-absolute vote-option-img1"
+                             onclick="document.getElementById('inputfile1').click();">
+                        <img id="fileimg1" class="col-12 my-2" style="display: none;">
+                        <input type="file" accept="image/*" name="voteOptions[1].file" id="inputfile1"
+                               style="display: none;" onchange="changePreview(this.id)"/>
                     </div>
                 </div>
-                <div class="col-12 d-flex justify-content-between">
-                    <div class="row" style="width: 100%">
-                        <div onclick="create_voteOption()"
-                             class="optionAdd col d-flex justify-content-start align-items-center hover-cursor-pointer">
-                            <img class="ml-2 mr-2" style="width: auto; height: 15px;"
-                                 src="/images/icons/PlusCircle.svg">
-                            <div class="form-selections-edit-btn">항목 추가</div>
-                        </div>
-                        <div onclick="delete_voteOption()"
-                             class="optionAdd col d-flex justify-content-start align-items-center hover-cursor-pointer">
-                            <img class="ml-2 mr-2" style="width: auto; height: 20px;"
-                                 src="/images/icons/MinusCircle.svg">
-                            <div class="form-selections-edit-btn">항목 삭제</div>
-                        </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <div onclick="create_voteOption()"
+                         class="optionAdd d-flex justify-content-start align-items-center hover-cursor-pointer">
+                        <img class="ml-2 mr-2" style="width: auto; height: 15px;"
+                             src="/images/icons/PlusCircle.svg">
+                        <div class="form-selections-edit-btn">항목 추가</div>
                     </div>
-                    <!--<div class="mr-2 form-selections-edit-btn">
-                        <label><input th:field="*{isMultiPick}" type="checkbox" class="mr-1"> 다중 선택</label>
-                    </div>-->
+                    <div onclick="delete_voteOption()"
+                         class="optionAdd d-flex justify-content-start align-items-center hover-cursor-pointer">
+                        <img class="ml-2 mr-2" style="width: auto; height: 20px;"
+                             src="/images/icons/MinusCircle.svg">
+                        <div class="form-selections-edit-btn">항목 삭제</div>
+                    </div>
                 </div>
                 <div class="mr-2 form-selections-edit-btn" style="margin-left: 1.47rem; margin-top: 5px;">
                     <label><input th:field="*{isMultiPick}" type="checkbox" class="mr-1"> 다중 선택</label>

@@ -9,10 +9,7 @@ import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
 import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.*;
-import com.capstone.pick.service.UserService;
-import com.capstone.pick.service.VoteCommentService;
-import com.capstone.pick.service.VoteResultService;
-import com.capstone.pick.service.VoteService;
+import com.capstone.pick.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -65,6 +62,9 @@ class VoteControllerTest {
 
     @MockBean
     private VoteResultService voteResultService;
+
+    @MockBean
+    private FileUploadService fileUploadService;
 
     public VoteControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
