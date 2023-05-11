@@ -18,4 +18,6 @@ public interface PickRepository extends JpaRepository<Pick, Long> {
 
     @Query("SELECT count(p) FROM Pick p WHERE p.voteOption.id = :optionId")
     Long getCountListByOptionId(@Param("optionId")Long optionId);
+
+    List<Pick> findAllByUser_UserId(String userId);
 }
