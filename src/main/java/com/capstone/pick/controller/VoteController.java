@@ -10,10 +10,7 @@ import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.repository.cache.PickCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
-import com.capstone.pick.service.UserService;
-import com.capstone.pick.service.VoteCommentService;
-import com.capstone.pick.service.VoteResultService;
-import com.capstone.pick.service.VoteService;
+import com.capstone.pick.service.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -31,6 +28,8 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,11 +41,11 @@ public class VoteController {
     private final VoteService voteService;
     private final VoteCommentService voteCommentService;
     private final UserService userService;
-
     private final BookmarkCacheRepository bookmarkCacheRepository;
     private final CommentLikeCacheRepository commentLikeRedisRepository;
     private final VoteResultService voteResultService;
     private final PickCacheRepository pickCacheRepository;
+    private final FileUploadService fileUploadService;
 
     @GetMapping("/")
     public String home() {
@@ -132,6 +131,14 @@ public class VoteController {
                            @ModelAttribute VoteForm voteForm) {
         VoteDto voteDto = voteForm.toDto(votePrincipal.toDto());
         List<HashtagDto> hashtagDtos = voteForm.getHashtagDtos();
+
+        voteForm.getVoteOptions().forEach(o -> {
+            try {
+                o.setImageLink(fileUploadService.saveFile(o.getFile()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         List<VoteOptionDto> voteOptionDtos = voteForm.getVoteOptions()
                 .stream()
                 .map(o -> o.toDto(voteDto))

@@ -10,13 +10,13 @@ import java.util.Map;
 public class OAuthAttributes {
     private Map<String, Object> attributes; // ex) { sub=1231344534523565757, name=홍길동, given_name=길동, family_name=홍, picture=https://xxx, email=xxx@gmail.com, email_verified=true, locale=ko}
     private String nameAttributeKey; // ex) google="sub", kakao="id", naver="response"
-    private String name;      // ex) 홍길동
-    private String email;     // ex) test@gmail.com
-    private String username;  // ex) 1231344534523565757
-    private String age_range; // ex) 20~29
-    private String birthday;  // ex) 0101
-    private String gender;    // ex) male or female
-    private String provider;  // ex) kakao or naver
+    private String name;
+    private String email;
+    private String username;
+    private String age_range;
+    private String birthday;
+    private String gender;
+    private String provider;
 
 
     // 해당 로그인인 서비스가 kakao 인지 google 인지 구분하여, 알맞게 매핑을 해주도록 합니다.
@@ -102,7 +102,7 @@ public class OAuthAttributes {
 //        }
 //    }
     private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
-        Map<String, Object> response = (Map<String, Object>) attributes.get("response");    // 네이버에서 받은 데이터에서 프로필 정보다 담긴 response 값을 꺼낸다.
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");    // 네이버에서 받은 데이터에서 프로필 정보가 담긴 response 값을 꺼낸다.
         return OAuthAttributes.builder()
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)

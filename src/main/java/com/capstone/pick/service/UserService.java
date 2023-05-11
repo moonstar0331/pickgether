@@ -45,12 +45,18 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    // 추가정보를 소셜로그인 종류에 따라 업데이트한다
+
+    /**
+     * @brief  소셜로그인시 추가정보를 업데이트한다
+     * @param  oAuth2User 소셜로그인 유저정보
+     * @param  form 추가 정보
+     */
     public void updateMoreInfo(OAuth2User oAuth2User, AddMoreInfoForm form) throws EmptySpaceException {
 
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String id;
 
+        // 로그인 플랫폼 별로 고유 아이디를 추출한다
         if (attributes.containsKey("response")) {
             Map<String, Object> response = (Map<String, Object>) attributes.get("response");
             id = "naver_" + (String) response.get("id");
@@ -67,7 +73,7 @@ public class UserService {
         }
 
         String[] split = form.getAddress().split(" ");
-        String region = split[0];
+        String region = split[0]; // 주소에서 지역 정보만 추출
 
         Optional<User> user = userRepository.findById(id); // 유저를 찾고
 
@@ -78,7 +84,11 @@ public class UserService {
 
     }
 
-    // 소셜로그인 종류에 따라 성별, 연령대를 받아와 추가정보 입력 폼에 넣어준다.
+    /**
+     * @brief  소셜로그인 종류에 따라 성별, 연령대를 받아와 추가정보 입력 폼에 넣어준다.
+     * @param  oAuth2User 소셜로그인 유저정보
+     * @return 사용자의 일부 정보 데이터
+     */
     public AddMoreInfoForm findAttribute(OAuth2User oAuth2User) {
 
         AddMoreInfoForm form = new AddMoreInfoForm();

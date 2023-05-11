@@ -19,11 +19,15 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
+    /**
+     * @brief  다른 사용자를 팔로우 한다
+     * @param  followDto 나와 내가 팔로우 하려는 사람의 정보
+     */
     public void follow(FollowDto followDto) {
 
         Follow follow = followDto.toEntity();
         User fromUser = follow.getFromUser(); // 내 정보
-        User toUser = follow.getToUser(); // 친구 정보
+        User toUser = follow.getToUser(); // 팔로우 하려고 하는 사람의 정보
 
         Follow myFollowInfo = followRepository.findByFromUserAndToUser(fromUser, toUser);
         Follow friendFollowInfo = followRepository.findByFromUserAndToUser( toUser,fromUser);
@@ -40,17 +44,22 @@ public class FollowService {
 
     }
 
+    /**
+     * @brief  다른 사용자를 언팔로우 한다
+     * @param  fromUser 내 정보
+     * @param  toUser 내가 언팔로우 하려는 사람의 정보
+     */
     public void unfollow(User fromUser, User toUser) {
 
         Follow myFollowInfo = followRepository.findByFromUserAndToUser(fromUser, toUser); // 내 정보
-        Follow friendFollowInfo = followRepository.findByFromUserAndToUser( toUser,fromUser); // 친구 정보
+        Follow friendFollowInfo = followRepository.findByFromUserAndToUser( toUser,fromUser); // 내가 언팔로우 하려는 사람의 정보
 
         if (friendFollowInfo == null){ // 친구가 나를 팔로우 하지 않았다면
             followRepository.delete(myFollowInfo); // 내 팔로우 정보만 삭제
         }else{ // 맞팔상태 라면
             followRepository.delete(myFollowInfo); // 내 정보는 삭제
 
-            friendFollowInfo.notFriends(); // 서로 친구가 아님을 표시하도록 상태정보 업데이트
+            friendFollowInfo.notFriends(); // 친구 또한 서로 친구가 아님을 표시하도록 상태정보 업데이트
             followRepository.save(friendFollowInfo);
         }
     }

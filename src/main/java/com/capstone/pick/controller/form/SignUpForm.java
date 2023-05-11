@@ -8,6 +8,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * @brief 회원가입 시 받아올 항목
+ */
 public class SignUpForm {
     private String userId;
     private String userPassword;

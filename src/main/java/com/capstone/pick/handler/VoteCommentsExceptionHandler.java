@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class VoteCommentsExceptionHandler {
 
+    /** 해당 댓글을 작성하지 않은 유저가 이를 삭제하거나 수정할 때 발생하는 예외를 처리 */
     @ExceptionHandler(UserMismatchException.class)
     public String UserMismatchException(Model model, UserMismatchException e) {
         log.error(e.getMessage());
@@ -19,6 +20,7 @@ public class VoteCommentsExceptionHandler {
         return "redirect:/"+e.getVoteId()+"/comments";
     }
 
+    /** 삭제된 투표에 참여하려고 할 경우에 발생하는 예외를 처리 */
     @ExceptionHandler(VoteIsNotExistException.class)
     public String VoteIsNotExistException(Model model, Exception e) {
         log.error(e.getMessage());

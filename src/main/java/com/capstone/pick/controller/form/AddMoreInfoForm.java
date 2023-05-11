@@ -7,6 +7,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * @brief 추가 정보를 받을 항목
+ */
 public class AddMoreInfoForm {
 
     private String gender;

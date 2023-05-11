@@ -30,20 +30,25 @@ public class PickService {
     private final PickRepository pickRepository;
     private final UserRepository userRepository;
     private final VoteOptionRepository voteOptionRepository;
-
     private final PickCacheRepository pickCacheRepository;
 
+    /**
+     * @brief  사용자가 선택한 옵션정보를 저장한다
+     * @param  userId 내 아이디
+     * @param  optionId 선택한 옵션 아이디
+     */
     public void pick(String userId, Long optionId) throws DateExpiredException {
         VoteOption option = voteOptionRepository.findById(optionId).orElseThrow(EntityNotFoundException::new);
-        LocalDateTime expiredAt = option.getVote().getExpiredAt();
+        LocalDateTime expiredAt = option.getVote().getExpiredAt(); // 해당 투표의 만료일자 추출
 
-        if (expiredAt.isBefore(LocalDateTime.now())){
+        if (expiredAt.isBefore(LocalDateTime.now())){ // 만료일자가 지났다면 예외발생
             throw new DateExpiredException();
-        }else{
+        }else{ // 그렇지 않다면 저장
             User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
             //VoteOption voteOption = option;
             Pick pick = pickRepository.save(Pick.builder().user(user).voteOption(option).build());
             pickCacheRepository.setPick(PickCachingDto.from(pick, option.getVote().getId()));
+            pickRepository.save(Pick.builder().user(user).voteOption(option).build());
         }
     }
 

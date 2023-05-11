@@ -266,8 +266,9 @@ function create_voteOption() {
     let area = document.getElementById('voteOptionArea');
     let new_div = document.createElement('div');
     let new_input = document.createElement('input');
-    let new_img1 = document.createElement('img');
-    let new_img2 = document.createElement('img');
+    let new_imgBtn = document.createElement('img');
+    let new_imgPreview = document.createElement('img');
+    let new_fileInput = document.createElement('input');
 
     // 태그 css
     new_div.className = 'col-12 mb-3';
@@ -278,13 +279,31 @@ function create_voteOption() {
     new_input.id = 'voteOptions[' + voteOptionCount + '].content';
     new_input.placeholder = '항목을 입력하세요';
     new_input.required = true;
-    new_img1.className = 'position-absolute vote-option-img1';
-    new_img2.className = 'position-absolute vote-option-img2';
+
+    new_imgPreview.id = 'fileimg' + voteOptionCount;
+    new_imgPreview.className = 'col-12 my-2';
+    new_imgPreview.style.display = 'none';
+
+    new_fileInput.type = 'file';
+    new_fileInput.accept = 'image/*';
+    new_fileInput.name = 'voteOptions[' + voteOptionCount + '].file';
+    new_fileInput.id = 'inputfile' + voteOptionCount
+    new_fileInput.style.display = 'none';
+    new_fileInput.onchange = function () {
+        changePreview(new_fileInput.id);
+    };
+
+    new_imgBtn.className = 'position-absolute vote-option-img1';
+    new_imgBtn.id = 'file' + voteOptionCount;
+    new_imgBtn.onclick = function () {
+        document.getElementById(new_fileInput.id).click();
+    };
 
     // 태그 추가
     new_div.appendChild(new_input);
-    new_div.appendChild(new_img1);
-    new_div.appendChild(new_img2);
+    new_div.appendChild(new_imgBtn);
+    new_div.appendChild(new_imgPreview);
+    new_div.appendChild(new_fileInput);
     area.appendChild(new_div);
 }
 
@@ -463,4 +482,24 @@ function clearSearchResult() {
     while (searchResult.hasChildNodes()) {
         searchResult.removeChild(searchResult.firstChild);
     }
+}
+
+function changePreview(id) {
+    if (document.getElementById(id).files && document.getElementById(id).files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('fileimg' + id.substring(9)).style.display = 'block';
+            document.getElementById('fileimg' + id.substring(9)).src = e.target.result;
+        };
+        reader.readAsDataURL(document.getElementById(id).files[0]);
+    } else {
+        document.getElementById('fileimg' + id.substring(9)).style.display = 'none';
+        document.getElementById('fileimg' + id.substring(9)).src = "";
+    }
+}
+
+function deleteFile(id) {
+    document.getElementById(id).style.display = 'none';
+    document.getElementById(id).src = "";
+    document.getElementById('inputfile' + id.substring(7)).value = null;
 }

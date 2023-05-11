@@ -20,6 +20,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final PasswordEncoder passwordEncoder;
 
 
+    /**
+     * @brief  소셜로그인 사용자 데이터를 이용해 인증정보를 생성한다.
+     * @param  oAuth2UserRequest 소셜로그인 요청정보
+     * @return 인증정보
+     */
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
 
@@ -34,7 +39,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // OAuth2 로그인 시 키 값이 된다.
         // 구글은 키 값이 "sub"이고, 네이버는 "response"이고, 카카오는 "id"이다.
-        // 각각 다르므로 이렇게 따로 변수로 받아서 넣어줘야함.
         String userNameAttributeName = oAuth2UserRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
         // OAuth2 로그인을 통해 가져온 OAuth2User의 attribute를 담아주는 of 메소드.

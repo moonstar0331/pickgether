@@ -67,6 +67,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         return VotePrincipal.from(user);
     }
 
+    /**
+     * @brief  유저정보를 저장한다.
+     * @param  userDto 유저정보
+     * @exception DuplicatedUserException 기존에 동일한 아이디가 존재할 때 발생
+     */
     public void save(UserDto userDto) throws DuplicatedUserException {
 
         Optional<User> user = userRepository.findById(userDto.getUserId());

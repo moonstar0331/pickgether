@@ -25,8 +25,9 @@ public class LoginController {
 
 
     /**
-     * 소셜로그인시 추가정보 화면을 요청한다
+     * @brief  소셜로그인시 추가정보 화면을 요청한다
      * @param  oAuth2User 소셜로그인 유저정보
+     * @param  model 유저정보의 일부 데이터 저장
      * @return 추가정보 입력 화면으로 이동
      */
     @GetMapping("/addMoreInfo")
@@ -38,8 +39,8 @@ public class LoginController {
     }
 
     /**
-     * 소셜로그인시 추가정보를 받아 저장한다
-     * @param  addMoreInfoForm 추가정보 데이터 폼
+     * @brief 소셜로그인시 추가정보를 받아 저장한다
+     * @param  addMoreInfoForm 추가정보 데이터
      * @param  oAuth2User 소셜로그인 유저정보
      * @return 타임라인 화면으로 이동
      */

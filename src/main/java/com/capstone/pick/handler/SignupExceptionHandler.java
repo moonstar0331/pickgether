@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class SignupExceptionHandler {
 
+    /** 회원가입 시 기존에 동일한 아이디가 존재할 때 발생하는 예외를 처리 */
     @ExceptionHandler(DuplicatedUserException.class)
     public String DuplicatedUserException(Model model, Exception e) {
         log.error(e.getMessage());
