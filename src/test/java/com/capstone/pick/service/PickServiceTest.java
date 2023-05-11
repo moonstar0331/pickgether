@@ -8,6 +8,7 @@ import com.capstone.pick.exeption.DateExpiredException;
 import com.capstone.pick.repository.PickRepository;
 import com.capstone.pick.repository.UserRepository;
 import com.capstone.pick.repository.VoteOptionRepository;
+import com.capstone.pick.repository.cache.PickCacheRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,10 +42,12 @@ public class PickServiceTest {
     @Mock private UserRepository userRepository;
     @Mock private VoteOptionRepository voteOptionRepository;
 
+    @Mock private PickCacheRepository pickCacheRepository;
+
     @DisplayName("투표 참여 - 정상 호출")
     @Test
     void pick() throws DateExpiredException {
-        String userId = "user";
+//        String userId = "user";
         Long optionId = 1L;
 
         Vote vote = Vote.builder()
@@ -52,11 +55,18 @@ public class PickServiceTest {
                 .build();
         VoteOption voteOption = VoteOption.builder().vote(vote).build();
 
-        given(userRepository.findById(userId)).willReturn(Optional.of(mock(User.class)));
+        User user = createUser();
+        Pick pick = Pick.builder()
+                .id(1L)
+                .user(user)
+                .voteOption(voteOption)
+                .build();
+
+        given(userRepository.findById(user.getUserId())).willReturn(Optional.of(mock(User.class)));
         given(voteOptionRepository.findById(optionId)).willReturn(Optional.of(voteOption));
+        given(pickRepository.save(any(Pick.class))).willReturn(pick);
 
-
-        pickService.pick(userId, optionId);
+        pickService.pick(user.getUserId(), optionId);
 
         then(userRepository).should().findById(anyString());
         then(voteOptionRepository).should().findById(anyLong());
@@ -100,5 +110,17 @@ public class PickServiceTest {
         when(voteOptionRepository.findById(optionId)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(EntityNotFoundException.class, () -> pickService.pick(userId, optionId));
+    }
+
+    private static User createUser() {
+        return User.builder()
+                .userId("user")
+                .userPassword("password")
+                .email("email@email.com")
+                .nickname("nick")
+                .memo("memo")
+                .birthday("0101")
+                .createdAt(LocalDateTime.now())
+                .build();
     }
 }

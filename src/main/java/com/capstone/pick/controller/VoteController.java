@@ -8,6 +8,7 @@ import com.capstone.pick.dto.*;
 import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
+import com.capstone.pick.repository.cache.PickCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.*;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ public class VoteController {
     private final BookmarkCacheRepository bookmarkCacheRepository;
     private final CommentLikeCacheRepository commentLikeRedisRepository;
     private final VoteResultService voteResultService;
+    private final PickCacheRepository pickCacheRepository;
     private final FileUploadService fileUploadService;
 
     @GetMapping("/")
@@ -86,6 +88,9 @@ public class VoteController {
                 .collect(Collectors.toList());
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
         List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, votePrincipal);
+
+        Map<Object, Object> picks = pickCacheRepository.getAll();
+        model.addAttribute("picks", picks);
 
         model.addAttribute("votes", filteredVotes);
         model.addAttribute("bookmarks", bookmarks);

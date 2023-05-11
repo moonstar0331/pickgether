@@ -201,8 +201,7 @@
 
             <!--투표-->
             <section class="vote-background-1" th:class="'vote'+${vote.getId()} + 'outer vote-background-1'"
-                     th:id="${vote.getId()}"
-                     onclick="show(this.id)">
+                     th:id="${vote.getId()}" onclick="show(this.id)">
 
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
@@ -230,12 +229,12 @@
                     <div>
                         <!-- 투표 제출 버튼 -->
                         <button th:class="'vote-submit-btn vote-submit-btn'+${vote.getId()}"
-                                th:Id="${vote.getId()}" onclick="submitPick(this.id)">
+                                th:id="${vote.getId()}" onclick="submitPick(this.id)" th:style="${picks.keySet().contains(vote.getId()) ? 'display:none' : 'display:inline'}">
                             <img src="/images/icons/arrow-right.svg" style="width: 25px; height: 30px;"/>
                         </button>
                         <!-- 투표 통계 버튼 -->
                         <button th:class="'vote-analyze-btn vote-analyze-btn'+${vote.getId()}"
-                                th:onclick="'location.href=\'' + ${vote.getId()} + '/analysis' + '\''">
+                                th:onclick="'location.href=\'' + ${vote.getId()} + '/analysis' + '\''" th:style="${picks.keySet().contains(vote.getId()) ? 'display:inline' : 'display:none'}">
                             <img src="/images/icons/analyze.svg" style="width: 25px; height: 30px; fill: #FFFFFF"/>
                         </button>
                     </div>
@@ -243,11 +242,10 @@
                     <div style="margin-top: 20px;">
                         <div th:each="option : ${vote.voteOptionDtos}">
                             <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
-                                <input class="vote-select-btn" type="radio"
-                                       th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
+                                <input class="vote-select-btn" type="radio" th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
                                        th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
                                 <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                       th:text="${option.content}" class="m-0 p-0"></label>
+                                       th:text="${option.content}" class="m-0 p-0" th:pick="${picks[vote.getId()]}"></label>
                                 <div th:class="'pick-percent vote-result'+${vote.getId()}" th:id="'result' + ${option.getId()}"/>
                             </div>
                         </div>
@@ -290,23 +288,23 @@
             </div>
         </div>
         <!--댓글-->
-<!--        <section class="profile" style="margin-left: 10px; display: flex; height: 100%">-->
-<!--            <div style="float: left;">-->
-<!--                <img src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>-->
-<!--            </div>-->
-<!--            <div style="width: 90%">-->
-<!--                <section style="float: left; padding-left: 10px; font-size: 15px; width:90%;">-->
-<!--                    <div th:text="${vote.getCommentDtos()[0].getUserDto().getUserId()}"-->
-<!--                         style="font-weight: bold; display:inline-block;">picker 3-->
-<!--                    </div>-->
-<!--                    <div style="display: inline-block; float: right; width: 80%; height: 20px;"-->
-<!--                         th:onclick="'location.href=\'' + ${vote.getId()} + '/detail' + '\''"></div>-->
-<!--                    <div th:text="${vote.getCommentDtos()[0].getContent()}"-->
-<!--                         th:onclick="'location.href=\'' + ${vote.getId()} + '/detail' + '\''">행궁동 ㅇㅇ 예쁘던데 가보세요-->
-<!--                    </div>-->
-<!--                </section>-->
-<!--            </div>-->
-<!--        </section>-->
+        <section class="profile" style="margin-left: 10px; display: flex; height: 100%">
+            <div style="float: left;">
+                <img src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>
+            </div>
+            <div style="width: 90%">
+                <section style="float: left; padding-left: 10px; font-size: 15px; width:90%;">
+                    <div th:text="${vote.getCommentDtos()[0].getUserDto().getUserId()}"
+                         style="font-weight: bold; display:inline-block;">picker 3
+                    </div>
+                    <div style="display: inline-block; float: right; width: 80%; height: 20px;"
+                         th:onclick="'location.href=\'' + ${vote.getId()} + '/detail' + '\''"></div>
+                    <div th:text="${vote.getCommentDtos()[0].getContent()}"
+                         th:onclick="'location.href=\'' + ${vote.getId()} + '/detail' + '\''">행궁동 ㅇㅇ 예쁘던데 가보세요
+                    </div>
+                </section>
+            </div>
+        </section>
 
         <hr/>
     </div>
@@ -408,5 +406,17 @@
             }
         });
     }
+
+    // /*<![CDATA[*/
+    // var picks = [[${picks}]];
+    // alert('origin: ' + picks["5"]);
+    // alert(picks.values());
+    // // alert(JSON.stringify(picks["5"]));
+    // let str = JSON.stringify(picks["5"]);
+    // // alert('str: ' + str);
+    // let json = JSON.parse(str);
+    // // alert('json: ' + json);
+    // /*]]>*/
+
 </script>
 </html>

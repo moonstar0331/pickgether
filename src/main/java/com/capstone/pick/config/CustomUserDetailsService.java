@@ -3,11 +3,13 @@ package com.capstone.pick.config;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.dto.BookmarkDto;
 import com.capstone.pick.dto.CommentLikeDto;
+import com.capstone.pick.dto.PickCachingDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.DuplicatedUserException;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
+import com.capstone.pick.repository.cache.PickCacheRepository;
 import com.capstone.pick.repository.cache.UserCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,6 +35,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final CommentLikeRepository commentLikeRepository;
     private final CommentLikeCacheRepository commentLikeRedisRepository;
 
+    private final PickRepository pickRepository;
+    private final PickCacheRepository pickCacheRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -49,6 +54,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
             List<CommentLikeDto> likes = commentLikeRepository.findAllByUser_UserId(user.getUserId()).stream().map(CommentLikeDto::from).collect(Collectors.toList());
             commentLikeRedisRepository.saveAll(likes);
+
+            pickRepository.findAllByUser_UserId(username).forEach(pick -> {
+                pickCacheRepository.setPick(PickCachingDto.from(pick, pick.getVoteOption().getVote().getId()));
+            });
 
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
