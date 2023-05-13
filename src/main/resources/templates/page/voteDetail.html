@@ -129,22 +129,33 @@
                     </svg>
                 </div>
 
+<!--                <div>-->
+<!--                    &lt;!&ndash; 투표 제출 버튼 &ndash;&gt;-->
+<!--                    <button th:class="'vote-submit-btn'+${vote.getId()}" th:Id="${vote.getId()}"-->
+<!--                            onclick="submitPick(this.id)" style="border: none;-->
+<!--                                margin-top: 5px;-->
+<!--                                background-color: transparent;-->
+<!--                                filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%);" th:style="${pick.getVoteId() == vote.getId() ? 'display:none' : 'display:inline'}">-->
+<!--                        <img src="/images/icons/arrow-right.svg" id="timeline-vote-submit-btn"/>-->
+<!--                    </button>-->
+<!--                    &lt;!&ndash; 투표 통계 버튼 &ndash;&gt;-->
+<!--                    <button th:class="'vote-analyze-btn'+${vote.getId()}" style="border: none; display: none;-->
+<!--                                margin-top: 5px;-->
+<!--                                background-color: transparent;" th:style="${pick.getVoteId() == vote.getId() ? 'display:inline' : 'display:none'}">-->
+<!--                        <img src="/images/icons/analyze.svg" id="timeline-vote-analyze-btn"/>-->
+<!--                    </button>-->
+<!--                </div>-->
+
                 <div>
                     <!-- 투표 제출 버튼 -->
-                    <button th:class="'vote-submit-btn'+${vote.getId()}" th:Id="${vote.getId()}"
-                            onclick="submitPick(this.id)"
-                            style="border: none;
-                                margin-top: 5px;
-                                background-color: transparent;
-                                filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%);">
-                        <img src="/images/icons/arrow-right.svg" id="timeline-vote-submit-btn"/>
+                    <button th:class="'vote-submit-btn vote-submit-btn'+${vote.getId()}"
+                            th:id="${vote.getId()}" onclick="submitPick(this.id)" th:style="${pick.getVoteId() == vote.getId() ? 'display:none' : 'display:inline'}">
+                        <img src="/images/icons/arrow-right.svg" style="width: 25px; height: 30px;"/>
                     </button>
                     <!-- 투표 통계 버튼 -->
-                    <button th:class="'vote-analyze-btn'+${vote.getId()}"
-                            style="border: none; display: none;
-                                margin-top: 5px;
-                                background-color: transparent;">
-                        <img src="/images/icons/analyze.svg" id="timeline-vote-analyze-btn"/>
+                    <button th:class="'vote-analyze-btn vote-analyze-btn'+${vote.getId()}"
+                            th:onclick="'location.href=\'' + ${vote.getId()} + '/analysis' + '\''" th:style="${pick.getVoteId() == vote.getId() ? 'display:inline' : 'display:none'}">
+                        <img src="/images/icons/analyze.svg" style="width: 25px; height: 30px; fill: #FFFFFF"/>
                     </button>
                 </div>
 
