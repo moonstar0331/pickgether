@@ -11,6 +11,7 @@ import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.repository.cache.PickCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -28,7 +29,6 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
@@ -89,7 +89,7 @@ public class VoteController {
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
         List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, votePrincipal);
 
-        Map<Object, Object> picks = pickCacheRepository.getAll();
+        Map<Long, PickCachingDto> picks = pickCacheRepository.getAll();
         model.addAttribute("picks", picks);
 
         model.addAttribute("votes", filteredVotes);
@@ -181,7 +181,7 @@ public class VoteController {
     }
 
     @GetMapping("/{voteId}/detail")
-    public String voteDetail(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws VoteIsNotExistException {
+    public String voteDetail(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws VoteIsNotExistException, JsonProcessingException {
         VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
 
@@ -190,6 +190,9 @@ public class VoteController {
 
         List<Long> likes = commentLikeRedisRepository.findAll().stream().map(CommentLikeDto::getVoteCommentId).collect(Collectors.toList());
         model.addAttribute("likes", likes);
+
+        PickCachingDto pick = pickCacheRepository.getPick(voteId);
+        model.addAttribute("pick", pick);
 
         if (votePrincipal == null) {
             model.addAttribute("isBookmark", false);
@@ -230,6 +233,9 @@ public class VoteController {
     public String voteAnalysis(@PathVariable long voteId, Model model) throws Exception {
         VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
+
+        PickCachingDto pick = pickCacheRepository.getPick(voteId);
+        model.addAttribute("pick", pick);
 
         VoteAnalysisDto analysis = VoteAnalysisDto.from(voteId, voteResultService.getVoteResults(voteId));
         model.addAttribute("analysis", analysis);

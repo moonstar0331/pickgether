@@ -28,6 +28,7 @@
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
+
         let isLoading = false;
 
         function getVote(page) {
@@ -243,9 +244,9 @@
                         <div th:each="option : ${vote.voteOptionDtos}">
                             <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
                                 <input class="vote-select-btn" type="radio" th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                       th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
+                                       th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}" th:checked="${picks.keySet().contains(vote.id) && picks[vote.id]['voteOptionId'] == option.id} ? true : false"/>
                                 <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                       th:text="${option.content}" class="m-0 p-0" th:pick="${picks[vote.getId()]}"></label>
+                                       th:text="${option.content}" class="m-0 p-0"></label>
                                 <div th:class="'pick-percent vote-result'+${vote.getId()}" th:id="'result' + ${option.getId()}"/>
                             </div>
                         </div>
@@ -406,17 +407,5 @@
             }
         });
     }
-
-    // /*<![CDATA[*/
-    // var picks = [[${picks}]];
-    // alert('origin: ' + picks["5"]);
-    // alert(picks.values());
-    // // alert(JSON.stringify(picks["5"]));
-    // let str = JSON.stringify(picks["5"]);
-    // // alert('str: ' + str);
-    // let json = JSON.parse(str);
-    // // alert('json: ' + json);
-    // /*]]>*/
-
 </script>
 </html>
