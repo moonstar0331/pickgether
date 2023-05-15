@@ -234,6 +234,9 @@ public class VoteController {
         VoteWithOptionDto vote = voteService.getVoteWithOption(voteId);
         model.addAttribute("vote", vote);
 
+        PickCachingDto pick = pickCacheRepository.getPick(voteId);
+        model.addAttribute("pick", pick);
+
         VoteAnalysisDto analysis = VoteAnalysisDto.from(voteId, voteResultService.getVoteResults(voteId));
         model.addAttribute("analysis", analysis);
 

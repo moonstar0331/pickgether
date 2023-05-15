@@ -105,9 +105,12 @@
                 <div style="margin-bottom: 2rem;">
                     <div th:each="option : ${vote.voteOptionDtos}">
                         <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
-                            <input class="vote-select-btn" type="radio"
-                                   th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
+<!--                            <input class="vote-select-btn" type="radio" th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"-->
+<!--                                   th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>-->
+                            <input th:if="${pick} == ''" class="vote-select-btn" type="radio" th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
                                    th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"/>
+                            <input th:unless="${pick} == ''" class="vote-select-btn" type="radio" th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
+                                   th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}" th:checked="${pick['voteOptionId']} == ${option.id}"/>
                             <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
                                    th:text="${option.content}"></label>
                         </div>
