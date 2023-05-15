@@ -29,7 +29,6 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
@@ -90,7 +89,7 @@ public class VoteController {
         Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
         List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, votePrincipal);
 
-        Map<Object, Object> picks = pickCacheRepository.getAll();
+        Map<Long, PickCachingDto> picks = pickCacheRepository.getAll();
         model.addAttribute("picks", picks);
 
         model.addAttribute("votes", filteredVotes);
