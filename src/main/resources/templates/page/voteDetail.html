@@ -149,12 +149,12 @@
                 <div>
                     <!-- 투표 제출 버튼 -->
                     <button th:class="'vote-submit-btn vote-submit-btn'+${vote.getId()}"
-                            th:id="${vote.getId()}" onclick="submitPick(this.id)" th:style="${pick.getVoteId() == vote.getId() ? 'display:none' : 'display:inline'}">
+                            th:id="${vote.getId()}" onclick="submitPick(this.id)" th:style="${pick != null ? 'display:none' : 'display:inline'}">
                         <img src="/images/icons/arrow-right.svg" style="width: 25px; height: 30px;"/>
                     </button>
                     <!-- 투표 통계 버튼 -->
                     <button th:class="'vote-analyze-btn vote-analyze-btn'+${vote.getId()}"
-                            th:onclick="'location.href=\'' + ${vote.getId()} + '/analysis' + '\''" th:style="${pick.getVoteId() == vote.getId() ? 'display:inline' : 'display:none'}">
+                            th:onclick="'location.href=\'' + ${vote.getId()} + '/analysis' + '\''" th:style="${pick != null ? 'display:inline' : 'display:none'}">
                         <img src="/images/icons/analyze.svg" style="width: 25px; height: 30px; fill: #FFFFFF"/>
                     </button>
                 </div>
