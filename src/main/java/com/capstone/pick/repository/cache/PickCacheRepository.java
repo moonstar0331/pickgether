@@ -35,7 +35,7 @@ public class PickCacheRepository {
     }
 
     public PickCachingDto getPick(Long voteId) throws JsonProcessingException {
-        return deserializePickDto((String) redisTemplate.opsForHash().get("PICK", voteId));
+        return deserializePickDto(hashOperations.get("PICK", voteId));
     }
 
     public Map<Long, PickCachingDto> getAll() {
