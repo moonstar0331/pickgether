@@ -15,12 +15,41 @@ function signupValidation() {
     var id = $("#username").val();
     var pw = $("#password").val();
     var pw_check = $("#password_check").val();
+    var nickname = $("#nickname").val();
     var email = $("#email").val();
 
     // 1. 빈칸 확인
-    if (id === "" || pw === "" || pw_check === "" || email === "") {
+    if (id === "" || pw === "" || pw_check === "" || nickname === "" || email === "") {
         alert("빈칸이 있습니다.");
     }
+
+    var data = {
+        userId: $('#userId').val(),
+        password: $('#password').val(),
+        nickname: $('#nickname').val(),
+        email: $('#email').val(),
+        birthday: $('#birthday').val(),
+        gender: $('input[name=\'gender\']:checked').val(),
+        job: $('#job option:selected').val(),
+        address: $('#address').val(),
+        memo: $('#memo').val()
+    }
+
+    console.log(JSON.stringify(data));
+
+    $.ajax({
+        url: '/signup',
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            console.log("success: " + data);
+            location.replace('/login');
+        },
+        error: function (data) {
+            console.log("error: " + data);
+        }
+    });
 }
 
 function pw_pwcheck_isSame() {
