@@ -60,6 +60,8 @@ dependencies {
 
 	// 소셜로그인
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	implementation 'net.nurigo:sdk:4.3.0'
 }
 
 tasks.named('test') {
