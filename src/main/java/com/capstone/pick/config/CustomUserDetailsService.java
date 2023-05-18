@@ -40,8 +40,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final PickRepository pickRepository;
     private final PickCacheRepository pickCacheRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -68,7 +66,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         userCacheRepository.setUser(user);
-        return VotePrincipal.from(user, passwordEncoder);
+        return VotePrincipal.from(user);
     }
 
     /**

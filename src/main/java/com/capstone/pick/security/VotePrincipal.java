@@ -35,10 +35,10 @@ public class VotePrincipal implements OAuth2User,UserDetails {
 
     private OAuthAttributes oAuthAttributes;
 
-    public static VotePrincipal from(UserDto dto, PasswordEncoder passwordEncoder) {
+    public static VotePrincipal from(UserDto dto) {
         return VotePrincipal.builder()
                 .username(dto.getUserId())
-                .password(passwordEncoder.encode(dto.getUserPassword()))
+                .password(dto.getUserPassword())
                 .email(dto.getEmail())
                 .nickname(dto.getNickname())
                 .birthday(dto.getBirthday())
