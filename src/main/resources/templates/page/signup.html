@@ -107,8 +107,6 @@
                         <label id="emailLabel"></label>
                     </div>
 
-                    <hr class="signup-hr">
-
                     <!-- 성별 -->
                     <div class="signup-input-label mb-2" style="text-align: left;">
                         <label>성별</label>
@@ -142,6 +140,18 @@
                             <option th:value="student">학생</option>
                         </select>
                         <div class="icoArrow"><i class="fa-thin fa-caret-down dropdown"></i></div>
+                    </div>
+
+                    <div class="signup-input-label mb-3" style="text-align: left;">
+                        <label class="mr-2" for="phoneNumber">전화번호</label>
+                        <input class="signup-input px-3 py-2 w-50" id="phoneNumber" type="text" placeholder="01012345678">
+                        <button class="signup-submit p-2 mb-2 ml-1" id="send" style="width: 20% !important;" type="button">전송</button>
+
+                        <div class="signup-input-label mb-3 checkDiv">
+                            <input class="signup-input px-3 py-2 w-25" type="text" id="checkNumber" placeholder="0000">
+                            <button class="signup-submit p-2 mb-2 ml-1" id="checkBtn" style="width: 20% !important;" type="button">확인</button>
+                            <input type="hidden" id="checkFlag" value="no">
+                        </div>
                     </div>
 
                     <!-- 주소 -->
@@ -191,4 +201,39 @@
 </html>
 <script>
     document.getElementById('birthday').value= new Date().toISOString().slice(0, 10);
+
+    $('#send').click(function() {
+        const toPhoneNumber = $('#phoneNumber').val();
+
+        var phoneRule = /^(010)[0-9]{4}[0-9]{4}$/;
+
+        if(toPhoneNumber === '') {
+            alert("전화번호를 입력해주세요.");
+        } else if (toPhoneNumber.length < 11 || !phoneRule.test(toPhoneNumber)) {
+            alert("정확한 전화번호를 입력해주세요.");
+        }
+
+        $('.checkDiv').css('display', 'block');
+
+        $.ajax( {
+            url: '/sendSMS',
+            type: 'POST',
+            data: {
+                "toPhoneNumber": toPhoneNumber
+            },
+            success: function(data) {
+                const checkNum = data;
+
+                $('#checkBtn').click(function() {
+                    const userNum = $('#checkNumber').val();
+
+                    if(checkNum === userNum) {
+                        alert('인증 성공하였습니다.');
+                    } else {
+                        alert('인증 실패하였습니다. 다시 입력해주세요.');
+                    }
+                });
+            }
+        });
+    });
 </script>
