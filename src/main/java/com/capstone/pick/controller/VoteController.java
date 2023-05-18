@@ -216,7 +216,6 @@ public class VoteController {
     public String saveBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) {
         voteService.saveBookmark(votePrincipal.getUsername(), voteId);
         return null;
-//        return "redirect:";
     }
 
     @DeleteMapping("/{voteId}/deleteBookmark")
@@ -224,7 +223,6 @@ public class VoteController {
     public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws BookmarkNotFoundException, UserNotFoundException {
         voteService.deleteBookmark(votePrincipal.getUsername(), voteId);
         return null;
-//        return "redirect:";
     }
 
     @DeleteMapping("/deleteAllBookmark")
