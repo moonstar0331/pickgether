@@ -22,6 +22,9 @@ public class SmsService {
     @Value("${spring.cool.api.secret}")
     private String api_secret;
 
+    @Value("${spring.cool.from.number}")
+    private String fromPhoneNumber;
+
     private final SmsCacheRepository smsCacheRepository;
 
     public void send(String toPhoneNumber) {
@@ -35,7 +38,7 @@ public class SmsService {
 
         DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(api_key, api_secret, "https://api.coolsms.co.kr");
         Message message = new Message();
-        message.setFrom("01012345678"); // TODO: 문자인증을 진행하기 위해서는 자신의 핸드폰 번호를 입력하여 테스트 진행
+        message.setFrom(fromPhoneNumber); // TODO: 문자인증을 진행하기 위해서는 자신의 핸드폰 번호를 입력하여 테스트 진행
         message.setType(MessageType.SMS);
         message.setTo(toPhoneNumber);
         message.setText("인증번호는 [" + certNum + "] 입니다.");
