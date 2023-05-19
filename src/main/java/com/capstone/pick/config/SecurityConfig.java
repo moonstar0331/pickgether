@@ -23,13 +23,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
                 .csrf()
-                .ignoringAntMatchers("/signup", "/sendSMS")
+                .ignoringAntMatchers("/signup", "/sendSMS", "/certification")
                 .and()
                 .rememberMe().and()
                 .authorizeRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .antMatchers("/signup", "/sendSMS", "/{voteId}/detail").permitAll()
-//                        .antMatchers("/{voteId}/detail").permitAll()
+                        .antMatchers("/signup", "/sendSMS", "/{voteId}/detail", "/certification").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin()
