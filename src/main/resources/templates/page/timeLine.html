@@ -289,7 +289,7 @@
             </div>
         </div>
         <!--댓글-->
-        <section class="profile" style="margin-left: 10px; display: flex; height: 100%">
+        <section th:if="${!vote.getCommentDtos().isEmpty()}" class="profile" style="margin-left: 10px; display: flex; height: 100%">
             <div style="float: left;">
                 <img src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>
             </div>
