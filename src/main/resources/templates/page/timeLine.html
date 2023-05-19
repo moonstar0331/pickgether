@@ -28,19 +28,16 @@
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-
         window.addEventListener("scroll", function () {
             let container = document.getElementById("voteContainer");
             const SCROLLED_HEIGHT = window.scrollY;
             const WINDOW_HEIGHT = window.innerHeight;
-            const DOC_TOTAL_HEIGHT = $('.timeline-background').prop('scrollHeight');
-            const IS_BOTTOM = WINDOW_HEIGHT + SCROLLED_HEIGHT === DOC_TOTAL_HEIGHT;
+            const DOC_TOTAL_HEIGHT = $('.timeline-background').prop('offsetHeight') - 1;
 
+            const IS_BOTTOM = WINDOW_HEIGHT + SCROLLED_HEIGHT >= DOC_TOTAL_HEIGHT;
             console.log("현재 페이지: " + parseInt(container.getAttribute("data-page")));
 
             if (IS_BOTTOM) {
-                console.log("바닥에 닿았다!");
-                console.log($("data-page"));
                 const page = parseInt(container.getAttribute("data-page")) + 1;
                 getVote(page);
             }
@@ -124,11 +121,11 @@
         </div>
     </div>
     <div style="margin-left: 1rem; margin-top: 2rem;">
-        <div>
+        <div onclick="href('profile')">
             <button class="category-btn" ><img src="/images/icons/user.svg" style="height: 35px; margin-right: 1rem;"/></button>
             <button class="category-btn-label">프로필</button>
         </div>
-        <div style="margin-top: 1rem;">
+        <div style="margin-top: 1rem;" onclick="href('myBookmark')">
             <button class="category-btn"><img src="/images/icons/bookmark.svg" style="height: 35px; margin-right: 1rem;"/></button>
             <button class="category-btn-label">북마크</button>
         </div>
