@@ -222,18 +222,35 @@
                 "toPhoneNumber": toPhoneNumber
             },
             success: function(data) {
-                const checkNum = data;
-
-                $('#checkBtn').click(function() {
-                    const userNum = $('#checkNumber').val();
-
-                    if(checkNum === userNum) {
-                        alert('인증 성공하였습니다.');
-                    } else {
-                        alert('인증 실패하였습니다. 다시 입력해주세요.');
-                    }
-                });
+                console.log("success: " + data);
             }
         });
     });
+
+    $('#checkBtn').click(function() {
+
+        var data = {
+            toPhoneNumber: $('#phoneNumber').val(),
+            userCheckNumber: $('#checkNumber').val()
+        }
+
+        $.ajax({
+            url: '/certification',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data),
+            success: function (data) {
+                console.log("success: " + data);
+                if(data.valueOf() === 'certificated') {
+                    alert("인증 성공하였습니다.");
+                } else {
+                    alert("인증 실패하였습니다. 다시 입력해주세요.");
+                }
+            },
+            error: function (data) {
+                console.log("error: " + data);
+                alert("인증 실패하였습니다. 다시 시도해주세요.");
+            }
+        });
+    })
 </script>
