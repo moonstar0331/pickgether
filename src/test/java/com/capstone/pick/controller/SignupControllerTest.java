@@ -5,6 +5,7 @@ import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.request.SignupRequest;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.DuplicatedUserException;
+import com.capstone.pick.service.SmsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,9 @@ class SignupControllerTest {
 
     @MockBean
     private CustomUserDetailsService customUserDetailsService;
+
+    @MockBean
+    private SmsService smsService;
 
     public SignupControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
