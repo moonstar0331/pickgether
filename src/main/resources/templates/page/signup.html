@@ -170,7 +170,8 @@
                         <textarea placeholder="한 줄 소개" class="form-control" id="memo" rows="3" style="resize: none;"></textarea>
                     </div>
 
-                    <button class="signup-submit p-2 mb-2" type="button" onclick="signupValidation()">회원가입</button>
+                    <button class="signup-submit p-2 mb-2 signupBtn" type="button">회원가입</button>
+<!--                    <button class="signup-submit p-2 mb-2 signupBtn" type="button" onclick="signupValidation()">회원가입</button>-->
                 </div>
             </form>
             <div class="d-flex justify-content-center mt-2" style="margin-top: 1px !important;">
@@ -246,6 +247,10 @@
                 } else {
                     alert("인증 실패하였습니다. 다시 입력해주세요.");
                 }
+
+                $('.signupBtn').click(function() {
+                    signupValidation(data);
+                });
             },
             error: function (data) {
                 console.log("error: " + data);

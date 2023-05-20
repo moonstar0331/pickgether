@@ -11,7 +11,7 @@
     4. 이메일 양식대로 입력했는지 확인
  */
 
-function signupValidation() {
+function signupValidation(certificated) {
     var id = $("#username").val();
     var pw = $("#password").val();
     var pw_check = $("#password_check").val();
@@ -21,6 +21,10 @@ function signupValidation() {
     // 1. 빈칸 확인
     if (id === "" || pw === "" || pw_check === "" || nickname === "" || email === "") {
         alert("빈칸이 있습니다.");
+    }
+
+    if(certificated.valueOf() !== 'certificated') {
+        alert('핸드폰 인증을 해주세요.');
     }
 
     var data = {
