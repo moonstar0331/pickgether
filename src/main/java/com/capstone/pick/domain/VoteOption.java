@@ -15,7 +15,7 @@ public class VoteOption {
     @Column(name = "vote_option_id")
     private Long id; // 투표 선택지 id
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "vote_id")
     private Vote vote; // 투표 게시글 id
 

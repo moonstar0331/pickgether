@@ -14,11 +14,11 @@ public class VoteHashtag {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 투표 해시태그 id
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "vote_id")
     private Vote vote; // 투표 게시글 id
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag; // 해시태그 내용
 }
