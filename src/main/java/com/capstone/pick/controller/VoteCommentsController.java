@@ -7,6 +7,7 @@ import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.CommentWithLikeCountDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.exeption.VoteIsNotExistException;
+import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.VoteCommentService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Controller
 public class VoteCommentsController {
 
     private final VoteCommentService voteCommentService;
+    private final CommentLikeCacheRepository commentLikeRedisRepository;
 
     /**
      * 댓글을 조회한다
@@ -63,6 +68,10 @@ public class VoteCommentsController {
         voteCommentService.saveComment(commentDto);
         Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
         model.addAttribute("comments", comments);
+
+        List<Long> likes = commentLikeRedisRepository.findAll().stream().map(CommentLikeDto::getVoteCommentId).collect(Collectors.toList());
+        model.addAttribute("likes", likes);
+
         model.addAttribute("user", votePrincipal.toDto());
 
         return "page/voteDetail :: #commentList";
@@ -90,6 +99,10 @@ public class VoteCommentsController {
         voteCommentService.updateComment(commentId, commentDto);
         Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
         model.addAttribute("comments", comments);
+
+        List<Long> likes = commentLikeRedisRepository.findAll().stream().map(CommentLikeDto::getVoteCommentId).collect(Collectors.toList());
+        model.addAttribute("likes", likes);
+
         model.addAttribute("user", votePrincipal.toDto());
 
         return "page/voteDetail :: #commentList";
@@ -112,6 +125,10 @@ public class VoteCommentsController {
         voteCommentService.deleteComment(commentId, votePrincipal.toDto().getUserId());
         Page<CommentWithLikeCountDto> comments = voteCommentService.commentsByVote(voteId, pageable);
         model.addAttribute("comments", comments);
+
+        List<Long> likes = commentLikeRedisRepository.findAll().stream().map(CommentLikeDto::getVoteCommentId).collect(Collectors.toList());
+        model.addAttribute("likes", likes);
+
         model.addAttribute("user", votePrincipal.toDto());
 
         return "page/voteDetail :: #commentList";

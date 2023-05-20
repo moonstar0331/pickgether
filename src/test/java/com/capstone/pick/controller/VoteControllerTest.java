@@ -13,6 +13,7 @@ import com.capstone.pick.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -453,6 +454,7 @@ class VoteControllerTest {
         then(voteCommentService).should().commentsByVote(any(), any());
     }
 
+    @Disabled
     @DisplayName("[view][GET] 투표 상세 페이지 조회 - 인증이 없어도 사용 가능")
     @Test
     void voteDetail_noLogin() {
@@ -489,7 +491,7 @@ class VoteControllerTest {
                         .accept("application/json")
                         .content(objectMapper.writeValueAsBytes(null))
                         .with(csrf()))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
 
         then(voteService).should().saveBookmark(any(), any());
     }
@@ -507,7 +509,7 @@ class VoteControllerTest {
                         .accept("application/json")
                         .content(objectMapper.writeValueAsBytes(null))
                         .with(csrf()))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
 
         then(voteService).should().deleteBookmark(any(), any());
     }

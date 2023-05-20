@@ -17,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -72,6 +74,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param  userDto 유저정보
      * @exception DuplicatedUserException 기존에 동일한 아이디가 존재할 때 발생
      */
+    @Transactional
     public void save(UserDto userDto) throws DuplicatedUserException {
 
         Optional<User> user = userRepository.findById(userDto.getUserId());

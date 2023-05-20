@@ -1,7 +1,11 @@
 package com.capstone.pick.controller;
 
+import com.capstone.pick.config.CustomUserDetailsService;
 import com.capstone.pick.config.TestSecurityConfig;
-import com.capstone.pick.controller.form.SignUpForm;
+import com.capstone.pick.controller.request.SignupRequest;
+import com.capstone.pick.dto.UserDto;
+import com.capstone.pick.exeption.DuplicatedUserException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +16,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,9 +34,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class SignupControllerTest {
 
     private final MockMvc mvc;
+    private final ObjectMapper objectMapper;
 
-    public SignupControllerTest(@Autowired MockMvc mvc) {
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private CustomUserDetailsService customUserDetailsService;
+
+    public SignupControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
+        this.objectMapper = objectMapper;
     }
 
     @Test
@@ -46,18 +60,24 @@ class SignupControllerTest {
     @Test
     @DisplayName("[POST][/signup] 회원가입 승인")
     void 회원가입_승인() throws Exception {
-
         //given
-        SignUpForm form = SignUpForm.builder()
-                .userId("testUser")
-                .userPassword("testPWD")
-                .email("test@gmail.com")
+        SignupRequest request = SignupRequest.builder()
+                .userId("test")
+                .password("test1234!")
+                .email("test@email.com")
+                .nickname("testNick")
+                .memo("memo")
+                .gender("male")
+                .birthday("1999-04-01")
+                .job("student")
+                .address("경기")
                 .build();
 
         //when
         mvc.perform(post("/signup")
-                .flashAttr("signUpForm",form)
-                .with(csrf()))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(request)))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/login"))
                 .andExpect(redirectedUrl("/login"));
@@ -65,24 +85,29 @@ class SignupControllerTest {
 
     @Test
     @DisplayName("[POST][/signUp] 회원가입 거절")
-    void 회원가입_거절() throws Exception {
+    void 회원가입_거절() throws Exception, DuplicatedUserException {
 
         //given
-        SignUpForm failForm = SignUpForm.builder()
-                .userId("user")
-                .userPassword("testPWD")
-                .email("testmail@gmail.com")
+        SignupRequest request = SignupRequest.builder()
+                .userId("test")
+                .password("test1234!")
+                .email("test@email.com")
+                .nickname("testNick")
+                .memo("memo")
+                .gender("male")
+                .birthday("1999-04-01")
+                .job("student")
+                .address("경기")
                 .build();
+
+        doThrow(new DuplicatedUserException()).when(customUserDetailsService).save(any(UserDto.class));
 
         //when
         mvc.perform(post("/signup")
-                .flashAttr("signUpForm",failForm)
-                .with(csrf()))
-                .andExpect(model().attributeExists("errorResponse"))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(request)))
                 .andExpect(view().name("page/signup"));
-
     }
-
-
 }
 

@@ -1,3 +1,8 @@
+.checkDiv {
+    text-align: left;
+    display: none;
+}
+
 .bg-linear-gradient {
     background: linear-gradient(180deg, #7F8AE5 0%, #E3DCEA 41.15%, rgba(255, 243, 236, 0.23) 77.08%, #FFFFFF 100%);
 }

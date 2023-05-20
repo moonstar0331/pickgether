@@ -191,8 +191,8 @@ public class VoteController {
         List<Long> likes = commentLikeRedisRepository.findAll().stream().map(CommentLikeDto::getVoteCommentId).collect(Collectors.toList());
         model.addAttribute("likes", likes);
 
-        PickCachingDto pick = pickCacheRepository.getPick(voteId);
-        model.addAttribute("pick", pick);
+        Map<Long, PickCachingDto> picks = pickCacheRepository.getAll();
+        model.addAttribute("picks", picks);
 
         if (votePrincipal == null) {
             model.addAttribute("isBookmark", false);
@@ -212,15 +212,17 @@ public class VoteController {
     }
 
     @PostMapping("/{voteId}/saveBookmark")
+    @ResponseBody
     public String saveBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) {
         voteService.saveBookmark(votePrincipal.getUsername(), voteId);
-        return "redirect:";
+        return null;
     }
 
     @DeleteMapping("/{voteId}/deleteBookmark")
+    @ResponseBody
     public String deleteBookmark(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable Long voteId) throws BookmarkNotFoundException, UserNotFoundException {
         voteService.deleteBookmark(votePrincipal.getUsername(), voteId);
-        return "redirect:";
+        return null;
     }
 
     @DeleteMapping("/deleteAllBookmark")
