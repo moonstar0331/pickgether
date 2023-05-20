@@ -18,11 +18,11 @@ public class Bookmark {
     @Column(name = "bookmark_id")
     private Long id; // 북마크 id
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 유저 id
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "vote_id")
     private Vote vote; // 투표 게시글 id
 

@@ -22,11 +22,11 @@ public class VoteComment {
     @Column(name = "vote_comment_id")
     private Long id; // 투표 댓글 id
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "vote_id")
     private Vote vote;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
