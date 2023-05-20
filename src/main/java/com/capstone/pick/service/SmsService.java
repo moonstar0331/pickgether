@@ -56,8 +56,6 @@ public class SmsService {
         if(isVerify(toPhoneNumber, userCheckNumber)) {
             throw new Exception("인증번호가 일치하지 않습니다.");
         }
-
-        smsCacheRepository.deleteSmsCertification(toPhoneNumber);
     }
 
     public boolean isVerify(String toPhoneNumber, String userCheckNumber) {

@@ -13,12 +13,12 @@ import java.time.Duration;
 public class SmsCacheRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
-    private final static Duration CACHE_TTL = Duration.ofDays(3);
+    private final static Duration CACHE_TTL = Duration.ofMinutes(3);
 
     private final String PREFIX = "SMS:";
 
     public void setSmsCertification(String toPhoneNumber, String certNum) {
-        redisTemplate.opsForValue().set(PREFIX + toPhoneNumber, certNum);
+        redisTemplate.opsForValue().set(PREFIX + toPhoneNumber, certNum, CACHE_TTL);
     }
 
     public String getSmsCertification(String toPhoneNumber) {
