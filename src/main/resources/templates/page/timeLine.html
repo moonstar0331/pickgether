@@ -70,21 +70,6 @@
                 }
             });
         }
-
-        /*function loadMore() {
-            let container = document.getElementById("voteContainer");
-            if(container != null) {
-                const scrollTop = container.scrollTop;
-                const clientHeight = container.clientHeight;
-                const scrollHeight = container.scrollHeight;
-                const page = parseInt(container.getAttribute("data-page")) + 1;
-
-                if (scrollHeight * 0.9 - scrollTop < clientHeight && !isLoading) {
-                    isLoading = true;
-                    getVote(page);
-                }
-            }
-        }*/
     </script>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <script type="text/javascript" th:src="@{/js/share.js}"></script>
@@ -476,10 +461,6 @@
             </div>
         </section>
 
-    <!-- 화면 아래로 내렸을 때 로딩 div -->
-    <!--<div id="up" style="height: 200px; display: none; background-color: #0a53be">
-    </div>-->
-
     <div style="height: 52px;"></div>
 </div>
 
@@ -545,51 +526,6 @@
 </div>
 </body>
 <script th:inline="javascript">
-/*
-    // 스크롤이 바닥에 닿았는지 확인
-    window.addEventListener("scroll", function () {
-       const SCROLLED_HEIGHT = window.scrollY;
-       const WINDOW_HEIGHT = window.innerHeight;
-       const DOC_TOTAL_HEIGHT = document.body.offsetHeight;
-       const IS_BOTTOM = WINDOW_HEIGHT + SCROLLED_HEIGHT === DOC_TOTAL_HEIGHT;
-
-       if (IS_BOTTOM) {
-           console.log("바닥에 닿았다!");
-           loadMore();
-       }
-    });
-
-    const getList = () => {
-        fetch(URL, {
-            method: "GET",
-            body: {
-                lastId
-            }
-        })
-            .then((res) => res.json())
-            .then((resJson) => {
-                createMoreVote(resJson);
-            });
-    }
-
-    <!--  -->
-    const drawList = (DATA) => {
-        let listHtml = "";
-        DATA.forEach((item, index) => {
-            const { id, data1, data2, data3, data4, data5, data6, data7 } = item;
-            const TR_ELE = document.createElement('div');
-            listHtml = `<td>${id}</td>
-                    <td>${name}</td>
-                    <td>${username}</td>
-                    <td>${email}</td>
-                    <td>${website}</td>`;
-
-            if (index === DATA.length - 1) lastId = id; // 마지막건 ID 저장
-
-            TR_ELE.innerHtml = listHtml;
-            TABLE_ELE.appendChild(TR_ELE);
-        });
-    };*/
 
     function load() {
         var url = new URL(window.location.href);

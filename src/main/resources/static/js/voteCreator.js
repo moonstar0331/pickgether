@@ -151,14 +151,9 @@ function createContent(vote, option) {
     contentTitle.id = "vote-content-" + vote.id;
     /*contentTitle.textContent = vote.content;*/
 
-    // vote.content 출력 테스트
-    console.log("vote-id: " + vote.id + ", content: " + vote.content);
-
     let split_content = vote.content.split(/(#[^\s#]+)/g);
-    console.log(split_content);
     const hashtagingDiv = document.createElement("div");
     for (let i = 0; i < split_content.length; i++) {
-        console.log(split_content[i]);
         if (split_content[i].includes('#')) {
             const nonSharp = document.createElement("div");
             nonSharp.textContent = split_content[i];
@@ -175,7 +170,6 @@ function createContent(vote, option) {
             nonSharp.style.display = 'inline';
             hashtagingDiv.appendChild(nonSharp);
         }
-        console.log($('#vote-content-' + vote.id));
         contentTitle.appendChild(hashtagingDiv);
     }
 
