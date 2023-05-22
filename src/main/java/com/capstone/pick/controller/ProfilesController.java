@@ -41,8 +41,8 @@ public class ProfilesController {
     // 유저가 작성한 투표 게시글을 반환하는 API
     @GetMapping(value = "/get-my-vote", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, Object> findMyVote(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestParam(required = true) String userId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
-        Page<VoteOptionCommentDto> myVote = voteService.findMyVote(userId, pageable);
+    public Map<String, Object> findMyVote(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
+        Page<VoteOptionCommentDto> myVote = voteService.findMyVote(votePrincipal.getUsername(), pageable);
         Map<String, Object> response = new HashMap<>();
         response.put("myVote", myVote);
         return response;
