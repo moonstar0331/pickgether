@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -52,15 +53,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @MockBean(JpaMetamodelMappingContext.class)
 public class PickControllerTest {
 
-    @MockBean private PickService pickService;
-
-    @MockBean private FollowService followService;
-
-    @MockBean private VoteService voteService;
-
-    @MockBean private VotePrincipal votePrincipal;
-    private final ObjectMapper objectMapper;
     private final MockMvc mvc;
+    private final ObjectMapper objectMapper;
+
+    @MockBean
+    private PickService pickService;
+
+    @MockBean
+    private FollowService followService;
+
+    @MockBean
+    private VoteService voteService;
+
+    @MockBean
+    private VotePrincipal votePrincipal;
 
     public PickControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
@@ -68,10 +74,9 @@ public class PickControllerTest {
     }
 
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @DisplayName("[pick][POST] 투표 참여 - 정상 호출")
+    @DisplayName("[POST][/pick] 투표 참여 - 정상 호출, 인증된 사용자")
     @Test
     void pick() throws Exception {
-
         PickRequest pickRequest = PickRequest.builder()
                 .optionId(1L)
                 .build();
@@ -85,23 +90,22 @@ public class PickControllerTest {
     }
 
     @WithAnonymousUser
-    @DisplayName("[pick][POST] 투표 참여 - 인증없는 유저이면 에러 발생")
+    @DisplayName("[POST][/pick] 투표 참여 - 인증이 없을 시에는 에러 발생")
     @Test
     void pick_NoLoginUser() throws Exception {
-
         PickRequest pickRequest = PickRequest.builder()
                 .optionId(1L)
                 .build();
 
         mvc.perform(post("/pick")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(pickRequest))
-                ).andDo(print())
+                        .content(objectMapper.writeValueAsBytes(pickRequest)))
+                .andDo(print())
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @DisplayName("[GET][/{voteId}/participants] 참여자 리스트 페이지 테스트")
+    @DisplayName("[GET][/{voteId}/participants] 참여자 리스트 페이지 테스트 - 정상 호출, 인증된 사용자")
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void 참여자_리스트_뷰_엔드포인트_테스트() throws Exception {
         //given
@@ -132,9 +136,26 @@ public class PickControllerTest {
     }
 
     @Test
-    @DisplayName("[GET][/{voteId}/json-participant] 참여자 리스트 API 엔드포인트 테스트")
+    @DisplayName("[GET][/{voteId}/participants] 참여자 리스트 페이지 테스트 - 인증이 없을 시에는 로그인 페이지로 이동")
+    public void 참여자_리스트_뷰_엔드포인트_테스트_NoLoginUser() throws Exception {
+        //given
+        Long voteId = 1L;
+
+        //when
+        mvc.perform(get("/" + voteId + "/participants"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+
+        //then
+        then(pickService).shouldHaveNoInteractions();
+        then(followService).shouldHaveNoInteractions();
+    }
+
+
+    @Test
+    @DisplayName("[GET][/{voteId}/participants-update] 참여자 리스트 API 엔드포인트 테스트 - 정상 호출, 인증된 사용자")
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void testParticipantJson() throws Exception {
+    public void participantJson() throws Exception {
         // given
         String username = "testUser";
         Long voteId = 5L;
@@ -183,9 +204,26 @@ public class PickControllerTest {
     }
 
     @Test
-    @DisplayName("[GET][/{voteId}/pick-count-list] 투표 선택지별 득표수 API 엔드포인트 테스트")
+    @DisplayName("[GET][/{voteId}/participants-update] 참여자 리스트 API 엔드포인트 테스트 - 인증이 없을 시에는 로그인 페이지로 이동")
+    public void participantJson_NoLoginUser() throws Exception {
+        // given
+        Long voteId = 1L;
+
+        // when
+        mvc.perform(get("/" + voteId + "/participants-update"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+
+        //then
+        then(pickService).shouldHaveNoInteractions();
+        then(followService).shouldHaveNoInteractions();
+        then(voteService).shouldHaveNoInteractions();
+    }
+
+    @Test
+    @DisplayName("[GET][/{voteId}/pick-count-list] 투표 선택지별 득표수 API 엔드포인트 테스트 - 정상 호출, 인증된 사용자")
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void testGetPickCountList() throws Exception {
+    public void getPickCountList() throws Exception {
         // given
         Long voteId = 1L;
         Map<Long, Long> pickCountList = new HashMap<>();
@@ -206,6 +244,21 @@ public class PickControllerTest {
         JSONObject jsonObject = new JSONObject(content);
         assertThat(jsonObject.has("pickCountList")).isTrue();
         assertThat(jsonObject.get("pickCountList")).isInstanceOf(JSONObject.class);
+    }
+
+    @Test
+    @DisplayName("[GET][/{voteId}/pick-count-list] 투표 선택지별 득표수 API 엔드포인트 테스트 - 인증이 없을 시에는 로그인 페이지로 이동")
+    public void getPickCountList_NoLoginUser() throws Exception {
+        // given
+        Long voteId = 1L;
+
+        // when
+        mvc.perform(get("/" + voteId + "/pick-count-list"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+
+        //then
+        then(pickService).shouldHaveNoInteractions();
     }
 
     private static Follow createFollow(Long id, User fromUser, User toUser) {

@@ -79,7 +79,7 @@ class SignupControllerTest {
 
         //when
         mvc.perform(post("/signup")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept("application/json")
                         .content(objectMapper.writeValueAsBytes(request)))
                 .andExpect(status().is3xxRedirection())
