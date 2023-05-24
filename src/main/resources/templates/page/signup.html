@@ -130,31 +130,31 @@
                     <input type="hidden" id="checkFlag" value="no">
                 </div>
 
-                <!-- 성별 -->
-                <div class="signup-input-label mt-4 mb-2" style="text-align: left;">
-                    <label>성별</label>
-                    <div style="display:inline-block; width:30%; text-align: right">
-                        <input type="radio" name="gender" value="male"> 남자
-                    </div>
-                    <div style="display:inline-block; width:30%; text-align: right">
-                        <input type="radio" name="gender" value="female"> 여자
+                <!-- 출생일 -->
+                <div class="signup-input-label mt-4" style="text-align: left;">
+                    <label>출생일</label>
+                    <div class="ml-3 mb-3" style="display: inline-block; width:50%;">
+                        <form class="signup-input px-3 py-2 mb-2 border-none w-100">
+                            <input type="date" id="birthday" name="birthday" class="w-100">
+                        </form>
                     </div>
                 </div>
 
-                <!-- 출생일 -->
-                <div class="signup-input-label" style="text-align: left;">
-                    <label>출생일</label>
-                    <div class="ml-3 mb-4" style="display: inline-block;">
-                        <form class="signup-input px-3 py-2 mb-2 border-none">
-                            <input type="date" id="birthday" name="birthday">
-                        </form>
-                    </div>
+                <!-- 성별 -->
+                <div class="signup-input-label mb-3" style="text-align: left;">
+                    <label class="mr-4" for="gender">성별</label>
+                    <select class="border-none focus-none border-bottom p-1" id="gender" name="gender" style="width: 50%;">
+                        <option th:value="none" disabled selected hidden>성별 선택</option>
+                        <option th:value="남성">남성</option>
+                        <option th:value="여성">여성</option>
+                    </select>
+                    <div class="icoArrow"><i class="fa-thin fa-caret-down dropdown"></i></div>
                 </div>
 
                 <!-- 직업 -->
                 <div class="signup-input-label mb-3" style="text-align: left;">
                     <label class="mr-4" for="job">직업</label>
-                    <select class="border-none focus-none border-bottom p-1" id="job" name="job">
+                    <select class="border-none focus-none border-bottom p-1" id="job" name="job" style="width: 50%;">
                         <option th:value="none" disabled selected hidden>직업 선택</option>
                         <option th:value="expert">전문가 및 관련 종사자</option>
                         <option th:value="office">사무 종사자</option>
