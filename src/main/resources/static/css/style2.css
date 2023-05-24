@@ -86,17 +86,23 @@
     color: white;
 }
 
-.login-etc a {
-    color: #5E718D;
+.login-etc {
+    color: #5E718D !important;
 }
 
-.login-etc a:hover {
-    text-decoration: none;
-    font-weight: bold;
+.login-etc:hover {
+    text-decoration: none !important;
+    color: #5E718D !important;
+    font-weight: bold !important;
 }
 
 .hover-cursor-pointer:hover {
     cursor: pointer;
+}
+
+.back-to-login-a:hover {
+    cursor: pointer;
+    color: black !important;
 }
 
 .hover-shadow-white:hover {
@@ -200,8 +206,14 @@
 .scrollbar-none::-webkit-scrollbar {
     display: none;
 }
-.bookmark-off path {d:path("M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z")}
-.bookmark-on path {d:path("M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z")}
+
+.bookmark-off path {
+    d: path("M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z")
+}
+
+.bookmark-on path {
+    d: path("M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z")
+}
 
 @media (min-width: 600px) {
     .navbar-width {
@@ -214,19 +226,19 @@
     position: relative;
 }
 
-@media (max-width: 542px) and (min-width: 425px){
+@media (max-width: 542px) and (min-width: 425px) {
     .search-input-width {
         width: 75%;
     }
 }
 
-@media (max-width: 424px) and (min-width: 386px){
+@media (max-width: 424px) and (min-width: 386px) {
     .search-input-width {
         width: 73%;
     }
 }
 
-@media (max-width: 386px){
+@media (max-width: 386px) {
     .search-input-width {
         width: 70%;
     }
