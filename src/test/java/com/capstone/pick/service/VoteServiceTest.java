@@ -254,7 +254,7 @@ public class VoteServiceTest {
         verify(voteHashtagRepository, atLeastOnce()).save(any(VoteHashtag.class));
     }
 
-    @DisplayName("투표 게시글 수정 정보")
+    @DisplayName("투표 게시글 수정")
     @Test
     void updateVote() {
         // given
