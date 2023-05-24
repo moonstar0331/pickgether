@@ -6,11 +6,14 @@ import com.capstone.pick.domain.constant.SearchType;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.EmptySpaceException;
 import com.capstone.pick.repository.UserRepository;
+import com.capstone.pick.repository.cache.UserCacheRepository;
+import com.capstone.pick.utils.AwsS3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,6 +27,8 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserCacheRepository userCacheRepository;
+    private final AwsS3Uploader awsS3Uploader;
 
     public UserDto findUserById(String userId) {
         return userRepository.findById(userId).map(UserDto::from).orElseThrow(() ->
@@ -121,6 +126,19 @@ public class UserService {
                             String job, String memo) {
         userDto.updateInfo(nickname, birthday, gender, job, memo);
         userRepository.save(userDto.toEntity());
+    }
+
+    @Transactional
+    public void updateProfileImage(String userId, MultipartFile profileImg) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
+
+        if(!profileImg.isEmpty()) {
+            if(user.getImageUrl() != null) awsS3Uploader.deleteImage(user.getImageUrl());
+            String uploadImageUrl = awsS3Uploader.uploadImage(userId, profileImg);
+            user.updateImageUrl(uploadImageUrl);
+
+            userCacheRepository.update(UserDto.from(user));
+        }
     }
 }
 

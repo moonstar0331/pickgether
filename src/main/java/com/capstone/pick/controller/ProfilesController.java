@@ -17,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,5 +64,12 @@ public class ProfilesController {
                 request.getGender(), request.getJob(), request.getMemo());
 
         return "redirect:/profile";
+    }
+
+    @PostMapping(value = "/update-profileImg", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String updateProfileImage(@AuthenticationPrincipal VotePrincipal votePrincipal,
+                                                   @RequestParam(value = "file", required = false)MultipartFile multipartFile) {
+        userService.updateProfileImage(votePrincipal.getUsername(), multipartFile);
+        return "redirect:/edit-profile";
     }
 }
