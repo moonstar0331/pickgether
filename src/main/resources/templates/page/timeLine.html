@@ -92,7 +92,8 @@
         <div class="container-fluid" style="flex-wrap: nowrap !important; ">
             <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')">
                 <div class="profile-circle"></div>
-                <img src="/images/avatar.jpg" style="height: 48px; border-radius: 70%"/>
+                <img th:if="${loginUser.getImageUrl() == null || loginUser.getImageUrl() == ''}" src="/images/avatar.jpg" style="height: 48px; border-radius: 70%"/>
+                <img th:unless="${loginUser.getImageUrl() == null || loginUser.getImageUrl() == ''}" th:src="${loginUser.getImageUrl()}" style="height: 48px; border-radius: 70%"/>
             </div>
 
             <a class="navbar-brand timeline-navbar-brand" href="/timeline"
