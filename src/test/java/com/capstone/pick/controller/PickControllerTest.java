@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@DisplayName("투표 참여 컨트롤러 테스트")
+@DisplayName("투표 참여 컨트롤러")
 @Import(TestSecurityConfig.class)
 @WebMvcTest(PickController.class)
 @ComponentScan(basePackages = "com.capstone.pick.config")

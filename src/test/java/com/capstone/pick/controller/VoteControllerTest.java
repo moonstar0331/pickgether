@@ -4,7 +4,6 @@ import com.capstone.pick.config.TestSecurityConfig;
 import com.capstone.pick.controller.form.SearchForm;
 import com.capstone.pick.controller.form.VoteForm;
 import com.capstone.pick.controller.form.VoteOptionFormDto;
-import com.capstone.pick.controller.request.PostCommentRequest;
 import com.capstone.pick.domain.User;
 import com.capstone.pick.domain.constant.Category;
 import com.capstone.pick.domain.constant.DisplayRange;
@@ -14,7 +13,6 @@ import com.capstone.pick.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -45,7 +43,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@DisplayName("View 컨트롤러 - 투표 게시글")
+@DisplayName("투표 컨트롤러")
 @Import(TestSecurityConfig.class)
 @WebMvcTest(VoteController.class)
 @ComponentScan(basePackages = "com.capstone.pick.config")

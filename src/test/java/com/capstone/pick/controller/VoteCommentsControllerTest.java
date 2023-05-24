@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@DisplayName("View 컨트롤러 - 댓글")
+@DisplayName("투표 댓글 컨트롤러")
 @Import(TestSecurityConfig.class)
 @WebMvcTest(VoteCommentsController.class)
 @ComponentScan(basePackages = "com.capstone.pick.config")
