@@ -17,7 +17,10 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -35,7 +38,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.*;
 
-@DisplayName("비즈니스 서비스 로직 - 투표 게시글")
+@DisplayName("투표 서비스 로직")
 @ExtendWith(MockitoExtension.class)
 @ComponentScan(basePackages = "com.capstone.pick.config")
 @MockBean(JpaMetamodelMappingContext.class)
@@ -62,7 +65,7 @@ public class VoteServiceTest {
     @Mock
     private FollowRepository followRepository;
 
-    @DisplayName("타임라인을 조회하면, 모든 투표 게시글을 타임라인에 반환한다.")
+    @DisplayName("타임라인 조회 - 모든 투표 게시글 반환")
     @Test
     void findAllVotes() {
         // given
@@ -94,7 +97,7 @@ public class VoteServiceTest {
         assertThat(voteDtos.size()).isEqualTo(2);
     }
 
-    @DisplayName("타임라인을 조회하면, 카테고리와 정렬기준에 따른 투표 게시글을 타임라인에 반환한다.")
+    @DisplayName("타임라인 조회 - 카테고리와 정렬기준에 따른 투표 게시글 반환")
     @Test
     void viewTimeline() {
         // given
@@ -130,10 +133,9 @@ public class VoteServiceTest {
         then(voteRepository).should().findAllByCategory(any(Category.class), any(Pageable.class));
     }
 
-    @DisplayName("투표 참여가 제한된 게시물을 필터링한다.")
+    @DisplayName("타임라인 조회 - 투표 참여가 제한된 게시물을 필터링하여 반환")
     @Test
     void participantsRestriction() {
-
         // given
         VotePrincipal principal = VotePrincipal.builder().username("test").build();
         User user = User.builder().userId("test").address("서울").gender("남성").age_range("20대").build();
@@ -161,22 +163,21 @@ public class VoteServiceTest {
                 .displayRange(DisplayRange.PUBLIC)
                 .ageRestriction(AgeRestriction.Twenty)
                 .build();
-        List<VoteOptionCommentDto> votes = Arrays.asList(voteOptionCommentDto1,voteOptionCommentDto2,voteOptionCommentDto3);
-
+        List<VoteOptionCommentDto> votes = Arrays.asList(voteOptionCommentDto1, voteOptionCommentDto2, voteOptionCommentDto3);
 
 
         given(userRepository.getReferenceById("test")).willReturn(user);
-        given(followRepository.findByFromUserAndToUser(user,friend)).willReturn(follow);
+        given(followRepository.findByFromUserAndToUser(user, friend)).willReturn(follow);
 
         // when
         List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, principal);
 
         // then
         then(voteService).should(only()).participantsRestriction(anyList(), any(VotePrincipal.class));
-        Assertions.assertEquals(filteredVotes.size(),2);
+        Assertions.assertEquals(filteredVotes.size(), 2);
     }
 
-    @DisplayName("제목을 검색하면, 해당하는 투표 게시글을 반환한다.")
+    @DisplayName("검색 - 검색한 제목과 일치하는 투표 게시글 반환")
     @Test
     void searchVotes_TITLE() {
         // given
@@ -190,7 +191,7 @@ public class VoteServiceTest {
         assertThat(votes.isEmpty()).isTrue();
     }
 
-    @DisplayName("내용을 검색하면, 해당하는 투표 게시글을 반환한다.")
+    @DisplayName("검색 - 검색한 내용과 일치하는 내용 게시글 반환")
     @Test
     void searchVotes_CONTENT() {
         // given
@@ -204,7 +205,7 @@ public class VoteServiceTest {
         assertThat(votes.isEmpty()).isTrue();
     }
 
-    @DisplayName("해시태그를 검색하면, 해당하는 투표 게시글을 반환한다.")
+    @DisplayName("검색 - 검색한 해시태그와 일치하는 투표 게시글 반환")
     @Test
     void searchVotes_HASHTAG() {
         // given
@@ -218,7 +219,7 @@ public class VoteServiceTest {
         assertThat(votes.isEmpty()).isTrue();
     }
 
-    @DisplayName("투표 게시글 정보를 입력하면, 투표 게시글을 저장한다.")
+    @DisplayName("투표 게시글 저장")
     @Test
     void saveVote() {
         // given
@@ -253,7 +254,7 @@ public class VoteServiceTest {
         verify(voteHashtagRepository, atLeastOnce()).save(any(VoteHashtag.class));
     }
 
-    @DisplayName("투표 게시글의 수정 정보를 입력하면, 투표 게시글을 수정한다.")
+    @DisplayName("투표 게시글 수정 정보")
     @Test
     void updateVote() {
         // given
@@ -285,7 +286,7 @@ public class VoteServiceTest {
         then(userRepository).should().getReferenceById(voteDto.getUserDto().getUserId());
     }
 
-    @DisplayName("존재하지 않는 투표 게시글에 수정 정보를 입력하면, 경고 로그를 출력하고 아무 것도 하지 않는다.")
+    @DisplayName("투표 게시글 수정 - 존재하지 않는 투표 게시글의 수정 정보를 입력한 경우 - 경고 로그 출력")
     @Test
     void updateVote_Exception() {
         // given
@@ -311,7 +312,7 @@ public class VoteServiceTest {
         then(voteRepository).should().getReferenceById(voteDto.getId());
     }
 
-    @DisplayName("게시글의 ID를 입력하면, 게시글을 삭제한다.")
+    @DisplayName("투표 게시글 삭제")
     @Test
     void deleteVote() throws VoteIsNotExistException, PermissionDeniedException {
         // given
@@ -331,22 +332,22 @@ public class VoteServiceTest {
         then(voteRepository).should().deleteByIdAndUser_UserId(voteId, userId);
     }
 
-    @DisplayName("게시글이 없어 삭제되지 않음")
+    @DisplayName("투표 게시글 삭제 - 투표 게시글이 이미 존재하지 않는 경우 - 에러 발생")
     @Test
-    void deleteVote_VoteIsNotExist()  {
+    void deleteVote_VoteIsNotExist() {
         // given
         Long voteId = 1L;
         String userId = "user";
 
         given(voteRepository.getReferenceById(voteId)).willReturn(null);
 
+        // when & then
         Assertions.assertThrows(VoteIsNotExistException.class, () -> voteService.deleteVote(voteId, userId));
-
     }
 
-    @DisplayName("권한이 없어 삭제되지 않음")
+    @DisplayName("투표 게시글 삭제 - 삭제 권한이 없는 경우 - 에러 발생")
     @Test
-    void deleteVote_PermissionDenied()  {
+    void deleteVote_PermissionDenied() {
         // given
         Long voteId = 1L;
         String userId = "user2";
@@ -355,11 +356,11 @@ public class VoteServiceTest {
 
         given(voteRepository.getReferenceById(voteId)).willReturn(vote);
 
+        // when & then
         Assertions.assertThrows(PermissionDeniedException.class, () -> voteService.deleteVote(voteId, userId));
-
     }
 
-    @DisplayName("게시글 ID에 해당하는 게시글(VoteDto)을 반환한다.")
+    @DisplayName("투표 게시글 반환 - 게시글 ID에 해당하는 투표 게시글(VoteDto) 반환")
     @Test
     void getVote() {
         // given
@@ -375,7 +376,7 @@ public class VoteServiceTest {
         then(voteRepository).should().getReferenceById(anyLong());
     }
 
-    @DisplayName("게시글 ID에 해당하는 게시글(VoteWithOptionDto)을 반환한다.")
+    @DisplayName("투표 게시글 반환 - 게시글 ID에 해당하는 투표 게시글(VoteWithOptionDto) 반환")
     @Test
     void getVoteWithOption() {
         // given
@@ -391,7 +392,7 @@ public class VoteServiceTest {
         then(voteRepository).should().getReferenceById(anyLong());
     }
 
-    @DisplayName("게시글 ID에 해당하는 게시글 선택지을 반환한다.")
+    @DisplayName("투표 게시글 선택지 반환 - 게시글 ID에 해당하는 게시글 선택지 반환")
     @Test
     void getOptions() {
         // given
@@ -409,7 +410,7 @@ public class VoteServiceTest {
         then(voteOptionRepository).should().findAllByVoteId(anyLong());
     }
 
-    @DisplayName("userId와 voteId를 입력받았을 때, 저장된 북마크가 존재한다면 저장한다.")
+    @DisplayName("북마크 저장")
     @Test
     void saveBookmark() {
         // given
@@ -439,7 +440,7 @@ public class VoteServiceTest {
         assertEquals(vote, bookmark.getVote());
     }
 
-    @DisplayName("userId와 voteId를 입력받았을 때, 저장된 북마크가 존재한다면 예외를 발생한다.")
+    @DisplayName("북마크 저장 - 이미 저장된 북마크인 경우 - 에러 발생")
     @Test
     void saveBookmark_whenBookmarkExists() {
         // given
@@ -462,7 +463,7 @@ public class VoteServiceTest {
         assertEquals("이미 저장된 게시글입니다.", exception.getMessage());
     }
 
-    @DisplayName("userId와 voteId를 입력받았을 때, 북마크의 유저정보와 userId가 일치한다면 삭제한다.")
+    @DisplayName("북마크 삭제")
     @Test
     void deleteBookmark() throws UserMismatchException, BookmarkNotFoundException, UserNotFoundException {
         // given
@@ -486,26 +487,24 @@ public class VoteServiceTest {
         then(bookmarkRepository).should().delete(any(Bookmark.class));
     }
 
-    @DisplayName("북마크가 없을 때 삭제하지 못함")
+    @DisplayName("북마크 삭제 - 북마크 정보와 userId가 일치하는 북마크가 없을 경우 - 에러 발생")
     @Test
-    void deleteBookmark_fail(){
+    void deleteBookmark_fail() {
         // given
         User user = createUser();
         Long voteId = 1L;
         Vote vote = createVote(voteId, user, "title1", "content1", Category.FREE, LocalDateTime.now());
 
-
         given(userRepository.getReferenceById(user.getUserId())).willReturn(user);
         given(bookmarkRepository.findByUserAndVoteId(user, voteId)).willReturn(null);
 
-
-        // then
+        // when & then
         Assertions.assertThrows(BookmarkNotFoundException.class, () -> voteService.deleteBookmark(user.getUserId(), voteId));
     }
 
-    @DisplayName("userId를 입력받았을 때, 해당 유저가 저장한 북마크를 모두 삭제한다.")
+    @DisplayName("북마크 전체 삭제")
     @Test
-    void deleteAllBookmark(){
+    void deleteAllBookmark() {
         // given
         User user = createUser();
 
@@ -520,7 +519,7 @@ public class VoteServiceTest {
         then(bookmarkRepository).should().deleteByUser(any(User.class));
     }
 
-    @DisplayName("북마크 페이지를 조회하면, 해당 유저에 대한 북마크를 반환한다.")
+    @DisplayName("북마크 페이지 조회 - 해당 유저가 저장한 북마크 페이지 반환")
     @Test
     void viewBookmarks() throws UserNotFoundException {
         // given
@@ -540,7 +539,7 @@ public class VoteServiceTest {
         then(bookmarkRepository).should().findAllByUser(any(User.class), any());
     }
 
-    @DisplayName("userId를 입력받으면, 해당 유저가 저장한 북마크의 투표 게시글 ID(voteId) 리스트를 반환한다.")
+    @DisplayName("북마크 조회 - userId를 입력받으면, 해당 유저가 저장한 북마크의 투표 게시글 ID(voteId) 리스트 반환")
     @Test
     void findBookmarkVoteId() {
         // given
