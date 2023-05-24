@@ -38,8 +38,8 @@
             <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0;">내 프로필</h4>
         </div>
     </header>
-    <form>
-        <div class="container scrollbar-none" style="overflow: auto; height: 100vh">
+    <form action="/update-profileImg" method="post" enctype="multipart/form-data">
+        <div class="container scrollbar-none" style="overflow: auto;">
             <div class="row gutters">
                 <div class="card h-100">
                     <div class="card-body pb-0">
@@ -47,8 +47,8 @@
                             <!-- 프로필 사진 -->
                             <div style="position: relative">
                                 <div class="m-3" style="display: flex; justify-content: center;">
-                                    <img src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"
-                                         class="circle-img circle-profile cp">
+                                    <img th:if="${user.getImageUrl() == null}" src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png" class="circle-img circle-profile cp">
+                                    <img th:unless="${user.getImageUrl() == null}" th:src="${user.getImageUrl()}" class="circle-img circle-profile cp">
                                 </div>
                                 <!-- 사진 업로드 버튼 -->
                                 <svg class="circle-img-edit" style="border: .2rem solid white; border-radius:50%; background-color: #7F61E9; position: absolute; top: 85%; left: 65%; transform: translate(-50%, -50%);"
@@ -56,6 +56,8 @@
                                     <path d="M26.5 26.5H11.5C11.1022 26.5 10.7206 26.342 10.4393 26.0607C10.158 25.7794 10 25.3978 10 25V14.5C10 14.1022 10.158 13.7206 10.4393 13.4393C10.7206 13.158 11.1022 13 11.5 13H14.4995L15.9995 10.75H21.9995L23.4995 13H26.5C26.8978 13 27.2794 13.158 27.5607 13.4393C27.842 13.7206 28 14.1022 28 14.5V25C28 25.3978 27.842 25.7794 27.5607 26.0607C27.2794 26.342 26.8978 26.5 26.5 26.5Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M19 22.75C20.864 22.75 22.375 21.239 22.375 19.375C22.375 17.511 20.864 16 19 16C17.136 16 15.625 17.511 15.625 19.375C15.625 21.239 17.136 22.75 19 22.75Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
+                                <input type="file" name="file">
+                                <button type="submit">프로필 사진 변경</button>
                             </div>
                             <div class="ep-nickname fw-bold">유저 닉네임</div>
                             <div class="ep-email">유저 아이디</div>
@@ -67,6 +69,37 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </form>
+    <form>
+        <div class="container scrollbar-none" style="overflow: auto; height: 100vh">
+<!--            <div class="row gutters">-->
+<!--                <div class="card h-100">-->
+<!--                    <div class="card-body pb-0">-->
+<!--                        <div class="user-profile pb-0 mb-0">-->
+<!--                            &lt;!&ndash; 프로필 사진 &ndash;&gt;-->
+<!--                            <div style="position: relative">-->
+<!--                                <div class="m-3" style="display: flex; justify-content: center;">-->
+<!--                                    <img src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"-->
+<!--                                         class="circle-img circle-profile cp">-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash; 사진 업로드 버튼 &ndash;&gt;-->
+<!--                                <svg class="circle-img-edit" style="border: .2rem solid white; border-radius:50%; background-color: #7F61E9; position: absolute; top: 85%; left: 65%; transform: translate(-50%, -50%);"-->
+<!--                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 38" fill="none">-->
+<!--                                    <path d="M26.5 26.5H11.5C11.1022 26.5 10.7206 26.342 10.4393 26.0607C10.158 25.7794 10 25.3978 10 25V14.5C10 14.1022 10.158 13.7206 10.4393 13.4393C10.7206 13.158 11.1022 13 11.5 13H14.4995L15.9995 10.75H21.9995L23.4995 13H26.5C26.8978 13 27.2794 13.158 27.5607 13.4393C27.842 13.7206 28 14.1022 28 14.5V25C28 25.3978 27.842 25.7794 27.5607 26.0607C27.2794 26.342 26.8978 26.5 26.5 26.5Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+<!--                                    <path d="M19 22.75C20.864 22.75 22.375 21.239 22.375 19.375C22.375 17.511 20.864 16 19 16C17.136 16 15.625 17.511 15.625 19.375C15.625 21.239 17.136 22.75 19 22.75Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+<!--                                </svg>-->
+<!--                            </div>-->
+<!--                            <div class="ep-nickname fw-bold">유저 닉네임</div>-->
+<!--                            <div class="ep-email">유저 아이디</div>-->
+<!--                            <div class="about">-->
+<!--                                <div class="p-title">Memo</div>-->
+<!--                                <p class="p-subtitle">한줄소개</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
             <div style="text-align: center;">
                 <hr class="m-2">
             </div>
