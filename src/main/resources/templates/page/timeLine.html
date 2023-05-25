@@ -521,22 +521,14 @@
         const IS_BOTTOM = WINDOW_HEIGHT + SCROLLED_HEIGHT >= DOC_TOTAL_HEIGHT;
         const IS_TOP = SCROLLED_HEIGHT === 0;
 
-        console.log("scrolled_height: " + SCROLLED_HEIGHT);
-        console.log("WINDOW_HEIGHT: " + WINDOW_HEIGHT);
-        console.log("DOC_TOTAL_HEIGHT: " + DOC_TOTAL_HEIGHT);
-         console.log("IS_TOP: " + IS_TOP);
-
         // 다음 페이지
         if (IS_BOTTOM) {
-            console.log("바닥에 닿아서 새로고침 창 생김");
             $("#loading-block-down").css("display", "block");
         } else if (DOC_TOTAL_HEIGHT - DOC_TOTAL_HEIGHT_BASIC > 300 && DOC_TOTAL_HEIGHT - 2 * WINDOW_HEIGHT >= SCROLLED_HEIGHT) {    // 바닥에서 떨어졌을 때
-            console.log("새로고침 창 없어짐~");
             $("#loading-block-down").css("display", "none");
         }
 
         if (DOC_TOTAL_HEIGHT - DOC_TOTAL_HEIGHT_BASIC > 300 && SCROLLED_HEIGHT + WINDOW_HEIGHT >= DOC_TOTAL_HEIGHT) {
-            console.log("조건 달성");
             load();
         }
 
