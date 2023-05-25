@@ -159,7 +159,8 @@
         <div>
             <header class="profile" style="margin-bottom: 10px;">
                 <div style="float: left;">
-                    <img src="/images/avatar.jpg" style="height: 48px"/>
+                    <img th:if="${vote.userDto.getImageUrl() != null}" src="/images/avatar.jpg" style="height: 48px"/>
+                    <img th:unless="${vote.userDto.getImageUrl() != null}" th:src="${vote.userDto.getImageUrl()}" style="height: 48px"/>
                 </div>
                 <div>
                     <section style="float: left; padding-left: 10px;">
@@ -292,7 +293,8 @@
         <!--댓글-->
         <section th:if="${!vote.getCommentDtos().isEmpty()}" class="profile" style="margin-left: 10px; display: flex; height: 100%">
             <div style="float: left;">
-                <img src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>
+                <img th:if="${vote.getCommentDtos()[0].userDto.getImageUrl() != null}" src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>
+                <img th:unless="${vote.getCommentDtos()[0].userDto.getImageUrl() != null}" th:src="${vote.getCommentDtos()[0].userDto.getImageUrl()}" style="height: 42px; width: 42px;"/>
             </div>
             <div style="width: 90%">
                 <section style="float: left; padding-left: 10px; font-size: 15px; width:90%;">
