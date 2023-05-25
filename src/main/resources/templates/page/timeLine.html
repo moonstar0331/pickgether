@@ -245,6 +245,9 @@
         <button type="button" class="btn btn-primary all-follow-btn border-start border-bottom">팔로우</button>
     </div>
 
+    <div id="loading-block-up" style="height: 300px; display: none;">
+    </div>
+
     <div id="voteArea" th:each="vote: ${votes}">
         <div>
             <header class="profile" style="margin-bottom: 10px;">
@@ -440,7 +443,7 @@
         <hr/>
     </div>
     <!-- 스크롤 -->
-    <div id="loading-block-down" style="color: gray; height: 300px; display: none;">
+    <div id="loading-block-down" style="height: 300px; display: none;">
     </div>
 
     <div style="height: 52px;"></div>
@@ -508,14 +511,22 @@
 </div>
 </body>
 <script th:inline="javascript">
+    var url = new URL(window.location.href);
     const DOC_TOTAL_HEIGHT_BASIC = $('.timeline-background').prop('scrollHeight') - 1;
-
     window.addEventListener("scroll", function () {
+        // 화면 크기
         const SCROLLED_HEIGHT = window.scrollY;
         const WINDOW_HEIGHT = window.innerHeight;
         const DOC_TOTAL_HEIGHT = $('.timeline-background').prop('scrollHeight') - 1;
         const IS_BOTTOM = WINDOW_HEIGHT + SCROLLED_HEIGHT >= DOC_TOTAL_HEIGHT;
+        const IS_TOP = SCROLLED_HEIGHT === 0;
 
+        console.log("scrolled_height: " + SCROLLED_HEIGHT);
+        console.log("WINDOW_HEIGHT: " + WINDOW_HEIGHT);
+        console.log("DOC_TOTAL_HEIGHT: " + DOC_TOTAL_HEIGHT);
+         console.log("IS_TOP: " + IS_TOP);
+
+        // 다음 페이지
         if (IS_BOTTOM) {
             console.log("바닥에 닿아서 새로고침 창 생김");
             $("#loading-block-down").css("display", "block");
@@ -528,7 +539,17 @@
             console.log("조건 달성");
             load();
         }
+
+        if (IS_TOP) {
+            load_up();
+        }
     });
+
+    // 이전 페이지
+    if (url.searchParams.get('page') >= 1) {
+        $("#loading-block-up").css("display", "block");
+        window.scrollTo(0, 300);
+    }
 
     function load() {
         var url = new URL(window.location.href);
@@ -562,6 +583,40 @@
             }
         });
     }
+
+    function load_up() {
+        var url = new URL(window.location.href);
+
+        if(url.searchParams.has('page')) {
+            const pageNum = parseInt(url.searchParams.get('page')) - 1;
+            url.searchParams.set('page', pageNum.toString());
+        } else {
+            url.searchParams.set('page', '1');
+        }
+
+        $.ajax({
+            url: url.pathname + url.search,
+            type: 'GET',
+            async: true,
+            dataType: 'text',
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function(jqXHR, settings) {
+                var header= $("meta[name='_csrf_header']").attr("content");
+                var token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            },
+            success: function(data) {
+                console.log(data);
+                console.log("success: " + url);
+                window.location.replace(url);
+            },
+            error: function (data) {
+                console.log(data);
+                console.log("error: " + url);
+            }
+        });
+    }
+
 </script>
 <!-- 카테고리 팝업 -->
 <script>
