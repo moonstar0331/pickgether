@@ -18,10 +18,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.when;
 
-@DisplayName("팔로우")
+@DisplayName("팔로우 서비스 로직")
 @ExtendWith(MockitoExtension.class)
 public class FollowServiceTest {
 
@@ -36,7 +36,7 @@ public class FollowServiceTest {
     @Test
     @DisplayName("친구가 나를 팔로우 하고 있을 때 내가 친구를 팔로우")
     void 맞팔로우() {
-        //given
+        // given
         User fromUser = User.builder().userId("fromUser").build();
         User toUser = User.builder().userId("toUser").build();
 
@@ -51,10 +51,10 @@ public class FollowServiceTest {
         given(followRepository.findByFromUserAndToUser(fromUser, toUser)).willReturn(myFollowInfo);
         given(followRepository.findByFromUserAndToUser(toUser, fromUser)).willReturn(friendFollowInfo);
 
-        //when
+        // when
         followService.follow(followDto);
 
-        //then
+        // then
         assertThat(myFollowInfo.isFriend()).isEqualTo(true);
         assertThat(friendFollowInfo.isFriend()).isEqualTo(true);
     }
@@ -62,7 +62,7 @@ public class FollowServiceTest {
     @Test
     @DisplayName("인플루언서를 팔로우")
     void 팔로우() {
-        //given
+        // given
         User fromUser = User.builder().userId("fromUser").build();
         User toUser = User.builder().userId("toUser").build();
 
@@ -77,10 +77,10 @@ public class FollowServiceTest {
         given(followRepository.findByFromUserAndToUser(fromUser, toUser)).willReturn(myFollowInfo);
         given(followRepository.findByFromUserAndToUser(toUser, fromUser)).willReturn(friendFollowInfo);
 
-        //when
+        // when
         followService.follow(followDto);
 
-        //then
+        // then
         then(followRepository).should(times(1)).save(myFollowInfo);
         assertThat(myFollowInfo.isFriend()).isEqualTo(false);
     }
@@ -88,7 +88,7 @@ public class FollowServiceTest {
     @Test
     @DisplayName("친구가 나를 팔로우 하고 있을 때 내가 친구를 언팔로우")
     void 친구를언팔로우() {
-        //given
+        // given
         User fromUser = User.builder().userId("fromUser").build();
         User toUser = User.builder().userId("toUser").build();
 
@@ -98,10 +98,10 @@ public class FollowServiceTest {
         given(followRepository.findByFromUserAndToUser(fromUser, toUser)).willReturn(myFollowInfo);
         given(followRepository.findByFromUserAndToUser(toUser, fromUser)).willReturn(friendFollowInfo);
 
-        //when
+        // when
         followService.unfollow(fromUser, toUser);
 
-        //then
+        // then
         then(followRepository).should(times(1)).delete(myFollowInfo);
         assertThat(friendFollowInfo.isFriend()).isEqualTo(false);
     }
@@ -109,7 +109,7 @@ public class FollowServiceTest {
     @Test
     @DisplayName("인플루언서를 언팔로우")
     void 인플루언서를언팔로우() {
-        //given
+        // given
         User fromUser = User.builder().userId("fromUser").build();
         User toUser = User.builder().userId("toUser").build();
 
@@ -119,22 +119,22 @@ public class FollowServiceTest {
         given(followRepository.findByFromUserAndToUser(fromUser, toUser)).willReturn(myFollowInfo);
         given(followRepository.findByFromUserAndToUser(toUser, fromUser)).willReturn(friendFollowInfo);
 
-        //when
+        // when
         followService.unfollow(fromUser, toUser);
 
-        //then
+        // then
         then(followRepository).should(times(1)).delete(myFollowInfo);
     }
 
     @Test
-    @DisplayName("유저 아이디를 넘겨주면, 해당 유저의 팔로워 리스트를 찾을 수 있다.")
+    @DisplayName("팔로워 리스트 조회 - 해당 유저의 팔로워 리스트 반환")
     void findFollowerList() {
-        //given
+        // given
         User fromUser1 = User.builder().userId("fromUser1").build();
         User fromUser2 = User.builder().userId("fromUser2").build();
         User user = User.builder().userId("user").build();
         Follow follow1 = createFollow(1L, fromUser1, user, false);
-        Follow follow2 = createFollow(2L, fromUser2, user,false);
+        Follow follow2 = createFollow(2L, fromUser2, user, false);
 
         List<Follow> followerList = new ArrayList<>();
         followerList.add(follow1);
@@ -143,23 +143,23 @@ public class FollowServiceTest {
         when(userRepository.getReferenceById(user.getUserId())).thenReturn(user);
         when(followRepository.findAllByToUser(any(User.class))).thenReturn(followerList);
 
-        //when
+        // when
         List<FollowDto> followerDtos = followService.getFollowerList("user");
 
-        //then
+        // then
         assertThat(followerDtos.get(0))
                 .hasFieldOrPropertyWithValue("id", follow1.getId());
         assertThat(followerDtos.size()).isEqualTo(2);
     }
 
     @Test
-    @DisplayName("유저 아이디를 넘겨주면, 해당 유저의 팔로잉 리스트를 찾을 수 있다.")
+    @DisplayName("팔로잉 리스트 조회 - 해당 유저의 팔로잉 리스트 반환")
     void findFollowingList() {
-        //given
+        // given
         User toUser1 = User.builder().userId("toUser1").build();
         User toUser2 = User.builder().userId("toUser2").build();
         User user = User.builder().userId("user").build();
-        Follow follow1 = createFollow(1L, user, toUser1,false);
+        Follow follow1 = createFollow(1L, user, toUser1, false);
         Follow follow2 = createFollow(2L, user, toUser2, false);
 
         List<Follow> followingList = new ArrayList<>();
@@ -169,10 +169,10 @@ public class FollowServiceTest {
         when(userRepository.getReferenceById(user.getUserId())).thenReturn(user);
         when(followRepository.findAllByFromUser(any(User.class))).thenReturn(followingList);
 
-        //when
+        // when
         List<FollowDto> followerDtos = followService.getFollowingList("user");
 
-        //then
+        // then
         assertThat(followerDtos.get(0))
                 .hasFieldOrPropertyWithValue("id", follow1.getId());
         assertThat(followerDtos.size()).isEqualTo(2);
@@ -186,5 +186,4 @@ public class FollowServiceTest {
                 .isFriend(isFriend)
                 .build();
     }
-
 }

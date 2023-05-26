@@ -1,5 +1,5 @@
 .checkDiv {
-    text-align: left;
+    text-align: center;
     display: none;
 }
 
@@ -342,6 +342,14 @@
     width: 80%;
 }
 
+.signup-submit:hover {
+    background: #322293;
+    border-radius: 20px;
+    border: 1px solid #322293;
+    color: white;
+    width: 80%;
+}
+
 .login-submit:hover {
     background: #322293;
     color: white;
@@ -447,7 +455,6 @@
 }
 
 .password-validate {
-    width: 380px;
     font-size: 80%;
     color: #3b3b3b;
     text-align: left;
