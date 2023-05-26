@@ -37,7 +37,7 @@ jobs:
       
       
       - name: 스프링부트 애플리케이션 빌드 
-        run: ./gradlew bootJar
+        run: ./gradlew bootJar -Pprofile=prod
         
 
       - name: 도커 이미지 빌드 
