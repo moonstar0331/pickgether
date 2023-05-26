@@ -18,7 +18,6 @@ public class VoteAnalysisDto {
     private Map<String, Integer> ageAnalysis;
     private Map<String, Integer> addressAnalysis;
     private Map<String, Integer> jobAnalysis;
-    private List<VoteOptionAnalysisDto> optionAnalysisList;
 
     public static VoteAnalysisDto from(Long voteId, List<List<String>> results) {
         Map<String, Integer> address = new HashMap<>();
@@ -64,18 +63,12 @@ public class VoteAnalysisDto {
         int total_job = job.values().stream().mapToInt(Integer::intValue).sum();
         job.replaceAll((k, v) -> v * 100 / total_job);
 
-        List<VoteOptionAnalysisDto> analysis = new ArrayList<>();
-        Set<Long> options = results.stream().map(r -> Long.valueOf(r.get(0))).collect(Collectors.toSet());
-        for (Long option : options)
-            analysis.add(VoteOptionAnalysisDto.from(results.stream().filter(r -> Long.valueOf(r.get(0)) == option).collect(Collectors.toList())));
-
         return VoteAnalysisDto.builder()
                 .voteId(voteId)
                 .addressAnalysis(address)
                 .ageAnalysis(age)
                 .genderAnalysis(gender)
                 .jobAnalysis(job)
-                .optionAnalysisList(analysis)
                 .build();
     }
 }
