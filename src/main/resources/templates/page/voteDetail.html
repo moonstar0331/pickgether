@@ -54,7 +54,8 @@
     <div style="margin-top: 6rem;">
         <header class="profile" style="margin-bottom: 10px;">
             <div class="hover-cursor-pointer" style="float: left;" th:id="${vote.userDto.userId}" onclick="href('profile?userId=' + this.id)">
-                <img src="/images/avatar.jpg" style="height: 48px"/>
+                <img th:if="${vote.userDto.getImageUrl() != ''}" src="/images/avatar.jpg" style="height: 48px"/>
+                <img th:unless="${vote.userDto.getImageUrl() != ''}" th:src="${vote.userDto.getImageUrl()}" style="height: 48px"/>
             </div>
             <div>
                 <section class="hover-cursor-pointer" style="float: left; padding-left: 10px;" th:id="${vote.userDto.userId}" onclick="href('profile?userId=' + this.id)">
