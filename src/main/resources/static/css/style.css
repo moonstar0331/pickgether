@@ -466,7 +466,7 @@
 }
 
 .signup-height {
-    height: 110% !important;
+    height: 220% !important;
 }
 
 .pickgether-title {
@@ -482,7 +482,7 @@
 
 @media (max-height: 700px) and (min-height: 601px) {
     .signup-height {
-        height: 165% !important;
+        height: 180% !important;
     }
 
     .pickgether-title {
@@ -493,13 +493,13 @@
 
 @media (max-height: 800px) and (min-height: 701px) {
     .signup-height {
-        height: 140% !important;
+        height: 160% !important;
     }
 }
 
 @media (max-height: 900px) and (min-height: 801px) {
     .signup-height {
-        height: 120% !important;
+        height: 150% !important;
     }
 }
 

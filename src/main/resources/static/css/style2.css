@@ -136,25 +136,25 @@
 
 @media (max-height: 600px) {
     .center-center {
-        top: 70%;
+        top: 100%;
     }
 }
 
 @media (max-height: 700px) and (min-height: 601px) {
     .center-center {
-        top: 45%;
+        top: 60%;
     }
 }
 
 @media (max-height: 800px) and (min-height: 701px) {
     .center-center {
-        top: 65%;
+        top: 80%;
     }
 }
 
 @media (max-height: 900px) and (min-height: 801px) {
     .center-center {
-        top: 55%;
+        top: 70%;
     }
 }
 
