@@ -243,3 +243,13 @@
         width: 70%;
     }
 }
+
+@media (max-width: 481px) {
+    .signup-phone-input {
+        width: 68% !important;
+    }
+
+    .signup-phone-submit {
+        width: 28%;
+    }
+}

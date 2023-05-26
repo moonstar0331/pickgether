@@ -292,28 +292,15 @@
     outline: none;
 }
 
-@media (max-width: 481px) {
-    .signup-input {
-        background: rgba(255, 255, 255, 0.5);
-        border-radius: 20px;
-        border: none;
-        width: 80%;
-    }
-
-    .signup-input:focus {
-        outline: none;
-    }
-}
-
-@media (max-width: 418px) {
+@media (max-width: 480px) {
     .signup-input-label {
-        margin-left: 75px;
+        margin-left: 5%;
     }
     .signup-input {
         background: rgba(255, 255, 255, 0.5);
         border-radius: 20px;
         border: none;
-        width: 70%;
+        width: 100%;
     }
     .signup-input-memo {
         width: 70%;
