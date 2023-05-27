@@ -21,7 +21,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.httpBasic().and()
+        http.httpBasic().disable()
                 .csrf()
                 .ignoringAntMatchers("/signup", "/sendSMS", "/certification", "/update-profileImg")
                 .and()
