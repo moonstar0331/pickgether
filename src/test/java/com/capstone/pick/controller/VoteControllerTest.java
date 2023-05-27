@@ -106,7 +106,12 @@ class VoteControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("page/timeLine"))
-                .andExpect(model().attributeExists("votes"));
+                .andExpect(model().attributeExists("loginUser"))
+                .andExpect(model().attributeExists("picks"))
+                .andExpect(model().attributeExists("votes"))
+                .andExpect(model().attributeExists("bookmarks"))
+                .andExpect(model().attributeExists("category"))
+                .andExpect(model().attributeExists("userId"));
         // then
     }
 
@@ -209,8 +214,6 @@ class VoteControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("page/editForm"))
-//                .andExpect(model().attribute("voteForm", voteForm))
-//                .andExpect(model().attribute("optionDtos", optionDtos))
                 .andExpect(model().attribute("voteDto", voteDto));
 
         // then
@@ -563,7 +566,6 @@ class VoteControllerTest {
             assertThat(jsonObject.get("bookmarks")).isInstanceOf(JSONArray.class);
         }
         assertThat(jsonObject.has("votes")).isTrue();
-        //assertThat(jsonObject.get("votes")).isInstanceOf(JSONObject.class);
         assertThat(jsonObject.get("votes")).isInstanceOf(JSONArray.class);
         assertThat(jsonObject.has("category")).isTrue();
         assertThat(jsonObject.get("category")).isEqualTo("ALL");
