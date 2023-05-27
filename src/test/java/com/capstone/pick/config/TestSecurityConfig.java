@@ -1,11 +1,14 @@
 package com.capstone.pick.config;
 
 import com.capstone.pick.domain.User;
+import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.repository.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.repository.cache.PickCacheRepository;
 import com.capstone.pick.repository.cache.UserCacheRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.zookeeper.Op;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.event.annotation.BeforeTestMethod;
@@ -33,7 +36,7 @@ public class TestSecurityConfig {
     PickCacheRepository pickCacheRepository;
 
     @BeforeTestMethod
-    public void securitySetUp() {
+    public void securitySetUp() throws JsonProcessingException {
         given(userRepository.findById("user")).willReturn(
                 Optional.of(User.builder()
                         .userId("user")
@@ -67,6 +70,17 @@ public class TestSecurityConfig {
                         .memo("test memo")
                         .address("서울")
                         .build()
+        );
+
+        given(userCacheRepository.getUser("user")).willReturn(
+                Optional.of(UserDto.builder()
+                        .userId("user")
+                        .userPassword("password")
+                        .email("test@email.com")
+                        .nickname("user-test")
+                        .memo("test memo")
+                        .address("서울")
+                        .build())
         );
     }
 }

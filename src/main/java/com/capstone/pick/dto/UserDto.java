@@ -25,6 +25,8 @@ public class UserDto {
     private String job;
     private String address;
 
+    private String imageUrl;
+
     public static UserDto from(User entity) {
         return UserDto.builder()
                 .userId(entity.getUserId())
@@ -39,6 +41,7 @@ public class UserDto {
                 .provider(entity.getProvider())
                 .address(entity.getAddress())
                 .job(entity.getJob())
+                .imageUrl(entity.getImageUrl())
                 .build();
     }
 
@@ -55,6 +58,7 @@ public class UserDto {
                 .provider(provider)
                 .address(address)
                 .job(job)
+                .imageUrl(imageUrl)
                 .build();
     }
 

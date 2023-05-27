@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
@@ -35,6 +34,8 @@ public class VotePrincipal implements OAuth2User,UserDetails {
 
     private OAuthAttributes oAuthAttributes;
 
+    private String imageUrl;
+
     public static VotePrincipal from(UserDto dto) {
         return VotePrincipal.builder()
                 .username(dto.getUserId())
@@ -46,6 +47,7 @@ public class VotePrincipal implements OAuth2User,UserDetails {
                 .gender(dto.getGender())
                 .age_range(dto.getAge_range())
                 .provider(dto.getProvider())
+                .imageUrl(dto.getImageUrl())
                 .build();
     }
 
@@ -60,6 +62,7 @@ public class VotePrincipal implements OAuth2User,UserDetails {
                 .gender(gender)
                 .age_range(age_range)
                 .provider(provider)
+                .imageUrl(imageUrl)
                 .build();
     }
 

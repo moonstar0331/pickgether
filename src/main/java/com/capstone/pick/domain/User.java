@@ -51,6 +51,8 @@ public class User {
     private String job;
     private String address;
 
+    private String imageUrl;
+
     /* TODO: 가입방식과 멤버십은 주요 기능이 완료된 후에
          멤버십과 소셜 로그인 기능을 구현한 후에 진행하도록 한다.
     private String membership; // 멤버십
@@ -75,5 +77,9 @@ public class User {
         this.age_range = age_range;
         this.job = job;
         this.address = address;
+    }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -342,7 +342,13 @@ class VoteControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("page/timeLine"))
-                .andExpect(model().attributeExists("votes"));
+                .andExpect(model().attributeExists("loginUser"))
+                .andExpect(model().attributeExists("picks"))
+                .andExpect(model().attributeExists("votes"))
+                .andExpect(model().attributeExists("bookmarks"))
+                .andExpect(model().attributeExists("category"))
+                .andExpect(model().attributeExists("userId"));
+        // then
     }
 
     @DisplayName("[GET][/timeline] 투표 게시글 조회 - 인증이 없을 시에는 로그인 페이지로 이동")

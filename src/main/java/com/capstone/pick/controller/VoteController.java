@@ -9,6 +9,7 @@ import com.capstone.pick.exeption.*;
 import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import com.capstone.pick.repository.cache.PickCacheRepository;
+import com.capstone.pick.repository.cache.UserCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -47,6 +48,8 @@ public class VoteController {
     private final PickCacheRepository pickCacheRepository;
     private final FileUploadService fileUploadService;
 
+    private final UserCacheRepository userCacheRepository;
+
     @GetMapping("/")
     public String home() {
         return "redirect:/timeline";
@@ -81,7 +84,9 @@ public class VoteController {
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category, @AuthenticationPrincipal VotePrincipal votePrincipal,
                            @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable,
-                           Model model) {
+                           Model model) throws JsonProcessingException {
+
+        UserDto loginUser = userCacheRepository.getUser(votePrincipal.getUsername()).get();
 
         List<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable)
                 .stream()
@@ -90,6 +95,8 @@ public class VoteController {
         List<VoteOptionCommentDto> filteredVotes = voteService.participantsRestriction(votes, votePrincipal);
 
         Map<Long, PickCachingDto> picks = pickCacheRepository.getAll();
+
+        model.addAttribute("loginUser", loginUser);
         model.addAttribute("picks", picks);
 
         model.addAttribute("votes", filteredVotes);
