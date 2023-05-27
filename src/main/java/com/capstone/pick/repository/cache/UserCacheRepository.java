@@ -31,18 +31,13 @@ public class UserCacheRepository {
     public void setUser(UserDto user) {
         try {
             hashOperations.put("USER", user.getUserId(), serializeUserDto(user));
-//            redisTemplate.opsForValue().set(getKey(user.getUserId()), serializeUserDto(user), CACHE_TTL);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
 
-//    public Optional<UserDto> getUser(String username) throws JsonProcessingException {
-//        return Optional.ofNullable(deserializeUserDto(redisTemplate.opsForValue().get(getKey(username))));
-//    }
 
     public Optional<UserDto> getUser(String username) throws JsonProcessingException {
-//        return Optional.ofNullable(deserializeUserDto(redisTemplate.opsForValue().get(getKey(username))));
         return Optional.ofNullable(deserializeUserDto(hashOperations.get("USER", username)));
     }
 
