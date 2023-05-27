@@ -67,13 +67,12 @@ class ProfilesControllerTest {
     @MockBean
     private VoteRepository voteRepository;
 
-
     public ProfilesControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
         this.mvc = mvc;
         this.objectMapper = objectMapper;
     }
 
-    @DisplayName("[GET][/profile] 프로필 페이지")
+    @DisplayName("[GET][/profile] 프로필 페이지 - 정상 호출, 인증된 사용자")
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
     public void 프로필_뷰_엔드포인트_테스트() throws Exception {
@@ -98,28 +97,9 @@ class ProfilesControllerTest {
                 .andExpect(view().name("page/profile"));
     }
 
-    @DisplayName("[GET][/edit-profile] 프로필 편집 페이지 - 정상 호출")
-    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @Test
-    public void 프로필_편집_뷰_엔드포인트_테스트() throws Exception {
-        //given
-        UserDto userDto = UserDto.from(User.builder().userId("user").build());
-
-        //when
-        when(userService.findUserById(anyString())).thenReturn(userDto);
-
-        mvc.perform(get("/edit-profile"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(model().attributeExists("user"))
-                .andExpect(view().name("page/editProfile"));
-
-    }
-
     @DisplayName("[GET][/profile] 프로필 페이지 - 인증이 없을 시에는 로그인 페이지로 이동")
     @Test
-    void profile_noLogin() throws Exception {
+    void profile_NoLoginUser() throws Exception {
         // given
 
         // when
@@ -129,33 +109,13 @@ class ProfilesControllerTest {
 
         // then
         then(userService).shouldHaveNoInteractions();
+        then(followService).shouldHaveNoInteractions();
     }
 
-    @DisplayName("[POST][/edit-profile] 유저 프로필 수정 - 정상 호출")
+    @DisplayName("[GET][/get-my-vote] 유저가 작성한 투표 게시글을 반환하는 API - 정상 호출, 인증된 사용자")
     @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
-    void editProfile_Post() throws Exception {
-        // given
-        UserDto userDto = mock(UserDto.class);
-        willDoNothing().given(userService).editProfile(eq(userDto), anyString(), anyString(), anyString(), anyString(), anyString());
-
-        // when
-        mvc.perform(post("/edit-profile")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept("application/json")
-                        .content(objectMapper.writeValueAsBytes(new EditProfileRequest()))
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/profile"))
-                .andExpect(redirectedUrl("/profile"));
-
-        // then
-    }
-
-    @DisplayName("[GET][/get-my-vote] 유저가 작성한 투표 게시글을 반환하는 API 엔드포인트 테스트")
-    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @Test
-    public void testFindMyVote() throws Exception {
+    public void findMyVote() throws Exception {
         //given
         List<Vote> voteList = new ArrayList<>();
         createVoteList(voteList);
@@ -200,6 +160,88 @@ class ProfilesControllerTest {
                 assertThat(voteObject.get("id")).isEqualTo(voteList.get(i).getId().intValue());
             }
         }
+    }
+
+    @DisplayName("[GET][/get-my-vote] 유저가 작성한 투표 게시글을 반환하는 API 엔드포인트 - 인증이 없을 시에는 로그인 페이지로 이동")
+    @Test
+    void findMyVote_NoLoginUser() throws Exception {
+        // given
+
+        // when
+        mvc.perform(get("/get-my-vote"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+
+        // then
+        then(voteService).shouldHaveNoInteractions();
+    }
+
+    @DisplayName("[GET][/edit-profile] 프로필 편집 페이지 - 인증된 사용자")
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    public void 프로필_편집_뷰_엔드포인트_테스트() throws Exception {
+        //given
+        UserDto userDto = UserDto.from(User.builder().userId("user").build());
+
+        //when
+        when(userService.findUserById(anyString())).thenReturn(userDto);
+
+        mvc.perform(get("/edit-profile"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(view().name("page/editProfile"));
+    }
+
+    @DisplayName("[GET][/edit-profile] 프로필 편집 페이지 - 인증이 없을 시에는 로그인 페이지로 이동")
+    @Test
+    void editProfile_NoLoginUser() throws Exception {
+        // given
+
+        // when
+        mvc.perform(get("/edit-profile"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+
+        // then
+        then(userService).shouldHaveNoInteractions();
+    }
+
+    @DisplayName("[POST][/edit-profile] 유저 프로필 수정 - 정상 호출, 인증된 사용자")
+    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    void editProfile_post() throws Exception {
+        // given
+        UserDto userDto = mock(UserDto.class);
+        willDoNothing().given(userService).editProfile(eq(userDto), anyString(), anyString(), anyString(), anyString(), anyString());
+
+        // when & then
+        mvc.perform(post("/edit-profile")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(new EditProfileRequest()))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/profile"))
+                .andExpect(redirectedUrl("/profile"));
+    }
+
+    @DisplayName("[POST][/edit-prof출ile] 유저 프로필 수정 - 인증이 없을 시에는 에러 발생")
+    @Test
+    void editProfile_post_NoLoginUser() throws Exception {
+        // given
+
+        // when
+        mvc.perform(post("/edit-profile")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsBytes(new EditProfileRequest())))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+
+        // then
+        then(userService).shouldHaveNoInteractions();
     }
 
     void createVoteList(List<Vote> voteList) {

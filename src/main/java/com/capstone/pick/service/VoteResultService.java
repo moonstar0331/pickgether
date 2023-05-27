@@ -29,13 +29,14 @@ import java.util.StringTokenizer;
 public class VoteResultService {
     private final PickRepository pickRepository;
     private final VoteOptionRepository voteOptionRepository;
+    private static String osName = System.getProperty("os.name").toLowerCase();
 
     public List<List<String>> getVoteResults(Long voteId) throws Exception {
         // 투표 선택지 불러오기
         List<VoteOption> voteOptions = voteOptionRepository.findAllByVoteId(voteId);
 
         // 하둡 입력(csv) 생성 - 투표 선택지 아이디_유저 정보 유형_유저 정보 값 (ex. 1_gender_female)
-        String inputPath = "/tmp/input.csv";
+        String inputPath = System.getProperty("user.home") + File.separator + "input.csv";
         Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputPath), "UTF-8"));
         for (VoteOption vo : voteOptions) {
             for (Pick p : pickRepository.findAllByVoteOptionId(vo.getId())) {
@@ -64,7 +65,7 @@ public class VoteResultService {
         job.setOutputValueClass(IntWritable.class);
 
         // MapReduce 결과 출력 경로 설정
-        Path outputPath = new Path("/tmp/result");
+        Path outputPath = new Path(System.getProperty("user.home") + File.separator + "result");
         FileOutputFormat.setOutputPath(job, outputPath);
         job.setOutputFormatClass(TextOutputFormat.class);
 
@@ -72,7 +73,7 @@ public class VoteResultService {
         job.waitForCompletion(true);
 
         // MapReduce 결과를 다시 CSV 파일로 저장
-        String outputPathStr = "/tmp/result/part-r-00000";
+        String outputPathStr = System.getProperty("user.home") + File.separator + "result" + File.separator + "part-r-00000";
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(outputPathStr), "utf-8"));
 
         List<List<String>> result = new ArrayList<>();

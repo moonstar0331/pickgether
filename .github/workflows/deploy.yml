@@ -2,8 +2,8 @@ name: deploy-app
 on:
   push:
     branches: [ main ]        # 메인브랜치에 푸쉬가 되면
-  pull_request:
-    branches: [ main ]        # 메인브랜치에 PR 되면
+#   pull_request:
+#     branches: [ main ]        # 메인브랜치에 PR 되면 - 서버 재가동을 줄이기 위해서 주석처리
 
 jobs:
   deploy:                     # deploy라는 작업을 할것이고
@@ -37,7 +37,7 @@ jobs:
       
       
       - name: 스프링부트 애플리케이션 빌드 
-        run: ./gradlew bootJar
+        run: ./gradlew bootJar -Pprofile=prod
         
 
       - name: 도커 이미지 빌드 

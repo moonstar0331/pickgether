@@ -11,7 +11,10 @@ import com.capstone.pick.dto.CommentLikeDto;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.exeption.UserMismatchException;
 import com.capstone.pick.exeption.VoteIsNotExistException;
-import com.capstone.pick.repository.*;
+import com.capstone.pick.repository.CommentLikeRepository;
+import com.capstone.pick.repository.UserRepository;
+import com.capstone.pick.repository.VoteCommentRepository;
+import com.capstone.pick.repository.VoteRepository;
 import com.capstone.pick.repository.cache.CommentLikeCacheRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -31,7 +35,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.*;
 
-@DisplayName("비즈니스 서비스 로직 - 투표 댓글")
+@DisplayName("투표 댓글 서비스 로직")
 @ExtendWith(MockitoExtension.class)
 public class VoteCommentServiceTest {
 
@@ -46,11 +50,12 @@ public class VoteCommentServiceTest {
     private VoteCommentRepository voteCommentRepository;
     @Mock
     private CommentLikeRepository commentLikeRepository;
-    @Mock private CommentLikeCacheRepository commentLikeRedisRepository;
+    @Mock
+    private CommentLikeCacheRepository commentLikeRedisRepository;
 
-    @DisplayName("댓글 상세 보기 페이지를 조회하면, 해당 투표 게시글에 대한 투표 댓글을 반환한다.")
+    @DisplayName("댓글 상세 페이지 조회 - 해당 투표 게시글에 대한 투표 댓글 반환")
     @Test
-    void readComment() throws VoteIsNotExistException {
+    void commentsByVote() throws VoteIsNotExistException {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
@@ -68,22 +73,20 @@ public class VoteCommentServiceTest {
         then(voteCommentRepository).should().findAllByVote(any(), any());
     }
 
-    @DisplayName("댓글 상세 보기 페이지를 조회했을 때, 투표가 없어 조회가 불가능 ")
+    @DisplayName("댓글 상세 페이지 조회 - 일치하는 투표 게시글이 없는 경우 - 에러 발생")
     @Test
-    void readComment_fail() {
+    void commentsByVote_fail() {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
         Pageable pageable = mock(Pageable.class);
         given(voteRepository.findById(any())).willReturn(Optional.ofNullable(null));
 
-
-        //then
+        // when & then
         Assertions.assertThrows(VoteIsNotExistException.class, () -> voteCommentService.commentsByVote(vote.getId(), pageable));
-
     }
 
-    @DisplayName("투표 댓글을 입력하면, 투표 댓글을 저장한다.")
+    @DisplayName("투표 댓글 저장")
     @Test
     void saveComment() throws VoteIsNotExistException {
         // given
@@ -103,7 +106,7 @@ public class VoteCommentServiceTest {
         then(voteCommentRepository).should().save(any(VoteComment.class));
     }
 
-    @DisplayName("투표 게시글이 사라져 투표 댓글이 저장되지 않는다.")
+    @DisplayName("투표 댓글 저장 - 투표 게시글이 존재하지 않는 경우 - 에러 발생")
     @Test
     void saveComment_fail() {
         // given
@@ -114,12 +117,11 @@ public class VoteCommentServiceTest {
         given(userRepository.getReferenceById(anyString())).willReturn(user1);
         given(voteRepository.getReferenceById(anyLong())).willReturn(null);
 
-        //then
+        // when & then
         Assertions.assertThrows(VoteIsNotExistException.class, () -> voteCommentService.saveComment(commentDto));
-
     }
 
-    @DisplayName("댓글 수정 정보를 입력하면, 투표 댓글을 수정한다.")
+    @DisplayName("투표 댓글 수정")
     @Test
     void updateComment() throws UserMismatchException, VoteIsNotExistException {
         // given
@@ -142,9 +144,9 @@ public class VoteCommentServiceTest {
         then(userRepository).should().getReferenceById(anyString());
     }
 
-    @DisplayName("투표 게시글이 사라져 투표 댓글이 수정되지 않는다.")
+    @DisplayName("투표 댓글 수정 - 투표 게시글이 존재하지 않는 경우 - 에러 발생")
     @Test
-    void updateComment_fail()  {
+    void updateComment_fail() {
         // given
         User user1 = createUser("user1", "nick1");
         Vote vote = createVote(1L, user1);
@@ -154,11 +156,11 @@ public class VoteCommentServiceTest {
 
         given(voteRepository.getReferenceById(anyLong())).willReturn(null);
 
-        //then
+        // when & then
         Assertions.assertThrows(VoteIsNotExistException.class, () -> voteCommentService.updateComment(voteComment.getId(), commentDto));
     }
 
-    @DisplayName("댓글 id를 입력하면, 투표 댓글을 삭제한다.")
+    @DisplayName("투표 댓글 삭제")
     @Test
     void deleteComment() throws UserMismatchException, VoteIsNotExistException {
         // given
@@ -176,7 +178,7 @@ public class VoteCommentServiceTest {
         then(voteCommentRepository).should().delete(any(VoteComment.class));
     }
 
-    @DisplayName("투표 게시글이 사라져 투표 댓글이 삭제되지 않는다.")
+    @DisplayName("투표 댓글 삭제 - 투표 게시글이 존재하지 않는 경우 - 에러 발생")
     @Test
     void deleteComment_fail() {
         // given
@@ -187,13 +189,12 @@ public class VoteCommentServiceTest {
         given(userRepository.getReferenceById(anyString())).willReturn(user1);
         given(voteCommentRepository.getReferenceById(anyLong())).willReturn(voteComment);
 
-
-        //then
+        // when & then
         Assertions.assertThrows(VoteIsNotExistException.class, () -> voteCommentService.deleteComment(voteComment.getId(), user1.getUserId()));
 
     }
 
-    @DisplayName("댓글 좋아요를 저장한다.")
+    @DisplayName("댓글 좋아요 저장")
     @Test
     void saveCommentLike() {
         // given
@@ -216,7 +217,7 @@ public class VoteCommentServiceTest {
         then(commentLikeRedisRepository).should().save(any(CommentLikeDto.class));
     }
 
-    @DisplayName("댓글 좋아요를 삭제한다.")
+    @DisplayName("댓글 좋아요 삭제")
     @Test
     void deleteCommentLike() throws UserMismatchException {
         // given
@@ -239,8 +240,7 @@ public class VoteCommentServiceTest {
         then(commentLikeRepository).should().delete(any(CommentLike.class));
     }
 
-
-    @DisplayName("댓글에 눌린 좋아요 개수를 반환한다.")
+    @DisplayName("댓글 좋아요 개수 반환")
     @Test
     void getLikeCount() {
         // given
@@ -254,7 +254,7 @@ public class VoteCommentServiceTest {
         then(commentLikeRepository).should().countByVoteCommentId(anyLong());
     }
 
-    @DisplayName("댓글 id와 유저 id를 받으면, 존재하는 좋아요 id를 반환한다.")
+    @DisplayName("댓글 좋아요 조회 - 댓글 id와 유저 id를 받으면, 존재하는 좋아요 id 반환")
     @Test
     void findLikeId() {
         // given

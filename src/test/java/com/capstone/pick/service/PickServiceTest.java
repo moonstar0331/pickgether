@@ -30,24 +30,28 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
-@DisplayName("비즈니스 서비스 로직 - 투표 참여")
+@DisplayName("투표 참여 서비스 로직")
 @ExtendWith(MockitoExtension.class)
 @ComponentScan(basePackages = "com.capstone.pick.config")
 @MockBean(JpaMetamodelMappingContext.class)
 public class PickServiceTest {
 
-    @InjectMocks private PickService pickService;
+    @InjectMocks
+    private PickService pickService;
 
-    @Mock private PickRepository pickRepository;
-    @Mock private UserRepository userRepository;
-    @Mock private VoteOptionRepository voteOptionRepository;
-
-    @Mock private PickCacheRepository pickCacheRepository;
+    @Mock
+    private PickRepository pickRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private VoteOptionRepository voteOptionRepository;
+    @Mock
+    private PickCacheRepository pickCacheRepository;
 
     @DisplayName("투표 참여 - 정상 호출")
     @Test
     void pick() throws DateExpiredException {
-//        String userId = "user";
+        // given
         Long optionId = 1L;
 
         Vote vote = Vote.builder()
@@ -66,8 +70,10 @@ public class PickServiceTest {
         given(voteOptionRepository.findById(optionId)).willReturn(Optional.of(voteOption));
         given(pickRepository.save(any(Pick.class))).willReturn(pick);
 
+        // when
         pickService.pick(user.getUserId(), optionId);
 
+        // then
         then(userRepository).should().findById(anyString());
         then(voteOptionRepository).should().findById(anyLong());
         verify(pickRepository, atLeastOnce()).save(any(Pick.class));
@@ -76,6 +82,7 @@ public class PickServiceTest {
     @DisplayName("투표 참여 - 날짜가 만료된 경우 - 에러 발생")
     @Test
     void pick_DateExpired() {
+        // given
         String userId = "user";
         Long optionId = 1L;
 
@@ -86,29 +93,32 @@ public class PickServiceTest {
 
         given(voteOptionRepository.findById(optionId)).willReturn(Optional.of(voteOption));
 
+        // when & then
         Assertions.assertThrows(DateExpiredException.class, () -> pickService.pick(userId, optionId));
     }
 
     @DisplayName("투표 참여 - 참여한 유저가 존재하지 않는 경우 - 에러 발생")
     @Test
     void pick_NoUser() {
+        // given
         String userId = "user";
         Long optionId = 1L;
 
-        //when(userRepository.findById(userId)).thenReturn(Optional.empty());
-
+        // when & then
         Assertions.assertThrows(EntityNotFoundException.class, () -> pickService.pick(userId, optionId));
     }
 
     @DisplayName("투표 참여 - 선택한 선택지가 존재하지 않는 경우 - 에러 발생")
     @Test
     void pick_NoVoteOption() {
+        // given
         String userId = "user";
         Long optionId = 1L;
 
-        //when(userRepository.findById(userId)).thenReturn(Optional.of(mock(User.class)));
+        // when
         when(voteOptionRepository.findById(optionId)).thenReturn(Optional.empty());
 
+        // then
         Assertions.assertThrows(EntityNotFoundException.class, () -> pickService.pick(userId, optionId));
     }
 
