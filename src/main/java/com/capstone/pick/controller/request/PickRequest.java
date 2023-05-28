@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class PickRequest {
 
     private Long optionId;
+    private Long voteId;
 }

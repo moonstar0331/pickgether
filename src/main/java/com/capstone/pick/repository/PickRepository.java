@@ -20,7 +20,7 @@ public interface PickRepository extends JpaRepository<Pick, Long> {
     List<Pick> findAllByVoteOptionId(Long voteOptionId);
 
     @Query("SELECT count(p) FROM Pick p WHERE p.voteOption.id = :optionId")
-    @EntityGraph(attributePaths = {"user","voteOption"})
+    //@EntityGraph(attributePaths = {"user","voteOption"})
     Long getCountListByOptionId(@Param("optionId")Long optionId);
 
     @EntityGraph(attributePaths = {"user","voteOption"})

@@ -32,6 +32,45 @@
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <!-- pie chart(job) -->
+    <script>
+        window.onload = function () {
+            fetch('/api/key')
+                .then(response => response.text())
+                .then(apiKey => {
+                    let analysis = document.getElementById('vote-analysis').dataset.analysis;
+                    let script = "다음의 투표 결과를 요약해줘. 숫자는 득표 수를 의미해." +
+                        "범주는 [gender, age, address, job]이고 각 범주마다 투표 결과가 어떤 양상을 보이는지 자세하게 설명해줘.\n" + analysis;
+
+                    const messages = [
+                        { role: 'system', content: 'You are a helpful assistant.' },
+                        { role: 'user', content: script }
+                    ]
+                    const data = {
+                        model: 'gpt-3.5-turbo',
+                        temperature: 0.5,
+                        n: 1,
+                        messages: messages,
+                    }
+                    $.ajax({
+                        url: "https://api.openai.com/v1/chat/completions",
+                        method: 'POST',
+                        headers: {
+                            Authorization: "Bearer " + apiKey,
+                            'Content-Type': 'application/json',
+                        },
+                        data: JSON.stringify(data),
+                    }).then(function (response) {
+                        var outputDiv = document.getElementById("analyze-summary"); // 결과를 출력할 div 요소 선택
+                        outputDiv.innerHTML = response.choices[0].message.content; // 함수 호출 후 결과를 div 요소에 할당
+                        console.log(response)
+                        console.log(response.choices[0].message.content)
+                    });
+                })
+                .catch(error => {
+                    console.error('API 키 가져오기 실패:', error);
+                });
+        }
+    </script>
 </head>
 <body>
 <div class="timeline-background" style="overflow-x: hidden;">
@@ -47,6 +86,7 @@
         </div>
     </header>
     <div>
+        <div id="vote-analysis" th:data-analysis='${analysis.toString()}'></div>
         <div>
             <header class="profile" style="margin-bottom: 10px;">
                 <div style="float: left;">
@@ -285,6 +325,10 @@
             </g>
         </svg>
     </div>
+
+    <label class="vote-analyze-subtitles" style="margin-top: 50px;">투표 결과 요약</label>
+    <div id="analyze-summary">
+    </div>
 </div>
 </body>
 </html>
@@ -295,6 +339,5 @@
             document.getElementById(key).style.fill = '#7A57F6';
             document.getElementById(key).style.fillOpacity = String(value + "%");
         }
-    }
-    ;
+    };
 </script>

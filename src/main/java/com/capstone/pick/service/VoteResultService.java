@@ -29,7 +29,6 @@ import java.util.StringTokenizer;
 public class VoteResultService {
     private final PickRepository pickRepository;
     private final VoteOptionRepository voteOptionRepository;
-    private static String osName = System.getProperty("os.name").toLowerCase();
 
     public List<List<String>> getVoteResults(Long voteId) throws Exception {
         // 투표 선택지 불러오기
@@ -66,6 +65,11 @@ public class VoteResultService {
 
         // MapReduce 결과 출력 경로 설정
         Path outputPath = new Path(System.getProperty("user.home") + File.separator + "result");
+
+        //파일 삭제
+        FileSystem fs = FileSystem.get(conf);
+        fs.delete(outputPath, true);
+
         FileOutputFormat.setOutputPath(job, outputPath);
         job.setOutputFormatClass(TextOutputFormat.class);
 
@@ -85,10 +89,10 @@ public class VoteResultService {
         }
         br.close();
 
-        // 파일 삭제
-        FileSystem fs = FileSystem.get(conf);
+        //분석 완료 후 파일 삭제
         fs.delete(new Path(inputPath), true);
         fs.delete(outputPath, true);
+        fs.close();
 
         return result;
     }

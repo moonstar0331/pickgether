@@ -31,10 +31,14 @@ public class PickController {
     private final VoteService voteService;
 
     @ResponseBody
-    @PostMapping("/pick")
-    public String pick(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody PickRequest request) throws DateExpiredException {
+    @PostMapping(path = "/pick", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> pick(@AuthenticationPrincipal VotePrincipal votePrincipal, @RequestBody PickRequest request) throws DateExpiredException {
         pickService.pick(votePrincipal.getUsername(), request.getOptionId());
-        return "ok";
+        Map<Long, Long> pickCountList = pickService.getPickCountList(request.getVoteId());
+        Map<String, Object> response = new HashMap<>();
+        response.put("pickCountList", pickCountList);
+        response.put("voteId", request.getVoteId());
+        return response;
     }
 
     @GetMapping("/{voteId}/participants")
@@ -73,15 +77,6 @@ public class PickController {
         response.put("maxCnt", 6);
         response.put("size", voteService.getPickCount(voteId));
 
-        return response;
-    }
-
-    @GetMapping(path = "/{voteId}/pick-count-list", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Map<String, Object> getPickCountList(@PathVariable Long voteId) {
-        Map<Long, Long> pickCountList = pickService.getPickCountList(voteId);
-        Map<String, Object> response = new HashMap<>();
-        response.put("pickCountList", pickCountList);
         return response;
     }
 }
