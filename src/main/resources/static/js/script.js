@@ -214,16 +214,16 @@ function submitPick(voteId) {
                 jqXHR.setRequestHeader(header, token);
             },
             success: function (data) {
-                console.log(data);
+                console.log("s:" + data);
+                setPickPercent(voteId);
             },
             error: function (data) {
-                console.log(data);
+                console.log("e:"+data);
             }
         });
     } else {
         console.log("vote id[" + voteId + "] : pick data is null");
     }
-    setPickPercent(voteId);
 }
 
 function setPickPercent(voteId) {

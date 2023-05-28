@@ -48,7 +48,6 @@ public class PickService {
             //VoteOption voteOption = option;
             Pick pick = pickRepository.save(Pick.builder().user(user).voteOption(option).build());
             pickCacheRepository.setPick(PickCachingDto.from(pick, option.getVote().getId()));
-            pickRepository.save(Pick.builder().user(user).voteOption(option).build());
         }
     }
 
