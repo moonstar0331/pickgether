@@ -65,6 +65,9 @@ dependencies {
 
 	// AWS S3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// 투표 분석
+	implementation group: 'org.json', name: 'json', version: '20090211'
 }
 
 tasks.named('test') {

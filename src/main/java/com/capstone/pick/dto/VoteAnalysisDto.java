@@ -20,6 +20,16 @@ public class VoteAnalysisDto {
     private Map<String, Integer> jobAnalysis;
     private List<VoteOptionAnalysisDto> optionAnalysisList;
 
+    @Override
+    public String toString() {
+        return "VoteAnalysisDto{" +
+                "voteId=" + voteId +
+                ", genderAnalysis=" + genderAnalysis +
+                ", ageAnalysis=" + ageAnalysis +
+                ", addressAnalysis=" + addressAnalysis +
+                ", jobAnalysis=" + jobAnalysis;
+    }
+
     public static VoteAnalysisDto from(Long voteId, List<List<String>> results) {
         Map<String, Integer> address = new HashMap<>();
         Map<String, Integer> age = new HashMap<>();
