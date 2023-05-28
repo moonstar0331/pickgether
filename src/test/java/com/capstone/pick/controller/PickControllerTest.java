@@ -77,16 +77,33 @@ public class PickControllerTest {
     @DisplayName("[POST][/pick] 투표 참여 - 정상 호출, 인증된 사용자")
     @Test
     void pick() throws Exception {
+        // given
+        Long voteId = 1L;
         PickRequest pickRequest = PickRequest.builder()
                 .optionId(1L)
+                .voteId(voteId)
                 .build();
+        Map<Long, Long> pickCountList = new HashMap<>();
+        pickCountList.put(1L, 2L);
+        pickCountList.put(2L, 3L);
 
-        mvc.perform(post("/pick")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(pickRequest))
-                        .with(csrf())
+        // when
+        when(pickService.getPickCountList(anyLong())).thenReturn(pickCountList);
+
+        // then
+        MvcResult result = mvc.perform(post("/pick")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsBytes(pickRequest)).with(csrf())
                 ).andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk()).andReturn();
+
+        // response data 검증
+        String content = result.getResponse().getContentAsString();
+        JSONObject jsonObject = new JSONObject(content);
+        assertThat(jsonObject.has("pickCountList")).isTrue();
+        assertThat(jsonObject.has("voteId")).isTrue();
+        assertThat(jsonObject.get("pickCountList")).isInstanceOf(JSONObject.class);
+        assertThat(jsonObject.get("voteId")).isEqualTo(voteId.intValue());
     }
 
     @WithAnonymousUser
@@ -218,47 +235,6 @@ public class PickControllerTest {
         then(pickService).shouldHaveNoInteractions();
         then(followService).shouldHaveNoInteractions();
         then(voteService).shouldHaveNoInteractions();
-    }
-
-    @Test
-    @DisplayName("[GET][/{voteId}/pick-count-list] 투표 선택지별 득표수 API 엔드포인트 테스트 - 정상 호출, 인증된 사용자")
-    @WithUserDetails(value = "user", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void getPickCountList() throws Exception {
-        // given
-        Long voteId = 1L;
-        Map<Long, Long> pickCountList = new HashMap<>();
-        pickCountList.put(1L, 2L);
-        pickCountList.put(2L, 3L);
-
-        // when
-        when(pickService.getPickCountList(anyLong())).thenReturn(pickCountList);
-
-        // then
-        MvcResult result = mvc.perform(get("/" + voteId + "/pick-count-list")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        // response data 검증
-        String content = result.getResponse().getContentAsString();
-        JSONObject jsonObject = new JSONObject(content);
-        assertThat(jsonObject.has("pickCountList")).isTrue();
-        assertThat(jsonObject.get("pickCountList")).isInstanceOf(JSONObject.class);
-    }
-
-    @Test
-    @DisplayName("[GET][/{voteId}/pick-count-list] 투표 선택지별 득표수 API 엔드포인트 테스트 - 인증이 없을 시에는 로그인 페이지로 이동")
-    public void getPickCountList_NoLoginUser() throws Exception {
-        // given
-        Long voteId = 1L;
-
-        // when
-        mvc.perform(get("/" + voteId + "/pick-count-list"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("**/login"));
-
-        //then
-        then(pickService).shouldHaveNoInteractions();
     }
 
     private static Follow createFollow(Long id, User fromUser, User toUser) {
