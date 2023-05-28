@@ -13,7 +13,6 @@ import com.capstone.pick.repository.cache.UserCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.capstone.pick.service.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -86,9 +85,7 @@ public class VoteController {
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category, @AuthenticationPrincipal VotePrincipal votePrincipal,
                            @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable,
-                           Model model) throws JsonProcessingException {
-
-        UserDto loginUser = userCacheRepository.getUser(votePrincipal.getUsername()).get();
+                           Model model) {
 
         List<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable)
                 .stream()
@@ -98,18 +95,19 @@ public class VoteController {
 
         Map<Long, PickCachingDto> picks = pickCacheRepository.getAll();
 
-        model.addAttribute("loginUser", loginUser);
-        model.addAttribute("picks", picks);
-
-        model.addAttribute("votes", filteredVotes);
         UserDto user = userService.findUserById(votePrincipal.getUsername());
 
+        List<FollowDto> followingList = followService.getFollowingList(user.getUserId());
+        List<FollowDto> followerList = followService.getFollowerList(user.getUserId());
+
+        model.addAttribute("picks", picks);
+        model.addAttribute("votes", filteredVotes);
         model.addAttribute("votes", votes);
         model.addAttribute("bookmarks", bookmarks);
         model.addAttribute("category", category);
         model.addAttribute("userId", votePrincipal.getUsername());
-        model.addAttribute("followingCnt", followService.getFollowingList(user.getUserId()).size());
-        model.addAttribute("followerCnt", followService.getFollowerList(user.getUserId()).size());
+        model.addAttribute("followingList", followingList);
+        model.addAttribute("followerList", followerList);
         return "page/timeLine";
     }
 
