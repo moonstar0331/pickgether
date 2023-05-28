@@ -100,6 +100,7 @@ public class VoteController {
         List<FollowDto> followingList = followService.getFollowingList(user.getUserId());
         List<FollowDto> followerList = followService.getFollowerList(user.getUserId());
 
+        model.addAttribute("user", user);
         model.addAttribute("picks", picks);
         model.addAttribute("votes", filteredVotes);
         model.addAttribute("votes", votes);
