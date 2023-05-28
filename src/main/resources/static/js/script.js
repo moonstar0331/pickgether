@@ -199,7 +199,8 @@ function submitPick(voteId) {
 
     if (selected !== null) {
         var data = {
-            "optionId": selected.value
+            "optionId": selected.value,
+            "voteId" : voteId
         };
         $.ajax({
             url: '/pick',
@@ -214,11 +215,11 @@ function submitPick(voteId) {
                 jqXHR.setRequestHeader(header, token);
             },
             success: function (data) {
-                console.log("s:" + data);
-                setPickPercent(voteId);
+                console.log("s: " + JSON.stringify(data));
+                setPickPercent(data);
             },
             error: function (data) {
-                console.log("e:"+data);
+                console.log("e: " + JSON.stringify(data));
             }
         });
     } else {
@@ -226,33 +227,21 @@ function submitPick(voteId) {
     }
 }
 
-function setPickPercent(voteId) {
+function setPickPercent(data) {
     // 1. 각 선택지에 대한 pick 개수 가져오기
+    let keys = Object.keys(data.pickCountList); // 선택지 아이디 리스트
     let sum = 0;
-    $.ajax({
-        url: `/${voteId}/pick-count-list`,
-        type: "GET",
-        dataType: "json",
-        beforeSend: function () {
-            console.log("데이터 패치 시도");
-        },
-        success: function (data) {
-            let keys = Object.keys(data.pickCountList); // 선택지 아이디 리스트
+    const voteId = data.voteId;
 
-            // 2. 각 선택지에 대한 퍼센트 너비를 변경
-            keys.forEach((optionId) => sum += parseInt(data.pickCountList[optionId]));
+    // 2. 각 선택지에 대한 퍼센트 너비를 변경
+    keys.forEach((optionId) => sum += parseInt(data.pickCountList[optionId]));
 
-            keys.forEach((optionId) => {
-                $('#result' + optionId)
-                    .css("width", Math.floor(parseInt(data.pickCountList[optionId]) / sum * 100) + '%');
-                let options = '.vote-select-box' + voteId;
-                $(options).css("pointer-events", "none");
-            })
-        },
-        error: function () {
-            console.log("데이터 패치 중 에러 발생");
-        }
-    });
+    keys.forEach((optionId) => {
+        $('#result' + optionId)
+            .css("width", Math.floor(parseInt(data.pickCountList[optionId]) / sum * 100) + '%');
+        let options = '.vote-select-box' + voteId;
+        $(options).css("pointer-events", "none");
+    })
 }
 
 // voteOption 태그 생성 및 삭제 count
