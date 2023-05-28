@@ -561,11 +561,10 @@
     filter: invert(98%) sepia(100%) saturate(20%) hue-rotate(307deg) brightness(105%) contrast(100%);
 }
 
-.vote-select-btn+label {
+.vote-select-btn+section {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    height: 55px;
     width: 90%;
     margin-top: 10px !important;
     font-size: 20px;
@@ -578,7 +577,7 @@
     z-index: 10;
 }
 
-.vote-button-check input[type=radio]:checked+label {
+.vote-button-check input[type=radio]:checked+section {
     background: #7F8AE5;
     color: #FFF2E9;
 }
@@ -1038,4 +1037,15 @@ h6.user-email {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.vote-photo {
+    width: 5rem;
+    height: 5rem;
+
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    border-radius: 10px;
 }
