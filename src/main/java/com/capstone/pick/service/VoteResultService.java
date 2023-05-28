@@ -64,7 +64,7 @@ public class VoteResultService {
         job.setOutputValueClass(IntWritable.class);
 
         // MapReduce 결과 출력 경로 설정
-        Path outputPath = new Path(System.getProperty("user.home") + File.separator + "vote" + voteId + "_result");
+        Path outputPath = new Path(System.getProperty("user.home") + File.separator + "result");
 
         //파일 삭제
         FileSystem fs = FileSystem.get(conf);
@@ -88,6 +88,11 @@ public class VoteResultService {
             result.add(List.of(col[0], col[1], col[2],  mr[1]));
         }
         br.close();
+
+        //분석 완료 후 파일 삭제
+        fs.delete(new Path(inputPath), true);
+        fs.delete(outputPath, true);
+        fs.close();
 
         return result;
     }
