@@ -29,8 +29,8 @@ function createHeader(vote, user) {
     header.classList.add('profile');
     header.style.marginBottom = '10px';
 
-    const leftDiv = document.createElement('div');
-    leftDiv.style.float = 'left';
+    const profileImgDIv = document.createElement('div');
+    profileImgDIv.style.float = 'left';
 
     <!-- 프로필 사진 -->
     const img = document.createElement('img');
@@ -40,11 +40,11 @@ function createHeader(vote, user) {
     img.addEventListener("click", function() {
         location.href = 'profile?userId=' + user.userId;
     });
-    leftDiv.appendChild(img);
+    profileImgDIv.appendChild(img);
 
-    const section = document.createElement('section');
-    section.style.float = 'left';
-    section.style.paddingLeft = '10px';
+    const nickNameAndIdSection = document.createElement('section');
+    nickNameAndIdSection.style.float = 'left';
+    nickNameAndIdSection.style.paddingLeft = '10px';
 
     <!-- 닉네임 -->
     const nickname = document.createElement('div');
@@ -64,11 +64,11 @@ function createHeader(vote, user) {
         location.href = 'profile?userId=' + user.userId;
     });
 
-    section.appendChild(nickname);
-    section.appendChild(userId);
+    nickNameAndIdSection.appendChild(nickname);
+    nickNameAndIdSection.appendChild(userId);
 
     const rightDiv = document.createElement('div');
-    rightDiv.style.float = 'right';
+    rightDiv.align = 'right';
     rightDiv.style.marginRight = '15px';
 
     const ulDiv = document.createElement('ul');
@@ -83,8 +83,16 @@ function createHeader(vote, user) {
     a.setAttribute('role', 'button');
     a.setAttribute('data-bs-toggle', 'dropdown');
     a.setAttribute('aria-expanded', 'false');
-    a.style.color = 'black!important';
+    a.style.color = 'black !important'; // 적용안됨.
     li.appendChild(a);
+
+    <!-- 카카오톡 공유 svg  -->
+    const threeDot = document.createElement('img');
+    threeDot.setAttribute('src', '/images/icons/menu-dots.svg');
+    threeDot.style.width = '23px';
+    threeDot.style.height = '23px';
+    threeDot.style.fill = "currentColor";
+    a.appendChild(threeDot);
 
     const dropdownMenu = document.createElement('ul');
     dropdownMenu.classList.add('dropdown-menu', 'dropdown-menu-end');
@@ -114,8 +122,8 @@ function createHeader(vote, user) {
     li.appendChild(dropdownMenu);
     ulDiv.appendChild(li);
     rightDiv.appendChild(ulDiv);
-    header.appendChild(leftDiv);
-    header.appendChild(section);
+    header.appendChild(profileImgDIv);
+    header.appendChild(nickNameAndIdSection);
     header.appendChild(rightDiv);
 
     return header;
@@ -139,9 +147,31 @@ function createContent(vote, option) {
     content.style.paddingTop = "5px";
 
     const contentTitle = document.createElement("div");
-    contentTitle.classList.add("timeline-content-title");
+    contentTitle.classList.add("vote-content-none", "vote-content");
     contentTitle.id = "vote-content-" + vote.id;
-    contentTitle.textContent = vote.content;
+    /*contentTitle.textContent = vote.content;*/
+
+    let split_content = vote.content.split(/(#[^\s#]+)/g);
+    const hashtagingDiv = document.createElement("div");
+    for (let i = 0; i < split_content.length; i++) {
+        if (split_content[i].includes('#')) {
+            const nonSharp = document.createElement("div");
+            nonSharp.textContent = split_content[i];
+            nonSharp.style.color = '#7A57F6';
+            nonSharp.style.display = 'inline';
+            nonSharp.classList.add("hover-cursor-pointer");
+            nonSharp.click(function () {
+                window.location.href = '/search?hashtag=' + split_content[i].substring(1);
+            });
+            hashtagingDiv.appendChild(nonSharp);
+        } else {
+            const nonSharp = document.createElement("div");
+            nonSharp.textContent = split_content[i];
+            nonSharp.style.display = 'inline';
+            hashtagingDiv.appendChild(nonSharp);
+        }
+        contentTitle.appendChild(hashtagingDiv);
+    }
 
     content.appendChild(contentTitle);
 

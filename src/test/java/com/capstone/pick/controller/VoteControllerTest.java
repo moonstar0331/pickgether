@@ -62,6 +62,8 @@ class VoteControllerTest {
     @MockBean
     private UserService userService;
 
+    @MockBean private FollowService followService;
+
     @MockBean
     private VoteResultService voteResultService;
 
@@ -333,7 +335,19 @@ class VoteControllerTest {
     @Test
     void timeLine() throws Exception {
         // given
+        UserDto user = UserDto.builder()
+                .userId("user")
+                .userPassword("password")
+                .email("test@email.com")
+                .nickname("user-test")
+                .memo("test memo")
+                .address("서울")
+                .build();
+
         given(voteService.viewTimeLine(eq(Category.ALL), any(Pageable.class))).willReturn(Page.empty());
+        given(userService.findUserById(anyString())).willReturn(user);
+        given(followService.getFollowingList(anyString())).willReturn(List.of());
+        given(followService.getFollowerList(anyString())).willReturn(List.of());
 
         // when & then
         mvc.perform(get("/timeline")
@@ -342,7 +356,6 @@ class VoteControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("page/timeLine"))
-                .andExpect(model().attributeExists("loginUser"))
                 .andExpect(model().attributeExists("picks"))
                 .andExpect(model().attributeExists("votes"))
                 .andExpect(model().attributeExists("bookmarks"))

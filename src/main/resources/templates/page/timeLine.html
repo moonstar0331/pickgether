@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="h-100" data-page="0" onscroll="loadMore()">
+<html xmlns:th="http://www.thymeleaf.org" class="h-100" data-page="0" onscroll="loadMore()" lang="ko">
 <head>
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
@@ -27,7 +27,20 @@
             integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx"
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script>
+    <!--<script>
+            let container = document.getElementById("voteContainer");
+            const SCROLLED_HEIGHT = window.scrollY;
+            const WINDOW_HEIGHT = window.innerHeight;
+            const DOC_TOTAL_HEIGHT = $('.timeline-background').prop('offsetHeight') - 1;
+
+            const IS_BOTTOM = WINDOW_HEIGHT + SCROLLED_HEIGHT >= DOC_TOTAL_HEIGHT;
+            console.log("현재 페이지: " + parseInt(container.getAttribute("data-page")));
+
+            if (IS_BOTTOM) {
+                const page = parseInt(container.getAttribute("data-page")) + 1;
+                getVote(page);
+            }
+        });
 
         let isLoading = false;
 
@@ -56,44 +69,131 @@
                 }
             });
         }
-
-        function loadMore() {
-            let container = document.getElementById("voteContainer");
-            if(container != null) {
-                const scrollTop = container.scrollTop;
-                const clientHeight = container.clientHeight;
-                const scrollHeight = container.scrollHeight;
-                const page = parseInt(container.getAttribute("data-page")) + 1;
-
-                if (scrollHeight * 0.9 - scrollTop < clientHeight && !isLoading) {
-                    isLoading = true;
-                    getVote(page);
-                }
-            }
-        }
-    </script>
+    </script>-->
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <script type="text/javascript" th:src="@{/js/share.js}"></script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
     <script type="text/javascript" th:src="@{/js/voteCreator.js}"></script>
 </head>
-<body>
-<script>
+<body style="overflow-x: hidden;">
+<!--<script>
     window.onload = function () {
         if(!isLoading) {
             isLoading = true;
             getVote(0);
         }
     }
-</script>
-<div class="timeline-background" style="overflow-x: hidden;">
+</script>-->
+
+<!-- 카테고리 -->
+<section style="position: fixed; width: 20rem; height: 100vh;">
+    <div style="margin: 1rem;">
+        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')"
+             style="display: flex; height: 50px;">
+            <!--<div class="profile-circle"></div>-->
+            <img th:if="${user.getImageUrl() == null}" class="timeline-category-user-image" src="/images/avatar.jpg" style="height: 48px; border-radius: 70%; float: left;"/>
+            <img th:unless="${user.getImageUrl() == null}" class="timeline-category-user-image" th:src="${user.getImageUrl()}" style="height: 48px; border-radius: 70%; float: left;"/>
+            <p class="p-title timeline-category-user-name" style="margin-left: 0.5rem;" th:text="${userId}"></p>
+        </div>
+        <div style="height: 30px;">
+            <div class="timeline-follow-following">
+                <span>팔로잉</span>
+                <span th:text="${followingList.size()}"/>
+
+                <span>팔로워</span>
+                <span th:text="${followerList.size()}"/>
+            </div>
+        </div>
+    </div>
+    <div style="margin-left: 1rem; margin-top: 2rem;">
+        <div onclick="href('profile')">
+            <button class="category-btn"><img src="/images/icons/user.svg" style="height: 35px; margin-right: 1rem;"/>
+            </button>
+            <button class="category-btn-label">프로필</button>
+        </div>
+        <div style="margin-top: 1rem;" onclick="href('myBookmark')">
+            <button class="category-btn"><img src="/images/icons/bookmark.svg"
+                                              style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label">북마크</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <button class="category-btn"><img src="/images/icons/message.svg"
+                                              style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label">메세지</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <button class="category-btn"><img src="/images/icons/star.svg" style="height: 35px; margin-right: 1rem;"/>
+            </button>
+            <button class="category-btn-label">Pickgether Premium</button>
+        </div>
+    </div>
+</section>
+
+<!-- 카테고리 반응형 팝업 -->
+<section class="category-pop-up">
+    <div style="margin: 1rem;">
+        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')"
+             style="display: flex; height: 50px;">
+            <!--<div class="profile-circle"></div>-->
+            <img class="timeline-category-user-image-pop-up" src="/images/avatar.jpg"
+                 style="height: 48px; border-radius: 70%; float: left;"/>
+            <p class="p-title timeline-category-user-name-pop-up" style="margin-left: 0.5rem;" th:text="${userId}"></p>
+        </div>
+        <div style="height: 30px;">
+            <div class="timeline-follow-following-pop-up">
+                <span>팔로잉</span>
+                <span th:text="${followingList.size()}"/>
+
+                <span>팔로워</span>
+                <span th:text="${followerList.size()}"/>
+            </div>
+        </div>
+    </div>
+    <div style="margin-left: 1rem; margin-top: 2rem;">
+        <div>
+            <button class="category-btn-pop-up"><img src="/images/icons/user.svg"
+                                                     style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label-pop-up">프로필</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <button class="category-btn-pop-up"><img src="/images/icons/bookmark.svg"
+                                                     style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label-pop-up">북마크</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <button class="category-btn-pop-up"><img src="/images/icons/message.svg"
+                                                     style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label-pop-up">메세지</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <button class="category-btn-pop-up"><img src="/images/icons/star.svg"
+                                                     style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-label-pop-up">Pickgether Premium</button>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 1rem; margin-right: 1rem;">
+        <button onclick="exitCategoryPopup()" style="border: none; background-color: #ffffff;">
+            <img src="/images/icons/exit.svg"/>
+        </button>
+    </div>
+</section>
+
+<div class="timeline-background">
     <!--Todo: 백->프론트 댓글 연동-->
     <nav class="navbar sticky-top navbar-light bg-light" style="height: 85px;">
         <div class="container-fluid" style="flex-wrap: nowrap !important; ">
-            <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')">
+            <!--<div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')">
                 <div class="profile-circle"></div>
                 <img th:if="${loginUser.getImageUrl() == null || loginUser.getImageUrl() == ''}" src="/images/avatar.jpg" style="height: 48px; border-radius: 70%"/>
                 <img th:unless="${loginUser.getImageUrl() == null || loginUser.getImageUrl() == ''}" th:src="${loginUser.getImageUrl()}" style="height: 48px; border-radius: 70%"/>
+            </div>
+            -->
+
+            <!-- 카테고리 버튼 -->
+            <div class="category-pop-up-btn">
+                <button onclick="categoryPopUp()" style="border: none; background-color: #FFFFFF;">
+                    <img src="/images/icons/category-pop-up.svg" style="height: 30px; width: auto;"/>
+                </button>
             </div>
 
             <a class="navbar-brand timeline-navbar-brand" href="/timeline"
@@ -155,51 +255,55 @@
         <button type="button" class="btn btn-primary all-follow-btn border-start border-bottom">팔로우</button>
     </div>
 
+    <div id="loading-block-up" style="height: 300px; display: none;">
+    </div>
+
     <div id="voteArea" th:each="vote: ${votes}">
         <div>
             <header class="profile" style="margin-bottom: 10px;">
                 <div style="float: left;">
                     <img th:if="${vote.userDto.getImageUrl() == null}" src="/images/avatar.jpg" style="height: 48px"/>
-                    <img th:unless="${vote.userDto.getImageUrl() == null}" th:src="${vote.userDto.getImageUrl()}" style="height: 48px"/>
+                    <img th:unless="${vote.userDto.getImageUrl() == null}" th:src="${vote.userDto.getImageUrl()}"
+                         style="height: 48px"/>
                 </div>
-                <div>
-                    <section style="float: left; padding-left: 10px;">
-                        <div th:text="${vote.userDto.nickname}" style="font-weight: bold"/>
-                        <div th:text="${vote.userDto.userId}" style="font-weight: bold"/>
-                    </section>
-                    <div align="right" style="margin-right: 15px">
-                        <div>
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#" role="button"
-                                       data-bs-toggle="dropdown" aria-expanded="false" style="color: black!important;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                             fill="currentColor"
-                                             class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                        </svg>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
-                                        style="border-radius: 10px; z-index: 999;">
-                                        <li>
-                                            <a class="dropdown-item hover-cursor-pointer" th:id="${vote.getId()}" onclick="sendLink(this.id)">카카오톡
-                                                공유</a>
-                                        </li>
-                                        <!-- redis 적용 후 현재 로그인 유저와 투표 작성자가 일치할 때 display -->
-                                        <li>
-                                            <a class="dropdown-item hover-cursor-pointer">게시글 삭제</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
+                <section style="float: left; padding-left: 10px;">
+                    <div th:text="${vote.userDto.nickname}" style="font-weight: bold"/>
+                    <div th:text="${vote.userDto.userId}" style="font-weight: bold"/>
+                </section>
+                <div align="right" style="margin-right: 15px">
+                    <div>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false" style="color: black!important;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                         fill="currentColor"
+                                         class="bi bi-three-dots" viewBox="0 0 16 16">
+                                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    </svg>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
+                                    style="border-radius: 10px; z-index: 999;">
+                                    <li>
+                                        <a class="dropdown-item hover-cursor-pointer" th:id="${vote.getId()}"
+                                           onclick="sendLink(this.id)">카카오톡
+                                            공유</a>
+                                    </li>
+                                    <!-- redis 적용 후 현재 로그인 유저와 투표 작성자가 일치할 때 display -->
+                                    <li>
+                                        <a class="dropdown-item hover-cursor-pointer">게시글 삭제</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </header>
 
             <!--글 내용-->
             <div class="m-2" style="padding-top: 5px;">
-                <div class="vote-content-none" style="display: none;" th:id="${'vote-content-' + vote.getId()}" th:text="${vote.content}"/>
+                <div class="vote-content-none" style="display: none;" th:id="${'vote-content-' + vote.getId()}"
+                     th:text="${vote.content}"/>
             </div>
 
             <!--투표-->
@@ -232,12 +336,14 @@
                     <div>
                         <!-- 투표 제출 버튼 -->
                         <button th:class="'vote-submit-btn vote-submit-btn'+${vote.getId()}"
-                                th:id="${vote.getId()}" onclick="submitPick(this.id)" th:style="${picks.keySet().contains(vote.getId()) ? 'display:none' : 'display:inline'}">
+                                th:id="${vote.getId()}" onclick="submitPick(this.id)"
+                                th:style="${picks.keySet().contains(vote.getId()) ? 'display:none' : 'display:inline'}">
                             <img src="/images/icons/arrow-right.svg" style="width: 25px; height: 30px;"/>
                         </button>
                         <!-- 투표 통계 버튼 -->
                         <button th:class="'vote-analyze-btn vote-analyze-btn'+${vote.getId()}"
-                                th:onclick="'location.href=\'' + ${vote.getId()} + '/analysis' + '\''" th:style="${picks.keySet().contains(vote.getId()) ? 'display:inline' : 'display:none'}">
+                                th:onclick="'location.href=\'' + ${vote.getId()} + '/analysis' + '\''"
+                                th:style="${picks.keySet().contains(vote.getId()) ? 'display:inline' : 'display:none'}">
                             <img src="/images/icons/analyze.svg" style="width: 25px; height: 30px; fill: #FFFFFF"/>
                         </button>
                     </div>
@@ -245,15 +351,17 @@
                     <div style="margin-top: 20px;">
                         <div th:each="option : ${vote.voteOptionDtos}">
                             <div class="vote-button-check" th:id="'vote'+${vote.getId()}+'options'">
-                                <input class="vote-select-btn" type="radio" th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
-                                       th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}" th:checked="${picks.keySet().contains(vote.id) && picks[vote.id]['voteOptionId'] == option.id} ? true : false"/>
+                                <input class="vote-select-btn" type="radio"
+                                       th:id="'vote'+${vote.getId()}+'option'+${option.getId()}"
+                                       th:name="'vote'+${vote.getId()}+'option'" th:value="${option.getId()}"
+                                       th:checked="${picks.keySet().contains(vote.id) && picks[vote.id]['voteOptionId'] == option.id} ? true : false"/>
                                 <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
                                        th:text="${option.content}" class="m-0 p-0"></label>
-                                <div th:class="'pick-percent vote-result'+${vote.getId()}" th:id="'result' + ${option.getId()}"/>
+                                <div th:class="'pick-percent vote-result'+${vote.getId()}"
+                                     th:id="'result' + ${option.getId()}"/>
                             </div>
                         </div>
                     </div>
-
                     <div th:class="'test'+${vote.getId()}" style="display: block; height:3rem;"></div>
                 </div>
             </section>
@@ -281,20 +389,25 @@
                 <span th:id="${'vote-commentNum-' + vote.getId()}" th:text="${vote.getCommentDtos().size()}"></span>
             </div>
             <div align="right" style="margin-right: 15px;">
-                <button th:id="${'bookmark' + vote.getId()}" type="button" style="background-color:transparent; border: none;"
+                <button th:id="${'bookmark' + vote.getId()}" type="button"
+                        style="background-color:transparent; border: none;"
                         onclick="clickBookmark(this.id)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                         th:class="${bookmarks.contains(vote.getId()) ? 'bi bi-bookmark-fill bookmark-on' : 'bi bi-bookmark bookmark-off'}" viewBox="0 0 16 16">
+                         th:class="${bookmarks.contains(vote.getId()) ? 'bi bi-bookmark-fill bookmark-on' : 'bi bi-bookmark bookmark-off'}"
+                         viewBox="0 0 16 16">
                         <path/>
                     </svg>
                 </button>
             </div>
         </div>
         <!--댓글-->
-        <section th:if="${!vote.getCommentDtos().isEmpty()}" class="profile" style="margin-left: 10px; display: flex; height: 100%">
+        <section th:if="${!vote.getCommentDtos().isEmpty()}" class="profile"
+                 style="margin-left: 10px; display: flex; height: 100%">
             <div style="float: left;">
-                <img th:if="${vote.getCommentDtos()[0].userDto.getImageUrl() == null}" src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>
-                <img th:unless="${vote.getCommentDtos()[0].userDto.getImageUrl() == null}" th:src="${vote.getCommentDtos()[0].userDto.getImageUrl()}" style="height: 42px; width: 42px;"/>
+                <img th:if="${vote.getCommentDtos()[0].userDto.getImageUrl() == null}" src="/images/avatar.jpg"
+                     style="height: 42px; width: 42px;"/>
+                <img th:unless="${vote.getCommentDtos()[0].userDto.getImageUrl() == null}"
+                     th:src="${vote.getCommentDtos()[0].userDto.getImageUrl()}" style="height: 42px; width: 42px;"/>
             </div>
             <div style="width: 90%">
                 <section style="float: left; padding-left: 10px; font-size: 15px; width:90%;">
@@ -312,7 +425,10 @@
 
         <hr/>
     </div>
-    <button class="loadBtn" onclick="load()">View More</button>
+    <!-- 스크롤 -->
+    <div id="loading-block-down" style="height: 300px; display: none;">
+    </div>
+
     <div style="height: 52px;"></div>
 </div>
 
@@ -378,10 +494,42 @@
 </div>
 </body>
 <script th:inline="javascript">
+    var url = new URL(window.location.href);
+    const DOC_TOTAL_HEIGHT_BASIC = $('.timeline-background').prop('scrollHeight') - 1;
+    window.addEventListener("scroll", function () {
+        // 화면 크기
+        const SCROLLED_HEIGHT = window.scrollY;
+        const WINDOW_HEIGHT = window.innerHeight;
+        const DOC_TOTAL_HEIGHT = $('.timeline-background').prop('scrollHeight') - 1;
+        const IS_BOTTOM = WINDOW_HEIGHT + SCROLLED_HEIGHT >= DOC_TOTAL_HEIGHT;
+        const IS_TOP = SCROLLED_HEIGHT === 0;
+
+        // 다음 페이지
+        if (IS_BOTTOM) {
+            $("#loading-block-down").css("display", "block");
+        } else if (DOC_TOTAL_HEIGHT - DOC_TOTAL_HEIGHT_BASIC > 300 && DOC_TOTAL_HEIGHT - 2 * WINDOW_HEIGHT >= SCROLLED_HEIGHT) {    // 바닥에서 떨어졌을 때
+            $("#loading-block-down").css("display", "none");
+        }
+
+        if (DOC_TOTAL_HEIGHT - DOC_TOTAL_HEIGHT_BASIC > 300 && SCROLLED_HEIGHT + WINDOW_HEIGHT >= DOC_TOTAL_HEIGHT) {
+            load();
+        }
+
+        if (IS_TOP) {
+            load_up();
+        }
+    });
+
+    // 이전 페이지
+    if (url.searchParams.get('page') >= 1) {
+        $("#loading-block-up").css("display", "block");
+        window.scrollTo(0, 300);
+    }
+
     function load() {
         var url = new URL(window.location.href);
 
-        if(url.searchParams.has('page')) {
+        if (url.searchParams.has('page')) {
             const pageNum = parseInt(url.searchParams.get('page')) + 1;
             url.searchParams.set('page', pageNum.toString());
         } else {
@@ -394,12 +542,12 @@
             async: true,
             dataType: 'text',
             contentType: 'application/json; charset=utf-8',
-            beforeSend: function(jqXHR, settings) {
-                var header= $("meta[name='_csrf_header']").attr("content");
+            beforeSend: function (jqXHR, settings) {
+                var header = $("meta[name='_csrf_header']").attr("content");
                 var token = $("meta[name='_csrf']").attr("content");
                 jqXHR.setRequestHeader(header, token);
             },
-            success: function(data) {
+            success: function (data) {
                 console.log(data);
                 console.log("success: " + url);
                 window.location.replace(url);
@@ -409,6 +557,50 @@
                 console.log("error: " + url);
             }
         });
+    }
+
+    function load_up() {
+        var url = new URL(window.location.href);
+
+        if (url.searchParams.has('page')) {
+            const pageNum = parseInt(url.searchParams.get('page')) - 1;
+            url.searchParams.set('page', pageNum.toString());
+        } else {
+            url.searchParams.set('page', '1');
+        }
+
+        $.ajax({
+            url: url.pathname + url.search,
+            type: 'GET',
+            async: true,
+            dataType: 'text',
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function (jqXHR, settings) {
+                var header = $("meta[name='_csrf_header']").attr("content");
+                var token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            },
+            success: function (data) {
+                console.log(data);
+                console.log("success: " + url);
+                window.location.replace(url);
+            },
+            error: function (data) {
+                console.log(data);
+                console.log("error: " + url);
+            }
+        });
+    }
+
+</script>
+<!-- 카테고리 팝업 -->
+<script>
+    function categoryPopUp() {
+        $(".category-pop-up").css("display", "block");
+    }
+
+    function exitCategoryPopup() {
+        $(".category-pop-up").css("display", "none");
     }
 </script>
 </html>

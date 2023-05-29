@@ -47,6 +47,7 @@ public class VoteController {
     private final VoteResultService voteResultService;
     private final PickCacheRepository pickCacheRepository;
     private final FileUploadService fileUploadService;
+    private final FollowService followService;
 
     private final UserCacheRepository userCacheRepository;
 
@@ -84,9 +85,7 @@ public class VoteController {
     @GetMapping("/timeline")
     public String timeLine(@RequestParam(required = false, defaultValue = "ALL") Category category, @AuthenticationPrincipal VotePrincipal votePrincipal,
                            @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable,
-                           Model model) throws JsonProcessingException {
-
-        UserDto loginUser = userCacheRepository.getUser(votePrincipal.getUsername()).get();
+                           Model model) {
 
         List<VoteOptionCommentDto> votes = voteService.viewTimeLine(category, pageable)
                 .stream()
@@ -96,13 +95,20 @@ public class VoteController {
 
         Map<Long, PickCachingDto> picks = pickCacheRepository.getAll();
 
-        model.addAttribute("loginUser", loginUser);
-        model.addAttribute("picks", picks);
+        UserDto user = userService.findUserById(votePrincipal.getUsername());
 
+        List<FollowDto> followingList = followService.getFollowingList(user.getUserId());
+        List<FollowDto> followerList = followService.getFollowerList(user.getUserId());
+
+        model.addAttribute("user", user);
+        model.addAttribute("picks", picks);
         model.addAttribute("votes", filteredVotes);
+        model.addAttribute("votes", votes);
         model.addAttribute("bookmarks", bookmarks);
         model.addAttribute("category", category);
         model.addAttribute("userId", votePrincipal.getUsername());
+        model.addAttribute("followingList", followingList);
+        model.addAttribute("followerList", followerList);
         return "page/timeLine";
     }
 
