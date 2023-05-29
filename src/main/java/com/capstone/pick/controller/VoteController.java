@@ -49,6 +49,8 @@ public class VoteController {
     private final FileUploadService fileUploadService;
     private final FollowService followService;
 
+    private final PickService pickService;
+
     private final UserCacheRepository userCacheRepository;
 
     @GetMapping("/")
@@ -251,6 +253,9 @@ public class VoteController {
 
         PickCachingDto pick = pickCacheRepository.getPick(voteId);
         model.addAttribute("pick", pick);
+
+        Map<Long, Long> pickCountList = pickService.getPickCountList(voteId);
+        model.addAttribute("pickCountList", pickCountList);
 
         VoteAnalysisDto analysis = VoteAnalysisDto.from(voteId, voteResultService.getVoteResults(voteId));
         model.addAttribute("analysis", analysis);
