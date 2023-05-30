@@ -33,6 +33,7 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script>
         window.onload = function () {
+            setDate();
             const loadingImage = document.getElementById('loading-image');
             loadingImage.style.display = 'block';
             fetch('/api/key')
@@ -78,6 +79,8 @@
 <body>
 <!-- 투표 분석자료 데이터 -->
 <div id="vote-analysis" th:data-analysis='${analysis.toString()}'></div>
+<div id="create-at" th:data-create='${vote.createAt}'></div>
+<div id="expired-at" th:data-expired='${vote.expiredAt}'></div>
 
 <div class="timeline-background" style="overflow-x: hidden;">
     <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
@@ -91,7 +94,7 @@
             <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0;">투표 분석</h4>
         </div>
     </header>
-    <div id="analyze-area" class="container-fluid">
+    <div id="analyze-area" class="container-fluid mt-4 mb-5">
         <!-- 투표 정보 -->
         <div id="vote-info">
             <!-- 투표 제목 및 카테고리 -->
@@ -99,7 +102,7 @@
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">투표 정보</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body pb-1">
                     <!-- 투표 제목 -->
                     <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
@@ -111,17 +114,14 @@
                                     <div class="h6 mb-0 font-weight-bold text-gray-800"
                                          th:text="${vote.title}"></div>
                                 </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <!-- 카테고리 -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-6 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
+                                <div class="card-body pb-2">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
@@ -130,48 +130,36 @@
                                             <div class="h6 mb-0 font-weight-bold text-gray-800"
                                                  th:text="${vote.category}"></div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 투표 기간 -->
-                        <div class="col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                투표 기간
-                                            </div>
-                                            <div class="h6 mb-0 font-weight-bold text-gray-800"
-                                                 th:text="${vote.createAt} + ' ~ ' + ${vote.expiredAt}"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- 총 참여자 수 -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-6 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
+                                <div class="card-body pb-2">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                총 참여자 수
+                                                참여자 수
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800"
-                                                 th:text="${vote.getPickCount()}"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                 th:text="${vote.getPickCount()} + '명'"></div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 투표 기간 -->
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body pb-2">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        투표 기간
+                                    </div>
+                                    <div id="period-area" class="h6 mb-0 font-weight-bold text-gray-800"></div>
                                 </div>
                             </div>
                         </div>
@@ -183,12 +171,11 @@
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">선택지별 득표수</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body pb-2">
                     <div th:each="option : ${vote.getVoteOptionDtos()}">
                         <!-- 선택지명 및 득표수 -->
-                        <h4 class="h6 font-weight-bold text-gray-800" th:text="${option.getContent()}">
-                        </h4>
-                        <span th:text="${pickCountList.get(option.getId())} + '표'"></span>
+                        <p class="h6 font-weight-bold text-gray-800" th:text="${option.getContent()}"></p>
+                        <span class="font-weight-light" th:text="${pickCountList.get(option.getId())} + '표'"></span>
                         <!-- 득표수 비율 -->
                         <div class="progress mb-4">
                             <div class="progress-bar bg-primary" role="progressbar"
@@ -203,7 +190,7 @@
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">AI 투표 결과 요약</h5>
                 </div>
-                <div id="analyze-summary" class="card-body" style="text-align: center">
+                <div id="analyze-summary" class="card-body">
                     <img id="loading-image" src="/images/gif/loading.gif" alt="로딩 이미지">
                 </div>
             </div>
@@ -290,7 +277,7 @@
         </div>
 
         <!-- 주소(지역) -->
-        <div id="address-analysis" class="card shadow mb-4">
+        <div id="address-analysis" class="card shadow">
             <div class="card-header py-3">
                 <h5 class="m-0 font-weight-bold text-primary">지역</h5>
             </div>
@@ -388,13 +375,15 @@
         </div>
 
         <!-- 데이터 파일 다운로드 버튼 -->
-        <a th:id="${vote.getId()}" onclick="location.href='/' + this.id + '/analysis/csv'"
-           class="btn btn-primary btn-icon-split m-3">
+        <div id="vote-data-download-btn" class="button-container">
+            <a th:id="${vote.getId()}" onclick="location.href='/' + this.id + '/analysis/csv'"
+               class="btn btn-primary btn-icon-split">
             <span class="icon">
                 <img src="/images/icons/download.svg">
             </span>
-            <span class="text text-white">투표 데이터 파일 다운로드</span>
-        </a>
+                <span class="text text-white">투표 데이터 파일 다운로드</span>
+            </a>
+        </div>
     </div>
 </div>
 </body>
@@ -406,6 +395,30 @@
             document.getElementById(key).style.fill = '#7A57F6';
             document.getElementById(key).style.fillOpacity = String(value + "%");
         }
+    };
+</script>
+
+<script>
+    function setDate() {
+        let create = document.getElementById('create-at').dataset.create;
+        let expired = document.getElementById('expired-at').dataset.expired;
+        let target = document.getElementById('period-area');
+        // 투표 기간 출력 형식 변경
+        const createdAt = new Date(create);
+        const expiredAt = new Date(expired);
+
+        const formattedCreatedAt = formatDate(createdAt);
+        const formattedExpiredAt = formatDate(expiredAt);
+
+        document.getElementById('period-area').textContent = '시작 : ' + formattedCreatedAt + ' ~ 종료 : ' + formattedExpiredAt;
     }
-    ;
+
+    // 날짜 형식을 변환하는 함수
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        return year + '년 ' + month + '월 ' + day + '일';
+    }
 </script>

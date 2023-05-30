@@ -101,3 +101,18 @@
 #job-student {
     background-color: #B1C5EC;
 }
+
+#analyze-summary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-header {
+    text-align: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+}
