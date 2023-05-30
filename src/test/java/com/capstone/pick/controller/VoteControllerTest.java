@@ -68,6 +68,9 @@ class VoteControllerTest {
     private VoteResultService voteResultService;
 
     @MockBean
+    private PickService pickService;
+
+    @MockBean
     private FileUploadService fileUploadService;
 
     public VoteControllerTest(@Autowired MockMvc mvc, @Autowired ObjectMapper objectMapper) {
