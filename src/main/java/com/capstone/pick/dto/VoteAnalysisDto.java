@@ -21,12 +21,11 @@ public class VoteAnalysisDto {
 
     @Override
     public String toString() {
-        return "VoteAnalysisDto{" +
-                "voteId=" + voteId +
-                ", genderAnalysis=" + genderAnalysis +
-                ", ageAnalysis=" + ageAnalysis +
-                ", addressAnalysis=" + addressAnalysis +
-                ", jobAnalysis=" + jobAnalysis;
+        return "투표 결과 {" +
+                "성별: " + genderAnalysis +
+                ", 연령대: " + ageAnalysis +
+                ", 주소: " + addressAnalysis +
+                ", 직업: " + jobAnalysis + "}";
     }
 
     public static VoteAnalysisDto from(Long voteId, List<List<String>> results) {

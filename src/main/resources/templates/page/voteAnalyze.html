@@ -40,8 +40,9 @@
                 .then(response => response.text())
                 .then(apiKey => {
                     let analysis = document.getElementById('vote-analysis').dataset.analysis;
-                    let script = "다음의 투표 결과를 요약해줘. 숫자는 득표 수를 의미해." +
-                        "범주는 [gender, age, address, job]이고 각 범주마다 투표 결과가 어떤 양상을 보이는지 자세하게 설명해줘.\n" + analysis;
+                    let pickCount = document.getElementById('pick-count').dataset.count;
+                    let script = "다음의 투표 결과를 요약해줘. 숫자는 득표수를 의미하며, 전체 득표 수는 " + pickCount + "표야. " +
+                        "범주는 [성별, 연령대, 주소, 직업]이고, 각 범주마다 투표 결과가 어떤 양상을 보이는지 자세하게 설명해줘. 이때, 절대로 숫자를 임의로 변경하면 안돼.\n" + analysis;
 
                     const messages = [
                         {role: 'system', content: 'You are a helpful assistant.'},
@@ -81,6 +82,7 @@
 <div id="vote-analysis" th:data-analysis='${analysis.toString()}'></div>
 <div id="create-at" th:data-create='${vote.createAt}'></div>
 <div id="expired-at" th:data-expired='${vote.expiredAt}'></div>
+<div id="pick-count" th:data-count='${vote.getPickCount()}'></div>
 
 <div class="timeline-background" style="overflow-x: hidden;">
     <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
