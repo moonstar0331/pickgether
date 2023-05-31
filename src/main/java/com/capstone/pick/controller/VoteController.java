@@ -46,7 +46,6 @@ public class VoteController {
     private final CommentLikeCacheRepository commentLikeRedisRepository;
     private final VoteResultService voteResultService;
     private final PickCacheRepository pickCacheRepository;
-    private final FileUploadService fileUploadService;
     private final FollowService followService;
 
     private final PickService pickService;
