@@ -23,6 +23,7 @@ public class AwsS3Uploader {
     private String bucket;
 
     private static final String S3_USER_DIRECTORY_NAME = "user";
+    private static final String S3_VOTE_OPTION_DIRECTORY_NAME = "vote_option";
     private final AmazonS3Client amazonS3Client;
 
     public String uploadImage(String userId, MultipartFile multipartFile) {
@@ -34,7 +35,7 @@ public class AwsS3Uploader {
         // 실제 S3 bucket 디렉토리명 설정
         String originalFileName = multipartFile.getOriginalFilename();
         int index = originalFileName.lastIndexOf(".");
-        String ext = originalFileName.substring(index+1);
+        String ext = originalFileName.substring(index + 1);
 
         String fileName = S3_USER_DIRECTORY_NAME + "/" + userId + "." + ext;
 
@@ -50,8 +51,31 @@ public class AwsS3Uploader {
 
     public void deleteImage(String imageUrl) {
         String fileKey = S3_USER_DIRECTORY_NAME + "/" + imageUrl.split("/")[4];
-        if(amazonS3Client.doesObjectExist(bucket, fileKey)) {
+        if (amazonS3Client.doesObjectExist(bucket, fileKey)) {
             amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileKey));
         }
+    }
+
+    public String uploadVoteOptionImage(Long voteOptionId, MultipartFile multipartFile) {
+        // 메타데이터 설정
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(multipartFile.getContentType());
+        objectMetadata.setContentLength(multipartFile.getSize());
+
+        // 실제 S3 bucket 디렉토리명 설정
+        String originalFileName = multipartFile.getOriginalFilename();
+        int index = originalFileName.lastIndexOf(".");
+        String ext = originalFileName.substring(index + 1);
+
+        String fileName = S3_VOTE_OPTION_DIRECTORY_NAME + "/" + voteOptionId + "." + ext;
+
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
+            log.error("S3 파일 업로드에 실패하였습니다. {}", e.getMessage());
+            throw new IllegalStateException("S3 파일 업로드 실패");
+        }
+        return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 }

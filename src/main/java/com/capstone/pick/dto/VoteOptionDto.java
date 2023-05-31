@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Builder
@@ -16,6 +17,7 @@ public class VoteOptionDto {
     private VoteDto voteDto;
     private String content;
     private String imageLink;
+    private MultipartFile file;
 
     public static VoteOptionDto from(VoteOption entity) {
         return VoteOptionDto.builder()

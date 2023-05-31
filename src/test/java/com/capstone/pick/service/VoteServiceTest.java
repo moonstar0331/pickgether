@@ -227,7 +227,6 @@ public class VoteServiceTest {
         Vote vote = createVote(1L, user, "new title", "new content #hi", Category.FREE, LocalDateTime.now());
         VoteOption option1 = createVoteOption(vote, "option1", "/image/link1");
         VoteOption option2 = createVoteOption(vote, "option2", "/image/link2");
-        List<VoteOptionDto> options = List.of(VoteOptionDto.from(option1), VoteOptionDto.from(option2));
         ReflectionTestUtils.setField(option1, "id", 1L);
         ReflectionTestUtils.setField(option2, "id", 2L);
         Hashtag hashtag = createHashtag("hi");
@@ -239,7 +238,7 @@ public class VoteServiceTest {
 
         given(userRepository.getReferenceById(anyString())).willReturn(user);
         given(voteRepository.save(any(Vote.class))).willReturn(vote);
-        options.forEach(o -> voteOptionRepository.save(o.toEntity(vote)));
+        given(voteOptionRepository.save(any())).willReturn(option1);
         hashtagDtos.stream().map(h -> given(hashtagRepository.save(h.toEntity())).willReturn(h.toEntity()));
         hashtags.forEach(h -> voteHashtagRepository.save(createVoteHashtag(vote, hashtag)));
 

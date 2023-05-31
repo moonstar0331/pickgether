@@ -46,7 +46,6 @@ public class VoteController {
     private final CommentLikeCacheRepository commentLikeRedisRepository;
     private final VoteResultService voteResultService;
     private final PickCacheRepository pickCacheRepository;
-    private final FileUploadService fileUploadService;
     private final FollowService followService;
 
     private final PickService pickService;
@@ -146,18 +145,11 @@ public class VoteController {
                            @ModelAttribute VoteForm voteForm) {
         VoteDto voteDto = voteForm.toDto(votePrincipal.toDto());
         List<HashtagDto> hashtagDtos = voteForm.getHashtagDtos();
-
-        voteForm.getVoteOptions().forEach(o -> {
-            try {
-                o.setImageLink(fileUploadService.saveFile(o.getFile()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
         List<VoteOptionDto> voteOptionDtos = voteForm.getVoteOptions()
                 .stream()
                 .map(o -> o.toDto(voteDto))
                 .collect(Collectors.toList());
+
         voteService.saveVote(voteDto, voteOptionDtos, hashtagDtos);
         return "redirect:/timeline";
     }
@@ -260,6 +252,10 @@ public class VoteController {
         VoteAnalysisDto analysis = VoteAnalysisDto.from(voteId, voteResultService.getVoteResults(voteId));
         model.addAttribute("analysis", analysis);
 
+        String optionAnalysis = "";
+        for (int i = 0; i < analysis.getOptionAnalysisList().size(); i++)
+            optionAnalysis += ((i+1) + "번 " + analysis.getOptionAnalysisList().get(0).toString());
+        model.addAttribute("optionAnalysis", optionAnalysis);
         return "page/voteAnalyze";
     }
 

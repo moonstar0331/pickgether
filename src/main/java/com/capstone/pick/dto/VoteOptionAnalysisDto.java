@@ -20,6 +20,15 @@ public class VoteOptionAnalysisDto {
     private Map<String, Integer> addressAnalysis;
     private Map<String, Integer> jobAnalysis;
 
+    @Override
+    public String toString() {
+        return "투표 선택지 결과 {" +
+                "성별: " + genderAnalysis +
+                ", 연령대: " + ageAnalysis +
+                ", 주소: " + addressAnalysis +
+                ", 직업: " + jobAnalysis + "}";
+    }
+
     public static VoteOptionAnalysisDto from(List<List<String>> results) {
         Map<String, Integer> address = new HashMap<>();
         Map<String, Integer> age = new HashMap<>();
@@ -43,7 +52,6 @@ public class VoteOptionAnalysisDto {
             }
         }
 
-
         int total_add = address.values().stream().mapToInt(Integer::intValue).sum();
         address.replaceAll((k, v) -> v * 100 / total_add);
         int total_age = age.values().stream().mapToInt(Integer::intValue).sum();
@@ -52,7 +60,6 @@ public class VoteOptionAnalysisDto {
         gender.replaceAll((k, v) -> v * 100 / total_gen);
         int total_job = job.values().stream().mapToInt(Integer::intValue).sum();
         job.replaceAll((k, v) -> v * 100 / total_job);
-
 
         return VoteOptionAnalysisDto.builder()
                 .optionId(Long.valueOf(results.get(0).get(0)))

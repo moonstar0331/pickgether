@@ -20,6 +20,7 @@ public class VoteOptionFormDto {
                 .voteDto(voteDto)
                 .content(content)
                 .imageLink(imageLink)
+                .file(file)
                 .build();
     }
 }
