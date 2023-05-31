@@ -61,7 +61,7 @@ public class ProfilesController {
                               @RequestBody EditProfileRequest request) {
         UserDto userDto = votePrincipal.toDto();
         userService.editProfile(userDto, request.getNickname(), request.getBirthday(),
-                request.getGender(), request.getJob(), request.getMemo());
+                request.getGender(), request.getJob(), request.getMemo(), request.getAddress());
 
         return "redirect:/profile";
     }
