@@ -123,8 +123,8 @@ public class UserService {
 
     @Transactional
     public void editProfile(UserDto userDto, String nickname, String birthday, String gender,
-                            String job, String memo) {
-        userDto.updateInfo(nickname, birthday, gender, job, memo);
+                            String job, String memo, String address) {
+        userDto.updateInfo(nickname, birthday, gender, job, memo, address);
         userRepository.save(userDto.toEntity());
     }
 
