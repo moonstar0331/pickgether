@@ -260,7 +260,7 @@ public class VoteService {
 
     @Transactional
     public String updateVoteOpionImage(Long voteOptionId, MultipartFile optionImg) {
-        if(!optionImg.isEmpty()) {
+        if (optionImg != null && !optionImg.isEmpty()) {
             String uploadImageUrl = awsS3Uploader.uploadVoteOptionImage(voteOptionId, optionImg);
             return uploadImageUrl;
         }
