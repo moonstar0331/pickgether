@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <title>Pickgether</title>
+    <link href="/images/thumb-up.svg" rel="icon">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min2.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
@@ -23,22 +24,40 @@
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        window.onload = function () {
+            document.getElementById("address").addEventListener("click", function () { //주소입력칸을 클릭하면
+                //카카오 지도 발생
+                new daum.Postcode({
+                    oncomplete: function (data) { //선택시 입력값 세팅
+                        document.getElementById("address").value = data.address; // 주소 넣기
+                    }
+                }).open();
+            });
+        }
+    </script>
 </head>
 
 </div>
 <body class="p-font">
 <div class="p-background">
-    <header class="d-flex flex-wrap align-items-center py-3 border-bottom">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left"
-             viewBox="0 0 16 16" onclick="history.back()" style="margin-left: 1rem;">
-            <path fill-rule="evenodd"
-                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-        </svg>
-        <div class="my-0 mx-auto">
-            <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0;">내 프로필</h4>
-        </div>
-    </header>
     <form action="/update-profileImg" method="post" enctype="multipart/form-data">
+        <header class="d-flex flex-wrap align-content-between align-items-center py-3 border-bottom">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                 class="bi bi-chevron-left"
+                 viewBox="0 0 16 16" onclick="history.back()" style="margin-left: 1rem;">
+                <path fill-rule="evenodd"
+                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>
+            <div class="my-0 mx-auto">
+                <h4 class="nav-link px-2 link-dark" style="margin-bottom: 0; padding-left: 4rem!important;">내 프로필</h4>
+            </div>
+            <button type="submit"
+                    class="hover-decoration-none focus-none text-puple hover-text-black bg-none border-none p-2">프로필 사진 변경
+            </button>
+        </header>
         <div class="container scrollbar-none" style="overflow: auto;">
             <div class="row gutters">
                 <div class="card h-100">
@@ -47,23 +66,32 @@
                             <!-- 프로필 사진 -->
                             <div style="position: relative">
                                 <div class="m-3" style="display: flex; justify-content: center;">
-                                    <img th:if="${user.getImageUrl() == null}" src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png" class="circle-img circle-profile cp">
-                                    <img th:unless="${user.getImageUrl() == null}" th:src="${user.getImageUrl()}" class="circle-img circle-profile cp">
+                                    <img id="img1" th:if="${user.getImageUrl() == null}"
+                                         src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"
+                                         class="circle-img circle-profile cp">
+                                    <img id="img2" th:unless="${user.getImageUrl() == null}"
+                                         th:src="${user.getImageUrl()}" class="circle-img circle-profile cp">
                                 </div>
                                 <!-- 사진 업로드 버튼 -->
-                                <svg class="circle-img-edit" style="border: .2rem solid white; border-radius:50%; background-color: #7F61E9; position: absolute; top: 85%; left: 65%; transform: translate(-50%, -50%);"
+                                <svg class="circle-img-edit hover-cursor-pointer"
+                                     onclick="document.getElementById('ChangeImg').click();"
+                                     style="border: .2rem solid white; border-radius:50%; background-color: #7F61E9; position: absolute; top: 85%; left: 65%; transform: translate(-50%, -50%);"
                                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 38" fill="none">
-                                    <path d="M26.5 26.5H11.5C11.1022 26.5 10.7206 26.342 10.4393 26.0607C10.158 25.7794 10 25.3978 10 25V14.5C10 14.1022 10.158 13.7206 10.4393 13.4393C10.7206 13.158 11.1022 13 11.5 13H14.4995L15.9995 10.75H21.9995L23.4995 13H26.5C26.8978 13 27.2794 13.158 27.5607 13.4393C27.842 13.7206 28 14.1022 28 14.5V25C28 25.3978 27.842 25.7794 27.5607 26.0607C27.2794 26.342 26.8978 26.5 26.5 26.5Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M19 22.75C20.864 22.75 22.375 21.239 22.375 19.375C22.375 17.511 20.864 16 19 16C17.136 16 15.625 17.511 15.625 19.375C15.625 21.239 17.136 22.75 19 22.75Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M26.5 26.5H11.5C11.1022 26.5 10.7206 26.342 10.4393 26.0607C10.158 25.7794 10 25.3978 10 25V14.5C10 14.1022 10.158 13.7206 10.4393 13.4393C10.7206 13.158 11.1022 13 11.5 13H14.4995L15.9995 10.75H21.9995L23.4995 13H26.5C26.8978 13 27.2794 13.158 27.5607 13.4393C27.842 13.7206 28 14.1022 28 14.5V25C28 25.3978 27.842 25.7794 27.5607 26.0607C27.2794 26.342 26.8978 26.5 26.5 26.5Z"
+                                          stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M19 22.75C20.864 22.75 22.375 21.239 22.375 19.375C22.375 17.511 20.864 16 19 16C17.136 16 15.625 17.511 15.625 19.375C15.625 21.239 17.136 22.75 19 22.75Z"
+                                          stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
                                 </svg>
-                                <input type="file" name="file">
-                                <button type="submit">프로필 사진 변경</button>
+                                <input type="file" name="file" id="ChangeImg" style="display: none;"
+                                       onchange="changeProfileImg()">
                             </div>
-                            <div class="ep-nickname fw-bold">유저 닉네임</div>
-                            <div class="ep-email">유저 아이디</div>
+                            <div class="ep-nickname fw-bold" th:text="${user.getNickname()}">유저 닉네임</div>
+                            <div class="ep-email" th:text="${user.getUserId()}">유저 아이디</div>
                             <div class="about">
                                 <div class="p-title">Memo</div>
-                                <p class="p-subtitle">한줄소개</p>
+                                <p class="p-subtitle" th:text="${user.getMemo()}">한줄소개</p>
                             </div>
                         </div>
                     </div>
@@ -73,33 +101,6 @@
     </form>
     <form>
         <div class="container scrollbar-none" style="overflow: auto; height: 100vh">
-<!--            <div class="row gutters">-->
-<!--                <div class="card h-100">-->
-<!--                    <div class="card-body pb-0">-->
-<!--                        <div class="user-profile pb-0 mb-0">-->
-<!--                            &lt;!&ndash; 프로필 사진 &ndash;&gt;-->
-<!--                            <div style="position: relative">-->
-<!--                                <div class="m-3" style="display: flex; justify-content: center;">-->
-<!--                                    <img src="https://djpms9a1go7nf.cloudfront.net/prod/uploads/thumbnail/images/10043263/167100535142741_md.png"-->
-<!--                                         class="circle-img circle-profile cp">-->
-<!--                                </div>-->
-<!--                                &lt;!&ndash; 사진 업로드 버튼 &ndash;&gt;-->
-<!--                                <svg class="circle-img-edit" style="border: .2rem solid white; border-radius:50%; background-color: #7F61E9; position: absolute; top: 85%; left: 65%; transform: translate(-50%, -50%);"-->
-<!--                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 38" fill="none">-->
-<!--                                    <path d="M26.5 26.5H11.5C11.1022 26.5 10.7206 26.342 10.4393 26.0607C10.158 25.7794 10 25.3978 10 25V14.5C10 14.1022 10.158 13.7206 10.4393 13.4393C10.7206 13.158 11.1022 13 11.5 13H14.4995L15.9995 10.75H21.9995L23.4995 13H26.5C26.8978 13 27.2794 13.158 27.5607 13.4393C27.842 13.7206 28 14.1022 28 14.5V25C28 25.3978 27.842 25.7794 27.5607 26.0607C27.2794 26.342 26.8978 26.5 26.5 26.5Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
-<!--                                    <path d="M19 22.75C20.864 22.75 22.375 21.239 22.375 19.375C22.375 17.511 20.864 16 19 16C17.136 16 15.625 17.511 15.625 19.375C15.625 21.239 17.136 22.75 19 22.75Z" stroke="#F9FAFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
-<!--                                </svg>-->
-<!--                            </div>-->
-<!--                            <div class="ep-nickname fw-bold">유저 닉네임</div>-->
-<!--                            <div class="ep-email">유저 아이디</div>-->
-<!--                            <div class="about">-->
-<!--                                <div class="p-title">Memo</div>-->
-<!--                                <p class="p-subtitle">한줄소개</p>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
             <div style="text-align: center;">
                 <hr class="m-2">
             </div>
@@ -109,65 +110,90 @@
                         <div class="p-title mb-3 color-primary fw-bold">개인정보 수정</div>
                         <div class="ep-form-group">
                             <label class="p-subtitle fw-bold" for="userId">아이디</label>
-                            <input type="email" class="form-control ep-form" style="font-size: 1.25rem" id="userId" th:value="${user.getUserId()}" placeholder="유저 아이디" disabled>
+                            <input type="email" class="form-control ep-form" style="font-size: 1.25rem" id="userId"
+                                   th:value="${user.getUserId()}" placeholder="유저 아이디" disabled>
                         </div>
                         <div class="ep-form-group">
                             <label class="p-subtitle fw-bold" for="email">이메일</label>
-                            <input type="email" class="form-control ep-form" style="font-size: 1.25rem" id="email" placeholder="유저 이메일" th:value="${user.getEmail()}" disabled>
+                            <input type="email" class="form-control ep-form" style="font-size: 1.25rem" id="email"
+                                   placeholder="유저 이메일" th:value="${user.getEmail()}" disabled>
                         </div>
                         <div>
                             <div class="ep-form-group">
                                 <div class="wrap">
-                                    <label class="p-subtitle fw-bold fl" style="width: 50%" for="userPassword">비밀번호</label>
-                                    <div class="p-subtitle color-primary fr" style="width: 50%; text-align: right">변경하기</div>
+                                    <label class="p-subtitle fw-bold fl" style="width: 50%"
+                                           for="userPassword">비밀번호</label>
+                                    <div class="p-subtitle color-primary fr" style="width: 50%; text-align: right">
+                                        변경하기
+                                    </div>
                                 </div>
-                                <input type="password" class="form-control ep-form" style="font-size: 1.25rem" id="userPassword" placeholder="유저 비밀번호" disabled>
+                                <input type="password" class="form-control ep-form" style="font-size: 1.25rem"
+                                       id="userPassword" placeholder="유저 비밀번호" disabled>
                             </div>
                         </div>
                         <div class="ep-form-group">
                             <label class="p-subtitle fw-bold" for="nickname">닉네임</label>
-                            <input type="text" class="form-control ep-form" style="font-size: 1.25rem" id="nickname" th:value="${user.getNickname()}" placeholder="유저 닉네임">
+                            <input type="text" class="form-control ep-form" style="font-size: 1.25rem" id="nickname"
+                                   th:value="${user.getNickname()}" placeholder="유저 닉네임">
                         </div>
                         <div class="wrap">
                             <div class="ep-form-group fl" style="width: 70%">
                                 <!-- 캘린더 -->
                                 <label class="p-subtitle fw-bold" for="birthday">생년월일</label>
                                 <div>
-                                    <input id="birthday" class="vote-date p-1 p-subtitle mr-3" style="width: 90%" type="datetime-local">
+                                    <input id="birthday" class="vote-date p-1 p-subtitle mr-3" style="width: 90%"
+                                           type="datetime-local">
                                 </div>
                             </div>
                             <div class="ep-form-group fl" style="width: 30%">
                                 <!-- 성별 -->
                                 <label class="p-subtitle fw-bold" for="gender" style="display: block">성별</label>
-                                <select class="border-none focus-none border-bottom p-1 p-subtitle" id="gender" style="display: block; width: 100%" required>
+                                <select class="border-none focus-none border-bottom p-1 p-subtitle" id="gender"
+                                        style="display: block; width: 100%" required>
                                     <option value="" class="p-subtitle" disabled hidden>성별선택</option>
-                                    <option value="male" class="p-subtitle" th:selected="${user.getGender() == 'male'}">남성</option>
-                                    <option value="female" class="p-subtitle" th:selected="${user.getGender() == 'female'}">여성</option>
-                                    <option value="other-gender" class="p-subtitle">그 외</option>
+                                    <option value="male" class="p-subtitle" th:value="남성" th:selected="${user.getGender() == '남성'}">
+                                        남성
+                                    </option>
+                                    <option th:value="여성" class="p-subtitle"
+                                            th:selected="${user.getGender() == '여성'}">여성
+                                    </option>
                                 </select>
                             </div>
                         </div>
                         <div class="ep-form-group fl">
                             <label class="p-subtitle fw-bold" for="job" style="display: block;">직업</label>
-                            <select class="border-none focus-none border-bottom p-1 p-subtitle" style="display: block;" id="job">
+                            <select class="border-none focus-none border-bottom p-1 p-subtitle" style="display: block;"
+                                    id="job">
                                 <option th:value="none" class="p-subtitle" disabled hidden>직업 선택 👷</option>
-                                <option th:value="expert" class="p-subtitle" th:selected="${user.getJob() == 'expert'}">전문가 및 관련 종사자</option>
-                                <option th:value="office" class="p-subtitle" th:selected="${user.getJob() == 'office'}">사무 종사자</option>
-                                <option th:value="service" class="p-subtitle" th:selected="${user.getJob() == 'service'}">서비스 종사자</option>
-                                <option th:value="sail" class="p-subtitle" th:selected="${user.getJob() == 'sail'}">판매 종사자</option>
+                                <option th:value="expert" class="p-subtitle" th:selected="${user.getJob() == 'expert'}">
+                                    전문가 및 관련 종사자
+                                </option>
+                                <option th:value="office" class="p-subtitle" th:selected="${user.getJob() == 'office'}">
+                                    사무 종사자
+                                </option>
+                                <option th:value="service" class="p-subtitle"
+                                        th:selected="${user.getJob() == 'service'}">서비스 종사자
+                                </option>
+                                <option th:value="sales" class="p-subtitle" th:selected="${user.getJob() == 'sales'}">판매
+                                    종사자
+                                </option>
+                                <option th:value="student" class="p-subtitle" th:selected="${user.getJob() == 'student'}">학생
+                                </option>
                             </select>
                             <div class="icoArrow"><i class="fa-thin fa-caret-down dropdown"></i></div>
                         </div>
                         <div class="ep-form-group">
                             <!-- 주소 -->
                             <label class="p-subtitle fw-bold" for="address">주소</label>
-                            <!-- 카카오 지도 api -->
-                            <div id="address"/>
+                            <input type="text" class="form-control ep-form" style="font-size: 1.25rem" id="address"
+                                   th:value="${user.getAddress()}" placeholder="주소를 입력해주세요">
                         </div>
                         <div class="ep-form-group">
                             <label class="p-subtitle fw-bold" for="memo">한줄소개</label>
                             <div class="mb-3" style="display: block; margin: auto;">
-                                <textarea placeholder="한 줄 소개" th:text="${user.getMemo()}" class="form-control ep-textarea" style="font-size: 1.25rem;" id="memo" rows="3"></textarea>
+                                <textarea placeholder="한 줄 소개" th:text="${user.getMemo()}"
+                                          class="form-control ep-textarea" style="font-size: 1.25rem;" id="memo"
+                                          rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -175,7 +201,8 @@
                         <div class="text-right">
                             <button type="button" id="cancel" name="cancel" class="p-btn p-btn-secondary">취소
                             </button>
-                            <button type="button" id="submit" name="submit" class="p-btn p-btn-primary" onclick="editProfile()">업데이트
+                            <button type="button" id="submit" name="submit" class="p-btn p-btn-primary"
+                                    onclick="editProfile()">업데이트
                             </button>
                         </div>
                     </div>
@@ -193,7 +220,8 @@
             birthday: $('#birthday').val(),
             gender: $('#gender').val(),
             job: $('#job').val(),
-            memo: $('#memo').val()
+            memo: $('#memo').val(),
+            address : $('#address').val()
         }
 
         $.ajax({
@@ -207,10 +235,10 @@
                 var token = $("meta[name='_csrf']").attr("content");
                 jqXHR.setRequestHeader(header, token);
             },
-            success: function(data) {
+            success: function (data) {
                 location.replace('/profile')
             },
-            error: function(data) {
+            error: function (data) {
                 console.log('error: ' + data);
             }
         });

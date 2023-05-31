@@ -15,4 +15,5 @@ public class EditProfileRequest {
     private String gender;
     private String job;
     private String memo;
+    private String address;
 }

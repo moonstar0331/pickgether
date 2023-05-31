@@ -214,7 +214,7 @@ class ProfilesControllerTest {
     void editProfile_post() throws Exception {
         // given
         UserDto userDto = mock(UserDto.class);
-        willDoNothing().given(userService).editProfile(eq(userDto), anyString(), anyString(), anyString(), anyString(), anyString());
+        willDoNothing().given(userService).editProfile(eq(userDto), anyString(), anyString(), anyString(), anyString(), anyString(), anyString());
 
         // when & then
         mvc.perform(post("/edit-profile")

@@ -109,12 +109,13 @@ public class UserServiceTest {
         String gender = "남성";
         String job = "학생";
         String memo = "메모";
-        userDto.updateInfo(nick, birth, gender, job, memo);
+        String address = "경기";
+        userDto.updateInfo(nick, birth, gender, job, memo, address);
 
         given(userRepository.save(userDto.toEntity())).willReturn(user);
 
         // when
-        userService.editProfile(userDto, nick, birth, gender, job, memo);
+        userService.editProfile(userDto, nick, birth, gender, job, memo, address);
 
         // then
         then(userRepository).should().save(userDto.toEntity());

@@ -487,6 +487,17 @@ function changePreview(id) {
     }
 }
 
+function changeProfileImg() {
+    if (document.getElementById('ChangeImg').files && document.getElementById('ChangeImg').files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('img1').src = e.target.result;
+            document.getElementById('img2').src = e.target.result;
+        };
+        reader.readAsDataURL(document.getElementById('ChangeImg').files[0]);
+    }
+}
+
 function deleteFile(id) {
     document.getElementById(id).style.display = 'none';
     document.getElementById(id).src = "";
