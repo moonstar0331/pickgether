@@ -146,18 +146,11 @@ public class VoteController {
                            @ModelAttribute VoteForm voteForm) {
         VoteDto voteDto = voteForm.toDto(votePrincipal.toDto());
         List<HashtagDto> hashtagDtos = voteForm.getHashtagDtos();
-
-        voteForm.getVoteOptions().forEach(o -> {
-            try {
-                o.setImageLink(fileUploadService.saveFile(o.getFile()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
         List<VoteOptionDto> voteOptionDtos = voteForm.getVoteOptions()
                 .stream()
                 .map(o -> o.toDto(voteDto))
                 .collect(Collectors.toList());
+
         voteService.saveVote(voteDto, voteOptionDtos, hashtagDtos);
         return "redirect:/timeline";
     }
