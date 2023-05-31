@@ -252,6 +252,10 @@ public class VoteController {
         VoteAnalysisDto analysis = VoteAnalysisDto.from(voteId, voteResultService.getVoteResults(voteId));
         model.addAttribute("analysis", analysis);
 
+        String optionAnalysis = "";
+        for (int i = 0; i < analysis.getOptionAnalysisList().size(); i++)
+            optionAnalysis += ((i+1) + "번 " + analysis.getOptionAnalysisList().get(0).toString());
+        model.addAttribute("optionAnalysis", optionAnalysis);
         return "page/voteAnalyze";
     }
 

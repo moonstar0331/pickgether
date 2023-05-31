@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <title>Pickgether</title>
+    <link href="/images/thumb-up.svg" rel="icon">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min2.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style2.css}">
@@ -40,9 +41,15 @@
                 .then(response => response.text())
                 .then(apiKey => {
                     let analysis = document.getElementById('vote-analysis').dataset.analysis;
+                    let options = document.getElementById('option-analysis').dataset.analysis;
                     let pickCount = document.getElementById('pick-count').dataset.count;
-                    let script = "다음의 투표 결과를 요약해줘. 숫자는 득표수를 의미하며, 전체 득표 수는 " + pickCount + "표야. " +
-                        "범주는 [성별, 연령대, 주소, 직업]이고, 각 범주마다 투표 결과가 어떤 양상을 보이는지 자세하게 설명해줘. 이때, 절대로 숫자를 임의로 변경하면 안돼.\n" + analysis;
+                    // let script = "다음의 투표 결과를 요약해줘. 숫자는 득표수를 의미하며, 전체 득표 수는 " + pickCount + "표야. " +
+                    //     "범주는 [성별, 연령대, 주소, 직업]이고, 각 범주마다 투표 결과가 어떤 양상을 보이는지 자세하게 설명해줘. 이때, 절대로 숫자를 임의로 변경하면 안돼.\n" + analysis;
+
+                    let script = "다음의 투표 선택지 결과를 요약해줘. 숫자는 득표율을 의미하고, 범주는 [성별, 연령대, 주소, 직업]이야. 투표 선택지별로 모든 범주에 대해서 분석해줘." +
+                        "예를 들면 1번 선택지는 20대가 많이 참여했다. 2번 선택지는 학생(직업)이 많이 참여했다. 이런 식으로 작성하되, 꼭 투표 선택지 결과를 토대로 분석해줘. 절대로 투표 선택지 득표율을 임의로 변경하면 안 돼." +
+                        "각 범주의 어떤 값이 해당 선택지에 많이 참여했는지 위주로 대화체로 설명하듯이 말해줘." +
+                        "여기서 직업 범주를 설명할 때, 꼭 expert는 전문가, office는 사무 종사자, service는 서비스 종사자, sales는 판매 종사자, student는 학생으로 설명해줘.\n"+ options;
 
                     const messages = [
                         {role: 'system', content: 'You are a helpful assistant.'},
@@ -80,6 +87,7 @@
 <body>
 <!-- 투표 분석자료 데이터 -->
 <div id="vote-analysis" th:data-analysis='${analysis.toString()}'></div>
+<div id="option-analysis" th:data-analysis='${optionAnalysis}'></div>
 <div id="create-at" th:data-create='${vote.createAt}'></div>
 <div id="expired-at" th:data-expired='${vote.expiredAt}'></div>
 <div id="pick-count" th:data-count='${vote.getPickCount()}'></div>
@@ -397,7 +405,8 @@
             document.getElementById(key).style.fill = '#7A57F6';
             document.getElementById(key).style.fillOpacity = String(value + "%");
         }
-    };
+    }
+    ;
 </script>
 
 <script>
