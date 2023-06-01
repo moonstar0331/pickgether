@@ -40,13 +40,13 @@
 ## 🛠 Tech Stack
 |**종류**|**사용 도구**|
 |:------:|---|
-|**Backend**|Java, Spring Boot, Spring MVC, Spring Security, Spring Data JPA<br>Junit5, Mockito, Gradle, Hadoop|
+|**Backend**|Java, Spring Boot, Spring Web, Spring Security, Spring Data JPA<br>Junit5, Mockito, Gradle, Hadoop|
 |**Frontend**|Thymeleaf, Html, Css, JavaScript|
 |**DevOps & Tool**|Maria DB, Redis, AWS EC2, GitHub Actions, Docker, IntelliJ, GitKraken|
 
 
 ## 🔧 Architecture & development process
-- **Architecture** : MVC
+- **Architecture** : Spring MVC
 - **development process** : Agile
 
 
