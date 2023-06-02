@@ -72,13 +72,19 @@
 - [개발 리더] 백엔드, 일정관리, 브랜치 관리
 
 **정진주** <a href= "https://github.com/Ness731"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
-- 프론트 / 백엔드, UI 디자인, PPT
+- 백엔드 / 프론트, UI 디자인, PPT
 
 **조희연** <a href= "https://github.com/chy0503"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
-- 프론트 / 백엔드, 다이어그램 작성
+- 백엔드 / 프론트, 다이어그램 작성
 
 **박시은** <a href= "https://github.com/sieunp06"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
 - 프론트, UI 디자인
+
+
+## 🏆 Achievement
+- 이지훈, 김문성, 정진주, 조희연, 박시은, 김상진, 투표 기능을 통한 사용자 참여 SNS 설계와 구현, 2023 한국정보기술학회 하계 종합학술대회  논문 기재
+- 이지훈, 김문성, 정진주, 조희연, 박시은, 김상진, Design and implementation of user participated SNS through voting function, KSII APIC-IST 2023 논문 기재
+![achievement](https://github.com/Kim-Moon-Sung/capstone-pickgether/assets/103942182/73c8876c-98cb-4456-a4a4-0b731950cea3)
 
 
 ## 🤔 Learned
