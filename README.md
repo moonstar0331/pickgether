@@ -36,13 +36,23 @@
 |3|**댓글 서비스**|- 댓글 작성/수정/삭제<br>- 댓글 공감|
 |4|**편의 기능**|- 북마크<br>- 투표 참여 제한<br>- 게시글 검색<br>- 투표 참여자 리스트|
 
+## 💻 Development Environment
+- IntelliJ IDEA Ultimate 2022.03
+- Java 11
+- Spring Boot 2.7.7
+- Gradle 7.6
+- AWS EC2 Ubuntu 22.04.2 LTS
+- Docker 20.10.22
+- MariaDB:10
+- Redis:alpine
+
 
 ## 🛠 Tech Stack
 |**종류**|**사용 도구**|
 |:------:|---|
 |**Backend**|Java, Spring Boot, Spring Web, Spring Security, Spring Data JPA<br>Junit5, Mockito, Gradle, Hadoop|
 |**Frontend**|Thymeleaf, Html, Css, JavaScript|
-|**DevOps & Tool**|Maria DB, Redis, AWS EC2, GitHub Actions, Docker, IntelliJ, GitKraken|
+|**DevOps & Tool**|Maria DB, Redis, AWS EC2, AWS S3, GitHub Actions, Docker, IntelliJ, GitKraken|
 
 
 ## 🔧 Architecture & development process
