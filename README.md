@@ -78,7 +78,7 @@
 - 백엔드 / 프론트, 다이어그램 작성
 
 **박시은** <a href= "https://github.com/sieunp06"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
-- 프론트, UI 디자인
+- 프론트 / 백엔드, UI 디자인, 영상 제작
 
 
 ## 🏆 Achievement
