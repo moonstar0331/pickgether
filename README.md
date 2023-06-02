@@ -61,7 +61,7 @@
 
 
 ## ⚙️ Structure of system
-![structure](https://github.com/Kim-Moon-Sung/capstone-pickgether/assets/103942182/6b2e8d64-88c8-4457-8f14-ecf38c41a4ee)
+![structure](https://github.com/Kim-Moon-Sung/capstone-pickgether/assets/103942182/a5504d6e-4f05-4d67-a10d-6a9ef814fcc6)
 
 
 ## 🤚🏻 Part
@@ -71,19 +71,19 @@
 **김문성** <a href= "https://github.com/Kim-Moon-Sung"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
 - [개발 리더] 백엔드, 일정관리, 브랜치 관리
 
-**정진주** <a href= "https://github.com/Han201913046"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
+**정진주** <a href= "https://github.com/Ness731"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
 - 프론트 / 백엔드, UI 디자인, PPT
 
 **조희연** <a href= "https://github.com/chy0503"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
 - 프론트 / 백엔드, 다이어그램 작성
 
-**박시은**<a href= "https://github.com/sieunp06"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
+**박시은** <a href= "https://github.com/sieunp06"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
 - 프론트, UI 디자인
 
 
 ## 🤔 Learned
 **1. 테스트 코드의 중요성**<br>
-테스트 코드를 작성함으로써 버그를 조기에 발견할 수 있었다. 또한, 코드 변경으로 인해 기존 기능이 영향이 있는지 없는지 확인할 수 있었다.
+<p>테스트 코드를 작성함으로써 버그를 조기에 발견할 수 있었다. 또한, 코드 변경으로 인해 기존 기능이 영향이 있는지 없는지 확인할 수 있었다.
 
 **2. 함수형 프로그래밍**<br>
 <p>함수형 프로그래밍을 통해 코드의 길이가 짧아지고 가독성이 좋아짐을 느낄 수 있었다.</p>
