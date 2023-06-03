@@ -15,15 +15,6 @@ import java.util.Optional;
 @EnableJpaAuditing
 public class JpaAuditingConfig {
 
-//    @Bean
-//    public AuditorAware<String> auditorAware() {
-//        return () -> Optional.ofNullable(SecurityContextHolder.getContext())
-//                .map(SecurityContext::getAuthentication)
-//                .filter(Authentication::isAuthenticated)
-//                .map(Authentication::getPrincipal)
-//                .map(VotePrincipal.class::cast)
-//                .map(VotePrincipal::getUsername);
-
     @Bean
     public AuditorAware<String> auditorAware() {
         Optional<Authentication> authentication = Optional.ofNullable(SecurityContextHolder.getContext()).map(SecurityContext::getAuthentication);
