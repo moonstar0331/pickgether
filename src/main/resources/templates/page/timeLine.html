@@ -371,7 +371,7 @@
         <div style="margin-top: 10px" class="icons">
             <div style="float: left;">
                 <!--투표 아이콘-->
-                <button type="button" th:onclick="'location.href=\'' + ${vote.getId()} + '/participants\''">
+                <button type="button" th:onclick="'location.href=\'' + ${vote.getId()} + '/participants\''" style="padding-right: 0;">
                     <svg style="margin-left: 10px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                          fill="currentColor" class="bi bi-file-earmark-check" viewBox="0 0 16 16">
                         <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
@@ -380,7 +380,7 @@
                 </button>
                 <span th:id="${'vote-participantNum-' + vote.getId()}" th:text="${vote.pickCount}"></span>
                 <!--댓글 아이콘-->
-                <button type="button" th:onclick="'location.href=\'' + ${vote.getId()} + '/detail\''">
+                <button type="button" th:onclick="'location.href=\'' + ${vote.getId()} + '/detail\''" style="padding-right: 0;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                          class="bi bi-chat-dots" viewBox="0 0 16 16">
                         <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
