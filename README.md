@@ -50,7 +50,7 @@
 ## 🛠 Tech Stack
 |**종류**|**사용 도구**|
 |:------:|---|
-|**Backend**|Java, Spring Boot, Spring Web, Spring Security, Spring Data JPA<br>Junit5, Mockito, Gradle, Hadoop|
+|**Backend**|Java, Spring Boot, Spring Web, Spring Security, Spring Data JPA<br>Junit5, Mockito, Gradle, Hadoop, CoolSMS|
 |**Frontend**|Thymeleaf, Html, Css, JavaScript|
 |**DevOps & Tool**|Maria DB, Redis, AWS EC2, AWS S3, GitHub Actions, Docker, IntelliJ, GitKraken|
 
@@ -66,10 +66,10 @@
 
 ## 🤚🏻 Part
 **이지훈** <a href= "https://github.com/leejihoon0312"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
-- [팀장] 백엔드, 보고서, 발표
+- [팀장] 백엔드 / 프론트, 보고서, 발표
    
 **김문성** <a href= "https://github.com/Kim-Moon-Sung"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
-- [개발 리더] 백엔드, 일정관리, 브랜치 관리
+- [개발 리더] 백엔드 / 프론트, 일정관리, 브랜치 관리
 
 **정진주** <a href= "https://github.com/Ness731"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a><br>
 - 백엔드 / 프론트, UI 디자인, PPT
