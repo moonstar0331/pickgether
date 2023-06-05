@@ -55,8 +55,9 @@
     <div style="margin-top: 6rem;">
         <header class="profile" style="margin-bottom: 10px;">
             <div class="hover-cursor-pointer" style="float: left;" th:id="${vote.userDto.userId}" onclick="href('profile?userId=' + this.id)">
-                <img th:if="${vote.userDto.getImageUrl() != ''}" src="/images/avatar.jpg" style="height: 48px"/>
-                <img th:unless="${vote.userDto.getImageUrl() != ''}" th:src="${vote.userDto.getImageUrl()}" style="height: 48px"/>
+<!--                <img th:if="${vote.userDto.getImageUrl() != ''}" src="/images/avatar.jpg" style="height: 48px"/>-->
+<!--                <img th:unless="${vote.userDto.getImageUrl() != ''}" th:src="${vote.userDto.getImageUrl()}" style="height: 48px"/>-->
+                <img th:src="${vote.userDto.getImageUrl() == null ? '/images/user-dummy.jpeg' : vote.userDto.getImageUrl()}" style="height: 48px;"/>
             </div>
             <div>
                 <section class="hover-cursor-pointer" style="float: left; padding-left: 10px;" th:id="${vote.userDto.userId}" onclick="href('profile?userId=' + this.id)">
@@ -249,12 +250,14 @@
     <div class="scrollbar-none" style="overflow: auto; margin-bottom: 4rem;" id="commentList">
         <th:block th:each="comment : ${comments}">
             <div th:id="${'comment-' + comment.getId()}"  class="d-flex text-muted pl-3 pt-3 border-bottom">
-                <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle hover-cursor-pointer" width="32" height="32" th:id="${comment.getUserDto().getUserId()}" onclick="href('profile?userId=' + this.id)"
-                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
-                     preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#CA5151"></rect>
-                </svg>
+<!--                <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle hover-cursor-pointer" width="32" height="32" th:id="${comment.getUserDto().getUserId()}" onclick="href('profile?userId=' + this.id)"-->
+<!--                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"-->
+<!--                     preserveAspectRatio="xMidYMid slice" focusable="false">-->
+<!--                    <title>Placeholder</title>-->
+<!--                    <rect width="100%" height="100%" fill="#CA5151"></rect>-->
+<!--                </svg>-->
+                <img class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle hover-cursor-pointer" th:src="${comment.userDto.getImageUrl()==null ? '/images/user-dummy.jpeg' : comment.userDto.getImageUrl()}" style="height: 32px; width: 32px;"
+                     th:id="${comment.getUserDto().getUserId()}" onclick="href('profile?userId=' + this.id)" />
                 <div class="pb-1 mb-0 w-100 small lh-sm" id="commentResult">
                     <div class="d-flex justify-content-between mb-1">
                         <div class="d-flex">
