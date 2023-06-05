@@ -91,9 +91,7 @@
     <div style="margin: 1rem;">
         <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')"
              style="display: flex; height: 50px;">
-            <!--<div class="profile-circle"></div>-->
-            <img th:if="${user.getImageUrl() == null}" class="timeline-category-user-image" src="/images/avatar.jpg" style="height: 48px; border-radius: 70%; float: left;"/>
-            <img th:unless="${user.getImageUrl() == null}" class="timeline-category-user-image" th:src="${user.getImageUrl()}" style="height: 48px; border-radius: 70%; float: left;"/>
+            <img class="timeline-category-user-image" th:src="${user.getImageUrl()==null ? '/images/user-dummy.jpeg' : user.getImageUrl()}" style="height: 48px; border-radius: 70%; float: left;"/>
             <p class="p-title timeline-category-user-name" style="margin-left: 0.5rem;" th:text="${userId}"></p>
         </div>
         <div style="height: 30px;">
@@ -133,9 +131,7 @@
 <!-- 카테고리 반응형 팝업 -->
 <section class="category-pop-up">
     <div style="margin: 1rem;">
-        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')"
-             style="display: flex; height: 50px;">
-            <!--<div class="profile-circle"></div>-->
+        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')" style="display: flex; height: 50px;">
             <img class="timeline-category-user-image-pop-up" src="/images/avatar.jpg"
                  style="height: 48px; border-radius: 70%; float: left;"/>
             <p class="p-title timeline-category-user-name-pop-up" style="margin-left: 0.5rem;" th:text="${userId}"></p>
@@ -152,23 +148,19 @@
     </div>
     <div style="margin-left: 1rem; margin-top: 2rem;">
         <div>
-            <button class="category-btn-pop-up"><img src="/images/icons/user.svg"
-                                                     style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-pop-up"><img src="/images/icons/user.svg" style="height: 35px; margin-right: 1rem;"/></button>
             <button class="category-btn-label-pop-up">프로필</button>
         </div>
         <div style="margin-top: 1rem;">
-            <button class="category-btn-pop-up"><img src="/images/icons/bookmark.svg"
-                                                     style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-pop-up"><img src="/images/icons/bookmark.svg" style="height: 35px; margin-right: 1rem;"/></button>
             <button class="category-btn-label-pop-up">북마크</button>
         </div>
         <div style="margin-top: 1rem;">
-            <button class="category-btn-pop-up"><img src="/images/icons/message.svg"
-                                                     style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-pop-up"><img src="/images/icons/message.svg" style="height: 35px; margin-right: 1rem;"/></button>
             <button class="category-btn-label-pop-up">메세지</button>
         </div>
         <div style="margin-top: 1rem;">
-            <button class="category-btn-pop-up"><img src="/images/icons/star.svg"
-                                                     style="height: 35px; margin-right: 1rem;"/></button>
+            <button class="category-btn-pop-up"><img src="/images/icons/star.svg" style="height: 35px; margin-right: 1rem;"/></button>
             <button class="category-btn-label-pop-up">Pickgether Premium</button>
         </div>
     </div>
@@ -183,12 +175,6 @@
     <!--Todo: 백->프론트 댓글 연동-->
     <nav class="navbar sticky-top navbar-light bg-light" style="height: 85px;">
         <div class="container-fluid" style="flex-wrap: nowrap !important; ">
-            <!--<div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')">
-                <div class="profile-circle"></div>
-                <img th:if="${loginUser.getImageUrl() == null || loginUser.getImageUrl() == ''}" src="/images/avatar.jpg" style="height: 48px; border-radius: 70%"/>
-                <img th:unless="${loginUser.getImageUrl() == null || loginUser.getImageUrl() == ''}" th:src="${loginUser.getImageUrl()}" style="height: 48px; border-radius: 70%"/>
-            </div>
-            -->
 
             <!-- 카테고리 버튼 -->
             <div class="category-pop-up-btn">
@@ -197,11 +183,9 @@
                 </button>
             </div>
 
-            <a class="navbar-brand timeline-navbar-brand" href="/timeline"
-               style="font-size: 35px;
+            <a class="navbar-brand timeline-navbar-brand" href="/timeline" style="font-size: 35px;
                 font-family: 'Oleo Script Swash Caps', cursive;
-                color: #2D226E;">
-                Pickgether</a>
+                color: #2D226E;">Pickgether</a>
 
             <div class="navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -238,11 +222,6 @@
                                 <a class="dropdown-item" onclick="timelineOrderBy('todo')">관련도순</a>
                             </li>
 
-                            <!--<div class="form-check" th:each="orderBy : ${T(com.capstone.pick.domain.constant.OrderCriteria).values()}">
-                                <label class="form-check-label" th:for="${orderBy}" th:text="${orderBy.displayValue}">
-                                </label>
-                                <input th:value="${orderBy}" style="margin-left: 65px;" class="form-check-input" type="radio" checked>
-                            </div>-->
                         </ul>
                     </li>
                 </ul>
@@ -263,9 +242,7 @@
         <div>
             <header class="profile" style="margin-bottom: 10px;">
                 <div style="float: left;">
-                    <img th:if="${vote.userDto.getImageUrl() == null}" src="/images/avatar.jpg" style="height: 48px"/>
-                    <img th:unless="${vote.userDto.getImageUrl() == null}" th:src="${vote.userDto.getImageUrl()}"
-                         style="height: 48px"/>
+                    <img th:src="${vote.userDto.getImageUrl() == null ? '/images/user-dummy.jpeg' : vote.userDto.getImageUrl()}" style="height: 48px" />
                 </div>
                 <section style="float: left; padding-left: 10px;">
                     <div th:text="${vote.userDto.nickname}" style="font-weight: bold"/>
@@ -358,8 +335,7 @@
                                        th:checked="${picks.keySet().contains(vote.id) && picks[vote.id]['voteOptionId'] == option.id} ? true : false"/>
                                 <label th:for="'vote'+${vote.getId()}+'option'+${option.getId()}"
                                        th:text="${option.content}" class="m-0 p-0"></label>
-                                <div th:class="'pick-percent vote-result'+${vote.getId()}"
-                                     th:id="'result' + ${option.getId()}"/>
+                                <div th:class="'pick-percent vote-result'+${vote.getId()}" th:id="'result' + ${option.getId()}"/>
                             </div>
                         </div>
                     </div>
@@ -405,10 +381,7 @@
         <section th:if="${!vote.getCommentDtos().isEmpty()}" class="profile"
                  style="margin-left: 10px; display: flex; height: 100%">
             <div style="float: left;">
-                <img th:if="${vote.getCommentDtos()[0].userDto.getImageUrl() == null}" src="/images/avatar.jpg"
-                     style="height: 42px; width: 42px;"/>
-                <img th:unless="${vote.getCommentDtos()[0].userDto.getImageUrl() == null}"
-                     th:src="${vote.getCommentDtos()[0].userDto.getImageUrl()}" style="height: 42px; width: 42px;"/>
+                <img th:src="${vote.getCommentDtos()[0].userDto.getImageUrl()==null ? '/images/user-dummy.jpeg' : vote.getCommentDtos()[0].userDto.getImageUrl()}" style="height: 42px; width: 42px;"/>
             </div>
             <div style="width: 90%">
                 <section style="float: left; padding-left: 10px; font-size: 15px; width:90%;">
