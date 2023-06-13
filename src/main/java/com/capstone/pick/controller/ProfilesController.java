@@ -3,6 +3,7 @@ package com.capstone.pick.controller;
 import com.capstone.pick.controller.request.EditProfileRequest;
 import com.capstone.pick.dto.UserDto;
 import com.capstone.pick.dto.VoteOptionCommentDto;
+import com.capstone.pick.repository.cache.BookmarkCacheRepository;
 import com.capstone.pick.security.VotePrincipal;
 import com.capstone.pick.service.FollowService;
 import com.capstone.pick.service.UserService;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Controller
@@ -28,24 +30,27 @@ public class ProfilesController {
     private final UserService userService;
     private final VoteService voteService;
     private final FollowService followService;
+    private final BookmarkCacheRepository bookmarkCacheRepository;
 
-    @GetMapping("/profile")
-    public String profiles(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
-        UserDto user = userService.findUserById(votePrincipal.getUsername());
+    @GetMapping("/profile/{userId}")
+    public String profiles(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable String userId, Model model) {
+        UserDto user = userService.findUserById(userId);
         model.addAttribute("user", user);
-        model.addAttribute("accountId", user.getUserId());
+        model.addAttribute("accountId", votePrincipal.getUsername());
         model.addAttribute("followingCnt", followService.getFollowingList(user.getUserId()).size());
         model.addAttribute("followerCnt", followService.getFollowerList(user.getUserId()).size());
         return "page/profile";
     }
 
     // 유저가 작성한 투표 게시글을 반환하는 API
-    @GetMapping(value = "/get-my-vote", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get-my-vote/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, Object> findMyVote(@AuthenticationPrincipal VotePrincipal votePrincipal, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
-        Page<VoteOptionCommentDto> myVote = voteService.findMyVote(votePrincipal.getUsername(), pageable);
+    public Map<String, Object> findMyVote(@PathVariable String userId, @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
+        Page<VoteOptionCommentDto> myVote = voteService.findMyVote(userId, pageable);
+        Set<Object> bookmarks = bookmarkCacheRepository.getAll().keySet();
         Map<String, Object> response = new HashMap<>();
         response.put("myVote", myVote);
+        response.put("bookmarks", bookmarks);
         return response;
     }
 
