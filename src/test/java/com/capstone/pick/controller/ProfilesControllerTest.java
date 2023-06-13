@@ -87,7 +87,7 @@ class ProfilesControllerTest {
         when(followService.getFollowerList(anyString())).thenReturn(followerList);
 
         //then
-        mvc.perform(get("/profile"))
+        mvc.perform(get("/profile/" + userDto.getUserId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(model().attribute("user", userDto))
@@ -117,6 +117,7 @@ class ProfilesControllerTest {
     @Test
     public void findMyVote() throws Exception {
         //given
+        String userId = "user";
         List<Vote> voteList = new ArrayList<>();
         createVoteList(voteList);
 
@@ -129,7 +130,7 @@ class ProfilesControllerTest {
         when(voteService.findMyVote(anyString(), any(Pageable.class))).thenReturn(myVote);
 
         //then
-        MvcResult result = mvc.perform(get("/get-my-vote")
+        MvcResult result = mvc.perform(get("/get-my-vote/" + userId)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
