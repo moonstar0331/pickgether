@@ -31,7 +31,7 @@
             const userId = container.getAttribute("userId");
 
             $.ajax({
-                url: "/get-my-vote?userId="+userId+"&page="+page,
+                url: "/get-my-vote/"+userId+"?page="+page,
                 type: "GET",
                 dataType: "json",
                 beforeSend: function () {
