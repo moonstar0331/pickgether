@@ -29,9 +29,9 @@ public class ProfilesController {
     private final VoteService voteService;
     private final FollowService followService;
 
-    @GetMapping("/profile")
-    public String profiles(@AuthenticationPrincipal VotePrincipal votePrincipal, Model model) {
-        UserDto user = userService.findUserById(votePrincipal.getUsername());
+    @GetMapping("/profile/{userId}")
+    public String profiles(@PathVariable String userId, Model model) {
+        UserDto user = userService.findUserById(userId);
         model.addAttribute("user", user);
         model.addAttribute("accountId", user.getUserId());
         model.addAttribute("followingCnt", followService.getFollowingList(user.getUserId()).size());
