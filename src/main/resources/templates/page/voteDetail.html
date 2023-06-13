@@ -301,12 +301,13 @@
     </div>
 
     <footer class="d-flex align-items-center py-3 pl-3 bg-white fixed-bottom" style="height: 4rem;">
-        <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="40" height="40"
-             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
-             preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#F07F7F"></rect>
-        </svg>
+<!--        <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle" width="40" height="40"-->
+<!--             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"-->
+<!--             preserveAspectRatio="xMidYMid slice" focusable="false">-->
+<!--            <rect width="100%" height="100%" fill="#F07F7F"></rect>-->
+<!--        </svg>-->
+        <img class="bd-placeholder-img flex-shrink-0 me-2 rounded-circle hover-cursor-pointer" th:src="${user==null || user.getImageUrl()==null ? '/images/user-dummy.jpeg' : user.getImageUrl()}" style="height: 40px; width: 40px;"
+             th:id="${user.getUserId()}" onclick="href('profile?userId=' + this.id)" />
         <div class="custom-form vw-100">
             <input th:if="${user == null}" type="text" class="custom-form-input" name="content" placeholder="댓글 달기..." required>
             <input  th:if="${user != null}" id="commentInput" type="text" class="custom-form-input" name="content" placeholder="댓글 달기..." required>
