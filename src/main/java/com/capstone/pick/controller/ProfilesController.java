@@ -33,10 +33,10 @@ public class ProfilesController {
     private final BookmarkCacheRepository bookmarkCacheRepository;
 
     @GetMapping("/profile/{userId}")
-    public String profiles(@PathVariable String userId, Model model) {
+    public String profiles(@AuthenticationPrincipal VotePrincipal votePrincipal, @PathVariable String userId, Model model) {
         UserDto user = userService.findUserById(userId);
         model.addAttribute("user", user);
-        model.addAttribute("accountId", user.getUserId());
+        model.addAttribute("accountId", votePrincipal.getUsername());
         model.addAttribute("followingCnt", followService.getFollowingList(user.getUserId()).size());
         model.addAttribute("followerCnt", followService.getFollowerList(user.getUserId()).size());
         return "page/profile";
