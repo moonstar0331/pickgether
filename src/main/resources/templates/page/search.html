@@ -60,9 +60,9 @@
         <th:block th:each="user : ${users}">
             <section class="mx-3 my-1">
                 <header class="profile hover-cursor-pointer" th:id="${user.userId}"
-                        onclick="href('profile?userId=' + this.id)">
+                        onclick="href('profile/' + this.id)">
                     <div class="float-left">
-                        <img src="/images/avatar.jpg" style="height: 48px"/>
+                        <img th:src="${user.imageUrl == null ? '/images/user-dummy.jpeg' : user.imageUrl}" style="height: 48px"/>
                     </div>
                     <div class="float-left ml-3">
                         <div class="font-weight-bold" th:text="${user.userId}"></div>
@@ -76,11 +76,11 @@
         <div th:each="vote: ${votes}">
             <div>
                 <header class="profile" style="margin-bottom: 10px;">
-                    <div class="hover-cursor-pointer" style="float: left;" th:id="${vote.userDto.userId}" onclick="href('profile?userId=' + this.id)">
-                        <img src="/images/avatar.jpg" style="height: 48px"/>
+                    <div class="hover-cursor-pointer" style="float: left;" th:id="${vote.userDto.userId}" onclick="href('profile/' + this.id)">
+                        <img th:src="${vote.userDto.getImageUrl() == null ? '/images/user-dummy.jpeg' : vote.userDto.getImageUrl()}" style="height: 48px"/>
                     </div>
                     <div>
-                        <section class="hover-cursor-pointer" style="float: left; padding-left: 10px;" th:id="${vote.userDto.userId}" onclick="href('profile?userId=' + this.id)">
+                        <section class="hover-cursor-pointer" style="float: left; padding-left: 10px;" th:id="${vote.userDto.userId}" onclick="href('profile/' + this.id)">
                             <div th:text="${vote.userDto.nickname}" style="font-weight: bold"/>
                             <div th:text="${vote.userDto.userId}" style="font-weight: bold"/>
                         </section>
@@ -224,12 +224,12 @@
             <!--댓글-->
             <th:block th:if="${vote.getCommentDtos().size() != 0}">
                 <section class="profile" style="margin-left: 10px;">
-                    <div style="float: left;">
-                        <img src="/images/avatar.jpg" style="height: 42px; width: 42px;"/>
+                    <div style="float: left;" th:id="${vote.getCommentDtos()[0].userDto.getUserId()}" onclick="href('/profile' + this.id)">
+                        <img th:src="${vote.getCommentDtos()[0].userDto.getImageUrl() == null ? '/images/user-dummy.jpeg' : vote.getCommentDtos()[0].userDto.getImageUrl()}" style="height: 42px; width: 42px;"/>
                     </div>
                     <div>
                         <section style="float: left; padding-left: 10px; font-size: 15px;">
-                            <div th:text="${vote.getCommentDtos[0].getUserDto().getUserId()}"><b>picker 3</b></div>
+                            <div th:text="${vote.getCommentDtos[0].getUserDto().getUserId()}" style="font-weight: bold"><b>picker 3</b></div>
                             <div th:text="${vote.getCommentDtos[0].getContent()}">행궁동 ㅇㅇ 예쁘던데 가보세요</div>
                         </section>
                     </div>
