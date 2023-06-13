@@ -34,11 +34,12 @@ function createHeader(vote, user) {
 
     <!-- 프로필 사진 -->
     const img = document.createElement('img');
-    img.setAttribute('src', '/images/avatar.jpg');
+    const imgUrl = user.imageUrl === null ? '/images/user-dummy.jpeg' : user.imageUrl;
+    img.setAttribute('src', imgUrl);
     img.style.height = '48px';
     img.style.cursor = 'pointer';
     img.addEventListener("click", function() {
-        location.href = 'profile?userId=' + user.userId;
+        location.pathname = 'profile/' + user.userId;
     });
     profileImgDIv.appendChild(img);
 
@@ -52,7 +53,7 @@ function createHeader(vote, user) {
     nickname.textContent = user.nickname;
     nickname.style.cursor = 'pointer';
     nickname.addEventListener("click", function() {
-        location.href = 'profile?userId=' + user.userId;
+        location.pathname = 'profile/' + user.userId;
     });
 
     <!-- 아이디 -->
@@ -61,7 +62,7 @@ function createHeader(vote, user) {
     userId.textContent = user.userId;
     userId.style.cursor = 'pointer';
     userId.addEventListener("click", function() {
-        location.href = 'profile?userId=' + user.userId;
+        location.pathname = 'profile/' + user.userId;
     });
 
     nickNameAndIdSection.appendChild(nickname);
@@ -160,7 +161,7 @@ function createContent(vote, option) {
             nonSharp.style.color = '#7A57F6';
             nonSharp.style.display = 'inline';
             nonSharp.classList.add("hover-cursor-pointer");
-            nonSharp.click(function () {
+            nonSharp.addEventListener("click", function() {
                 window.location.href = '/search?hashtag=' + split_content[i].substring(1);
             });
             hashtagingDiv.appendChild(nonSharp);
@@ -387,7 +388,7 @@ function createIcons(vote, comments, bookmarks) {
     const cmtIcon = document.createElement('button');
     cmtIcon.setAttribute('type', 'button');
     cmtIcon.addEventListener('click', function() {
-        location.href = vote.id + '/detail';
+        location.pathname = vote.id + '/detail';
     });
     leftDiv.appendChild(cmtIcon);
     const cmtSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -452,11 +453,11 @@ function createComment(vote, comment) {
 
     <!-- 프로필 사진 -->
     const img = document.createElement("img");
-    img.src = "/images/avatar.jpg";
+    img.src = comment.userDto.imageUrl === null ? '/images/user-dummy.jpeg' : comment.userDto.imageUrl;
     img.className = "comment-circle";
     img.style.cursor = 'pointer';
     img.addEventListener("click", function() {
-        location.href = 'profile?userId=' + comment.userDto.userId;
+        location.pathname = 'profile/' + comment.userDto.userId;
     });
     flDiv.appendChild(img);
 
@@ -474,14 +475,14 @@ function createComment(vote, comment) {
     commentId.textContent = comment.userDto.userId;
     commentId.style.cursor = 'pointer';
     commentId.addEventListener("click", function() {
-        location.href = 'profile?userId=' + comment.userDto.userId;
+        location.pathname = 'profile/' + comment.userDto.userId;
     });
     cmText.appendChild(commentId);
 
     const cmBlock = document.createElement("div");
     cmBlock.className = "cm-block";
     cmBlock.addEventListener("click", function() {
-        location.href = vote.id + "/detail";
+        location.pathname = vote.id + "/detail";
     });
     cmText.appendChild(cmBlock);
 
@@ -490,7 +491,7 @@ function createComment(vote, comment) {
     commentContent.textContent = comment.content;
     commentContent.style.cursor = 'pointer';
     commentContent.addEventListener("click", function() {
-        location.href = vote.id + "/detail";
+        location.pathname = vote.id + "/detail";
     });
     cmText.appendChild(commentContent);
 
