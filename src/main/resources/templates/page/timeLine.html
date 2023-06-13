@@ -132,8 +132,7 @@
 <section class="category-pop-up">
     <div style="margin: 1rem;">
         <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')" style="display: flex; height: 50px;">
-            <img class="timeline-category-user-image-pop-up" src="/images/avatar.jpg"
-                 style="height: 48px; border-radius: 70%; float: left;"/>
+            <img class="timeline-category-user-image-pop-up" th:src="${user.getImageUrl()==null ? '/images/user-dummy.jpeg' : user.getImageUrl()}" style="height: 48px; border-radius: 70%; float: left;"/>
             <p class="p-title timeline-category-user-name-pop-up" style="margin-left: 0.5rem;" th:text="${userId}"></p>
         </div>
         <div style="height: 30px;">
