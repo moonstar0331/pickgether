@@ -108,7 +108,7 @@
         <div class="row justify-content-around"
              style="margin-left: 0.1rem; margin-right: 0.1rem; --bs-gutter-x: 0px !important;">
             <div class="image status d-flex justify-content-center">
-                <img class="rounded-circle" th:src="${user.getImageUrl()==null ? '/image/user-dummy.jpeg' : user.getImageUrl()}"/>
+                <img class="rounded-circle" th:src="${user.getImageUrl()==null ? '/images/user-dummy.jpeg' : user.getImageUrl()}" style="height: 200px; width: 200px;"/>
             </div>
 
             <div class="status d-flex align-items-center flex-column justify-content-center">
