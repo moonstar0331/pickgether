@@ -89,7 +89,7 @@
 <!-- 카테고리 -->
 <section style="position: fixed; width: 20rem; height: 100vh;">
     <div style="margin: 1rem;">
-        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')"
+        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile/'+this.id)"
              style="display: flex; height: 50px;">
             <img class="timeline-category-user-image" th:src="${user.getImageUrl()==null ? '/images/user-dummy.jpeg' : user.getImageUrl()}" style="height: 48px; border-radius: 70%; float: left;"/>
             <p class="p-title timeline-category-user-name" style="margin-left: 0.5rem;" th:text="${userId}"></p>
@@ -105,7 +105,7 @@
         </div>
     </div>
     <div style="margin-left: 1rem; margin-top: 2rem;">
-        <div onclick="href('profile')">
+        <div th:id="${userID}" onclick="href('profile/'+this.id)">
             <button class="category-btn"><img src="/images/icons/user.svg" style="height: 35px; margin-right: 1rem;"/>
             </button>
             <button class="category-btn-label">프로필</button>
@@ -131,7 +131,7 @@
 <!-- 카테고리 반응형 팝업 -->
 <section class="category-pop-up">
     <div style="margin: 1rem;">
-        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile')" style="display: flex; height: 50px;">
+        <div class="hover-cursor-pointer" th:id="${userId}" onclick="href('profile/'+this.id)" style="display: flex; height: 50px;">
             <img class="timeline-category-user-image-pop-up" th:src="${user.getImageUrl()==null ? '/images/user-dummy.jpeg' : user.getImageUrl()}" style="height: 48px; border-radius: 70%; float: left;"/>
             <p class="p-title timeline-category-user-name-pop-up" style="margin-left: 0.5rem;" th:text="${userId}"></p>
         </div>
@@ -146,7 +146,7 @@
         </div>
     </div>
     <div style="margin-left: 1rem; margin-top: 2rem;">
-        <div>
+        <div th:id="${userId}" onclick="href('profile/'+this.id)">
             <button class="category-btn-pop-up"><img src="/images/icons/user.svg" style="height: 35px; margin-right: 1rem;"/></button>
             <button class="category-btn-label-pop-up">프로필</button>
         </div>
@@ -240,7 +240,7 @@
     <div id="voteArea" th:each="vote: ${votes}">
         <div>
             <header class="profile" style="margin-bottom: 10px;">
-                <div style="float: left;">
+                <div style="float: left;" th:id="${vote.userDto.getUserId()}" onclick="href('profile/' + this.id)">
                     <img th:src="${vote.userDto.getImageUrl() == null ? '/images/user-dummy.jpeg' : vote.userDto.getImageUrl()}" style="height: 48px" />
                 </div>
                 <section style="float: left; padding-left: 10px;">
